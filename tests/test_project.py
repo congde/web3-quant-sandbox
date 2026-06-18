@@ -31,7 +31,7 @@ def test_backtest_is_deterministic_and_reports_risk() -> None:
     assert metrics["maximum_drawdown_pct"] <= 0
     assert "calmar_ratio" in metrics
     assert "sharpe_ratio" in metrics
-    assert len(report["backtest"]["curve"]) == 35
+    assert len(report["backtest"]["curve"]) == len(load_prices(DATA_DIR / "prices.csv"))
     assert report["backtest"]["engine"] == "ai-trading/event-driven"
     assert isinstance(report["risk_checks"], list)
     assert report["fusion"]["product_shape"] == "web3-trading"

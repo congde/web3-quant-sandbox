@@ -5,9 +5,9 @@
   "category": "Web3 基础设施协议",
   "summary": "用于课程演示的虚构 Web3 教学资产，所有数据均为固定离线样本。",
   "market_snapshot": {
-    "period": "2026-05 fixed sample",
-    "reference_price": 10.0,
-    "sample_days": 35,
+    "period": "2025-01 — 2026-06 fixed sample",
+    "reference_price": 8.69,
+    "sample_days": 381,
     "volume_index": 112.4,
     "active_address_index": 108.1
   },
@@ -16,7 +16,7 @@
       "id": "S1",
       "date": "2026-05-31",
       "title": "示例协议固定市场快照",
-      "evidence": "课程数据包包含 35 个日线收盘价；参考起始价格为 10.0 USDT。"
+      "evidence": "课程数据包包含 381 个日线收盘价（2025-01-02 至 2026-06-18）；参考起始价格为 8.69 USDT。"
     },
     {
       "id": "S2",

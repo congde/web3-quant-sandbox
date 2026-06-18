@@ -210,7 +210,7 @@ def plot_chapter04_price_signal_equity() -> Path:
         label="策略路径（shift(1) × 收益）",
     )
     ax2.set_ylabel("累计对数收益（%）")
-    ax2.set_xlabel("样本序号（data/prices.csv 共 35 日）")
+    ax2.set_xlabel(f"样本序号（data/prices.csv 共 {len(dates)} 日）")
     ax2.set_title("面板 C · 仓位作用后的路径（非事件引擎成交明细）", loc="left", fontsize=12)
     ax2.grid(True)
     ax2.legend(loc="upper left")
@@ -406,7 +406,7 @@ def plot_chapter19_metrics_comparison() -> Path:
 
 
 def plot_chapter16_breakout_signal_equity() -> Path:
-    """第 16 讲：通道突破规则三面板（Qbot 01-strategy.ipynb 第二段，窗口缩放至 35 日样本）."""
+    """第 16 讲：通道突破规则三面板（Qbot 01-strategy.ipynb 第二段，窗口缩放至短样本）."""
     plt = _setup_matplotlib()
     dates, closes = _load_prices()
     n = len(closes)
