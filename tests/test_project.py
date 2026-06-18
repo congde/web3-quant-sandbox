@@ -138,6 +138,106 @@ def test_rolling_backtest_matches_web3_trading_engine() -> None:
     assert payload["trades"][0]["entryPrice"] > 0
 
 
+def test_shared_dashboard_utilities() -> None:
+    from dashboard.kline_curve import candles_to_curve, kline_payload_to_curve
+    from dashboard.text import market_overview
+
+    candles = [
+        {"date": "2026-01-01", "close": 10.0},
+        {"date": "2026-01-02", "close": 12.0},
+        {"date": "2026-01-03", "close": 11.0},
+    ]
+    curve = candles_to_curve(candles, short=2, long=3)
+    assert curve[-1]["short_ma"] == 11.5
+    assert curve[-1]["long_ma"] == 11.0
+
+    payload_curve = kline_payload_to_curve(
+        [{"close": 10, "time": 1704067200}, {"c": 12, "date": "2026-01-02"}],
+        short=2,
+        long=2,
+    )
+    assert len(payload_curve) == 2
+
+    overview = market_overview(
+        [{"symbol": "BTC", "label": "强势", "signal": "BUY"}],
+        5,
+    )
+    assert "BTC" in overview
+
+
+def test_shared_factor_zscore() -> None:
+    from factor_mining.stats import zscore_series
+
+    series = zscore_series([1.0, 2.0, 3.0, 4.0, 5.0])
+    assert all(value is not None for value in series)
+    assert series[0] < 0 < series[-1]
+
+    sparse = zscore_series([1.0, None, 2.0], min_samples=3, on_insufficient="none")
+    assert sparse == [None, None, None]
+
+
+def test_compile_strategy_wires_sandbox_api() -> None:
+    from strategy_engine.dsl import compile_strategy
+
+    fn = compile_strategy("def on_tick(ctx, candle):\n    return None\n")
+    assert callable(fn)
+
+
+def test_ta_core_matches_rolling_indicators() -> None:
+    from backtest.rolling.indicators import compute_all_indicators
+    from ta.core import rolling_rsi, rolling_sma
+
+    closes = [10.0 + (index % 5) * 0.3 for index in range(30)]
+    assert rolling_sma(closes, 3)[-1] == pytest.approx(sum(closes[-3:]) / 3)
+    assert rolling_rsi(closes, 14)[-1] is not None
+
+    candles = [
+        {
+            "open": price,
+            "high": price + 0.5,
+            "low": price - 0.5,
+            "close": price,
+            "volume": 1000.0,
+            "tsSec": index,
+        }
+        for index, price in enumerate(closes)
+    ]
+    series = compute_all_indicators(candles)
+    assert series.sma20[-1] is not None
+    assert series.rsi[-1] is not None
+
+
+def test_qbot_rules_shared_helpers() -> None:
+    from backtest.rolling.strategies.qbot_rules import (
+        crossed_down,
+        crossed_up,
+        ema_bullish_alignment,
+        long_only_cross_signal,
+        macd_cross_flags,
+    )
+
+    assert crossed_up(1.0, 2.0, 3.0, 2.0)
+    assert crossed_down(3.0, 2.0, 1.0, 2.0)
+    assert long_only_cross_signal(crossed_up_flag=True, crossed_down_flag=False) is not None
+    assert ema_bullish_alignment(3.0, 2.0, 1.0)
+    assert macd_cross_flags(1.0, 2.0, 3.0, 2.0) == (True, False)
+
+
+def test_qbot_strategies_still_execute() -> None:
+    from backtest.rolling.service import execute_backtest
+
+    for strategy_name in (
+        "ma_crossover",
+        "macd_crossover",
+        "macd",
+        "boll_mean_reversion",
+        "adx_macd_trend",
+    ):
+        payload = execute_backtest(strategy_name=strategy_name, limit=120)
+        assert payload["ok"] is True
+        assert payload["strategy_key"] == strategy_name
+
+
 def test_src_layout_matches_web3_trading_shape() -> None:
     src = ROOT / "src"
     for relative in (

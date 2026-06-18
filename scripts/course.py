@@ -86,13 +86,14 @@ TASKS = {
     "courseware-check": lambda: python_task("scripts/verify_courseware.py"),
     "courseware-headings": courseware_headings,
     "asset-audit": lambda: python_task("scripts/audit_assets.py"),
+    "vendor-drift": lambda: python_task("scripts/check_vendor_drift.py"),
     "teaching-plots": lambda: python_task("scripts/generate_qbot_teaching_plots.py"),
     "lab-10": lambda: python_task("verify.py"),
 }
 
 
 def check() -> None:
-    for task in ("verify", "asset-audit", "courseware-check"):
+    for task in ("verify", "vendor-drift", "asset-audit", "courseware-check"):
         print(f"==> {task}", flush=True)
         TASKS[task]()
     print("All repository checks passed.")

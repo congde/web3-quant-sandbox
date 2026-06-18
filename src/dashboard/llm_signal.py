@@ -3,10 +3,9 @@ from __future__ import annotations
 import json
 import os
 import re
-import urllib.error
-import urllib.request
 from typing import Any
 
+from dashboard.http_client import http_post
 from dashboard.signal_analysis import run_signal_analysis
 
 DEFAULT_MODEL = "deepseek-v4-pro"
@@ -101,24 +100,14 @@ def _call_llm(prompt: str, model: str) -> dict[str, Any]:
             "response_format": {"type": "json_object"},
         },
         ensure_ascii=False,
-    ).encode("utf-8")
-
-    request = urllib.request.Request(
-        _chat_completions_url(),
-        data=body,
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}",
-        },
-        method="POST",
     )
-    timeout = int(os.environ.get("OPENAI_API_TIMEOUT", "90"))
-    try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"LLM HTTP {exc.code}: {detail[:300]}") from exc
+    timeout = float(os.environ.get("OPENAI_API_TIMEOUT", "90"))
+    payload = http_post(
+        _chat_completions_url(),
+        body,
+        headers={"Authorization": f"Bearer {api_key}"},
+        timeout=timeout,
+    )
 
     choices = payload.get("choices") or []
     if not choices:

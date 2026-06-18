@@ -4,6 +4,7 @@ import time
 from typing import Any
 
 from dashboard import market
+from dashboard.text import market_overview
 
 
 def _signal_from_ticker(ticker: dict[str, Any]) -> tuple[str, str, float, float, list[str]]:
@@ -102,7 +103,7 @@ def scan_opportunities_from_tickers(
 
     opportunities.sort(key=lambda item: abs(float(item["score"])), reverse=True)
     ranked = [{**item, "rank": index + 1} for index, item in enumerate(opportunities)]
-    overview = _market_overview(ranked[:5], len(candidates))
+    overview = market_overview(ranked[:5], len(candidates))
     return {
         "ok": True,
         "source": "live",
@@ -136,7 +137,7 @@ def scan_opportunities(
     payload["opportunities"] = [
         {**item, "rank": index + 1} for index, item in enumerate(payload["opportunities"])
     ]
-    payload["marketOverview"] = _market_overview(payload["opportunities"], payload["totalScanned"])
+    payload["marketOverview"] = market_overview(payload["opportunities"], payload["totalScanned"])
     return payload
 
 
@@ -146,24 +147,4 @@ def scan_opportunities_full(*, min_volume_24h: float = 200_000) -> dict[str, Any
         tickers_payload,
         min_volume_24h=min_volume_24h,
         max_symbols=None,
-    )
-
-
-def _market_overview(items: list[dict[str, Any]], total_scanned: int) -> str:
-    if not items:
-        return "暂无足够数据生成市场概览。"
-    buy_count = sum(1 for item in items if item["signal"] in ("BUY", "WEAK_BUY"))
-    sell_count = sum(1 for item in items if item["signal"] in ("SELL", "WEAK_SELL"))
-    neutral_count = sum(1 for item in items if item["signal"] == "NEUTRAL")
-    if buy_count > sell_count * 2:
-        sentiment = "整体偏多"
-    elif sell_count > buy_count * 2:
-        sentiment = "整体偏空"
-    else:
-        sentiment = "方向分化"
-    top_desc = "、".join(f"{item['symbol']}({item['label']})" for item in items[:3])
-    return (
-        f"扫描 {total_scanned} 个币种，市场{sentiment}。"
-        f"多头 {buy_count}、空头 {sell_count}、中性 {neutral_count}。"
-        f"综合靠前：{top_desc}。"
     )

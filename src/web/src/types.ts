@@ -101,6 +101,8 @@ export interface ValidationIssue {
 
 export interface StrategyValidationResult {
   valid: boolean;
+  compilable?: boolean;
+  compile_error?: string | null;
   validation: {
     valid: boolean;
     errors: ValidationIssue[];

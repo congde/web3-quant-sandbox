@@ -32,6 +32,7 @@ from strategy_engine.dsl import (  # noqa: E402
     check_lookahead_bias,
     validate_strategy_code,
 )
+from strategy_engine.dsl.loader import StrategyCompileError, compile_strategy  # noqa: E402
 
 load_env()
 
@@ -319,9 +320,20 @@ class Handler(BaseHTTPRequestHandler):
 
         validation = validate_strategy_code(code)
         lookahead = check_lookahead_bias(code)
+        compilable = False
+        compile_error: str | None = None
+        if validation.valid and lookahead.clean:
+            try:
+                compile_strategy(code)
+                compilable = True
+            except StrategyCompileError as error:
+                compile_error = str(error)
+
         self.send_json(
             {
                 "valid": validation.valid and lookahead.clean,
+                "compilable": compilable,
+                "compile_error": compile_error,
                 "validation": {
                     "valid": validation.valid,
                     "errors": [

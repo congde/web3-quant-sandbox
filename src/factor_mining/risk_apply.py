@@ -2,29 +2,13 @@
 
 from __future__ import annotations
 
-import math
 from typing import Any
 
 from factor_mining.expressions import eval_series
 from factor_mining.features import build_feature_matrix
 from factor_mining.ml import _combine_linear, _normalize_features
 from factor_mining.serialize import expr_from_dict
-
-
-def _zscore_series(values: list[float | None]) -> list[float | None]:
-    paired = [float(v) for v in values if v is not None and math.isfinite(v)]
-    if len(paired) < 3:
-        return [None] * len(values)
-    mean = sum(paired) / len(paired)
-    var = sum((v - mean) ** 2 for v in paired) / (len(paired) - 1)
-    std = math.sqrt(var) if var > 1e-12 else 1.0
-    out: list[float | None] = []
-    for value in values:
-        if value is None or not math.isfinite(value):
-            out.append(None)
-            continue
-        out.append((float(value) - mean) / std)
-    return out
+from factor_mining.stats import zscore_series
 
 
 def risk_factor_series(
@@ -55,7 +39,13 @@ def preview_position_scales(
 ) -> dict[str, Any]:
     """Map predicted risk z-score to inverse position scale (teaching demo only)."""
     raw = risk_factor_series(risk_spec=risk_spec, candles=candles, horizon=horizon)
-    zscores = _zscore_series(raw)
+    zscores = zscore_series(
+        raw,
+        min_samples=3,
+        require_finite=True,
+        on_insufficient="none",
+        on_zero_std="unit",
+    )
     rows: list[dict[str, Any]] = []
     for idx, z in enumerate(zscores):
         if z is None:

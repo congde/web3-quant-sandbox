@@ -2,10 +2,6 @@
 """ADX + EMA stack + MACD histogram — rules adapted from vendor/Qbot (MIT).
 
 Reference: vendor/Qbot/qbot/strategies/adx_strategy.py
-  - EMA13 > EMA55 > EMA89 (bullish alignment)
-  - ADX <= threshold and rising (trend forming, not yet strong)
-  - MACD histogram rising
-  - Hold ~3 bars then exit (via max_hold_bars engine override)
 """
 
 from __future__ import annotations
@@ -15,6 +11,7 @@ from typing import Any, Dict, List, Optional
 from backtest.rolling.indicators import IndicatorSeries
 from backtest.rolling.models import Signal
 from backtest.rolling.strategies.base import Strategy
+from backtest.rolling.strategies.qbot_rules import adx_trend_forming, ema_bullish_alignment
 
 
 class ADXMacdTrendStrategy(Strategy):
@@ -45,13 +42,12 @@ class ADXMacdTrendStrategy(Strategy):
             return Signal(action="WAIT", score=0.0)
 
         adx_threshold = float(params.get("adx_threshold", 25))
-
-        aligned = ema1 > ema2 > ema3
-        adx_rising = adx_val <= adx_threshold and adx_val > prev_adx
-        hist_rising = hist > prev_hist
+        aligned = ema_bullish_alignment(float(ema1), float(ema2), float(ema3))
+        adx_rising = adx_trend_forming(float(adx_val), float(prev_adx), threshold=adx_threshold)
+        hist_rising = float(hist) > float(prev_hist)
 
         if aligned and adx_rising and hist_rising:
-            strength = min(100.0, 40.0 + (adx_threshold - adx_val) + (hist - prev_hist) * 100)
+            strength = min(100.0, 40.0 + (adx_threshold - float(adx_val)) + (float(hist) - float(prev_hist)) * 100)
             return Signal(action="LONG", score=strength)
 
         if not aligned:

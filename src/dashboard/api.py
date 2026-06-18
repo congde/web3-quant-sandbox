@@ -16,6 +16,7 @@ from dashboard.mode import dashboard_data_mode, prefer_offline, serve_offline_fi
 from dashboard.resolve import try_cached_first
 from dashboard.normalize import normalize_ai_picks, normalize_token_fund
 from dashboard.dataset_views import trim_dex_trending, trim_market_tickers
+from dashboard.kline_curve import kline_payload_to_curve
 from dashboard.persist import annotate_cached, maybe_persist
 from dashboard.persist_hooks import (
     persist_kucoin_bundle,
@@ -458,8 +459,7 @@ def market_candles(
         {"symbol": pair, "type": kline_type, "limit": limit, "realtime": "false"},
     )
     if hit and hit.get("candles"):
-        curve = _kline_payload_to_curve(hit.get("candles") or [], short=short, long=long)
-        hit["curve"] = curve
+        hit["curve"] = kline_payload_to_curve(hit.get("candles") or [], short=short, long=long)
         hit["symbol"] = pair
         maybe_persist("market_candles", hit)
         return hit
@@ -469,7 +469,7 @@ def market_candles(
         {"symbol": pair, "type": kline_type, "limit": limit},
     )
     if hit and hit.get("candles"):
-        hit["curve"] = _kline_payload_to_curve(hit.get("candles") or [], short=short, long=long)
+        hit["curve"] = kline_payload_to_curve(hit.get("candles") or [], short=short, long=long)
         hit["symbol"] = pair
         maybe_persist("market_candles", hit)
         return hit
@@ -488,39 +488,6 @@ def market_candles(
         cached = annotate_cached(load_offline("market_candles"))
         cached["symbol"] = pair
         return cached
-
-
-def _kline_payload_to_curve(candles: list[Any], *, short: int, long: int) -> list[dict[str, Any]]:
-    normalized: list[dict[str, Any]] = []
-    for item in candles:
-        if isinstance(item, dict):
-            close = float(item.get("close") or item.get("c") or 0)
-            ts = item.get("date") or item.get("time")
-            if isinstance(ts, (int, float)):
-                from datetime import datetime, timezone
-
-                ts = datetime.fromtimestamp(int(ts), tz=timezone.utc).strftime("%Y-%m-%d")
-            normalized.append({"date": str(ts), "close": close, "equity": close})
-    if not normalized:
-        return []
-    closes = [float(row["close"]) for row in normalized]
-    curve: list[dict[str, Any]] = []
-    for index, row in enumerate(normalized):
-        curve.append(
-            {
-                **row,
-                "short_ma": _sma(closes, index, short),
-                "long_ma": _sma(closes, index, long),
-            }
-        )
-    return curve
-
-
-def _sma(values: list[float], index: int, window: int) -> float | None:
-    if window <= 0 or index + 1 < window:
-        return None
-    sample = values[index + 1 - window : index + 1]
-    return sum(sample) / len(sample)
 
 
 def kline_analysis(

@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from check_vendor_drift import patch_rolling_hooks, patch_rolling_indicators  # noqa: E402
+
 SRC = ROOT / "vendor/web3-trading/src/backtest"
 DST = ROOT / "src/backtest/rolling"
 
@@ -35,7 +40,12 @@ def main() -> None:
         src = SRC / rel
         dst = DST / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
-        dst.write_text(rewrite(src.read_text(encoding="utf-8")), encoding="utf-8")
+        text = rewrite(src.read_text(encoding="utf-8"))
+        if rel == "indicators.py":
+            text = patch_rolling_indicators(text)
+        if rel == "hooks.py":
+            text = patch_rolling_hooks(text)
+        dst.write_text(text, encoding="utf-8")
 
     engine_src = (SRC / "engine.py").read_text(encoding="utf-8")
     marker = "# ---------------------------------------------------------------------------\n# High-level entry point"

@@ -49,7 +49,7 @@ if TYPE_CHECKING:
 # Source-of-truth module that the strategy-facing ``ai_trading.api`` alias
 # resolves to. Kept as a string so importing this module is cheap — the
 # real import only happens on first compile.
-_AI_TRADING_SOURCE = "app.ai_trading_api"
+_AI_TRADING_SOURCE = "strategy_engine.ai_trading_api"
 
 
 class StrategyCompileError(ValueError):

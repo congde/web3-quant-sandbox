@@ -4,12 +4,20 @@
 Scoring variant used in multi-strategy compare; see also `macd_crossover.py`
 for Qbot-style binary cross (vendor/Qbot/qbot/engine/backtest/bitcoin_bt_example.py).
 """
+
 from __future__ import annotations
+
 from typing import Any, Dict, List, Optional
 
-from backtest.rolling.models import Signal
 from backtest.rolling.indicators import IndicatorSeries
+from backtest.rolling.models import Signal
 from backtest.rolling.strategies.base import Strategy
+from backtest.rolling.strategies.qbot_rules import (
+    clamp_score,
+    macd_cross_score_delta,
+    score_to_directional_action,
+    zero_line_cross_score_delta,
+)
 
 
 class MACDStrategy(Strategy):
@@ -33,7 +41,6 @@ class MACDStrategy(Strategy):
         if macd is None or signal_line is None or histogram is None:
             return Signal(action="WAIT", score=0)
 
-        # Previous bar for crossover detection
         prev_macd = indicators.macd_line[idx - 1] if idx > 0 else None
         prev_signal = indicators.macd_signal[idx - 1] if idx > 0 else None
 
@@ -41,43 +48,26 @@ class MACDStrategy(Strategy):
         hist_weight = params.get("histogram_weight", 30)
         cross_weight = params.get("crossover_weight", 25)
 
-        # Histogram strength (normalized)
         close = candles[idx]["close"]
         if close > 0:
-            norm_hist = histogram / close * 10000  # basis points
-            score += max(-50, min(50, norm_hist * hist_weight / 10))
+            norm_hist = histogram / close * 10000
+            score += clamp_score(norm_hist * hist_weight / 10, low=-50.0, high=50.0)
 
-        # Crossover detection
         if prev_macd is not None and prev_signal is not None:
-            crossed_up = prev_macd <= prev_signal and macd > signal_line
-            crossed_down = prev_macd >= prev_signal and macd < signal_line
-            if crossed_up:
-                score += cross_weight
-            elif crossed_down:
-                score -= cross_weight
+            score += macd_cross_score_delta(
+                float(prev_macd),
+                float(prev_signal),
+                float(macd),
+                float(signal_line),
+                cross_weight=float(cross_weight),
+            )
 
-        # Zero-line cross adds conviction
         if prev_macd is not None:
-            if prev_macd <= 0 and macd > 0:
-                score += 10
-            elif prev_macd >= 0 and macd < 0:
-                score -= 10
+            score += zero_line_cross_score_delta(float(prev_macd), float(macd))
 
-        score = max(-100, min(100, score))
-        threshold = params.get("entry_threshold", 25)
-
-        if score >= threshold:
-            action = "LONG"
-        elif score >= 10:
-            action = "WEAK_LONG"
-        elif score <= -threshold:
-            action = "SHORT"
-        elif score <= -10:
-            action = "WEAK_SHORT"
-        else:
-            action = "WAIT"
-
-        return Signal(action=action, score=score)
+        score = clamp_score(score)
+        threshold = float(params.get("entry_threshold", 25))
+        return Signal(action=score_to_directional_action(score, threshold=threshold), score=score)
 
     def default_params(self) -> Dict[str, Any]:
         return {

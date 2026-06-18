@@ -5,6 +5,7 @@ from typing import Any
 from urllib.parse import quote
 
 from dashboard.http_client import http_get
+from dashboard.kline_curve import candles_to_curve
 
 FEAR_GREED_API = os.environ.get(
     "FEAR_GREED_API",
@@ -209,27 +210,3 @@ def fetch_candles(
         body["full"] = True
     return body
 
-
-def candles_to_curve(candles: list[dict[str, Any]], *, short: int = 3, long: int = 7) -> list[dict[str, Any]]:
-    closes = [float(item["close"]) for item in candles]
-    curve: list[dict[str, Any]] = []
-    for index, candle in enumerate(candles):
-        short_ma = _sma(closes, index, short)
-        long_ma = _sma(closes, index, long)
-        curve.append(
-            {
-                "date": candle["date"],
-                "close": candle["close"],
-                "equity": candle["close"],
-                "short_ma": short_ma,
-                "long_ma": long_ma,
-            }
-        )
-    return curve
-
-
-def _sma(values: list[float], index: int, window: int) -> float | None:
-    if window <= 0 or index + 1 < window:
-        return None
-    sample = values[index + 1 - window : index + 1]
-    return sum(sample) / len(sample)

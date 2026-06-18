@@ -12,21 +12,7 @@ from factor_mining.expressions import eval_series
 from factor_mining.serialize import expr_from_dict
 from factor_mining.features import build_feature_matrix
 from factor_mining.ml import _combine_linear, _normalize_features
-
-
-def _zscore_series(values: list[float | None]) -> list[float | None]:
-    nums = [v for v in values if v is not None]
-    if len(nums) < 5:
-        return values
-    mean = sum(nums) / len(nums)
-    var = sum((v - mean) ** 2 for v in nums) / (len(nums) - 1)
-    std = var ** 0.5
-    if std < 1e-9:
-        return values
-    out: list[float | None] = []
-    for value in values:
-        out.append(None if value is None else (value - mean) / std)
-    return out
+from factor_mining.stats import zscore_series
 
 
 class MinedFactorStrategy(Strategy):
@@ -54,7 +40,7 @@ class MinedFactorStrategy(Strategy):
             expr = expr_from_dict(expr_payload) if isinstance(expr_payload, dict) else expr_payload
             raw = eval_series(expr, features)
 
-        self._series = _zscore_series(raw)
+        self._series = zscore_series(raw)
 
     def generate_signal(
         self,

@@ -25,6 +25,8 @@ ALLOWED_IMPORTS: frozenset[str] = frozenset(
         "enum",
         "collections",
         # Platform SDK — only safe surface exposed to user strategies.
+        "ai_trading",
+        "ai_trading.api",
     }
 )
 

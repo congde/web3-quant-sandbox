@@ -126,3 +126,19 @@ def regime_filter_hook() -> HookCallback:
             if abs(signal.score) < 35:
                 ctx.block = True
     return hook
+
+
+def build_risk_hook_manager(
+    *,
+    max_consecutive_losses: int = 3,
+    enable_regime_filter: bool = True,
+) -> HookManager:
+    """Register built-in risk hooks for teaching backtests."""
+    manager = HookManager()
+    loss_hook = max_concurrent_loss_hook(max_consecutive_losses)
+    manager.register(HookEvent.POST_TRADE_EXIT, loss_hook)
+    manager.register(HookEvent.PRE_TRADE_ENTRY, loss_hook)
+    if enable_regime_filter:
+        regime_hook = regime_filter_hook()
+        manager.register(HookEvent.PRE_TRADE_ENTRY, regime_hook)
+    return manager

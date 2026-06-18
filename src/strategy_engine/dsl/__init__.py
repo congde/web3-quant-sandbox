@@ -8,6 +8,7 @@ from strategy_engine.dsl.lookahead import (
     LookaheadReport,
     check_lookahead_bias,
 )
+from strategy_engine.dsl.loader import StrategyCompileError, compile_strategy
 from strategy_engine.dsl.validator import (
     ValidationError,
     ValidationResult,
@@ -17,8 +18,10 @@ from strategy_engine.dsl.validator import (
 __all__ = [
     "LookaheadFinding",
     "LookaheadReport",
+    "StrategyCompileError",
     "ValidationError",
     "ValidationResult",
     "check_lookahead_bias",
+    "compile_strategy",
     "validate_strategy_code",
 ]

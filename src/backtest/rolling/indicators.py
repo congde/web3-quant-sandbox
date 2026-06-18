@@ -16,6 +16,8 @@ import math
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
+from ta.core import rolling_rsi as _rolling_rsi, rolling_sma as _rolling_sma
+
 
 @dataclass
 class IndicatorSeries:
@@ -154,55 +156,6 @@ def get_analysis_at(indicators: IndicatorSeries, idx: int) -> Optional[Dict[str,
 # ===================================================================
 # Internal computation helpers — all O(n)
 # ===================================================================
-
-def _rolling_sma(values: List[float], period: int) -> List[Optional[float]]:
-    """O(n) SMA using a running sum."""
-    n = len(values)
-    result: List[Optional[float]] = [None] * n
-    if n < period:
-        return result
-    running = sum(values[:period])
-    result[period - 1] = running / period
-    for i in range(period, n):
-        running += values[i] - values[i - period]
-        result[i] = running / period
-    return result
-
-
-def _rolling_rsi(closes: List[float], period: int = 14) -> List[Optional[float]]:
-    """O(n) RSI with Wilder smoothing."""
-    n = len(closes)
-    result: List[Optional[float]] = [None] * n
-    if n < period + 1:
-        return result
-
-    gains = []
-    losses = []
-    for i in range(1, n):
-        diff = closes[i] - closes[i - 1]
-        gains.append(max(diff, 0))
-        losses.append(max(-diff, 0))
-
-    avg_gain = sum(gains[:period]) / period
-    avg_loss = sum(losses[:period]) / period
-
-    if avg_loss == 0:
-        result[period] = 100.0
-    else:
-        rs = avg_gain / avg_loss
-        result[period] = 100.0 - 100.0 / (1.0 + rs)
-
-    for i in range(period, len(gains)):
-        avg_gain = (avg_gain * (period - 1) + gains[i]) / period
-        avg_loss = (avg_loss * (period - 1) + losses[i]) / period
-        if avg_loss == 0:
-            result[i + 1] = 100.0
-        else:
-            rs = avg_gain / avg_loss
-            result[i + 1] = 100.0 - 100.0 / (1.0 + rs)
-
-    return result
-
 
 def _rolling_bollinger(
     closes: List[float], period: int = 20, num_std: float = 2.0,

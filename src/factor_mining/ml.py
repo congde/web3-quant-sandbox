@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from factor_mining.evaluate import FactorMetrics, evaluate_factor, spearman
+from factor_mining.stats import zscore_series
 
 
 def _metrics_dict(metrics: FactorMetrics | None) -> dict[str, Any]:
@@ -40,23 +41,8 @@ def _combine_linear(
     return out
 
 
-def _zscore_row(values: list[float | None]) -> list[float | None]:
-    nums = [v for v in values if v is not None]
-    if len(nums) < 5:
-        return values
-    mean = sum(nums) / len(nums)
-    var = sum((v - mean) ** 2 for v in nums) / (len(nums) - 1)
-    std = var ** 0.5
-    if std < 1e-9:
-        return values
-    out: list[float | None] = []
-    for v in values:
-        out.append(None if v is None else (v - mean) / std)
-    return out
-
-
 def _normalize_features(features: dict[str, list[float | None]]) -> dict[str, list[float | None]]:
-    return {name: _zscore_row(series) for name, series in features.items()}
+    return {name: zscore_series(series) for name, series in features.items()}
 
 
 def run_ml_search(

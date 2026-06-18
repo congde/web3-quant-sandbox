@@ -8,6 +8,7 @@ from typing import Any
 
 from backtest.runner import load_prices
 from backtest.rolling.engine import run_backtest
+from backtest.rolling.hooks import build_risk_hook_manager
 from backtest.rolling.metrics import compute_metrics
 from backtest.rolling.models import BacktestConfig
 from backtest.rolling.registry import get_strategy, list_strategies
@@ -145,7 +146,16 @@ def execute_backtest(
         kline_type=kline_type or resolved_kline,
     )
 
-    trades, equity_curve, candle_signals = run_backtest(candles, strategy, params, config)
+    hook_manager = None
+    if params.get("enable_risk_hooks"):
+        hook_manager = build_risk_hook_manager(
+            max_consecutive_losses=int(params.get("max_consecutive_losses", 3)),
+            enable_regime_filter=bool(params.get("enable_regime_filter", True)),
+        )
+
+    trades, equity_curve, candle_signals = run_backtest(
+        candles, strategy, params, config, hook_manager
+    )
     result = compute_metrics(
         trades=trades,
         equity_curve=equity_curve,
