@@ -1,0 +1,185 @@
+{
+  "ok": true,
+  "engine": "sandbox-rule-based",
+  "engineMeta": {
+    "provider": "sandbox",
+    "model": "规则引擎（教学沙箱）",
+    "note": "未配置 OPENAI_API_KEY；使用多维规则引擎生成信号。"
+  },
+  "symbol": "BTC",
+  "pair": "BTC-USDT",
+  "signal": "WEAK_SELL",
+  "signalLabel": "偏空观望",
+  "confidence": 12.6,
+  "score": -10.5,
+  "summary": "偏空观望 · 置信度 12.6% · 得分 -10 多维证据尚未形成一致方向，保持观望。",
+  "reasons": [
+    "均线空头排列，趋势向下",
+    "恐贪指数 15 偏恐惧，关注反弹"
+  ],
+  "tradePlan": {
+    "symbol": "BTC",
+    "direction": "bearish",
+    "entryLow": 64169.5,
+    "entryHigh": 64426.7,
+    "stopLoss": 59136.7,
+    "target1": 59136.7,
+    "target2": 51568.95,
+    "rr1": 1.0,
+    "rr2": 2.47
+  },
+  "market": {
+    "symbol": "BTC",
+    "pair": "BTC-USDT",
+    "price": 64298.1,
+    "changeRate24h": -1.05,
+    "high24h": 66436.2,
+    "low24h": 63700.8,
+    "volValue24h": 302278548.17811996
+  },
+  "kline": {
+    "15min": {
+      "trend": "短线偏多",
+      "trendKey": "weak_bullish",
+      "score": 10.0,
+      "rsi": 47.4,
+      "verdict": {
+        "action": "WEAK_LONG",
+        "actionLabel": "偏多观望",
+        "direction": "bullish",
+        "score": 10.0,
+        "confidence": 10.0,
+        "reasons": [
+          "短线偏多，价格站上 MA20"
+        ]
+      }
+    },
+    "1hour": {
+      "trend": "空头趋势",
+      "trendKey": "bearish",
+      "score": -20.0,
+      "rsi": 38.1,
+      "verdict": {
+        "action": "WEAK_SHORT",
+        "actionLabel": "偏空观望",
+        "direction": "bearish",
+        "score": -20.0,
+        "confidence": 20.0,
+        "reasons": [
+          "均线空头排列，趋势向下"
+        ]
+      }
+    },
+    "4hour": {
+      "trend": "空头趋势",
+      "trendKey": "bearish",
+      "score": -20.0,
+      "rsi": 38.2,
+      "verdict": {
+        "action": "WEAK_SHORT",
+        "actionLabel": "偏空观望",
+        "direction": "bearish",
+        "score": -20.0,
+        "confidence": 20.0,
+        "reasons": [
+          "均线空头排列，趋势向下"
+        ]
+      }
+    },
+    "1day": {
+      "trend": "空头趋势",
+      "trendKey": "bearish",
+      "score": -20.0,
+      "rsi": 38.2,
+      "verdict": {
+        "action": "WEAK_SHORT",
+        "actionLabel": "偏空观望",
+        "direction": "bearish",
+        "score": -20.0,
+        "confidence": 20.0,
+        "reasons": [
+          "均线空头排列，趋势向下"
+        ]
+      }
+    }
+  },
+  "analysis": {
+    "marketState": "多空分歧",
+    "executionReadiness": "观望",
+    "marketStateDetail": "多空分歧 - 中性",
+    "coverage": "日内 / 覆盖度 95%"
+  },
+  "onchainMetrics": {
+    "fearGreed": 15
+  },
+  "evidence": {
+    "technical": {
+      "bias": "偏空",
+      "score": -20.0
+    },
+    "capital": {
+      "bias": "中性",
+      "score": 0.0
+    },
+    "sentiment": {
+      "bias": "偏多",
+      "score": 7.0
+    },
+    "consensus": {
+      "bias": "中性",
+      "consistency": 12.6
+    }
+  },
+  "logicFlow": [
+    {
+      "step": 1,
+      "title": "市场状态识别",
+      "status": "多空分歧 - 中性",
+      "detail": "覆盖 4 个周期",
+      "badges": [
+        "WEAK_SELL",
+        "失效位 59.14K"
+      ]
+    },
+    {
+      "step": 2,
+      "title": "多维证据汇总",
+      "dimensions": [
+        {
+          "name": "技术面",
+          "bias": "偏空",
+          "score": -20.0
+        },
+        {
+          "name": "筹码/资金",
+          "bias": "中性",
+          "score": 0.0
+        },
+        {
+          "name": "盘面/资金情绪",
+          "bias": "偏多",
+          "score": 7.0
+        },
+        {
+          "name": "共识",
+          "bias": "中性",
+          "score": 12.6
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "title": "冲突与风险校验",
+      "note": "主要维度方向一致",
+      "status": "执行准备度 观望"
+    },
+    {
+      "step": 4,
+      "title": "执行与风控落地",
+      "summary": "偏空观望 · 置信度 12.6% · 得分 -10",
+      "detail": "多维证据尚未形成一致方向，保持观望。",
+      "rr1": 1.0,
+      "rr2": 2.47
+    }
+  ]
+}
