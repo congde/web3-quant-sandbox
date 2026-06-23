@@ -1,0 +1,32 @@
+page 196
+176
+Codex 快速入门
+状态堆在同一工作目录中。
+代码清单9-3：用 worktree 启动并行任务
+codex --worktree ﬁx-emotion-bug --tmux
+# 查看当前所有 worktree
+git worktree list
+# 任务完成后清理
+git worktree remove .codex/worktrees/feature-feedback
+需要明确两个边界。第一，worktree 共享同一份 .git 元数据，但不
+共享 node_modules / .venv 等构建产物—首次进入新的worktree 通常
+需要重跑 install / pip 等命令。第二，并行任务的 GPU/CPU/Token 成本
+会线性累加；一台本地开发机同时跑超过 3 个 Codex session 往往就会感
+到吃力，超过这个数量的并行更适合部署到云端（OpenAI Codex Web/
+Cloud 模式）。
+9.2　AGENTS.md：给 AI 定规矩
+当你或 Codex 开始修改代码时，
+而是“不小心违反项目约定”。这些约定可能涉及代码风格、命名规范、
+提交信息格式、分支策略、测试要求，也可能包括各种隐性规则，比如
+某个模块不能直接调用另一个模块，某些迁移文件不能再改，某些目录
+只能由 owner 审批。
+在传统团队协作中，这些规则散落在Wiki、README 文件、口头
+传授和 lint 配置中。对 Agent 来说，更稳妥的做法是把它们集中整理成
+一份可读取、可维护、可审查的项目说明书：AGENTS.md。
+9.2.1 AGENTS.md 的核心结构
+AGENTS.md 位于项目根目录，用于告诉Codex 这个项目的特殊约
+?????????????????
+?????????????????
+# Codex App ?? --worktree?CLI ?? git worktree add ? -C ????
+git worktree add ../wt-feedback -b feature-feedback
+codex -C ../wt-memory --tmux

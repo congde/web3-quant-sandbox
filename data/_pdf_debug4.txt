@@ -1,0 +1,13 @@
+﻿python : Traceback (most recent call last):
+所在位置 C:\Users\54461\AppData\Local\Temp\ps-script-7b4f7c79-54e4-40ad-a597-83c749094b9d.ps1:111 字符: 1
++ python -c "
++ ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "<string>", line 9, in <module>
+UnicodeEncodeError: 'gbk' codec can't encode character '\ufb01' in position 18: illegal multibyte sequence
+3 '代码清单9-3：用 worktree 启动并行任务'
+4 '# 启动三个并行 Codex 任务，每个都有自己的工作树和 tmux 面板'
+5 'codex --worktree feature-feedback --tmux'
+6 

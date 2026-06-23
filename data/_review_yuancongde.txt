@@ -1,0 +1,10 @@
+﻿python :   File "<string>", line 12
+所在位置 C:\Users\54461\AppData\Local\Temp\ps-script-e5b95c81-a0d0-45b1-a2b2-946c979b0f1c.ps1:111 字符: 1
++ python -c "
++ ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (  File "<string>", line 12:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    '表12-3','diff--check','AGENTS. md','技术不够源','往往 " 不理解逻辑\',
+                                               ^
+SyntaxError: unterminated string literal (detected at line 12)

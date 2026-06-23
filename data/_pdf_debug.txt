@@ -1,0 +1,28 @@
+﻿ch4 82
+'从Codex 的任务地图'
+'随着Codex 的入口越来越多，真正需要掌握的却不是按钮分布，而'
+'是任务流转方式。Codex IDE、Codex CLI、Codex App、Codex Weba 并'
+'CLI 中完成复现和验证，再进入Codex App 或 Web 继续推进，最后回到 '
+'因此，本章要建立的并非一张产品功能表，而是一张任务地图。读'
+'z 当前任务应该从Codex IDE、CLI、App 还是 Web 起手；'
+ch4 83
+'从Codex 的任务地图 第4 章'
+'4.1 Codex IDE、CLI、App、Web 各自做什么'
+'很多人将Codex IDE、CLI、App、Web 视为彼此竞争的产品，于是'
+'图4-1\u3000Codex 入口选择的任务流向图'
+ch4 85
+'从Codex 的任务地图 第4 章'
+'图4-2\u3000Codex IDE'
+'图4-3\u3000Codex CLI'
+ch4 87
+'从Codex 的任务地图 第4 章'
+'图4-5\u3000Codex Web 界面'
+ch4 89
+'从Codex 的任务地图 第4 章'
+'开发中频繁调用 Codex 的个人开发者。Pro 版本更适合重度个人开发者、'
+perm 185 '团队希望统一入口，且权限边界清晰'
+perm 185 '权限边界会失真'
+perm 254 '阶段的权限边界都那么清晰。'
+perm 255 '如果只把 Codex 接入 CI 但缺乏风险分级、权限边界和人工审批，'
+page 258
+'表12-3 列出了值得开始团队化试点的信号，以帮助团队理性评估。'

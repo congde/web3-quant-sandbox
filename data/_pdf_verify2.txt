@@ -1,0 +1,28 @@
+﻿python : Traceback (most recent call last):
+所在位置 C:\Users\54461\AppData\Local\Temp\ps-script-cbbfb17d-293d-41a3-b55f-0c1071c5bf4f.ps1:111 字符: 1
++ python -c "
++ ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "<string>", line 13, in <module>
+UnicodeEncodeError: 'gbk' codec can't encode character '\ufb01' in position 18: illegal multibyte sequence
+=== orig
+fromcodex 13 '第4 章 从Codex 的任务地图 …………………………………… 62'
+16 '9.1.1 实战：并行勘察 emotional_chat 项目 ………………………171'
+fromcodex 82 '从Codex 的任务地图'
+fromcodex 82 'z 当前任务应该从Codex IDE、CLI、App 还是 Web 起手；'
+fromcodex 83 '从Codex 的任务地图 第4 章'
+fromcodex 85 '从Codex 的任务地图 第4 章'
+fromcodex 87 '从Codex 的任务地图 第4 章'
+fromcodex 89 '从Codex 的任务地图 第4 章'
+fromcodex 91 '从Codex 的任务地图 第4 章'
+fromcodex 93 '从Codex 的任务地图 第4 章'
+fromcodex 95 '从Codex 的任务地图 第4 章'
+fromcodex 97 '从Codex 的任务地图 第4 章'
+fromcodex 99 '从Codex 的任务地图 第4 章'
+fromcodex 101 '从Codex 的任务地图 第4 章'
+fromcodex 103 '从Codex 的任务地图 第4 章'
+fromcodex 105 '从Codex 的任务地图 第4 章'
+196 'codex --worktree feature-feedback --tmux'
+196 

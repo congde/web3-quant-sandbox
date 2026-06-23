@@ -1,0 +1,32 @@
+﻿python : Traceback (most recent call last):
+所在位置 C:\Users\54461\AppData\Local\Temp\ps-script-c18826c3-b993-494c-b5b3-2450f8f9cec1.ps1:111 字符: 1
++ python -c "
++ ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "<string>", line 19, in <module>
+UnicodeEncodeError: 'gbk' codec can't encode character '\u112b' in position 0: illegal multibyte sequence
+annotations 20
+(8, 'StrikeOut', '')
+(9, 'Highlight', '2026年5月于深圳')
+(9, 'Highlight', '袁从德、吴军、陈文浩')
+(28, 'StrikeOut', '')
+(28, 'Highlight', '继续')
+(70, 'Highlight', 'git diff --check')
+(82, 'Highlight', '读懂 Codex 的任务地图')
+(136, 'Highlight', '额外注意')
+(138, 'Highlight', '被忽视')
+(141, 'Highlight', '，而是源于')
+(142, 'Highlight', '异步评审')
+(196, 'Highlight', '往往是')
+(196, 'Highlight', '# 用 Git 创建 worktree，再让 Codex 在对应目录里启动：\rgit worktree add -b codex/feature-feedback .codex/worktrees/feature-feedback main')
+(254, 'Highlight', '同样')
+(258, 'Highlight', '13-3')
+(280, 'StrikeOut', '')
+(281, 'Highlight', '高')
+(282, 'StrikeOut', '')
+(284, 'Highlight', '，而是')
+(287, 'Highlight', '的')
+简单任务	简单任务 [] 0
+续表 [111, 254, 255, 285] 4
