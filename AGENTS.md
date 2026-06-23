@@ -1,4 +1,4 @@
-﻿# ashare-research-sandbox 项目说明
+﻿# web3-quant-sandbox 项目说明
 
 This repository is the companion workspace for a Codex delivery course. Treat
 course prose and the runnable Web3 research sandbox as one product: examples in

@@ -1,4 +1,4 @@
-﻿# ashare-research-sandbox
+﻿# web3-quant-sandbox
 
 **《Codex 与 LLM 量化交易实战》配套研究与模拟策略验证台**
 
@@ -54,8 +54,8 @@ python report_cli.py --format json --short 3 --long 7
 **Windows PowerShell**
 
 ```powershell
-git clone https://github.com/congde/ashare-research-sandbox.git
-cd ashare-research-sandbox
+git clone https://github.com/congde/web3-quant-sandbox.git
+cd web3-quant-sandbox
 py scripts/course.py setup    # 首次克隆后执行一次
 py app.py
 ```
@@ -63,8 +63,8 @@ py app.py
 **macOS / Linux**
 
 ```bash
-git clone https://github.com/congde/ashare-research-sandbox.git
-cd ashare-research-sandbox
+git clone https://github.com/congde/web3-quant-sandbox.git
+cd web3-quant-sandbox
 make setup
 python app.py
 ```
@@ -158,7 +158,7 @@ data/dashboard/
 ## 仓库结构
 
 ```text
-ashare-research-sandbox/
+web3-quant-sandbox/
 ├── src/                      # 可运行产品
 │   ├── backtest/             # 指标、样本加载、滚动回测
 │   ├── factor_mining/        # 因子挖掘（GP / ML）

@@ -111,7 +111,7 @@ def repository_map() -> None:
 
     root_box = sb(485, 175, 955, 285)
     rounded(draw, root_box, "#FFFFFF", "#2563EB", width=5)
-    center_text(draw, root_box, "仓库根目录\nD:\\work\\gitee\\\nashare-research-sandbox", SMALL)
+    center_text(draw, root_box, "仓库根目录\nD:\\work\\gitee\\\nweb3-quant-sandbox", SMALL)
 
     boxes = [
         (sb(70, 390, 330, 535), "课程验证入口\nscripts/course.py\nverify.py", "#E8F1FF", "#2563EB"),
@@ -238,7 +238,7 @@ def write_readiness_switches_drawio() -> None:
         {
             "host": "app.diagrams.net",
             "modified": "2026-06-19T00:00:00.000Z",
-            "agent": "ashare-research-sandbox",
+            "agent": "web3-quant-sandbox",
             "version": "24.7.17",
             "type": "device",
         },

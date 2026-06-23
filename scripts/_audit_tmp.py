@@ -1,6 +1,6 @@
 from pathlib import Path
 import re
-root = Path(r"D:/work/gitee/ashare-research-sandbox")
+root = Path(r"D:/work/gitee/web3-quant-sandbox")
 assets = root / "docs/v2/assets"
 pngs = sorted(p.name for p in assets.glob("*.png"))
 pat = re.compile(r"assets/([^\)\"']+\.png)")
