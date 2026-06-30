@@ -213,14 +213,10 @@ def main() -> None:
     save_publish_pipeline()
     save_execution_gate_case()
     save_snapshot_fallback()
-    save_cleaning_gates()
-    save_claim_traceability()
     for name in (
         "chapter-05-publish-pipeline.png",
         "chapter-05-execution-gate-case.png",
         "chapter-07-snapshot-fallback.png",
-        "chapter-08-cleaning-gates.png",
-        "chapter-10-claim-traceability.png",
     ):
         path = ASSET_OUT / name if name.startswith("chapter-05-") else OUT / name
         print(path)

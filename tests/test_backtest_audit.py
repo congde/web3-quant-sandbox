@@ -8,10 +8,16 @@ from backtest.rolling.service import execute_backtest, run_robustness_audit, run
 from backtest.trials import get_ledger, reset_ledger_for_tests
 from data.pit import pit_teaching_summary
 
+TEACHING_SYMBOL = "WEB3-DEMO/USDT"
+
 
 def test_cost_presets_differ() -> None:
-    teaching = execute_backtest(strategy_name="ma_crossover", limit=120, cost_preset="teaching")
-    realistic = execute_backtest(strategy_name="ma_crossover", limit=120, cost_preset="realistic")
+    teaching = execute_backtest(
+        strategy_name="ma_crossover", symbol=TEACHING_SYMBOL, limit=120, cost_preset="teaching"
+    )
+    realistic = execute_backtest(
+        strategy_name="ma_crossover", symbol=TEACHING_SYMBOL, limit=120, cost_preset="realistic"
+    )
     assert teaching["cost_preset"] == "teaching"
     assert realistic["cost_preset"] == "realistic"
     assert realistic["slippage_pct"] > teaching["slippage_pct"]
@@ -19,14 +25,14 @@ def test_cost_presets_differ() -> None:
 
 def test_walk_forward_includes_dsr_and_trials() -> None:
     reset_ledger_for_tests()
-    payload = run_walk_forward(strategy_name="ma_crossover", num_windows=2, limit=120)
+    payload = run_walk_forward(strategy_name="ma_crossover", symbol=TEACHING_SYMBOL, num_windows=2, limit=120)
     assert payload["ok"] is True
     assert "dsr" in payload
     assert payload.get("num_trials", 0) >= 1
 
 
 def test_robustness_audit_returns_pbo_and_sensitivity() -> None:
-    payload = run_robustness_audit(strategy_name="ma_crossover", limit=120)
+    payload = run_robustness_audit(strategy_name="ma_crossover", symbol=TEACHING_SYMBOL, limit=120)
     assert payload["ok"] is True
     assert "parameter_sensitivity" in payload
     assert "pbo" in payload
@@ -35,7 +41,7 @@ def test_robustness_audit_returns_pbo_and_sensitivity() -> None:
 
 def test_trial_ledger_records_execute_backtest() -> None:
     reset_ledger_for_tests()
-    execute_backtest(strategy_name="buy_and_hold", limit=120)
+    execute_backtest(strategy_name="buy_and_hold", symbol=TEACHING_SYMBOL, limit=120)
     summary = get_ledger().summary()
     assert summary["num_trials"] >= 1
 

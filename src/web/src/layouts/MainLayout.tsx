@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   BarChartOutlined,
   DashboardOutlined,
@@ -11,11 +9,12 @@ import {
   SwapOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
+import { useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useThemeMode } from "../contexts/ThemeContext";
 
 const { Header, Sider, Content } = Layout;
 
-/** Flat nav aligned with web3-trading side_nav.html (+ sandbox extras). */
 const NAV_ITEMS = [
   { key: "/trading", icon: <DashboardOutlined />, label: "市场总览" },
   { key: "/radar", icon: <RadarChartOutlined />, label: "深度分析" },
@@ -74,7 +73,7 @@ export default function MainLayout() {
               style={{
                 width: 32,
                 height: 32,
-                borderRadius: 10,
+                borderRadius: 8,
                 flexShrink: 0,
                 background: "linear-gradient(135deg, #00ffa3, #00d4ff)",
                 boxShadow: "0 0 20px rgba(0,255,163,0.32)",
@@ -91,7 +90,7 @@ export default function MainLayout() {
             {!collapsed && (
               <div>
                 <div style={{ fontSize: 15, fontWeight: 650, color: "#fff", lineHeight: 1.2 }}>AI Trading</div>
-                <div style={{ fontSize: 9, color: "rgba(255,255,255,0.45)" }}>教学沙箱 · 无登录</div>
+                <div style={{ fontSize: 9, color: "rgba(255,255,255,0.45)" }}>教学沙箱 / 无需登录</div>
               </div>
             )}
           </div>
@@ -123,7 +122,7 @@ export default function MainLayout() {
                 <span className="status-dot green" />
                 <span>Web3 Research Sandbox</span>
               </div>
-              <div style={{ color: "var(--text-3)", fontSize: 10 }}>教学 · 无真实交易</div>
+              <div style={{ color: "var(--text-3)", fontSize: 10 }}>教学 / 无真实交易</div>
             </div>
           )}
         </div>
@@ -133,7 +132,7 @@ export default function MainLayout() {
         <Header className="app-shell-header">
           <div className="app-shell-title">Web3 投资研究与模拟策略验证台</div>
           <button type="button" className="btn-gradient app-theme-toggle" onClick={toggleThemeMode}>
-            {themeMode === "dark" ? "☀ 白天模式" : "☾ 黑夜模式"}
+            {themeMode === "dark" ? "白天模式" : "夜间模式"}
           </button>
         </Header>
         <Content className="app-shell-content">

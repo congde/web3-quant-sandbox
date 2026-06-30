@@ -102,7 +102,8 @@ def compact_spec(source: dict) -> dict:
         return spec
 
     nodes = spec["nodes"]
-    shift_y = 175 - min(node["box"][1] for node in nodes)
+    top_margin = 60 if spec.get("hide_header") else 175
+    shift_y = top_margin - min(node["box"][1] for node in nodes)
     for node in nodes:
         x, y, w, h = node["box"]
         node["box"] = (x, y + shift_y, w, h)
@@ -191,8 +192,9 @@ def render_diagram(spec: dict, output: Path) -> None:
     draw = ImageDraw.Draw(img)
     title_xy = spec.get("title_xy", (80, 48))
     subtitle_xy = spec.get("subtitle_xy", (80, 98))
-    draw.text(title_xy, spec["title"], fill=TITLE_COLOR, font=title_font)
-    draw.text(subtitle_xy, spec.get("subtitle", ""), fill=SUB_COLOR, font=sub_font)
+    if not spec.get("hide_header"):
+        draw.text(title_xy, spec["title"], fill=TITLE_COLOR, font=title_font)
+        draw.text(subtitle_xy, spec.get("subtitle", ""), fill=SUB_COLOR, font=sub_font)
 
     for node in spec["nodes"]:
         draw_box(draw, node["box"], node["text"], node["style"], body_font)
@@ -539,6 +541,7 @@ DIAGRAMS: dict[str, dict] = {
     "chapter-10-solution-space.png": {
         "title": "从问题到候选方案",
         "subtitle": "先展开再收敛，避免爱上第一个想法",
+        "hide_header": True,
         "page": "图10-1 方案空间",
         "nodes": [
             {"box": (60, 310, 160, 100), "text": "问题定义", "style": "step"},
@@ -555,6 +558,7 @@ DIAGRAMS: dict[str, dict] = {
     "chapter-10-tradeoff-triangle.png": {
         "title": "方案选择三角",
         "subtitle": "价值、风险与可验证性必须同时看",
+        "hide_header": True,
         "page": "图10-2 权衡三角",
         "nodes": [
             {"box": (320, 250, 200, 100), "text": "用户/教学价值", "style": "step"},
@@ -835,6 +839,7 @@ DIAGRAMS: dict[str, dict] = {
     "chapter-10-automation-envelope.png": {
         "title": "自动化权限包络线",
         "subtitle": "先定义最多允许做到哪里，再定义何时运行",
+        "hide_header": True,
         "page": "图10-2 自动化包络",
         "nodes": [
             {"box": (60, 310, 140, 100), "text": "触发", "style": "step"},
@@ -1112,33 +1117,34 @@ def build_drawio_page(page_id: str, page_name: str, spec: dict) -> ET.Element:
     ET.SubElement(root, "mxCell", id="0")
     ET.SubElement(root, "mxCell", id="1", parent="0")
 
-    title_cell = ET.SubElement(
-        root,
-        "mxCell",
-        {
-            "id": f"{page_id}-title",
-            "value": spec["title"],
-            "style": "text;html=1;strokeColor=none;fillColor=none;fontSize=36;fontColor=#101A33;fontStyle=1;align=left;",
-            "vertex": "1",
-            "parent": "1",
-        },
-    )
-    title_x, title_y = spec.get("title_xy", (80, 55))
-    ET.SubElement(title_cell, "mxGeometry", {"x": str(title_x), "y": str(title_y), "width": "1100", "height": "55", "as": "geometry"})
+    if not spec.get("hide_header"):
+        title_cell = ET.SubElement(
+            root,
+            "mxCell",
+            {
+                "id": f"{page_id}-title",
+                "value": spec["title"],
+                "style": "text;html=1;strokeColor=none;fillColor=none;fontSize=36;fontColor=#101A33;fontStyle=1;align=left;",
+                "vertex": "1",
+                "parent": "1",
+            },
+        )
+        title_x, title_y = spec.get("title_xy", (80, 55))
+        ET.SubElement(title_cell, "mxGeometry", {"x": str(title_x), "y": str(title_y), "width": "1100", "height": "55", "as": "geometry"})
 
-    sub_cell = ET.SubElement(
-        root,
-        "mxCell",
-        {
-            "id": f"{page_id}-sub",
-            "value": spec.get("subtitle", ""),
-            "style": "text;html=1;strokeColor=none;fillColor=none;fontSize=20;fontColor=#596983;align=left;",
-            "vertex": "1",
-            "parent": "1",
-        },
-    )
-    sub_x, sub_y = spec.get("subtitle_xy", (80, 115))
-    ET.SubElement(sub_cell, "mxGeometry", {"x": str(sub_x), "y": str(sub_y), "width": "1100", "height": "35", "as": "geometry"})
+        sub_cell = ET.SubElement(
+            root,
+            "mxCell",
+            {
+                "id": f"{page_id}-sub",
+                "value": spec.get("subtitle", ""),
+                "style": "text;html=1;strokeColor=none;fillColor=none;fontSize=20;fontColor=#596983;align=left;",
+                "vertex": "1",
+                "parent": "1",
+            },
+        )
+        sub_x, sub_y = spec.get("subtitle_xy", (80, 115))
+        ET.SubElement(sub_cell, "mxGeometry", {"x": str(sub_x), "y": str(sub_y), "width": "1100", "height": "35", "as": "geometry"})
 
     for idx, node in enumerate(spec.get("nodes", [])):
         x, y, w, h = node["box"]

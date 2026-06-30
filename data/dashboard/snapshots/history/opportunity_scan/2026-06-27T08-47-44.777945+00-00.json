@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "full": false,
+  "scanTime": "2026-06-27T08:47:44Z",
+  "totalScanned": 5,
+  "topK": 3,
+  "opportunities": [
+    {
+      "symbol": "ADI",
+      "pair": "ADI-USDT",
+      "signal": "BUY",
+      "label": "强势上涨",
+      "score": 23.4,
+      "confidence": 54.034,
+      "change24h": 0.0639,
+      "volume24h": 3946670.262116,
+      "last": 4.7998,
+      "keyReasons": [
+        "24h 涨幅 6.4%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 1
+    },
+    {
+      "symbol": "BLUAI",
+      "pair": "BLUAI-USDT",
+      "signal": "SELL",
+      "label": "明显回调",
+      "score": -20.5,
+      "confidence": 52.275999999999996,
+      "change24h": -0.0546,
+      "volume24h": 440790.620096,
+      "last": 0.014181,
+      "keyReasons": [
+        "24h 跌幅 -5.5%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 2
+    },
+    {
+      "symbol": "ETC",
+      "pair": "ETC-USDT",
+      "signal": "BUY",
+      "label": "强势上涨",
+      "score": 20.2,
+      "confidence": 52.102000000000004,
+      "change24h": 0.0517,
+      "volume24h": 399980.9967778544,
+      "last": 7.3239,
+      "keyReasons": [
+        "24h 涨幅 5.2%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 3
+    }
+  ],
+  "marketOverview": "扫描 5 个币种，市场方向分化。多头 2、空头 1、中性 0。综合靠前：ADI(强势上涨)、BLUAI(明显回调)、ETC(强势上涨)。",
+  "scanDurationMs": 0,
+  "engine": "sandbox-rule-based",
+  "errors": [],
+  "snapshot": {
+    "name": "opportunity_scan",
+    "saved_at": "2026-06-27T08:47:44.777945+00:00",
+    "origin": "live",
+    "history_id": "2026-06-27T08-47-44.777945+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-06-27T08-47-44.777945+00-00.json"
+  }
+}

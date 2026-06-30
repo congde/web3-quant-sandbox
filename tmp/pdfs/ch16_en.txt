@@ -1,0 +1,2331 @@
+
+
+===== PDF_PAGE 576 =====
+©MIT Press. For evaluation and translation purposes only.
+16
+Adaptive basis function models
+16.1 Introduction
+In Chapters 14 and 15, we discussed kernel methods, which provide a powerful way to create non-
+linear models for regression and classification. The prediction takes the form f (x) =w T φ(x),
+where we define
+φ(x) = [κ(x, μ ), . . . , κ(x, μ )] (16.1)
+1 N
+and where μ are either all the training data or some subset. Models of this form essen-
+k
+tially perform a form of template matching, whereby they compare the input x to the stored
+prototypes μ .
+k
+Although this can work well, it relies on having a good kernel function to measure the
+similarity between data vectors. Often coming up with a good kernel function is quite difficult.
+For example, how do we define the similarity between two images? Pixel-wise comparison of
+intensities (which is what a Gaussian kernel corresponds to) does not work well. Although it is
+possible (and indeed common) to hand-engineer kernels for specific tasks (see e.g., the pyramid
+match kernel in Section 14.2.7), it would be more interesting if we could learn the kernel.
+In Section 15.2.4, we discussed a way to learn the parameters of a kernel function, by maxi-
+mizing the marginal likelihood. For example, if we use the ARD kernel,
+⎛ ⎞
+(cid:2)D
+κ(x, x(cid:4)) = θ exp ⎝− 1 θ (x − x(cid:4) )2⎠ (16.2)
+0 2 j j j
+j=1
+we can can estimate the θ , and thus perform a form of nonlinear feature selection. However,
+j
+such methods can be computationally expensive. Another approach, known as multiple kernel
+learning (see(cid:4)e.g., (Rakotomamonjy et al. 2008)) uses a convex combination of base kernels,
+κ(x, x(cid:4)) = w κ (x, x(cid:4)), and then estimates the mixing weights w . But this relies on
+j j j j
+having good base kernels (and is also computationally expensive).
+An alternative approach is to dispense with kernels altogether, and try to learn useful features
+φ(x) directly from the input data. That is, we will create what we call an adaptive basis-
+function model (ABM), which is a model of the form
+(cid:2)M
+f (x) = w + w φ (x) (16.3)
+0 m m
+m=1
+
+
+===== PDF_PAGE 577 =====
+546 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+where φ (x) is the m’th basis function, which is learned from data. This framework covers all
+m
+of the models we will discuss in this chapter.
+Typically the basis functions are parametric, so we can write φ (x) =φ (x; v ), where v
+m m m
+are the parameters of the basis function itself. We will use θ = (w , w , {v }M ) to
+0 1:M m m=1
+denote the entire parameter set. The resulting model is not linear-in-the-parameters anymore,
+so we will only be able to compute a locally optimal MLE or MAP estimate of θ. Nevertheless,
+such models often significantly outperform linear models, as we will see.
+16.2 Classification and regression trees (CART)
+Classification and regression trees or CART models, also called decision trees (not to be
+confused with the decision trees used in decision theory) are defined by recursively partitioning
+the input space, and defining a local model in each resulting region of input space. This can be
+represented by a tree, with one leaf per region, as we explain below.
+16.2.1 Basics
+To explain the CART approach, consider the tree in Figure 16.1(a). The first node asks if x is
+1
+less than some threshold t . If yes, we then ask if x is less than some other threshold t . If
+1 2 2
+yes, we are in the bottom left quadrant of space, R . If no, we ask if x is less than t . And
+1 1 3
+so on. The result of these axis parallel splits is to partition 2d space into 5 regions, as shown
+in Figure 16.1(b). We can now associate a mean response with each of these regions, resulting in
+the piecewise constant surface shown in Figure 16.1(c).
+We can write the model in the following form
+(cid:2)M (cid:2)M
+f (x) = E [y|x] = w I(x ∈ R ) = w φ(x; v ) (16.4)
+m m m m
+m=1 m=1
+where R is the m’th region, w is the mean response in this region, and v encodes the
+m m m
+choice of variable to split on, and the threshold value, on the path from the root to the m’th leaf.
+This makes it clear that a CART model is just a an adaptive basis-function model, where the
+basis functions define the regions, and the weights specify the response value in each region.
+We discuss how to find these basis functions below.
+We can generalize this to the classification setting by storing the distribution over class labels
+in each leaf, instead of the mean response. This is illustrated in Figure 16.2. This model can
+be used to classify the data in Figure 1.1. For example, we first check the color of the object.
+If it is blue, we follow the left branch and end up in a leaf labeled “4,0”, which means we
+have 4 positive examples and 0 negative examples which match this criterion. Hence we predict
+p(y = 1|x) = 4/4 if x is blue. If it is red, we then check the shape: if it is an ellipse, we
+end up in a leaf labeled “1,1”, so we predict p(y = 1|x) = 1/2. If it is red but not an ellipse,
+we predict p(y = 1|x) = 0/2; If it is some other colour, we check the size: if less than 10,
+we predict p(y = 1|x) = 4/4, otherwise p(y = 1|x) = 0/5. These probabilities are just the
+empirical fraction of positive examples that satisfy each conjunction of feature values, which
+defines a path from the root to a leaf.
+
+
+===== PDF_PAGE 578 =====
+16.2. Classification and regression trees (CART) 547
+©MIT Press. For evaluation and translation purposes only.
+X1 ≤ t1 10
+9
+8
+X2 ≤ t2 X2 ≤ t4
+6
+7
+5
+4
+R1 X1 ≤ t3 R2 R3 3
+2
+10
+8 10
+R4 R5 6 4 2 2 4 6 8
+0 0
+(a) (b)
+Figure 16.1 A simple regression tree on two inputs. Based on Figure 9.2 of (Hastie et al. 2009). Figure
+generated by regtreeSurfaceDemo.
+color
+blue other
+red
+4,0 shape size < 10
+ellipse other yes no
+1,1 0,2 4,0 0,5
+Figure 16.2 A simple decision tree for the data in Figure 1.1. A leaf labeled as (n1, n0) means that
+there are n1 positive examples that match this path, and n0 negative examples. In this tree, most of
+the leaves are “pure”, meaning they only have examples of one class or the other; the only exception is
+leaf representing red ellipses, which has a label distribution of (1, 1). We could distinguish positive from
+negative red ellipses by adding a further test based on size. However, it is not always desirable to construct
+trees that perfectly model the training data, due to overfitting.
+16.2.2 Growing a tree
+Finding the optimal partitioning of the data is NP-complete (Hyafil and Rivest 1976), so it is
+common to use the greedy procedure shown in Algorithm 16.1 to compute a locally optimal
+MLE. This method is used by CART, (Breiman et al. 1984) C4.5(Quinlan 1993), and ID3 (Quinlan
+1986), which are three popular implementations of the method. (See dtfit for a simple Matlab
+implementation.)
+The split function chooses the best feature, and the best value for that feature, as follows:
+(j∗, t∗) = arg min min cost({x , y : x ≤ t}) +cost( {x , y : x > t}) (16.5)
+i i ij i i ij
+j∈{1,...,D} t∈T
+j
+
+
+===== PDF_PAGE 579 =====
+548 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+Algorithm 16.1: Recursive procedure to grow a classification/ regression tree
+1 function fitTree(node, D, depth) ;
+2 node.prediction = mean(y i : i ∈ D) // or class label distribution ;
+3 (j∗, t∗, D L , D R ) = split(D);
+4 if not worthSplitting(depth, cost, D L , D R ) then
+5 return node
+6 else
+7 node.test = λx.x j∗ < t∗ // anonymous function;
+8 node.left = fitTree(node, D L , depth+1);
+9 node.right = fitTree(node, D R , depth+1);
+10 return node;
+where the cost function for a given dataset will be defined below. For notational simplicity, we
+have assumed all inputs are real-valued or ordinal, so it makes sense to compare a feature x
+ij
+to a numeric value t. The set of possible thresholds T for feature j can be obtained by sorting
+j
+the unique values of x . For example, if feature 1 has the values {4.5, −12, 72, −12}, then we
+ij
+set T = {−12, 4.5, 72}. In the case of categorical inputs, the most common approach is to
+1
+consider splits of the form x = c and x (cid:10)= c , for each possible class label c . Although
+ij k ij k k
+we could allow for multi-way splits (resulting in non-binary trees), this would result in data
+fragmentation, meaning too little data might “fall” into each subtree, resulting in overfitting.
+The function that checks if a node is worth splitting can use several stopping heuristics, such
+as the following:
+• is the reduction in cost too small? Typically we define the gain of using a feature to be a
+normalized measure of the reduction in cost:
+(cid:10) (cid:11)
+|D | |D |
+Δ (cid:2) cost(D) − L cost(D ) + R cost(D ) (16.6)
+|D| L |D| R
+• has the tree exceeded the maximum desired depth?
+• is the distribution of the response in either D or D sufficiently homogeneous (e.g., all
+L R
+labels are the same, so the distribution is pure)?
+• is the number of examples in either D or D too small?
+L R
+All that remains is to specify the cost measure used to evaluate the quality of a proposed
+split. This depends on whether our goal is regression or classification. We discuss both cases
+below.
+16.2.2.1 Regression cost
+In the regression setting, we define the cost as follows:
+(cid:2)
+cost(D) = (y − y)2 (16.7)
+i
+i∈D
+
+
+===== PDF_PAGE 580 =====
+16.2. Classification and regression trees (CART) 549
+©MIT Press. For evaluation and translation purposes only.
+(cid:4)
+where y = 1 y is the mean of the response variable in the specified set of data.
+|D| i∈D i
+Alternatively, we can fit a linear regression model for each leaf, using as inputs the features that
+were chosen on the path from the root, and then measure the residual error.
+16.2.2.2 Classification cost
+In the classification setting, there are several ways to measure the quality of a split. First, we
+fit a multinoulli model to the data in the leaf satisfying the test X < t by estimating the
+j
+class-conditional probabilities as follows:
+(cid:2)
+1
+πˆ = I(y = c) (16.8)
+c |D| i
+i∈D
+where D is the data in the leaf. Given this, there are several common error measures for
+evaluating a proposed partition:
+• Misclassification rate. We define the most probable class label as yˆ = argmax πˆ . The
+c c c
+corresponding error rate is then
+(cid:2)
+1
+I(y (cid:10)= yˆ) = 1 − πˆ (16.9)
+|D| i yˆ
+i∈D
+• Entropy, ordeviance:
+(cid:2)C
+H (πˆ ) = − πˆ log πˆ (16.10)
+c c
+c=1
+Note that minimizing the entropy is equivalent to maximizing the information gain (Quinlan
+1986) between test X < t and the class label Y , defined by
+j
+infoGain(X < t, Y ) (cid:2) H (Y ) − H (Y |X < t) (16.11)
+j (cid:13) j (cid:14)
+(cid:2)
+= − p(y = c) log p(y = c) (16.12)
+(cid:13) c (cid:14)
+(cid:2)
++ p(y = c|X < t) log p(c|X < t) (16.13)
+j j
+c
+since πˆ is an MLE for the distribution p(c|X < t).1
+c j
+1. If Xj is categorical, and we use tests of the form Xj = k, then ta(cid:2)king expectations over values of Xj gives
+the mutual information between Xj and Y : E [infoGain(Xj, Y )] =
+k
+p(Xj = k)infoGain(Xj = k, Y ) =
+H (Y ) − H (Y |Xj) = I (Y ; Xj).
+
+
+===== PDF_PAGE 581 =====
+550 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+0.5
+Error rate
+0.45 Gini
+Entropy
+0.4
+0.35
+0.3
+0.25
+0.2
+0.15
+0.1
+0.05
+0
+0 0.2 0.4 0.6 0.8 1
+Figure 16.3 Node impurity measures for binary classification. The horizontal axis corresponds to p, the
+probability of class 1. The entropy measure has been rescaled to pass through (0.5,0.5). Based on Figure
+9.3 of (Hastie et al. 2009). Figure generated by giniDemo.
+• Gini index
+(cid:2)C (cid:2) (cid:2) (cid:2)
+πˆ (1 − πˆ ) = πˆ − πˆ2 = 1 − πˆ2 (16.14)
+c c c c c
+c=1 c c c
+This is the expected error rate. To see this, note that πˆ is the probability a random entry in
+c
+the leaf belongs to class c, and (1 − πˆ is the probability it would be misclassified.
+c
+In the two-class case, where p = π (1), the misclassification rate is 1 − max(p, 1 − p), the
+m
+entropy is H (p), and the Gini index is 2p(1 − p). These are plotted in Figure 16.3. We see
+2
+that the cross-entropy and Gini measures are very similar, and are more sensitive to changes in
+class probability than is the misclassification rate. For example, consider a two-class problem
+with 400 cases in each class. Suppose one split created the nodes (300,100) and (100,300), while
+the other created the nodes (200,400) and (200,0). Both splits produce a misclassification rate of
+0.25. However, the latter seems preferable, since one of the nodes is pure, i.e., it only contains
+one class. The cross-entropy and Gini measures will favor this latter choice.
+16.2.2.3 Example
+As an example, consider two of the four features from the 3-class iris dataset, shown in Fig-
+ure 16.4(a). The resulting tree is shown in Figure 16.5(a), and the decision boundaries are shown
+in Figure 16.4(b). We see that the tree is quite complex, as are the resulting decision boundaries.
+In Figure 16.5(b), we show that the CV estimate of the error is much higher than the training set
+error, indicating overfitting. Below we discuss how to perform a tree-pruning stage to simplify
+the tree.
+
+
+===== PDF_PAGE 582 =====
+16.2. Classification and regression trees (CART) 551
+4.5
+4
+3.5
+3
+2.5
+2
+4 4.5 5 5.5 6 6.5 7 7.5 8
+Sepal length
+htdiw
+lapeS
+setosa 4.5
+versicolor
+virginica
+4
+3.5
+3
+2.5
+2
+4 4.5 5 5.5 6 6.5 7 7.5 8
+x
+(a)
+y
+unpruned decision tree
+versicolor
+setosa
+virginica
+(b)
+Figure 16.4 (a) Iris data. We only show the first two features, sepal length and sepal width, and ignore
+petal length and petal width. (b) Decision boundaries induced by the decision tree in Figure 16.5(a).
+0.8
+SL < 5.45 SL >= 5.45 0.7
+W < 2.8 SW >= 2.8 SL < 6.15 SL >= 6.15
+versicolsoertosa SW < 3.45 SW >= 3.45 SL < 7.05 SL >= 7.05 0.6
+SL < 5.75 SL >= 5.75 setosa SW < 2.4 SW >= 2.4 virginica
+versicoSloWr < 3.1 SW >= 3.1versicolor SL < 6.95 SL >= 6.95 0.5
+SW < 2.95 SWv e>r=s i2co.9lo5r SW < 3.15 SW >= 3.15 versicolor 0.4
+versicovloirrginica SL < 6.55 SL >= 6.55 virginica
+SW < 2.95 SWS >L= <2 .69.565 SL >= 6.65 0.3
+SL < 6.45 SL >=v i6rg.4in5vicearSsWico <lo r2.65 SW >= 2.65
+SW < 2.85 SWv e>r=s i2co.8lo5r virSgWini c<a 2.9 SW >= 2.9 0.2
+virginvicearsicolor versicovloirrginica
+0.1
+0 5 10 15 20
+Number of terminal nodes
+(a)
+)rorre
+noitacifissalcsim(
+tsoC
+©MIT Press. For evaluation and translation purposes only.
+Cross−validation
+Training set Min + 1 std. err.
+Best choice
+(b)
+Figure 16.5 (a) Unpruned decision tree for Iris data. (b) Plot of misclassification error rate vs depth of
+tree. Figure generated by dtreeDemoIris.
+16.2.3 Pruning a tree
+To prevent overfitting, we can stop growing the tree if the decrease in the error is not sufficient
+to justify the extra complexity of adding an extra subtree. However, this tends to be too myopic.
+For example, on the xor data in Figure 14.2(c), it would might never make any splits, since each
+feature on its own has little predictive power.
+The standard approach is therefore to grow a “full” tree, and then to perform pruning. This
+can be done using a scheme that prunes the branches giving the least increase in the error. See
+(Breiman et al. 1984) for details.
+To determine how far to prune back, we can evaluate the cross-validated error on each such
+subtree, and then pick the tree whose CV error is within 1 standard error of the minimum. This
+is illustrated in Figure 16.4(b). The point with the minimum CV error corresponds to the simple
+tree in Figure 16.6(a).
+
+
+===== PDF_PAGE 583 =====
+552 Chapter 16. Adaptive basis function models
+4.5
+SL < 5.45 SL >= 5.45
+4
+SW < 2.8 SW >= 2.8 SL < 6.15 SL >= 6.15
+3.5
+3
+versicolor setosa SW < 3.45 SW >= 3.45 virginica
+2.5
+versicolor setosa
+2
+4 4.5 5 5.5 6 6.5 7 7.5 8
+x
+(a)
+y
+©MIT Press. For evaluation and translation purposes only.
+pruned decision tree
+versicolor
+setosa
+virginica
+(b)
+Figure 16.6 Pruned decision tree for Iris data. Figure generated by dtreeDemoIris.
+16.2.4 Pros and cons of trees
+CART models are popular for several reasons: they are easy to interpret2, they can easily handle
+mixed discrete and continuous inputs, they are insensitive to monotone transformations of the
+inputs (because the split points are based on ranking the data points), they perform automatic
+variable selection, they are relatively robust to outliers, they scale well to large data sets, and
+they can be modified to handle missing inputs.3
+However, CART models also have some disadvantages. The primary one is that they do
+not predict very accurately compared to other kinds of model. This is in part due to the
+greedy nature of the tree construction algorithm. A related problem is that trees are unstable:
+small changes to the input data can have large effects on the structure of the tree, due to the
+hierarchical nature of the tree-growing process, causing errors at the top to affect the rest of the
+tree. In frequentist terminology, we say that trees are high variance estimators. We discuss a
+solution to this below.
+16.2.5 Random forests
+One way to reduce the variance of an estimate is to average together many estimates. For
+example, we can train M different trees on different subsets of the data, chosen randomly with
+2. We can postprocess the tree to derive a series of logical rules such as “If x1 < 5.45 then ...” (Quinlan 1990).
+3. The standard heuristic for handling missing inputs in decision trees is to look for a series of ”backup” variables,
+which can induce a similar partition to the chosen variable at any given split; these can be used in case the chosen
+variable is unobserved at test time. These are called surrogate splits. This method finds highly correlated features,
+and can be thought of as learning a local joint model of the input. This has the advantage over a generative model
+of not modeling the entire joint distribution of inputs, but it has the disadvantage of being entirely ad hoc. A simpler
+approach, applicable to categorical variables, is to code “missing” as a new value, and then to treat the data as fully
+observed.
+
+
+===== PDF_PAGE 584 =====
+16.2. Classification and regression trees (CART) 553
+©MIT Press. For evaluation and translation purposes only.
+replacement, and then compute the ensemble
+(cid:2)M
+1
+f (x) = f (x) (16.15)
+M m
+m=1
+where f is the m’th tree. This technique is called bagging (Breiman 1996), which stands for
+m
+“bootstrap aggregating”.
+Unfortunately, simply re-running the same learning algorithm on different subsets of the data
+can result in highly correlated predictors, which limits the amount of variance reduction that is
+possible. The technique known as random forests (Breiman 2001a) tries to decorrelate the base
+learners by learning trees based on a randomly chosen subset of input variables, as well as a
+randomly chosen subset of data cases. Such models often have very good predictive accuracy
+(Caruana and Niculescu-Mizil 2006), and have been widely used in many applications (e.g., for
+body pose recognition using Microsoft’s popular kinect sensor (Shotton et al. 2011)).
+Bagging is a frequentist concept. It is also possible to adopt a Bayesian approach to learning
+trees. In particular, (Chipman et al. 1998; Denison et al. 1998; Wu et al. 2007) perform approximate
+inference over the space of trees (structure and parameters) using MCMC. This reduces the
+variance of the predictions. We can also perform Bayesian inference over the space of ensembles
+of trees, which tends to work much better. This is known as Bayesian adaptive regression
+trees or BART (Chipman et al. 2010). Note that the cost of these sampling-based Bayesian
+methods is comparable to the sampling-based random forest method. That is, both approaches
+are fairly slow to train, but produce high quality classifiers.
+Unfortunately, methods that use multiple trees (whether derived from a Bayesian or frequen-
+tist standpoint) lose their nice interpretability properties. Fortunately, various post-processing
+measures can be applied, as discussed in Section 16.8.
+16.2.6 CART compared to hierarchical mixture of experts *
+An interesting alternative to a decision tree is known as the hierarchical mixture of experts.
+Figure 11.7(b) gives an illustration where we have two levels of experts. This can be thought of
+as a probabilistic decision tree of depth 2, since we recursively partition the space, and apply
+a different expert to each partition. Hastie et al. (Hastie et al. 2009, p331) write that “The
+HME approach is a promising competitor to CART trees”. Some of the advantages include the
+following:
+• The model can partition the input space using any set of nested linear decision boundaries.
+By contrast, standard decision trees are constrained to use axis-parallel splits.
+• The model makes predictions by averaging over all experts. By contrast, in a standard
+decision tree, predictions are made only based on the model in the corresponding leaf. Since
+leaves often contain few training examples, this can result in overfitting.
+• Fitting an HME involves solving a smooth continuous optimization problem (usually using
+EM), which is likely to be less prone to local optima than the standard greedy discrete
+optimization methods used to fit decision trees. For similar reasons, it is computationally
+easier to “be Bayesian” about the parameters of an HME (see e.g., (Peng et al. 1996; Bishop
+
+
+===== PDF_PAGE 585 =====
+554 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+and Svensén 2003)) than about the structure and parameters of a decision tree (see e.g., (Wu
+et al. 2007)).
+16.3 Generalized additive models
+A simple way to create a nonlinear model with multiple inputs is to use a generalized additive
+model (Hastie and Tibshirani 1990), which is a model of the form
+f (x) = α + f (x ) +· · · + f (x ) (16.16)
+1 1 D D
+Here each f can be modeled by some scatterplot smoother, and f (x) can be mapped to p(y|x)
+j
+using a link function, as in a GLM (hence the term generalized additive model).
+If we use regression splines (or some other fixed basis function expansion approach) for the
+f , then each f (x ) can be written as βT φ (x ), so the whole model can be written as
+j j j j j j
+f (x) = βT φ(x), where φ(x) = [1, φ (x ), . . . , φ (x )]. However, it is more common to use
+1 1 D D
+smoothing splines (Section 15.4.6) for the f . In this case, the objective (in the regression setting)
+j
+becomes
+⎛ ⎞
+2 (cid:5)
+(cid:2)N (cid:2)D (cid:2)D
+J(α, f , . . . , f ) = ⎝ y − α − f (x ) ⎠ + λ f (cid:4)(cid:4)(t )2dt (16.17)
+1 D i j ij j j j j
+i=1 j=1 j=1
+where λ is the strength of the regularizer for f .
+j j
+16.3.1 Backfitting
+We now discuss how to fit the model using MLE. The constant α is not uniquely identifiable,
+since we can always add or subtract constants to any of the f functions. The convention is to
+(cid:4) j (cid:4)
+assume N f (x ) = 0 for all j. In this case, the MLE for α is just αˆ = 1 N y .
+i=1 j ij N i=1 i
+To fit the rest of the model, we can center the responses (by subtracting αˆ), and then
+iteratively update each f in turn, using as a target vector the residuals obtained by omitting
+j
+term f :
+j
+(cid:2)
+fˆ := smoother({y − fˆ (x )}N ) (16.18)
+j i k ik i=1
+k(cid:8)=j
+We should then ensure the output is zero mean using
+(cid:2)N
+1
+fˆ := fˆ − fˆ (x ) (16.19)
+j j N j ij
+i=1
+This is called the backfitting algorithm (Hastie and Tibshirani 1990). If X has full column rank,
+then the above objective is convex (since each smoothing spline is a linear operator, as shown
+in Section 15.4.2), so this procedure is guaranteed to converge to the global optimum.
+In the GLM case, we need to modify the method somewhat. The basic idea is to replace the
+weighted least squares step of IRLS (see Section 8.3.4) with a weighted backfitting algorithm. In
+the logistic regression case, each response has weight s = μ (1 − μ ) associated with it, where
+(cid:4) i i i
+μ = sigm(αˆ + D fˆ (x )).)
+i j=1 j ij
+
+
+===== PDF_PAGE 586 =====
+16.3. Generalized additive models 555
+©MIT Press. For evaluation and translation purposes only.
+16.3.2 Computational efficiency
+Each call to the smoother takes O(N ) time, so the total cost is O(N DT ), where T is the
+number of iterations. If we have high-dimensional inputs, fitting a GAM is expensive. One
+approach is to combine it with a sparsity penalty, see e.g., the SpAM (sparse additive model)
+approach of (Ravikumar et al. 2009). Alternatively, we can use a greedy approach, such as
+boosting (see Section 16.4.6)
+16.3.3 Multivariate adaptive regression splines (MARS)
+We can extend GAMs by allowing for interaction effects. In general, we can create an ANOVA-like
+decomposition:
+(cid:2)D (cid:2) (cid:2)
+f (x) = β + f (x ) + f (x , x ) + f (x , x , x ) +· · · (16.20)
+0 j j jk j k jkl j k l
+j=1 j,k j,k,l
+Of course, we cannot allow for too many higher-order interactions, because there will be too
+many parameters to fit.
+It is common to use greedy search to decide which variables to add. The multivariate
+adaptive regression splines or MARS algorithm is one example of this (Hastie et al. 2009,
+Sec9.4). It fits models of the form in Equation 16.20, where it uses a tensor product basis of
+regression splines to represent the multidimensional regression functions. For example, for 2d
+input, we might use
+(cid:2)
+f (x , x ) =β + β (x − t )
+1 2 0 1m 1 1m +
+(cid:2) m (cid:2)
++ β (t − x ) + β (x − t ) (t − x ) (16.21)
+2m 2m 2 + 12m 1 1m + 2m 2 +
+m m
+To create such a function, we start with a set of candidate basis functions of the form
+C = {(x − t) , (t − x ) : t ∈ {x , . . . , x }, j = 1, . . . , D} (16.22)
+j + j + 1j Nj
+These are 1d linear splines where the knots are at all the observed values for that variable. We
+consider splines sloping up in both directions; this is called a reflecting pair. See Figure 16.7(a).
+Let M represent the current set of basis functions. We initialize by using M = {1}. We
+consider creating a new basis function pair by multplying an h ∈ M with one of the reflecting
+m
+pairs in C. For example, we might initially get
+f (x) = 25 − 4(x − 5) + 20(5 − x ) (16.23)
+1 + 1 +
+obtained by multiplying h (x) = 1 with a reflecting pair involving x with knot t = 5. This
+0 1
+pair is added to M. See Figure 16.7(b). At the next step, we might create a model such as
+f (x) = = 2 − 2(x − 5) + 3(5− x )
+1 + 1 +
+−(x − 10) × (5 − x ) +− 1.2(10 − x ) × (5 − x ) (16.24)
+2 + 1 2 + 1 +
+obtained by multiplying (5−x )+ from M by the new reflecting pair (x −10) and (10−x ) .
+1 2 + 2 +
+This new function is shown in Figure 16.7(c).
+
+
+===== PDF_PAGE 587 =====
+556 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+15 120
+100 20
+10 80 0
+60 −20
+40
+−40
+5 20
+0 −2600
+0 0 5 10 15 20 − − 4 2 0 0 0 5 10 15 20 15 10 5 0 0 5 10 15 20
+(a) (b) (c)
+Figure 16.7 (a) Linear spline function with a knot at 5. Solid blue: (x − 5)+. Dotted red: (5 − x)+. (b) A
+MARS model in 1d given by Equation 16.23. (c) A simple MARS model in 2d given by Equation 16.24. Figure
+generated by marsDemo.
+We proceed in this way until the model becomes very large. (We may impose an upper
+bound on the order of interactions.) Then we prune backwards, at each step eliminating the
+basis function that causes the smallest increase in the residual error, until the CV error stops
+improving.
+The whole procedure is closely related to CART. To see this, suppose we replace the piecewise
+linear basis functions by step functions I(x > t) and I(x < t). Multiplying by a pair of
+j j
+reflected step functions is equivalent to splitting a node. Now suppose we impose the constraint
+that once a variable is involved in a multiplication by a candidate term, that variable gets
+replaced by the interaction, so the original variable is no longer available. This ensures that a
+variable can not be split more than once, thus guaranteeing that the resulting model can be
+represented as a tree. In this case, the MARS growing strategy is the same as the CART growing
+strategy.
+16.4 Boosting
+Boosting (Schapire and Freund 2012) is a greedy algorithm for fitting adaptive basis-function
+models of the form in Equation 16.3, where the φ are generated by an algorithm called a weak
+m
+learner or a base learner. The algorithm works by applying the weak learner sequentially to
+weighted versions of the data, where more weight is given to examples that were misclassified
+by earlier rounds.
+This weak learner can be any classification or regression algorithm, but it is common to use a
+CART model. In 1998, the late Leo Breiman called boosting, where the weak learner is a shallow
+decision tree, the “best off-the-shelf classifier in the world” (Hastie et al. 2009, p340). This
+is supported by an extensive empirical comparison of 10 different classifiers in (Caruana and
+Niculescu-Mizil 2006), who showed that boosted decision trees were the best both in terms of
+misclassification error and in terms of producing well-calibrated probabilities, as judged by ROC
+curves. (The second best method was random forests, invented by Breiman; see Section 16.2.5.)
+By contrast, single decision trees performed very poorly.
+Boosting was originally derived in the computational learning theory literature (Schapire 1990;
+Freund and Schapire 1996), where the focus is binary classification. In these papers, it was
+proved that one could boost the performance (on the training set) of any weak learner arbitrarily
+
+
+===== PDF_PAGE 588 =====
+16.4. Boosting 557
+©MIT Press. For evaluation and translation purposes only.
+0.16
+train
+0.14 test
+0.12
+0.1
+0.08
+0.06
+0.04
+0.02
+0
+0 20 40 60 80 100 120 140
+Figure 16.8 Performance of adaboost using a decision stump as a weak learner on the data in Figure 16.10.
+Training (solid blue) and test (dotted red) error vs number of iterations. Figure generated by boostingDemo,
+written by Richard Stapenhurst.
+high, provided the weak learner could always perform slightly better than chance. For example,
+in Figure 16.8, we plot the training and test error for boosted decision stumps on a 2d dataset
+shown in Figure 16.10. We see that the training set error rapidly goes to near zero. What is more
+surprising is that the test set error continues to decline even after the training set error has
+reached zero (although the test set error will eventually go up). Thus boosting is very resistant
+to overfitting. (Boosted decision stumps form the basis of a very successful face detector (Viola
+and Jones 2001), which was used to generate the results in Figure 1.6, and which is used in many
+digital cameras.)
+In view of its stunning empirical success, statisticians started to become interested in this
+method. Breiman (Breiman 1998) showed that boosting can be interpreted as a form of gradient
+descent in function space. This view was then extended in (Friedman et al. 2000), who showed
+how boosting could be extended to handle a variety of loss functions, including for regression,
+robust regression, Poisson regression, etc. In this section, we shall present this statistical inter-
+pretation of boosting, drawing on the reviews in (Buhlmann and Hothorn 2007) and (Hastie et al.
+2009, ch10), which should be consulted for further details.
+16.4.1 Forward stagewise additive modeling
+The goal of boosting is to solve the following optimization problem:
+(cid:2)N
+min L(y , f (x )) (16.25)
+i i
+f
+i=1
+and L(y, yˆ) is some loss function, and f is assumed to be an ABM model as in Equation 16.3.
+Common choices for the loss function are listed in Table 16.1.
+If we use squared error loss, the optimal estimate is given by
+(cid:7) (cid:8)
+f ∗(x) = argmin E y|x (Y − f (x))2 = E [Y |x] (16.26)
+f(x)
+
+
+===== PDF_PAGE 589 =====
+558 Chapter 16. Adaptive basis function models
+Name Loss Derivative f ∗ Algorithm
+Squared error 1 (y − f (x ))2 y − f (x ) E [y|x ] L2Boosting
+2 i i i i i
+Absolute error |y − f (x )| sgn(y − f (x )) median(y|x ) Gradient boosting
+i i i i i
+L E o xp gl o o n s e s ntial loss l e o x g p ( ( 1 − + y˜ i e f − ( y x ˜i i f ) i ) ) y − i y˜ − i e π x i p(−y˜ i f (x i )) 1 1 2 2 l l o o g g 1 1 − − π π i i π π i i A Lo d g a i B tB o o o o st st
+Table 16.1 Some commonly used loss functions, their gradients, their population minimizers f∗, and
+some algorithms to minimize the loss. For binary classification problems, we assume y˜ ∈ {−1, +1},
+i
+y ∈ {0, 1} and π = sigm(2f(x )). For regression problems, we assume y ∈ R. Adapted from (Hastie
+i i i i
+et al. 2009, p360) and (Buhlmann and Hothorn 2007, p483).
+7
+6
+5
+4
+3
+2
+1
+0
+−2 −1.5 −1 −0.5 0 0.5 1 1.5 2
+y− f
+ssol
+©MIT Press. For evaluation and translation purposes only.
+0−1
+logloss
+exp
+Figure 16.9 Illustration of various loss functions for binary classification. The horizontal axis is the
+margin yη, the vertical axis is the loss. The log loss uses log base 2. Figure generated by hingeLossPlot.
+as we showed in Section 5.7.1.3. Of course, this cannot be computed in practice since it requires
+knowing the true conditional distribution p(y|x). Hence this is sometimes called the population
+minimizer, where the expectation is interpreted in a frequentist sense. Below we will see that
+boosting will try to approximate this conditional expectation.
+For binary classification, the obvious loss is 0-1 loss, but this is not differentiable. Instead
+it is common to use logloss, which is a convex upper bound on 0-1 loss, as we showed in
+Section 6.5.5. In this case, one can show that the optimal estimate is given by
+1 p(y˜ = 1|x)
+f ∗(x) = log (16.27)
+2 p(y˜ = −1|x)
+where y˜ ∈ {−1, +1}. One can generalize this framework to the multiclass case, but we will not
+discuss that here.
+An alternative convex upper bound is exponential loss, defined by
+L(y˜, f ) = exp(−y˜f ) (16.28)
+See Figure 16.9 for a plot. This will have some computational advantages over the logloss,
+to be discussed below. It turns out that the optimal estimate for this loss is also f ∗(x) =
+
+
+===== PDF_PAGE 590 =====
+16.4. Boosting 559
+©MIT Press. For evaluation and translation purposes only.
+1 log p(y˜=1|x) . To see this, we can just set the derivative of the expected loss (for each x) to
+2 p(y˜=−1|x)
+zero:
+(cid:17) (cid:18)
+∂ ∂
+E e−y˜f(x)|x = [p(y˜ = 1|x)e−f(x) + p(y˜ = −1|x)ef(x)] (16.29)
+∂f (x) ∂f (x)
+= −p(y˜ = 1|x)e−f(x) + p(y˜ = −1|x)ef(x) (16.30)
+p(y˜ = 1|x)
+= 0 ⇒ = e2f(x) (16.31)
+p(y˜ = −1|x)
+So in both cases, we can see that boosting should try to approximate (half) the log-odds ratio.
+Since finding the optimal f is hard, we shall tackle it sequentially. We initialise by defining
+(cid:2)N
+f (x) = arg min L(y , f (x ; γ)) (16.32)
+0 i i
+γ
+i=1
+For example, if we use squared error, we can set f (x) = y, and if we use log-loss or exponential
+0 (cid:4)
+loss , we can set f (x) = 1 log πˆ , where πˆ = 1 N I(y = 1). We could also use a more
+0 2 1−πˆ N i=1 i
+powerful model for our baseline, such as a GLM.
+Then at iteration m, we compute
+(cid:2)N
+(β m , γ m ) = argmin L(y i , f m−1 (x i ) +βφ (x i ; γ)) (16.33)
+β,γ
+i=1
+and then we set
+f m (x) = f m−1 (x) +β m φ(x; γ m ) (16.34)
+The key point is that we do not go back and adjust earlier parameters. This is why the method
+is called forward stagewise additive modeling.
+We continue this for a fixed number of iterations M . In fact M is the main tuning parameter
+of the method. Often we pick it by monitoring the performance on a separate validation set, and
+then stopping once performance starts to decrease; this is called early stopping. Alternatively,
+we can use model selection criteria such as AIC or BIC (see e.g., (Buhlmann and Hothorn 2007)
+for details).
+In practice, better (test set) performance can be obtained by performing “partial updates” of
+the form
+f m (x) = f m−1 (x) +νβ m φ(x; γ m ) (16.35)
+Here 0 < ν ≤ 1 is a step-size parameter. In practice it is common to use a small value such as
+ν = 0.1. This is called shrinkage.
+Below we discuss how to solve the suproblem in Equation 16.33. This will depend on the
+form of loss function. However, it is independent of the form of weak learner.
+16.4.2 L2boosting
+Suppose we used squared error loss. Then at step m the loss has the form
+L(y i , f m−1 (x i ) +βφ (x i ; γ)) = (r im − φ(x i ; γ))2 (16.36)
+
+
+===== PDF_PAGE 591 =====
+560 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+(a) (b) (c)
+Figure 16.10 Example of adaboost using a decision stump as a weak learner. The degree of blackness
+represents the confidence in the red class. The degree of whiteness represents the confidence in the blue
+class. The size of the datapoints represents their weight. Decision boundary is in yellow. (a) After 1
+round. (b) After 3 rounds. (c) After 120 rounds. Figure generated by boostingDemo, written by Richard
+Stapenhurst.
+where r im (cid:2) y i − f m−1 (x i ) is the current residual, and we have set β = 1 without loss of
+generality. Hence we can find the new basis function by using the weak learner to predict r .
+m
+This is called L2boosting, or least squares boosting (Buhlmann and Yu 2003). In Section 16.4.6,
+we will see that this method, with a suitable choice of weak learner, can be made to give the
+same results as LARS, which can be used to perform variable selection (see Section 13.4.2).
+16.4.3 AdaBoost
+Consider a binary classification problem with exponential loss. At step m we have to minimize
+(cid:2)N (cid:2)N
+L m (φ) = exp[−y˜ i (f m−1 (x i ) +βφ (x i ))] = w i,m exp(−βy˜ i φ(x i )) (16.37)
+i=1 i=1
+where w i,m (cid:2) exp(−y˜ i f m−1 (x i )) is a weight applied to datacase i, and y˜ i ∈ {−1, +1}. We
+can rewrite this objective as follows:
+(cid:2) (cid:2)
+L = e−β w + eβ w (16.38)
+m i,m i,m
+y˜i=φ(x i) y˜i (cid:8)=φ(x i)
+(cid:2)N (cid:2)N
+= (eβ − e−β) w I(y˜ (cid:10)= φ(x )) + e−β w (16.39)
+i,m i i i,m
+i=1 i=1
+Consequently the optimal function to add is
+φ = argmin w I(y˜ (cid:10)= φ(x )) (16.40)
+m i,m i i
+φ
+This can be found by applying the weak learner to a weighted version of the dataset, with
+weights w . Subsituting φ into L and solving for β we find
+i,m m m
+1 1 − err
+β = log m (16.41)
+m 2 err
+m
+
+
+===== PDF_PAGE 592 =====
+16.4. Boosting 561
+©MIT Press. For evaluation and translation purposes only.
+where
+(cid:4)
+N w I(y˜ (cid:10)= φ (x ))
+err = i=1 (cid:4)i i m i (16.42)
+m N w
+i=1 i,m
+The overall update becomes
+f m (x) = f m−1 (x) +β m φ m (x) (16.43)
+With this, the weights at the next iteration become
+w
+i,m+1
+= w
+i,m
+e−βmy˜iφm(x i) (16.44)
+= w
+i,m
+eβm(2I(y˜i (cid:8)=φm(x i))−1) (16.45)
+= w
+i,m
+e2βm I(y˜i (cid:8)=φm(x i))e−βm (16.46)
+where we exploited the fact that −y˜ φ (x ) =−1 if y˜ = φ (x ) and −y˜ φ (x ) = +1
+i m i i m i i m i
+otherwise. Since e−βm will cancel out in the normalization step, we can drop it. The result is
+the algorithm shown in Algorithm 16.2, known Adaboost.M1.4
+An example of this algorithm in action, using decision stumps as the weak learner, is given in
+Figure 16.10. We see that after many iterations, we can “carve out” a complex decision boundary.
+What is rather surprising is that AdaBoost is very slow to overfit, as is apparent in Figure 16.8.
+See Section 16.4.8 for a discussion of this point.
+Algorithm 16.2: Adaboost.M1, for binary classification with exponential loss
+1 w i = 1/N ;
+2 for m = 1 :M do
+3 Fit a classifier φ m (x) to the training set using weights w;
+(cid:2)
+4 Compute err m = N i=1 w (cid:2)i, N i m =1 I( w y˜i i (cid:8)= ,m φ ) m(x i)) ;
+5 Compute α m = log[(1 − err m )/err m ];
+6 Set w i ← w i exp (cid:17) [α m I(y˜ i (cid:10)= φ m (x i(cid:18) ))];
+(cid:4)
+7 Return f (x) = sgn M m=1 α m φ m (x) ;
+16.4.4 LogitBoost
+The trouble with exponential loss is that it puts a lot of weight on misclassified examples, as
+is apparent from the exponential blowup on the left hand side of Figure 16.9. This makes the
+method very sensitive to outliers (mislabeled examples). In addition, e−y˜f is not the logarithm
+of any pmf for binary variables y˜ ∈ {−1, +1}; consequently we cannot recover probability
+estimates from f (x).
+4. In (Friedman et al. 2000), this is called discrete AdaBoost, since it assumes that the base classifier φm returns a
+binary class label. If φm returns a probability instead, a modified algorithm, known as real AdaBoost, can be used. See
+(Friedman et al. 2000) for details.
+
+
+===== PDF_PAGE 593 =====
+562 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+A natural alternative is to use logloss instead. This only punishes mistakes linearly, as is clear
+from Figure 16.9. Furthermore, it means that we will be able to extract probabilities from the
+final learned function, using
+ef(x) 1
+p(y = 1|x) = = (16.47)
+e−f(x) + ef(x) 1 + e−2f(x)
+The goal is to minimze the expected log-loss, given by
+(cid:2)N
+L m (φ) = log [1 + exp (−2y˜ i (f m−1 (x) +φ (x i )))] (16.48)
+i=1
+By performing a Newton upate on this objective (similar to IRLS), one can derive the algorithm
+shown in Algorithm 16.3. This is known as logitBoost (Friedman et al. 2000). It can be
+generalized to the multi-class setting, as explained in (Friedman et al. 2000).
+Algorithm 16.3: LogitBoost, for binary classification with log-loss
+1 w i = 1/N , π i = 1/2;
+2 for m = 1 :M do
+3 Compute the working response z i = πi y ( i ∗ 1 − − π π i i) ;
+4 Compute the we (cid:4) ights w i = π i (1 − π i );
+5 φ m = argmin φ N i=1 w i (z i − φ(x i ))2;
+6 Update f (x) ← f (x) + 1 2 φ m (x);
+7 Compute π i = 1 (cid:17) /(1 + exp(−2f (cid:18) (x i )));
+(cid:4)
+8 Return f (x) = sgn M m=1 φ m (x) ;
+16.4.5 Boosting as functional gradient descent
+Rather than deriving new versions of boosting for every different loss function, it is possible to
+derive a generic version, known as gradient boosting (Friedman 2001; Mason et al. 2000). To
+explain this, imagine minimizing
+ˆf = argmin L(f ) (16.49)
+f
+where f = (f (x ), . . . , f (x )) are the “parameters”. We will solve this stagewise, using gradient
+1 N
+descent. At step m, letg m be the gradient of L(f ) evaluated at f = f m−1 :
+(cid:25) (cid:26)
+∂L(y , f (x ))
+g = i i (16.50)
+im ∂f (x )
+i f=fm−1
+Gradients of some common loss functions are given in Table 16.1. We then make the update
+f m = f m−1 − ρ m g m (16.51)
+
+
+===== PDF_PAGE 594 =====
+16.4. Boosting 563
+©MIT Press. For evaluation and translation purposes only.
+where ρ is the step length, chosen by
+m
+ρ m = argmin L(f m−1 − ρg m ) (16.52)
+ρ
+This is called functional gradient descent.
+In its current form, this is not much use, since it only optimizes f at a fixed set of N points,
+so we do not learn a function that can generalize. However, we can modify the algorithm by
+fitting a weak learner to approximate the negative gradient signal. That is, we use this update
+(cid:2)N
+γ = argmin (−g − φ(x ; γ))2 (16.53)
+m im i
+γ
+i=1
+The overall algorithm is summarized in Algorithm 16.4. (We have omitted the line search step,
+which is not strictly necessary, as argued in (Buhlmann and Hothorn 2007).)
+Algorithm 16.4: Gradient boosting
+(cid:4)
+1 Initialize f 0 (x) = argmin γ N i=1 L(y i , φ(x i ; γ));
+2 for m = 1 :M do (cid:17) (cid:18)
+3 Compute the gradient residual using r im = − ∂L( ∂ y f i ( ,f x ( i x ) (cid:4) i)) f(x i)=fm−1(x i) ;
+4 Use the weak learner to compute γ m which minimizes N i=1 (r im − φ(x i ; γ m ))2;
+5 Update f m (x) = f m−1 (x) +νφ (x; γ m );
+6 Return f (x) = f M (x)
+If we apply this algorithm using squared loss, we recover L2Boosting. If we apply this
+algorithm to log-loss, we get an algorithm known as BinomialBoost (Buhlmann and Hothorn
+2007). The advantage of this over LogitBoost is that it does not need to be able to do weighted
+fitting: it just applies any black-box regression model to the gradient vector. Also, it is relatively
+easy to extend to the multi-class case (see (Hastie et al. 2009, p387)). We can also apply this
+algorithm to other loss functions, such as the Huber loss (Section 7.4), which is more robust to
+outliers than squared error loss.
+16.4.6 Sparse boosting
+Suppose we use as our weak learner the following algorithm: search over all possible variables
+j = 1 :D , and pick the one j(m) that best predicts the residual vector:
+(cid:2)N
+j(m) = argmin (r − βˆ x )2 (16.54)
+im jm ij
+j
+i=1
+(cid:4)
+N x r
+βˆ = (cid:4)i=1 ij im (16.55)
+jm N x2
+i=1 ij
+φ (x) = βˆ x (16.56)
+m j(m),m j(m)
+
+
+===== PDF_PAGE 595 =====
+564 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+This method, which is known as sparse boosting (Buhlmann and Yu 2006), is identical to the
+matching pursuit algorithm discussed in Section 13.2.3.1.
+It is clear that this will result in a sparse estimate, at least if M is small. To see this, let us
+rewrite the update as follows:
+β := β + ν(0, . . . , 0, βˆ , 0, . . . , 0) (16.57)
+m m−1 j(m),m
+where the non-zero entry occurs in location j(m). This is known as forward stagewise linear
+regression (Hastie et al. 2009, p608), which becomes equivalent to the LAR algorithm discussed
+in Section 13.4.2 as ν → 0. Increasing the number of steps m in boosting is analogous to
+decreasing the regularization penalty λ. If we modify boosting to allow some variable deletion
+steps (Zhao and Yu 2007), we can make it equivalent to the LARS algorithm, which computes
+the full regularization path for the lasso problem. The same algorithm can be used for sparse
+logistic regression, by simply modifying the residual to be the appropriate negative gradient.
+Now consider a weak learner that is similar to the above, except it uses a smoothing spline
+instead of linear regression when mapping from x to the residual. The result is a sparse
+j
+generalized additive model (see Section 16.3). It can obviously be extended to pick pairs of
+variables at a time. The resulting method often works much better than MARS (Buhlmann and
+Yu 2006).
+16.4.7 Multivariate adaptive regression trees (MART)
+It is quite common to use CART models as weak learners. It is usually advisable to use a shallow
+tree, so that the variance is low. Even though the bias will be high (since a shallow tree is likely
+to be far from the “truth”), this will compensated for in subsequent rounds of boosting.
+The height of the tree is an additional tuning parameter (in addition to M , the number of
+rounds of boosting, and ν, the shrinkage factor). Suppose we restrict to trees with J leaves.
+If J = 2, we get a stump, which can only split on a single variable. If J = 3, we allow for
+two-variable interactions, etc. In general, it is recommended (e.g., in (Hastie et al. 2009, p363)
+and (Caruana and Niculescu-Mizil 2006)) to use J ≈ 6.
+If we combine the gradient boosting algorithm with (shallow) regression trees, we get a model
+known as MART, which stands for “multivariate adaptive regression trees”. This actually includes
+a slight refinement to the basic gradient boosting algorithm: after fitting a regression tree to the
+residual (negative gradient), we re-estimate the parameters at the leaves of the tree to minimize
+the loss:
+(cid:2)
+γ jm = argmin L(y i , f m−1 (x i ) +γ ) (16.58)
+γ xi ∈Rjm
+where R is the region for leaf j in the m’th tree, and γ is the corresponding parameter (the
+jm jm
+mean response of y for regression problems, or the most probable class label for classification
+problems).
+16.4.8 Why does boosting work so well?
+We have seen that boosting works very well, especially for classifiers. There are two main
+reasons for this. First, it can be seen as a form of (cid:4) regularization, which is known to help
+1
+
+
+===== PDF_PAGE 596 =====
+16.5. Feedforward neural networks (multilayer perceptrons) 565
+©MIT Press. For evaluation and translation purposes only.
+prevent overfitting by eliminating “irrelevant” features. To see this, imagine pre-computing all
+possible weak-learners, and defining a feature vector of the form φ(x) = [φ (x), . . . , φ (x)].
+1 K
+We could use (cid:4) regularization to select a subset of these. Alternatively we can use boosting,
+1
+where at each step, the weak learner creates a new φ on the fly. It is possible to combine
+k
+boosting and (cid:4) regularization, to get an algorithm known as L1-Adaboost (Duchi and Singer
+1
+2009). Essentially this method greedily adds the best features (weak learners) using boosting,
+and then prunes off irrelevant ones using (cid:4) regularization.
+1
+Another explanation has to do with the concept of margin, which we introduced in Sec-
+tion 14.5.2.2. (Schapire et al. 1998; Ratsch et al. 2001) proved that AdaBoost maximizes the
+margin on the training data. (Rosset et al. 2004) generalized this to other loss functions, such as
+log-loss.
+16.4.9 A Bayesian view
+So far, our presentation of boosting has been very frequentist, since it has focussed on greedily
+minimizing loss functions. A likelihood interpretation of the algorithm was given in (Neal and
+MacKay 1998; Meek et al. 2002). The idea is to consider a mixture of experts model of the form
+(cid:2)M
+p(y|x, θ) = π p(y|x, γ ) (16.59)
+m m
+m=1
+where each expert p(y|x, γ ) is like a weak learner. We usually fit all M experts at once
+m
+using EM, but we can imagine a sequential scheme, whereby we only update the parameters
+for one expert at a time. In the E step, the posterior responsibilities will reflect how well the
+existing experts explain a given data point; if this is a poor fit, these data points will have
+more influence on the next expert that is fitted. (This view naturally suggest a way to use a
+boosting-like algorithm for unsupervised learning: we simply sequentially fit mixture models,
+instead of mixtures of experts.)
+Notice that this is a rather “broken” MLE procedure, since it never goes back to update the
+parameters of an old expert. Similarly, if boosting ever wants to change the weight assigned to a
+weak learner, the only way to do this is to add the weak learner again with a new weight. This
+can result in unnecessarily large models. By contrast, the BART model (Chipman et al. 2006,
+2010) uses a Bayesian version of backfitting to fit a small sum of weak learners (typically trees).
+16.5 Feedforward neural networks (multilayer perceptrons)
+A (feedforward) neural network, aka multi-layer perceptron (MLP), is a series of logistic
+regression models stacked on top of each other, with the final layer being either another logistic
+regression or a linear regression model, depending on whether we are solving a classification or
+regression problem. For example, if we have two layers, and we are solving a regression problem,
+the model has the form
+p(y|x, θ) =N (y|wT z(x), σ2) (16.60)
+z(x) =g (Vx) = [g(vT x), . . . , g(vT x)] (16.61)
+1 H
+where v = V is the j’th row of V. Here z(x) =φ( x, V) is called the hidden layer of size
+j j,:
+H; this is a deterministic function of the input, created by applying a linear mapping to each
+
+
+===== PDF_PAGE 597 =====
+566 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+z
+H
+x
+D
+... y
+C
+z
+j
+x i v ji w kj y k
+x1 ... y1
+z1
+Figure 16.11 A neural network with one hidden layer.
+input, and passing the result through a non-linear activation or transfer function g. This is
+commonly the logistic function, g(u) = sigm(u) or the tanh function; more recently people
+have got better results using rectified linear units or ReLU (Glorot et al. 2011), which have the
+form max(0, u). It is important that g be non-linear, otherwise the whole model collapses into
+a large linear regression model of the form y = wT (Vx).
+To handle binary classification, we pass the output through a sigmoid, as in a GLM:
+p(y|x, θ) = Ber(y|sigm(wT z(x))) (16.62)
+We can easily extend the MLP to predict multiple outputs. For example, in the regression case,
+we have
+p(y|x, θ) = N (y|W φ(x, V), σ2I) (16.63)
+See Figure 16.11 for an illustration. If we add mutual inhibition arcs between the output units,
+ensuring that only one of them turns on, we can enforce a sum-to-one constraint, which can be
+used for multi-class classification. The resulting model has the form
+p(y|x, θ) = Cat(y|S(Wz(x)) (16.64)
+where W is the weight vector for class k. Obviously we could also make neural networks for
+k,:
+Poisson regression, etc., just as in a GLM.
+One can show that an MLP is a universal approximator, meaning it can model any suitably
+smooth function, given enough hidden units, to any desired level of accuracy (Hornik 1991). One
+can either make the model be “wide”, or “deep”; the latter has some advantages, as discussed
+in Section 28.3.
+16.5.1 Convolutional neural networks
+The purpose of the hidden units is to learn non-linear combinations of the original inputs; this
+is called feature extraction or feature construction. These hidden features are then passed as
+
+
+===== PDF_PAGE 598 =====
+16.5. Feedforward neural networks (multilayer perceptrons) 567
+©MIT Press. For evaluation and translation purposes only.
+Figure 16.12 The convolutional neural network from (Simard et al. 2003). Source: http://www.codep
+roject.com/KB/library/NeuralNetRecognition.aspx . Used with kind permission of Mike O’Neill.
+input to the final GLM. This approach is particularly useful for problems where the original input
+features are not very individually informative. For example, each pixel in an image is not very
+informative; it is the combination of pixels that tells us what objects are present. Conversely, for
+a task such as document classification using a bag of words representation, each feature (word
+count) is informative on its own, so extracting “higher order” features is less important. Not
+suprisingly, then, much of the work in neural networks has been motivated by visual pattern
+recognition (e.g., (LeCun et al. 1989)), although they have also been applied to other types of
+data, including text (e.g., (Collobert and Weston 2008)).
+A form of MLP which is particularly well suited to 1d signals like speech or text, or 2d signals
+like images, is the convolutional neural network. This is an MLP in which the hidden units
+have local receptive fields (as in the primary visual cortex), and in which the weights are tied
+or shared across the image, in order to reduce the number of parameters. Intuitively, the effect
+of such spatial parameter tying is that any useful features that are “discovered” in some portion
+of the image can be re-used everywhere else without having to be independently learned. The
+resulting network then exhibits translation invariance, meaning it can classify patterns no
+matter where they occur inside the input image.
+Figure 16.12 gives an example of a convolutional network, designed by Simard and colleagues
+(Simard et al. 2003), with 5 layers (4 layers of adjustable parameters) designed to classify 29 × 29
+gray-scale images of handwritten digits from the MNIST dataset (see Section 1.2.1.3). In layer 1,
+we have 6 feature maps each of which has size 13 × 13. Each hidden node in one of these
+feature maps is computed by convolving the image with a 5 × 5 weight matrix (sometimes called
+a kernel), adding a bias, and then passing the result through some form of nonlinearity. There
+
+
+===== PDF_PAGE 599 =====
+568 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+are therefore 13 × 13 × 6 = 1014 neurons in Layer 1, and (5 × 5 + 1) × 6 = 156 weights. (The
+"+1" is for the bias.) If we did not share these parameters, there would be 1014 × 26 = 26, 364
+weights at the first layer. In layer 2, we have 50 feature maps, each of which is obtained by
+convolving each feature map in layer 1 with a 5 × 5 weight matrix, adding them up, adding a
+bias, and passing through a nonlinearity. There are therefore 5 × 5 × 50 = 1250 neurons in
+Layer 2, (5 × 5 + 1)× 6 × 50 = 7800 adjustable weights (one kernel for each pair of feature
+maps in layers 1 and 2), and 1250 × 26 = 32, 500 connections. Layer 3 is fully connected to
+layer 2, and has 100 neurons and 100 × (1250 + 1) = 125, 100 weights. Finally, layer 4 is also
+fully connected, and has 10 neurons, and 10 × (100 + 1) = 1010 weights. Adding the above
+numbers, there are a total of 3,215 neurons, 134,066 adjustable weights, and 184,974 connections.
+This model is usually trained using stochastic gradient descent (see Section 16.5.4 for details).
+A single pass over the data set is called an epoch. When Mike O’Neill did these experiments in
+2006, he found that a single epoch took about 40 minutes (recall that there are 60,000 training
+examples in MNIST). Since it took about 30 epochs for the error rate to converge, the total
+training time was about 20 hours.5 Using this technique, he obtained a misclassification rate on
+the 10,000 test cases of about 1.40%.
+To further reduce the error rate, a standard trick is to expand the training set by including
+distorted versions of the original data, to encourage the network to be invariant to small changes
+that don’t affect the identity of the digit. These can be created by applying a random flow field
+to shift pixels around. See Figure 16.13 for some examples. (If we use online training, such as
+stochastic gradient descent, we can create these distortions on the fly, rather than having to
+store them.) Using this technique, Mike O’Neill obtained a misclassification rate on the 10,000
+test cases of about 0.74%, which is close to the current state of the art.6
+Yann Le Cun and colleagues (LeCun et al. 1998) obtained similar performance using a slightly
+more complicated architecture shown in Figure 16.14. This model is known as LeNet5, and
+historically it came before the model in Figure 16.12. There are two main differences. First,
+LeNet5 has a subsampling layer between each convolutional layer, which either averages or
+computes the max over each small window in the previous layer, in order to reduce the size, and
+to obtain a small amount of shift invariance. The convolution and sub-sampling combination
+was inspired by Hubel and Wiesel’s model of simple and complex cells in the visual cortex
+(Hubel and Wiesel 1962), and it continues to be popular in neurally-inspired models of visual
+object recognition (Riesenhuber and Poggio 1999). A similar idea first appeared in Fukushima’s
+neocognitron (Fukushima 1975), though no globally supervised training algorithm was available
+at that time.
+The second difference between LeNet5 and the Simard architecture is that the final layer is
+actually an RBF network rather than a more standard sigmoidal or softmax layer. This model
+gets a test error rate of about 0.95% when trained with no distortions, and 0.8% when trained
+with distortions. Figure 16.15 shows all 82 errors made by the system. Some are genuinely
+ambiguous, but several are errors that a person would never make. A web-based demo of the
+LeNet5 can be found at http://yann.lecun.com/exdb/lenet/index.html.
+5. Implementation details: Mike used C++ code and a variety of speedup tricks. He was using standard 2006 era
+hardware (an Intel Pentium 4 hyperthreaded processor running at 2.8GHz). See http://www.codeproject.com/KB/
+library/NeuralNetRecognition.aspx for details.
+6. A list of various methods, along with their misclassification rates on the MNIST test set, is available from http:
+//yann.lecun.com/exdb/mnist/. Error rates within 0.1–0.2% of each other are not statistically significantly different.
+
+
+===== PDF_PAGE 600 =====
+16.5. Feedforward neural networks (multilayer perceptrons) 569
+©MIT Press. For evaluation and translation purposes only.
+(a) (b)
+(c) (d)
+(e) (f)
+Figure 16.13 Several synthetic warpings of a handwritten digit. Based on Figure 5.14 of (Bishop 2006).
+Figure generated by elasticDistortionsDemo, written by Kevin Swersky.
+C3: f. maps 16@10x10
+INPUT C 6@ 1: 2 fe 8 a x2 tu 8 re maps S4: f. maps 16@5x5
+32x32 S 6@ 2: 1 f. 4 m x1 a 4 ps C 12 5 0 : layer F 8 6 4 : layer O 1 U 0 TPUT
+Full connection Gaussian connections
+Convolutions Subsampling Convolutions Subsampling Full connection
+Figure 16.14 LeNet5, a convolutional neural net for classifying handwritten digits. Source: Figure 2 from
+(LeCun et al. 1998) . Used with kind permission of Yann LeCun.
+
+
+===== PDF_PAGE 601 =====
+570 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+4−>6 3−>5 8−>2 2−>1 5−>3 4−>8 2−>8 3−>5 6−>5 7−>3
+9−>4 8−>0 7−>8 5−>3 8−>7 0−>6 3−>7 2−>7 8−>3 9−>4
+8−>2 5−>3 4−>8 3−>9 6−>0 9−>8 4−>9 6−>1 9−>4 9−>1
+9−>4 2−>0 6−>1 3−>5 3−>2 9−>5 6−>0 6−>0 6−>0 6−>8
+4−>6 7−>3 9−>4 4−>6 2−>7 9−>7 4−>3 9−>4 9−>4 9−>4
+8−>7 4−>2 8−>4 3−>5 8−>4 6−>5 8−>5 3−>8 3−>8 9−>8
+1−>5 9−>8 6−>3 0−>2 6−>5 9−>5 0−>7 1−>6 4−>9 2−>1
+2−>8 8−>5 4−>9 7−>2 7−>2 6−>5 9−>7 6−>1 5−>6 5−>0
+4−>9 2−>8
+Figure 16.15 These are the 82 errors made by LeNet5 on the 10,000 test cases of MNIST. Below each
+image is a label of the form correct-label → estimated-label. Source: Figure 8 of (LeCun et al. 1998).
+Used with kind permission of Yann LeCun. (Compare to Figure 28.4(b) which shows the results of a deep
+generative model.)
+Of course, classifying isolated digits is of limited applicability: in the real world, people usually
+write strings of digits or other letters. This requires both segmentation and classification. Le Cun
+and colleagues devised a way to combine convolutional neural networks with a model similar
+to a conditional random field (described in Section 19.6) to solve this problem. The system
+was eventually deployed by the US postal service. (See (LeCun et al. 1998) for a more detailed
+account of the system, which remains one of the best performing systems for this task.)
+16.5.2 Other kinds of neural networks
+Other network topologies are possible besides the ones discussed above. For example, we can
+have skip arcs that go directly from the input to the output, skipping the hidden layer; we can
+have sparse connections between the layers; etc. However, the MLP always requires that the
+weights form a directed acyclic graph. If we allow feedback connections, the model is known
+as a recurrent neural network (RNN); this defines a nonlinear dynamical system, but does not
+have a simple probabilistic interpretation. Such RNN models are currently the best approach for
+language modeling (i.e., performing word prediction in natural language) (Mikolov et al. 2011),
+significantly outperforming the standard n-gram-based methods discussed in Section 17.2.2. One
+difficulty with RNNs is that they are hard to train, since they suffer from the vanishing gradient
+problem. One solution is to use a model known as long short-term memory or LSTM (Hochreiter
+and Schmidhuber 1997), which is an RNN variant which has proved to be very succesful at various
+
+
+===== PDF_PAGE 602 =====
+16.5. Feedforward neural networks (multilayer perceptrons) 571
+©MIT Press. For evaluation and translation purposes only.
+tasks such as handwriting recognition. A simpler approach is to use a standard RNN, but with
+carefully initialized weights (Mikolov et al. 2011).
+If we allow symmetric connections between the hidden units, the model is known as a Hop-
+field network or associative memory; its probabilistic counterpart is known as a Boltzmann
+machine (see Section 27.7) and can be used for unsupervised learning.
+16.5.3 A brief history of the field
+Neural networks have been the subject of great interest for many decades, due to the desire to
+understand the brain, and to build learning machines. It is not possible to review the entire
+history here. Instead, we just give a few “edited highlights”.
+The field is generally viewed as starting with McCulloch and Pitts (McCulloch and Pitts 1943),
+who devised a simple mathematical model of the neuron in 1943, in which they ap(cid:4)proximated the
+output as a weighted sum of inputs passed through a threshold function, y = I( w x > θ),
+i i i
+for some threshold θ. This is similar to a sigmoidal activation function. Frank Rosenblatt
+invented the perceptron learning algorithm in 1957, which is a way to estimate the parameters of
+a McCulloch-Pitts neuron (see Section 8.5.4 for details). A very similar model called the adaline
+(for adaptive linear element) was invented in 1960 by Widrow and Hoff.
+In 1969, Minsky and Papert (Minsky and Papert 1969) published a famous book called “Percep-
+trons” in which they showed that such linear models, with no hidden layers, were very limited
+in their power, since they cannot classify data that is not linearly separable. This considerably
+reduced interest in the field.
+In 1986, Rumelhart, Hinton and Williams (Rumelhart et al. 1986) discovered the backpropa-
+gation algorithm (see Section 16.5.4), which allows one to fit models with hidden layers. (The
+backpropagation algorithm was originally discovered in (Bryson and Ho 1969), and independently
+in (Werbos 1974); however, it was (Rumelhart et al. 1986) that brought the algorithm to people’s
+attention.) This spawned a decade of intense interest in these models.
+In 1987, Sejnowski and Rosenberg (Sejnowski and Rosenberg 1987) created the famous NETtalk
+system, that learned a mapping from English words to phonetic symbols which could be fed
+into a speech synthesizer. An audio demo of the system as it learns over time can be found at
+http://www.cnl.salk.edu/ParallelNetsPronounce/nettalk.mp3. The systems starts by
+“babbling” and then gradually learns to pronounce English words. NETtalk learned a distributed
+representation (via its hidden layer) of various sounds, and its success spawned a big debate in
+psychology between connectionism, based on neural networks, and computationalism, based
+on syntactic rules. This debate lives on to some extent in the machine learning community,
+where there are still arguments about whether learning is best performed using low-level, “neural-
+like” representations, or using more structured models.
+In 1989, Yann Le Cun and others (LeCun et al. 1989) created the famous LeNet system described
+in Section 16.5.1.
+In 1992, the support vector machine (see Section 14.5) was invented (Boser et al. 1992). SVMs
+provide similar prediction accuracy to neural networks while being considerably easier to train
+(since they use a convex objective function). This spawned a decade of interest in kernel methods
+in general.7 Note, however, that SVMs do not use adaptive basis functions, so they require a fair
+7. It became part of the folklore during the 1990s that to get published in the top machine learning conference known as
+
+
+===== PDF_PAGE 603 =====
+572 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+1
+tanh
+0.8 sigmoid
+0.6
+0.4
+0.2
+0
+−0.2
+−0.4
+−0.6
+−0.8
+−1
+−10 −5 0 5 10
+Figure 16.16 Two possible activation functions. tanh maps R to [−1, +1] and is the preferred nonlin-
+earity for the hidden nodes. sigm maps R to [0, 1] and is the preferred nonlinearity for binary nodes at
+the output layer. Figure generated by tanhPlot.
+amount of human expertise to design the right kernel function.
+In 2002, Geoff Hinton invented the contrastive divergence training procedure (Hinton 2002),
+which provided a way, for the first time, to learn deep networks, by training one layer at a time
+in an unsupervised fashion (see Section 27.7.2.4 for details). This in turn has spawned renewed
+interest in neural networks over the last few years (see Chapter 28).
+16.5.4 The backpropagation algorithm
+Unlike a GLM, the NLL of an MLP is a non-convex function of its parameters. Nevertheless,
+we can find a locally optimal ML or MAP estimate using standard gradient-based optimization
+methods. Since MLPs have lots of parameters, they are often trained on very large data sets.
+Consequently it is common to use first-order online methods, such as stochastic gradient descent
+(Section 8.5.2), whereas GLMs are usually fit with IRLS, which is a second-order offline method.
+We now discuss how to compute the gradient vector of the NLL by applying the chain rule of
+calculus. The resulting algorithm is known as backpropagation, for reasons that will become
+apparent.
+For notational simplicity, we shall assume a model with just one hidden layer. It is helpful
+to distinguish the pre- and post-synaptic values of a neuron, that is, before and after we apply
+the nonlinearity. Let x be the n’th input, a = Vx be the pre-synaptic hidden layer, and
+n n n
+z = g(a ) be the post-synaptic hidden layer, where g is some transfer function. We typically
+n n
+use g(a) = sigm(a), but we may also use g(a) = tanh(a): see Figure 16.16 for a comparison.
+(When the input to sigm or tanh is a vector, we assume it is applied component-wise.)
+We now convert this hidden layer to the output layer as follows. Let b = Wz be the
+n n
+pre-synaptic output layer, and yˆ = h(b ) be the post-synaptic output layer, where h is
+n n
+another nonlinearity, corresponding to the canonical link for the GLM. (We reserve the notation
+NIPS, which stands for “neural information processing systems”, it was important to ensure your paper did not contain
+the word “neural network”!
+
+
+===== PDF_PAGE 604 =====
+16.5. Feedforward neural networks (multilayer perceptrons) 573
+©MIT Press. For evaluation and translation purposes only.
+y , without the hat, for the output corresponding to the n’th training case.) For a regression
+n
+model, we use h(b) = b; for binary classifcation, we use h(b) = [sigm(b ), . . . , sigm(b )]; for
+1 c
+multi-class classification, we use h(b) = S(b).
+We can write the overall model as follows:
+x
+→V
+a
+→g
+z
+→W
+b
+→h
+yˆ (16.65)
+n n n n n
+The parameters of the model are θ = (V, W), the first and second layer weight matrices. Offset
+or bias terms can be accomodated by clamping an element of x and z to 1.8
+n n
+In the regression case, with K outputs, the NLL is given by the squared error:
+(cid:2) (cid:2)
+J(θ) = − (yˆ (θ) − y )2 (16.66)
+nk nk
+n k
+In the classification case, with K classes, the NLL is given by the cross entropy
+(cid:2) (cid:2)
+J(θ) = − y log yˆ (θ) (16.67)
+nk nk
+n k
+Our task is to compute ∇ θJ. We will derive this for each n separately; the overall gradient is
+obtained by summing over n, although often we just use a mini-batch (see Section 8.5.2).
+Let us start by considering the output layer weights. We have
+∂J ∂J
+∇ w k J n = ∂b n ∇ w k b nk = ∂b n z n (16.68)
+nk nk
+since b = wT z . Assuming h is the canonical link function for the output GLM, then
+nk k n
+Equation 9.91 tells us that
+∂J
+n (cid:2) δw = (yˆ − y ) (16.69)
+∂b nk nk nk
+nk
+which is the error signal. So the overall gradient is
+∇ w k J n = δ n w k z n (16.70)
+which is the pre-synaptic input to the output layer, namely z , times the error signal, namely
+n
+δw .
+nk
+For the input layer weights, we have
+∂J
+∇ v j J n = ∂a n ∇ v j a nj (cid:2) δ n v j x n (16.71)
+nj
+where we exploited the fact that a = vT x . All that remains is to compute the first level
+nj j n
+error signal δv . We have
+nj
+(cid:2)K (cid:2)K
+∂J ∂J ∂b ∂b
+δv = n = n nk = δw nk (16.72)
+nj ∂a ∂b ∂a nk ∂a
+nj nk nj nj
+k=1 k=1
+8. In the regression setting, we can easily estimate the variance of the output noise using the empirical variance of the
+residual errors, σˆ2 = 1 ||yˆ(θˆ) − y||2, after training is complete. There will be one value of σ2 for each output node,
+N
+if we are performing multi-target regression, as we usually assume.
+
+
+===== PDF_PAGE 605 =====
+574 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+Now
+(cid:2)
+b = w g(a ) (16.73)
+nk kj nj
+j
+so
+∂b
+nk = w g(cid:4)(a ) (16.74)
+∂a kj nj
+nj
+where g(cid:4)(a) = d g(a). For tanh units, g(cid:4)(a) = d tanh(a) = 1 − tanh2(a) = sech2(a), and
+da da
+for sigmoid units, g(cid:4)(a) = d σ(a) = σ(a)(1 − σ(a)). Hence
+da
+(cid:2)K
+δv = δw w g(cid:4)(a ) (16.75)
+nj nk kj nj
+k=1
+Thus the layer 1 errors can be computed by passing the layer 2 errors back through the W matrix;
+hence the term “backpropagation”. The key property is that we can compute the gradients locally:
+each node only needs to know about its immediate neighbors. This is supposed to make the
+algorithm “neurally plausible”, although this interpretation is somewhat controversial.
+Putting it all together, we can compute all the gradients as follows: we first perform a
+forwards pass to compute a , z , b and yˆ . We then compute the error for the output layer,
+n n n n
+δ(2) = yˆ − y , which we pass backwards through W using Equation 16.75 to compute the
+n n n
+error for the hidden layer, δ(1). We then compute the overall gradient vector by stacking the
+n
+two component vectors as follows:
+(cid:2) (cid:2)
+∇ θJ(θ) = [ δv
+n
+x
+n
+; δw
+n
+z
+n
+] (16.76)
+n n
+16.5.5 Identifiability
+It is easy to see that the parameters of a neural network are not identifiable. For example, we
+can change the sign of the weights going into one of the hidden units, so long as we change
+the sign of all the weights going out of it; these effects cancel, since tanh is an odd function, so
+tanh(−a) = − tanh(a). There will be H such sign flip symmetries, leading to 2H equivalent
+settings of the parameters. Similarly, we can change the identity of the hidden units without
+affecting the likelihood. There are H! such permutations. The total number of equivalent
+parameter settings (with the same likelihood) is therefore H!2H .
+In addition, there may be local minima due to the non-convexity of the NLL. This can
+be a more serious problem, although with enough data, these local optima are often quite
+“shallow”, and simple stochastic optimization methods can avoid them. In addition, it is common
+to perform multiple restarts, and to pick the best solution, or to average over the resulting
+predictions. (It does not make sense to average the parameters themselves, since they are not
+identifiable.)
+16.5.6 Regularization
+As usual, the MLE can overfit, especially if the number of nodes is large. A simple way to prevent
+this is called early stopping, which means stopping the training procedure when the error on
+
+
+===== PDF_PAGE 606 =====
+16.5. Feedforward neural networks (multilayer perceptrons) 575
+©MIT Press. For evaluation and translation purposes only.
+the validation set first starts to increase. This method works because we usually initialize from
+small random weights, so the model is initially simple (since the tanh and sigm functions are
+nearly linear near the origin). As training progresses, the weights become larger, and the model
+becomes nonlinear. Eventually it will overfit.
+Another way to prevent overfitting, that is more in keeping with the approaches used elsewhere
+in this book, is to impose a prior on the parameters, and then use MAP estimation. It is standard
+to use a N (0, α−1I) prior (equivalent to (cid:4) regularization), where α is the precision (strength)
+2
+of the prior. In the neural networks literature, this is called weight decay, since it encourages
+small weights, and hence simpler models. The penalized NLL objective becomes
+(cid:2)N (cid:2) (cid:2)
+α
+J(θ) = − log p(y |x , θ) + [ v2 + w2 ] (16.77)
+n n 2 ij jk
+n=1 ij jk
+(Note that we don’t penalize the bias terms.) The gradient of the modified objective becomes
+(cid:2) (cid:2)
+∇ θJ(θ) = [ δv
+n
+x
+n
++ αv, δw
+n
+z
+n
++ αw] (16.78)
+n n
+as in Section 8.3.6.
+If the regularization is sufficiently strong, it does not matter if we have too many hidden units
+(apart from wasted computation). Hence it is advisable to set H to be as large as you can afford
+(say 10–100), and then to choose an appropriate regularizer. We can set the α parameter by
+cross validation or empirical Bayes (see Section 16.5.7.5).
+As with ridge regression, it is good practice to standardize the inputs to zero mean and unit
+variance, so that the spherical Gaussian prior makes sense.
+16.5.6.1 Consistent Gaussian priors *
+One can show (MacKay 1992) that using the same regularization parameter for both the first and
+second layer weights results in the lack of a certain desirable invariance property. In particular,
+suppose we linearly scale and shift the inputs and/or outputs to a neural network regression
+model. Then we would like the model to learn to predict the same function, by suitably scaling
+its internal weights and bias terms. However, the amount of scaling needed by the first and
+second layer weights to compensate for a change in the inputs and/or outputs is not the same.
+Therefore we need to use a different regularization strength for the first and second layer.
+Fortunately, this is easy to do — we just use the following prior:
+1 1 1 1
+p(θ) = N (W|0, I)N (V|0, I)N (b|0, I)N (c|0, I) (16.79)
+α α α α
+w v b c
+where b and c are the bias terms.9
+To get a feeling for the effect of these hyper-parameters, we can sample MLP parameters
+from this prior and plot the resulting random functions. Figure 16.17 shows some examples.
+Decreasing α allows the first layer weights to get bigger, making the sigmoid-like shape of
+v
+9. Since we are regularizing the output bias terms, it is helpful, in the case of regression, to normalize the target
+responses in the training set to zero mean, to be consistent with the fact that the prior on the output bias has zero
+mean.
+
+
+===== PDF_PAGE 607 =====
+576 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+aw1=0.010, ab1=0.100, aw2=1.000, ab2=1.000 aw1=0.001, ab1=0.100, aw2=1.000, ab2=1.000
+10 10
+8 8
+6 6
+4 4
+2 2
+0 0
+−2 −2
+−4 −4
+−6 −6
+−8 −8
+−10 −10
+−1 −0.5 0 0.5 1 −1 −0.5 0 0.5 1
+(a) (b)
+aw1=0.010, ab1=0.010, aw2=1.000, ab2=1.000 aw1=0.010, ab1=0.100, aw2=0.100, ab2=1.000
+10 10
+8 8
+6 6
+4 4
+2 2
+0 0
+−2 −2
+−4 −4
+−6 −6
+−8 −8
+−10 −10
+−1 −0.5 0 0.5 1 −1 −0.5 0 0.5 1
+(c) (d)
+aw1=0.010, ab1=0.100, aw2=1.000, ab2=0.100
+10
+8
+6
+4
+2
+0
+−2
+−4
+−6
+−8
+−10
+−1 −0.5 0 0.5 1
+(e)
+Figure 16.17 The effects of changing the hyper-parameters on an MLP. (a) Default parameter values
+α = 0.01, α = 0.1, α = 1, α = 1. (b) Decreasing α by factor of 10. (c) Decreasing α by
+v b w c v b
+factor of 10. (d) Decreasing α by factor of 10. (e) Decreasing α by factor of 10. Figure generated by
+w c
+mlpPriorsDemo.
+
+
+===== PDF_PAGE 608 =====
+16.5. Feedforward neural networks (multilayer perceptrons) 577
+©MIT Press. For evaluation and translation purposes only.
+Neural Network 4
+Data
+y Deep Neural Net
+h40 h41 h42 h43 h44 3
+2
+h30 h31 h32 h33 h34
+1
+h20 h21 h22 h23 h24 0
+−1
+h10 h11 h12 h13 h14
+−2
+−3
+x0 x1
+−4
+−5 0 5
+(a) (b)
+Figure 16.18 (a) A deep but sparse neural network. The connections are pruned using (cid:12)1 regularization.
+At each level, nodes numbered 0 are clamped to 1, so their outgoing weights correspond to the offset/bias
+terms. (b) Predictions made by the model on the training set. Figure generated by sparseNnetDemo,
+written by Mark Schmidt.
+the functions steeper. Decreasing α allows the first layer biases to get bigger, which allows
+b
+the center of the sigmoid to shift left and right more. Decreasing α allows the second layer
+w
+weights to get bigger, making the functions more “wiggly” (greater sensitivity to change in the
+input, and hence larger dynamic range). And decreasing α allows the second layer biases to
+c
+get bigger, allowing the mean level of the function to move up and down more. (In Chapter 15,
+we will see an easier way to define priors over functions.)
+16.5.6.2 Weight pruning
+Since there are many weights in a neural network, it is often helpful to encourage sparsity.
+Various ad-hoc methods for doing this, with names such as “optimal brain damage”, were
+devised in the 1990s; see e.g., (Bishop 1995) for details.
+However, we can also use the more principled sparsity-promoting techniques we discussed in
+Chapter 13. One approach is to use an (cid:4) regularizer. See Figure 16.18 for an example. Another
+1
+approach is to use ARD; this is discussed in more detail in Section 16.5.7.5.
+16.5.6.3 Soft weight sharing*
+Another way to regularize the parameters is to encourage similar weights to share statistical
+strength. But how do we know which parameters to group together? We can learn this, by using
+a mixture model. That is, we model p(θ) as a mixture of (diagonal) Gaussians. Parameters that
+are assigned to the same cluster will share the same mean and variance and thus will have
+similar values (assuming the variance for that cluster is low). This is called soft weight sharing
+(Nowlan and Hinton 1992). In practice, this technique is not widely used. See e.g., (Bishop 2006,
+p271) if you want to know the details.
+
+
+===== PDF_PAGE 609 =====
+578 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+16.5.6.4 Semi-supervised embedding *
+An interesting way to regularize “deep” feedforward neural networks is to encourage the hidden
+layers to assign similar objects to similar representations. This is useful because it is often easy
+to obtain “side” information consisting of sets of pairs of similar and dissimilar objects. For
+example, in a video classification task, neighboring frames can be deemed similar, but frames
+that are distant in time can be deemed dis-similar (Mobahi et al. 2009). Note that this can be
+done without collecting any labels.
+Let S = 1 if examples i and j are similar, and S = 0 otherwise. Let f (x ) be some
+ij ij i
+embedding of item x , e.g., f (x ) = z(x , θ), where z is the hidden layer of a neural network.
+i i i
+Now define a loss function L(f (x ), f (x ), S ) that depends on the embedding of two objects,
+i j ij
+and the observed similarity measure. For example, we might want to force similar objects to
+have similar embeddings, and to force the embeddings of dissimilar objects to be a minimal
+distance apart:
+(cid:3)
+||f − f ||2 if S = 1
+L(f , f , S ) = i j ij (16.80)
+i j ij max(0, m − ||f − f ||2) if S = 0
+i j ij
+where m is some minimal margin. We can now define an augmented loss function for training
+the neural network:
+(cid:2) (cid:2)
+NLL(f (x ), y ) +λ L(f (x ), f (x ), S ) (16.81)
+i i i j ij
+i∈L i,j∈U
+where L is the labeled training set, U is the unlabeled training set, and λ ≥ 0 is some tradeoff
+parameter. This is called semi-supervised embedding (Weston et al. 2008).
+Such an objective can be easily optimized by stochastic gradient descent. At each itera-
+tion, pick a random labeled training example, (x , y ), and take a gradient step to optimize
+n n
+NLL(f (x ), y ). Then pick a random pair of similar unlabeled examples x , x (these can
+i i i j
+sometimes be generated on the fly rather than stored in advance), and make a gradient step to
+optimize λL(f (x ), f (x ), 1), Finally, pick a random unlabeled example x , which with high
+i j k
+probability is dissimilar to x , and make a gradient step to optimize λL(f (x ), f (x ), 0).
+i i k
+Note that this technique is effective because it can leverage massive amounts of data. In
+a related approach, (Collobert and Weston 2008) trained a neural network to distinguish valid
+English sentences from invalid ones. This was done by taking all 631 million words from English
+Wikipedia (en.wikipedia.org), and then creating windows of length 11 containing neighboring
+words. This constitutes the positive examples. To create negative examples, the middle word of
+each window was replaced by a random English word (this is likely to be an “invalid” sentence
+— either grammatically and/or semantically — with high probability). This neural network was
+then trained over the course of 1 week, and its latent representation was then used as the input
+to a supervised semantic role labeling task, for which very little labeled training data is available.
+(See also (Ando and Zhang 2005) for related work.)
+16.5.7 Bayesian inference *
+Although MAP estimation is a succesful way to reduce overfitting, there are still some good
+reasons to want to adopt a fully Bayesian approach to “fitting” neural networks:
+
+
+===== PDF_PAGE 610 =====
+16.5. Feedforward neural networks (multilayer perceptrons) 579
+©MIT Press. For evaluation and translation purposes only.
+• Integrating out the parameters instead of optimizing them is a much stronger form of regu-
+larization than MAP estimation.
+• We can use Bayesian model selection to determine things like the hyper-parameter settings
+and the number of hidden units. This is likely to be much faster than cross validation,
+especially if we have many hyper-parameters (e.g., as in ARD).
+• Modelling uncertainty in the parameters will induce uncertainty in our predictive distribu-
+tions, which is important for certain problems such as active learning and risk-averse decision
+making.
+• We can use online inference methods, such as the extended Kalman filter, to do online
+learning (Haykin 2001).
+One can adopt a variety of approximate Bayesian inference techniques in this context. In this
+section, we discuss the Laplace approximation, first suggested in (MacKay 1992, 1995b). One can
+also use hybrid Monte Carlo (Neal 1996), or variational Bayes (Hinton and Camp 1993; Barber
+and Bishop 1998).
+16.5.7.1 Parameter posterior for regression
+We start by considering regression, following the presentation of (Bishop 2006, sec 5.7), which
+summarizes the work of (MacKay 1992, 1995b). We will use a prior of the form p(w) =
+N (w|0, (1/α)I), where w represents all the weights combined. We will denote the precision
+of the noise by β = 1/σ2.
+The posterior can be approximated as follows:
+p(w|D, α, β) ∝ exp(−E(w)) (16.82)
+E(w) (cid:2) βE (w) +αE (w) (16.83)
+D W
+(cid:2)N
+1
+E (w) (cid:2) (y − f (x , w))2 (16.84)
+D 2 n n
+n=1
+1
+E (w) (cid:2) wT w (16.85)
+W 2
+where E is the data error, E is the prior error, and E is the overall error (negative log
+D W
+prior plus log likelihood). Now let us make a second-order Taylor series approximation of E(w)
+around its minimum (the MAP estimate)
+1
+E(w) ≈ E(w ) + (w − w )T A(w − w ) (16.86)
+MP 2 MP MP
+where A is the Hessian of E:
+A = ∇∇E(w ) = βH + αI (16.87)
+MP
+where H = ∇∇E (w ) is the Hessian of the data error. This can be computed exactly
+D MP
+in O(d2) time, where d is the number of parameters, using a variant of backpropagation (see
+(Bishop 2006, sec 5.4) for details). Alternatively, if we use a quasi-Newton method to find
+
+
+===== PDF_PAGE 611 =====
+580 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+the mode, we can use its internally computed (low-rank) approximation to H. (Note that
+diagonal approximations of H are usually very inaccurate.) In either case, using this quadratic
+approximation, the posterior becomes Gaussian:
+p(w|α, β, D) ≈ N (w|w , A−1) (16.88)
+MP
+16.5.7.2 Parameter posterior for classification
+The classification case is the same as the regression case, except β = 1 and E is a cross-
+D
+entropy error of the form
+(cid:2)N
+E (w) (cid:2) [y ln f (x , w) + (1− y ) ln f (x , w)] (16.89)
+D n n n n
+n=1
+(16.90)
+16.5.7.3 Predictive posterior for regression
+The posterior predictive density is given by
+(cid:5)
+p(y|x, D, α, β) = N (y|f (x, w), 1/β)N (w|w , A−1)dw (16.91)
+MP
+This is not analytically tractable because of the nonlinearity of f (x, w). Let us therefore
+construct a first-order Taylor series approximation around the mode:
+f (x, w) ≈ f (x, w ) +g T (w − w ) (16.92)
+MP MP
+where
+g = ∇ wf (x, w)| w=w
+MP
+(16.93)
+We now have a linear-Gaussian model with a Gaussian prior on the weights. From Equation 4.126
+we have
+p(y|x, D, α, β) ≈ N (y|f (x, w ), σ2(x)) (16.94)
+MP
+where the predictive variance depends on the input x as follows:
+σ2(x) = β−1 + gT A−1g (16.95)
+The error bars will be larger in regions of input space where we have little training data. See
+Figure 16.19 for an example.
+16.5.7.4 Predictive posterior for classification
+In this section, we discuss how to approximate p(y|x, D) in the case of binary classification.
+The situation is similar to the case of logistic regression, discussed in Section 8.4.4, except in
+addition the posterior predictive mean is a non-linear function of w. Specifically, we have
+
+
+===== PDF_PAGE 612 =====
+16.5. Feedforward neural networks (multilayer perceptrons) 581
+1.5
+1
+0.5
+0
+−0.5
+−1
+−1.5 0 0.2 0.4 0.6 0.8 1 Input
+tegraT
+©MIT Press. For evaluation and translation purposes only.
+1.5
+data
+function
+network error bars 1
+0.5
+0
+−0.5
+−1 D Fu a n ta ction
+Prediction
+Samples −1.5 0 0.2 0.4 0.6 0.8 1
+(a) (b)
+Figure 16.19 The posterior predictive density for an MLP with 3 hidden nodes, trained on 16 data points.
+The dashed green line is the true function. (a) Result of using a Laplace approximation, after performing
+empirical Bayes to optimize the hyperparameters. The solid red line is the posterior mean prediction,
+and the dotted blue lines are 1 standard deviation above and below the mean. Figure generated by
+mlpRegEvidenceDemo. (b) Result of using hybrid Monte Carlo, using the same trained hyperparameters
+as in (a). The solid red line is the posterior mean prediction, and the dotted blue lines are samples from
+the posterior predictive. Figure generated by mlpRegHmcDemo, written by Ian Nabney.
+μ = E [y|x, w] = sigm(a(x, w)), where a(x, w) is the pre-synaptic output of the final layer.
+Let us make a linear approximation to this:
+a(x, w) ≈ a (x) +g T (w − w ) (16.96)
+MP MP
+where a
+MP
+(x) =a( x, w
+MP
+) and g = ∇ xa(x, w
+MP
+) can be found by a modified version of
+backpropagation. Clearly
+p(a|x, D) ≈ N (a(x, w ), g(x)T A−1g(x)) (16.97)
+MP
+Hence the posterior predictive for the output is
+(cid:5)
+p(y = 1|x, D) = sigm(a)p(a|x, D)da ≈ sigm(κ(σ2)bT w ) (16.98)
+a MP
+where κ is defined by Equation 8.70, which we repeat here for convenience:
+κ(σ2) (cid:2) (1 + πσ2/8)− 1 2 (16.99)
+Of course, a simpler (and potentially more accurate) alternative to this is to draw a few samples
+from the Gaussian posterior and to approximate the posterior predictive using Monte Carlo.
+In either case, the effect of taking uncertainty of the parameters into account, as in Sec-
+tion 8.4.4, is to “moderate” the confidence of the output; the decision boundary itself is unaf-
+fected, however.
+16.5.7.5 ARD for neural networks
+Once we have made the Laplace approximation to the posterior, we can optimize the marginal
+likelihood wrt the hyper-parameters α using the same fixed-point equations as in Section 13.7.4.2.
+
+
+===== PDF_PAGE 613 =====
+582 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+Typically we use one hyper-parameter for the weight vector leaving each node, to achieve an
+effect similar to group lasso (Section 13.5.1). That is, the prior has the form
+(cid:12)D (cid:12)H
+1 1
+p(θ) = N (v |0, I) N (w |0, I) (16.100)
+:,i α :,j α
+v,i w,j
+i=1 j=1
+If we find α = ∞, then input feature i is irrelevant, and its weight vector v is pruned out.
+v,i :,i
+Similarly, if we find α = ∞, then hidden feature j is irrelevant. This is known as automatic
+w,j
+relevancy determination or ARD, which was discussed in detail in Section 13.7. Applying this to
+neural networks gives us an efficient means of variable selection in non-linear models.
+The software package NETLAB contains a simple example of ARD applied to a neural network,
+called demard. This demo creates some data according to a nonlinear regression function
+f (x , x , x ) = sin(2πx ) + (cid:5), where x is a noisy copy of x . We see that x and x are
+1 2 3 1 2 1 2 3
+irrelevant for predicting the target. However, x is correlated with x , which is relevant. Using
+2 1
+ARD, the final hyper-parameters are as follows:
+α = [0.2, 21.4, 249001.8] (16.101)
+This clearly indicates that feature 3 is irrelevant, feature 2 is only weakly relevant, and feature 1
+is very relevant.
+16.6 Ensemble learning
+Ensemble learning refers to learning a weighted combination of base models of the form
+(cid:2)
+f (y|x, π) = w f (y|x) (16.102)
+m m
+m∈M
+where the w are tunable parameters. Ensemble learning is sometimes called a committee
+m
+method, since each base model f gets a weighted “vote”.
+m
+Clearly ensemble learning is closely related to learning adaptive-basis function models. In
+fact, one can argue that a neural net is an ensemble method, where f represents the m’th
+m
+hidden unit, and w are the output layer weights. Also, we can think of boosting as kind of
+m
+ensemble learning, where the weights on the base models are determined sequentially. Below
+we describe some other forms of ensemble learning.
+16.6.1 Stacking
+An obvious way to estimate the weights in Equation 16.102 is to use
+(cid:2)N (cid:2)M
+wˆ = argmin L(y , w f (x)) (16.103)
+i m m
+w
+i=1 m=1
+However, this will result in overfitting, with w being large for the most complex model. A
+m
+simple solution to this is to use cross-validation. In particular, we can use the LOOCV estimate
+(cid:2)N (cid:2)M
+wˆ = argmin L(y , w fˆ−i(x)) (16.104)
+i m m
+w
+i=1 m=1
+
+
+===== PDF_PAGE 614 =====
+16.6. Ensemble learning 583
+©MIT Press. For evaluation and translation purposes only.
+Class C C C C C C · · · C
+1 2 3 4 5 6 15
+0 1 1 0 0 0 0 · · · 1
+1 0 0 1 1 1 1 · · · 0
+.
+.
+.
+9 0 1 1 1 0 0 · · · 0
+Table 16.2 Part of a 15-bit error-correcting output code for a 10-class problem. Each row defines a
+two-class problem. Based on Table 16.1 of (Hastie et al. 2009).
+where fˆ−i(x) is the predictor obtained by training on data excluding (x , y ). This is known
+m i i
+as stacking, which stands for “stacked generalization” (Wolpert 1992). This technique is more
+robust to the case where the “true” model is not in the model class than standard BMA (Clarke
+2003). This approach was used by the Netflix team known as “The Ensemble”, which tied the
+submission of the winning team (BellKor’s Pragmatic Chaos) in terms of accuracy (Sill et al.
+2009). Stacking has also been used for problems such as image segmentation and labeling.
+16.6.2 Error-correcting output codes
+An interesting form of ensemble learning is known as error-correcting output codes or ECOC
+(Dietterich and Bakiri 1995), which can be used in the context of multi-class classification. The
+idea is that we are trying to decode a symbol (namely the class label) which has C possible
+states. We could use a bit vector of length B = $log C% to encode the class label, and train
+2
+B separate binary classifiers to predict each bit. However, by using more bits, and by designing
+the codewords to have maximal Hamming distance from each other, we get a method that is
+more resistant to individual bit-flipping errors (misclassification). For example, in Table 16.2, we
+use B = 15 bits to encode a C = 10 class problem. The minimum Hamming distance between
+any pair of rows is 7. The decoding rule is
+(cid:2)B
+cˆ(x) = min |C − pˆ (x)| (16.105)
+cb b
+c
+b=1
+where C is the b’th bit of the codeword for class c, and pˆ (x) is the probability that output
+cb b
+bit b turns on given input featres x. (James and Hastie 1998) showed that a random code
+worked just as well as the optimal code: both methods work by averaging the results of multiple
+classifiers, thereby reducing variance.
+16.6.3 Ensemble learning is not equivalent to Bayes model averaging
+In Section 5.3, we discussed Bayesian model selection. An alternative to picking the best model,
+and then using this to make predictions, is to make a weighted average of the predictions made
+by each model, i.e., we compute
+(cid:2)
+p(y|x, D) = p(y|x, m, D)p(m|D) (16.106)
+m∈M
+
+
+===== PDF_PAGE 615 =====
+584 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+This is called Bayes model averaging (BMA), and can sometimes give better performance than
+using any single model (Hoeting et al. 1999). Of course, averaging over all models is typically
+computationally infeasible (analytical integration is obviously not possible in a discrete space,
+although one can sometimes use dynamic programming to perform the computation exactly,
+e.g., (Meila and Jaakkola 2006)). A simple approximation is to sample a few models from the
+posterior. An even simpler approximation (and the one most widely used in practice) is to just
+use the MAP model.
+It is important to note that BMA is not equivalent to ensemble learning (Minka 2000c). This
+latter technique corresponds to enlarging the model space, by defining a single new model
+which is a convex combination of base models, as follows:
+(cid:2)
+p(y|x, π) = π p(y|x, m) (16.107)
+m
+m∈M
+In principle, we can now pe(cid:6)rform Bayesian inference to compute p(π|D); we then make pre-
+dictions using p(y|x, D) = p(y|x, π)p(π|D)dπ. However, it is much more common to use
+point estimation methods for π, as we saw above.
+16.7 Experimental comparison
+We have described many different methods for classification and regression. Which one should
+you use? That depends on which inductive bias you think is most appropriate for your domain.
+Usually this is hard to assess, so it is common to just try several different methods, and
+see how they perform empirically. Below we summarize two such comparisons that were
+carefully conducted (although the data sets that were used are relatively small). See the website
+mlcomp.org for a distributed way to perform large scale comparisons of this kind. Of course,
+we must always remember the no free lunch theorem (Section 1.4.9), which tells us that there is
+no universally best learning method.
+16.7.1 Low-dimensional features
+In 2006, Rich Caruana and Alex Niculescu-Mizil (Caruana and Niculescu-Mizil 2006) conducted
+a very extensive experimental comparison of 10 different binary classification methods, on 11
+different data sets. The 11 data sets all had 5000 training cases, and had test sets containing
+∼ 10, 000 examples on average. The number of features ranged from 9 to 200 (see Section 16.7.2
+for a study using high dimensional features). 5-fold cross validation was used to assess average
+test error. (This is separate from any internal CV a method may need to use for model selection.)
+The methods they compared are as follows (listed in roughly decreasing order of performance,
+as assessed by Table 16.3):
+• BST-DT: boosted decision trees
+• RF: random forest
+• BAG-DT: bagged decision trees
+• SVM: support vector machine
+• ANN: artificial neural network
+• KNN: K-nearest neighbors
+
+
+===== PDF_PAGE 616 =====
+16.7. Experimental comparison 585
+©MIT Press. For evaluation and translation purposes only.
+model 1st 2nd 3rd 4th 5th 6th 7th 8th 9th 10th
+bst-dt 0.580 0.228 0.160 0.023 0.009 0.000 0.000 0.000 0.000 0.000
+rf 0.390 0.525 0.084 0.001 0.000 0.000 0.000 0.000 0.000 0.000
+bag-dt 0.030 0.232 0.571 0.150 0.017 0.000 0.000 0.000 0.000 0.000
+svm 0.000 0.008 0.148 0.574 0.240 0.029 0.001 0.000 0.000 0.000
+ann 0.000 0.007 0.035 0.230 0.606 0.122 0.000 0.000 0.000 0.000
+knn 0.000 0.000 0.000 0.009 0.114 0.592 0.245 0.038 0.002 0.000
+bst-stmp 0.000 0.000 0.002 0.013 0.014 0.257 0.710 0.004 0.000 0.000
+dt 0.000 0.000 0.000 0.000 0.000 0.000 0.004 0.616 0.291 0.089
+logreg 0.000 0.000 0.000 0.000 0.000 0.000 0.040 0.312 0.423 0.225
+nb 0.000 0.000 0.000 0.000 0.000 0.000 0.000 0.030 0.284 0.686
+Table 16.3 Fraction of time each method achieved a specified rank, when sorting by mean performance
+across 11 datasets and 8 metrics. Based on Table 4 of (Caruana and Niculescu-Mizil 2006). Used with kind
+permission of Alexandru Niculescu-Mizil.
+• BST-STMP: boosted stumps
+• DT: decision tree
+• LOGREG: logistic regression
+• NB: naive Bayes
+They used 8 different performance measures, which can be divided into three groups. Thresh-
+old metrics just require a point estimate as output. These include accuracy, F-score (Sec-
+tion 5.7.2.3), etc. Ordering/ ranking metrics measure how well positive cases are ordered before
+the negative cases. These include area under the ROC curve (Section 5.7.2.1), average precision,
+and the precision/recall break even point. Finally, the probability metrics included cross-entropy
+(log-loss) and squared error, (y − pˆ)2. Methods such as SVMs that do not produce calibrated
+probabilities were post-processed using Platt’s logistic regression trick (Section 14.5.2.3), or using
+isotonic regression. Performance measures were standardized to a 0:1 scale so they could be
+compared.
+Obviously the results vary by dataset and by metric. Therefore just averaging the performance
+does not necessarily give reliable conclusions. However, one can perform a bootstrap analysis,
+which shows how robust the conclusions are to such changes. The results are shown in
+Table 16.3. We see that most of the time, boosted decision trees are the best method, followed
+by random forests, bagged decision trees, SVMs and neural networks. However, the following
+methods all did relatively poorly: KNN, stumps, single decision trees, logistic regression and
+naive Bayes.
+These results are generally consistent with conventional wisdom of practioners in the field.
+Of course, the conclusions may change if there the features are high dimensional and/ or there
+are lots of irrelevant features (as in Section 16.7.2), or if there is lots of noise, etc.
+16.7.2 High-dimensional features
+In 2003, the NIPS conference ran a competition where the goal was to solve binary classification
+problems with large numbers of (mostly irrelevant) features, given small training sets. (This
+
+
+===== PDF_PAGE 617 =====
+586 Chapter 16. Adaptive basis function models
+©MIT Press. For evaluation and translation purposes only.
+Dataset Domain Type D % probes N N N
+train val test
+Aracene Mass spectrometry Dense 10,000 30 100 100 700
+Dexter Text classification Sparse 20,000 50 300 300 2000
+Dorothea Drug discovery Sparse 100,000 50 800 350 800
+Gisette Digit recognition Dense 5000 30 6000 1000 6500
+Madelon Artificial Dense 500 96 2000 600 1800
+Table 16.4 Summary of the data used in the NIPS 2003 “feature selection” challenge. For the Dorothea
+datasets, the features are binary. For the others, the features are real-valued.
+Screened features ARD
+Method Avg rank Avg time Avg rank Avg time
+HMC MLP 1.5 384 (138) 1.6 600 (186)
+Boosted MLP 3.8 9.4 (8.6) 2.2 35.6 (33.5)
+Bagged MLP 3.6 3.5 (1.1) 4.0 6.4 (4.4)
+Boosted trees 3.4 3.03 (2.5) 4.0 34.1 (32.4)
+Random forests 2.7 1.9 (1.7) 3.2 11.2 (9.3)
+Table 16.5 Performance of different methods on the NIPS 2003 “feature selection” challenge. (HMC
+stands for hybrid Monte Carlo; see Section 24.5.4.) We report the average rank (lower is better) across the
+5 datasets. We also report the average training time in minutes (standard error in brackets). The MCMC
+and bagged MLPs use two hidden layers of 20 and 8 units. The boosted MLPs use one hidden layer with 2
+or 4 hidden units. The boosted trees used depths between 2 and 9, and shrinkage between 0.001 and 0.1.
+Each tree was trained on 80% of the data chosen at random at each step (so-called stochastic gradient
+boosting). From Table 11.3 of (Hastie et al. 2009).
+was called a “feature selection” challenge, but performance was measured in terms of predictive
+accuracy, not in terms of the ability to select features.) The five datasets that were used are
+summarized in Table 16.4. The term probe refers to artifical variables that were added to the
+problem to make it harder. These have no predictive power, but are correlated with the original
+features.
+Results of the competition are discussed in (Guyon et al. 2006). The overall winner was an
+approach based on Bayesian neural networks (Neal and Zhang 2006). In a follow-up study
+(Johnson 2009), Bayesian neural nets (MLPs with 2 hidden layers) were compared to several other
+methods based on bagging and boosting. Note that all of these methods are quite similar: in
+each case, the prediction has the form
+(cid:2)M
+fˆ(x∗) = w
+m
+E [y|x∗, θ
+m
+] (16.108)
+m=1
+The Bayesian MLP was fit by MCMC (hybrid Monte Carlo), so we set w = 1/M and set θ
+m m
+to a draw from the posterior. In bagging, we set w = 1/M and θ is estimated by fitting
+m m
+the model to a bootstrap sample from the data. In boosting, we set w = 1 and the θ are
+m m
+estimated sequentially.
+To improve computational and statistical performance, some feature selection was performed.
+Two methods were considered: simple uni-variate screening using T-tests, and a method based
+
+
+===== PDF_PAGE 618 =====
+16.8. Interpreting black-box models 587
+©MIT Press. For evaluation and translation purposes only.
+on MLP+ARD. Results of this follow-up study are shown in Table 16.5. We see that Bayesian MLPs
+are again the winner. In second place are either random forests or boosted MLPs, depending
+on the preprocessing. However, it is not clear how statistically significant these differences are,
+since the test sets are relatively small.
+In terms of training time, we see that MCMC is much slower than the other methods. It would
+be interesting to see how well deterministic Bayesian inference (e.g., Laplace approximation)
+would perform. (Obviously it will be much faster, but the question is: how much would one lose
+in statistical performance?)
+16.8 Interpreting black-box models
+Linear models are popular in part because they are easy to interpet. However, they often are
+poor predictors, which makes them a poor proxy for “nature’s mechanism”. Thus any conclusions
+about the importance of particular variables should only be based on models that have good
+predictive accuracy (Breiman 2001b). (Interestingly, many standard statistical tests of “goodness
+of fit” do not test the predictive accuracy of a model.)
+In this chapter, we studied black-box models, which do have good predictive accuracy.
+Unfortunately, they are hard to interpret directly. Fortunately, there are various heuristics we can
+use to “probe” such models, in order to assess which input variables are the most important.
+As a simple example, consider the following non-linear function, first proposed (Friedman
+1991) to illustrate the power of MARS:
+f (x) = 10 sin(πx x ) + 20(x − 0.5)2 + 10x + 5x + (cid:5) (16.109)
+1 2 3 4 5
+where (cid:5) ∼ N (0, 1). We see that the output is a complex function of the inputs. By augmenting
+the x vector with additional irrelevant random variables, all drawn uniform on [0, 1], we can
+create a challenging feature selection problem. In the experiments below, we add 5 extra dummy
+variables.
+One useful way to measure the effect of a set s of variables on the output is to compute a
+partial dependence plot (Friedman 2001). This is a plot of f (x ) vs x , where f (x ) is defined
+s s s
+as the response to x with the other predictors averaged out:
+s
+(cid:2)N
+1
+f (x s ) = N f (x s , x i,−s ) (16.110)
+i=1
+Figure 16.20 shows an example where we use sets corresponding to each single variable. The data
+was generated from Equation 16.109, with 5 irrelevant variables added. We then fit a BART model
+(Section 16.2.5) and computed the partial dependence plots. We see that the predicted response
+is invariant for s ∈ {6, . . . , 10}, indicating that these variables are (marginally) irrelevant. The
+response is roughly linear in x and x , and roughly quadratic in x . (The error bars are obtained
+4 5 3
+by computing empirical quantiles of f (x, θ) based on posterior samples of θ; alternatively, we
+can use bootstrap.)
+Another very useful summary computes the relative importance of predictor variables.
+This can be thought of as a nonlinear, or even “model free”, way of performing variable selection,
+although the technique is restricted to ensembles of trees. The basic idea, originally proposed
+in (Breiman et al. 1984), is to count how often variable j is used as a node in any of the trees.
+
+
+===== PDF_PAGE 619 =====
+588 Chapter 16. Adaptive basis function models
+0.2 0.4 0.6 0.8
+02
+81
+61
+41
+21
+01
+8
+x1
+ecnedneped
+laitrap
+0.2 0.4 0.6 0.8
+02
+81
+61
+41
+21
+01
+8
+0.2 0.4 0.6 0.8
+x2
+02
+81
+61
+41
+21
+01
+8
+0.2 0.4 0.6 0.8 1.0
+x3
+02
+81
+61
+41
+21
+01
+8
+0.2 0.4 0.6 0.8
+x4
+02
+81
+61
+41
+21
+01
+8
+x5
+0.2 0.4 0.6 0.8
+02
+81
+61
+41
+21
+01
+8
+x6
+ecnedneped
+laitrap
+0.2 0.4 0.6 0.8 1.0
+02
+81
+61
+41
+21
+01
+8
+0.2 0.4 0.6 0.8
+x7
+02
+81
+61
+41
+21
+01
+8
+0.2 0.4 0.6 0.8
+x8
+02
+81
+61
+41
+21
+01
+8
+0.2 0.4 0.6 0.8
+x9
+02
+81
+61
+41
+21
+01
+8
+x10
+Figure 16.20 Partial dependence plots for the 10 predictors in Friedman’s synthetic 5-dimensional re-
+gression problem. Source: Figure 4 of (Chipman et al. 2010) . Used with kind permission of Hugh
+Chipman.
+1
+1 1
+1
+1
+1 1 1 1 1
+2 4 6 8 10
+egasu
+52.0
+02.0
+51.0
+01.0
+50.0
+00.0
+©MIT Press. For evaluation and translation purposes only.
+2
+3
+2 4
+2 3 5
+34 3 4 2
+5 24 5 5 3 45
+3 4 5 3 4 5 3 4 5 3 4 5 3 4 5
+2 2 2 2 2
+Figure 16.21 Average usage of each variable in a BART model fit to data where only the first 5 features are
+relevant. The different coloured lines correspond to different numbers of trees in the ensemble. Source:
+Figure 5 of (Chipman et al. 2010) . Used with kind permission of Hugh Chipman.
+
+
+===== PDF_PAGE 620 =====
+16.8. Interpreting black-box models 589
+©MIT Press. For evaluation and translation purposes only.
+(cid:4)
+In particular, let v = 1 M I(j ∈ T ) be the proportion of all splitting rules that use x ,
+j M m=1 m j
+where T is the m’th tree. If we can sample the posterior of trees, p(T |D), we can easily
+m 1:M
+compute the posterior for v . Alternatively, we can use bootstrap.
+j
+Figure 16.21 gives an example, using BART. We see that the five relevant variables are chosen
+much more than the five irrelevant variables. As we increase the number M of trees, all the
+variables are more likely to be chosen, reducing the sensitivity of this method, but for small M ,
+the method is farily diagnostic.
+See also (Cortez and Embrechts 2012) for a more recent approach for interpreting black box
+models.
+Exercises
+Exercise 16.1 Nonlinear regression for inverse dynamics
+In this question, we fit a model which can predict what torques a robot needs to apply in order to make
+its arm reach a desired point in space. The data was collected from a SARCOS robot arm with 7 degrees of
+freedom. The input vector x ∈ R21 encodes the desired position, velocity and accelaration of the 7 joints.
+The output vector y ∈ R7 encodes the torques that should be applied to the joints to reach that point.
+The mapping from x to y is highly nonlinear.
+We have N = 48, 933 training points and N = 4, 449 testing points. For simplicity, we following
+test
+standard practice and focus on just predicting a scalar output, namely the torque for the first joint.
+Download the data from http://www.gaussianprocess.org/gpml. Standardize the inputs so they
+have zero mean and unit variance on the training set, and center the outputs so they have zero mean
+on the training set. Apply the corresponding transformations to the test data. Below we will describe
+various models which you should fit to this transformed data. Then make predictions and compute the
+standardized mean squared error on the test set as follows:
+(cid:2)
+1 Ntest (y − yˆ )2
+SMSE = Ntest i=1 i i (16.111)
+σ2
+(cid:2)
+where σ2 = 1 Ntrain(y − y)2 is the variance of the output computed on the training set.
+Ntrain i=1 i
+a. The first method you should try is standard linear regression. Turn in your numbers and code.
+(According to (Rasmussen and Williams 2006, p24), you should be able to achieve a SMSE of 0.075
+using this method.)
+b. Now try running K-means clustering (using cross validation to pick K). Then fit an RBF network to
+the data, using the μ estimated by K-means. Use CV to estimate the RBF bandwidth. What SMSE do
+k
+you get? Turn in your numbers and code. (According to (Rasmussen and Williams 2006, p24), Gaussian
+process regression can get an SMSE of 0.011, so the goal is to get close to that.)
+c. Now try fitting a feedforward neural network. Use CV to pick the number of hidden units and the
+strength of the (cid:12)2 regularizer. What SMSE do you get? Turn in your numbers and code.
+
+
+===== PDF_PAGE 621 =====
+©MIT Press. For evaluation and translation purposes only.

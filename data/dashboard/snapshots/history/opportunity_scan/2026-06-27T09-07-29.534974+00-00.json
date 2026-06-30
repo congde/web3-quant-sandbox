@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "full": false,
+  "scanTime": "2026-06-27T09:07:29Z",
+  "totalScanned": 5,
+  "topK": 3,
+  "opportunities": [
+    {
+      "symbol": "ADI",
+      "pair": "ADI-USDT",
+      "signal": "BUY",
+      "label": "强势上涨",
+      "score": 23.3,
+      "confidence": 53.986000000000004,
+      "change24h": 0.0631,
+      "volume24h": 3934688.93396,
+      "last": 4.7969,
+      "keyReasons": [
+        "24h 涨幅 6.3%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 1
+    },
+    {
+      "symbol": "BLUAI",
+      "pair": "BLUAI-USDT",
+      "signal": "SELL",
+      "label": "明显回调",
+      "score": -20.4,
+      "confidence": 52.222,
+      "change24h": -0.0537,
+      "volume24h": 441406.18989,
+      "last": 0.014188,
+      "keyReasons": [
+        "24h 跌幅 -5.4%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 2
+    },
+    {
+      "symbol": "ETC",
+      "pair": "ETC-USDT",
+      "signal": "BUY",
+      "label": "强势上涨",
+      "score": 20.2,
+      "confidence": 52.132,
+      "change24h": 0.0522,
+      "volume24h": 398560.7019216134,
+      "last": 7.3197,
+      "keyReasons": [
+        "24h 涨幅 5.2%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 3
+    }
+  ],
+  "marketOverview": "扫描 5 个币种，市场方向分化。多头 2、空头 1、中性 0。综合靠前：ADI(强势上涨)、BLUAI(明显回调)、ETC(强势上涨)。",
+  "scanDurationMs": 0,
+  "engine": "sandbox-rule-based",
+  "errors": [],
+  "snapshot": {
+    "name": "opportunity_scan",
+    "saved_at": "2026-06-27T09:07:29.534974+00:00",
+    "origin": "live",
+    "history_id": "2026-06-27T09-07-29.534974+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-06-27T09-07-29.534974+00-00.json"
+  }
+}

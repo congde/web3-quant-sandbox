@@ -28,6 +28,21 @@ def test_save_snapshot_keeps_history_entries() -> None:
     _cleanup_test_dataset(name)
 
 
+def test_snapshot_history_skips_corrupt_entries() -> None:
+    name = "test_persist_corrupt_history"
+    _cleanup_test_dataset(name)
+    sample = {"ok": True, "chance": [{"symbol": "BTC"}], "risk": [], "funds": []}
+    valid = save_snapshot(name, sample, origin="live")
+    broken = history_dir(name) / "9999-empty.json"
+    broken.write_text("", encoding="utf-8")
+
+    history = list_snapshot_history(name)
+    assert all(row["path"] != str(broken) for row in history)
+    assert any(row["path"] == str(valid) for row in history)
+    assert load_snapshot(name)["chance"][0]["symbol"] == "BTC"
+    _cleanup_test_dataset(name)
+
+
 def test_maybe_persist_skips_fixture_source() -> None:
     name = "test_persist_skip"
     _cleanup_test_dataset(name)

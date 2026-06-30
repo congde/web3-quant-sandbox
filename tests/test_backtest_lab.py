@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from backtest.metrics_explain import explain_metrics
-from backtest.pollution import run_pollution_checks
+from backtest.pollution import run_lookahead_effect_demo, run_pollution_checks
 from backtest.research_path import run_research_path
 from backtest.trace import run_ma_crossover_trace, run_teaching_scenario
 from backtest.rolling.service import compare_strategies, compare_windows
@@ -56,6 +56,14 @@ def test_pollution_checks_cover_three_cases() -> None:
     assert by_label["unsafe_import"]["dsl_valid"] is False
     assert by_label["lookahead_shift"]["dsl_valid"] is True
     assert by_label["lookahead_shift"]["lookahead_clean"] is False
+
+
+def test_lookahead_effect_demo_shows_inflated_curve() -> None:
+    payload = run_lookahead_effect_demo()
+    assert payload["ok"] is True
+    assert len(payload["curve"]) == 61
+    assert payload["summary"]["polluted_final_equity"] > payload["summary"]["clean_final_equity"]
+    assert "前视污染" in payload["lesson"]
 
 
 def test_research_path_chains_modules() -> None:

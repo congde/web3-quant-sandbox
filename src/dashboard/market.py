@@ -22,6 +22,7 @@ def refresh_bases() -> None:
 
 def normalize_candle(row: list[Any]) -> dict[str, Any] | None:
     if not row or len(row) < 6:
+        # Field count is too short to represent a complete candle.
         return None
     try:
         ts_sec = int(float(row[0]))
@@ -34,7 +35,11 @@ def normalize_candle(row: list[Any]) -> dict[str, Any] | None:
             "low": float(row[4]),
             "volume": float(row[5]),
         }
-    except (IndexError, ValueError, TypeError):
+    except IndexError:
+        # Upstream row shape changed after the length check.
+        return None
+    except (ValueError, TypeError):
+        # Timestamp or numeric OHLCV fields cannot be interpreted.
         return None
 
 

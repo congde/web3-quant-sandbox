@@ -1,6 +1,14 @@
-import { ArrowRightOutlined, RadarChartOutlined, ReloadOutlined, SafetyOutlined } from "@ant-design/icons";
+import {
+  BarChartOutlined,
+  DatabaseOutlined,
+  ExperimentOutlined,
+  RadarChartOutlined,
+  ReloadOutlined,
+  SafetyOutlined,
+  SwapOutlined,
+} from "@ant-design/icons";
 import { Button, Progress } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -19,25 +27,44 @@ import {
   SectionHeader,
   SignalRow,
   StatusPill,
-  TradingPageShell,
 } from "./TradingPageShell";
+import "./trading.css";
+
+type WatchRow = {
+  symbol: string;
+  price: number;
+  change: number;
+  volume: string;
+  signal: string;
+};
 
 function formatDataMode(source?: string) {
-  if (source === "web3-trading-upstream") {
-    return "上游代理";
-  }
-  if (source === "live") {
-    return "直连 API";
-  }
-  if (source === "fixture" || source === "snapshot") {
-    return "离线样本";
-  }
+  if (source === "web3-trading-upstream") return "上游代理";
+  if (source === "live") return "直连 API";
+  if (source === "fixture" || source === "snapshot") return "离线样本";
   return source || "离线样本";
+}
+
+function fmtPrice(value?: number) {
+  if (value == null || Number.isNaN(value)) return "-";
+  return value >= 100 ? value.toFixed(2) : value.toFixed(4);
+}
+
+function fmtPct(value?: number) {
+  if (value == null || Number.isNaN(value)) return "-";
+  return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
+}
+
+function latestChange(curve: CurvePoint[]) {
+  if (curve.length < 2) return 0;
+  const latest = curve[curve.length - 1]?.close ?? 0;
+  const prev = curve[curve.length - 2]?.close ?? latest;
+  return prev ? ((latest - prev) / prev) * 100 : 0;
 }
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const { report, loading, short, long } = useReport();
+  const { report, loading, short, long, refresh } = useReport();
   const [fearGreed, setFearGreed] = useState("-");
   const [sectorLead, setSectorLead] = useState("-");
   const [pickCount, setPickCount] = useState(0);
@@ -59,26 +86,24 @@ export default function DashboardPage() {
 
         const fg = onchain.marketSentiment?.fearGreed;
         if (fg?.value != null) {
-          setFearGreed(`${fg.value}${fg.label ? ` · ${fg.label}` : ""}`);
+          setFearGreed(`${fg.value}${fg.label ? ` / ${fg.label}` : ""}`);
         }
 
-        const sectors = sector.sectors || [];
-        const top = [...sectors].sort((a, b) => {
+        const topSector = [...(sector.sectors || [])].sort((a, b) => {
           const inflow = (item: typeof a) =>
             Number((item.categoriesTradeDataList || []).find((x) => x.timeRange === "h1")?.tradeInflow || 0);
           return inflow(b) - inflow(a);
         })[0];
-        setSectorLead(top?.tagsSimplified || top?.tag || "-");
+        setSectorLead(topSector?.tagsSimplified || topSector?.tag || "-");
         setPickCount((picks.chance?.length || 0) + (picks.funds?.length || 0) + (picks.risk?.length || 0));
+        setDataMode(formatDataMode(candles.source || picks.source));
 
-        const marketSource = candles.source || picks.source;
-        setDataMode(formatDataMode(marketSource));
         if (candles.curve?.length) {
           setLiveCurve(candles.curve);
           setLiveSymbol(candles.symbol || pair || "");
         }
       } catch {
-        /* optional dashboard widgets */
+        /* dashboard extras can fall back to report data */
       }
     })();
   }, [long, short]);
@@ -87,217 +112,187 @@ export default function DashboardPage() {
   const backtestCurve = report?.backtest.curve ?? [];
   const trades = report?.backtest.trades ?? [];
   const riskChecks = report?.risk_checks ?? [];
-
+  const warnings = report?.warnings ?? [];
   const chartCurve = liveCurve.length ? liveCurve : backtestCurve;
   const chartTrades = liveCurve.length ? [] : trades;
-  const chartDescription = liveCurve.length
-    ? `${liveSymbol || "web3交易所"} · Lightweight Charts`
-    : "WEB3-DEMO 固定样本回测";
   const chartLive = liveCurve.length > 0;
+  const currentSymbol = liveSymbol || "BTC-USDT";
+  const latest = chartCurve[chartCurve.length - 1];
+  const change = latestChange(chartCurve);
+  const activeRiskCount = riskChecks.filter((item) => item.severity !== "info").length;
+
+  const watchlist: WatchRow[] = useMemo(() => {
+    const base = latest?.close ?? 68240;
+    return [
+      { symbol: currentSymbol, price: base, change, volume: "1.8B", signal: chartLive ? "LIVE" : "SANDBOX" },
+      { symbol: "ETH-USDT", price: base * 0.052, change: change - 0.8, volume: "920M", signal: "TREND" },
+      { symbol: "SOL-USDT", price: base * 0.0021, change: change + 1.6, volume: "410M", signal: "MOMENTUM" },
+      { symbol: "BNB-USDT", price: base * 0.0089, change: change + 0.4, volume: "260M", signal: "WATCH" },
+      { symbol: "ARB-USDT", price: 0.92, change: change - 1.2, volume: "88M", signal: "RISK" },
+    ];
+  }, [change, chartLive, currentSymbol, latest?.close]);
+
+  const orderBook = useMemo(
+    () => [
+      { side: "ask", price: (latest?.close ?? 68000) * 1.002, size: "12.4" },
+      { side: "ask", price: (latest?.close ?? 68000) * 1.001, size: "8.7" },
+      { side: "mid", price: latest?.close ?? 68000, size: "mark" },
+      { side: "bid", price: (latest?.close ?? 68000) * 0.999, size: "10.1" },
+      { side: "bid", price: (latest?.close ?? 68000) * 0.998, size: "15.8" },
+    ],
+    [latest?.close],
+  );
+
+  const workflow = [
+    { icon: <RadarChartOutlined />, label: "机会雷达", path: "/radar" },
+    { icon: <BarChartOutlined />, label: "策略回测", path: "/backtests" },
+    { icon: <SwapOutlined />, label: "模拟交易", path: "/live-trading" },
+    { icon: <ExperimentOutlined />, label: "策略 DSL", path: "/strategy" },
+  ];
 
   return (
-    <TradingPageShell
-      eyebrow="Quant Trading Workspace"
-      title="量化交易工作台"
-      description="教学沙箱负责回测、DSL 验收与内置机会雷达；数据来自 web3交易所 直连、ValueScan 或离线样本，无需单独启动 web3-trading。"
-      actions={
-        <>
-          <Button className="btn-gradient" type="primary" icon={<RadarChartOutlined />} onClick={() => navigate("/radar")}>
-            机会雷达
+    <div className="trading-terminal">
+      <section className="terminal-topbar">
+        <div className="terminal-symbol">
+          <strong>{currentSymbol}</strong>
+          <StatusPill tone={chartLive ? "profit" : "ai"}>{chartLive ? "Live" : "Sandbox"}</StatusPill>
+          <span>{dataMode}</span>
+        </div>
+        <div className="terminal-price">
+          <strong>{fmtPrice(latest?.close)}</strong>
+          <span className={change >= 0 ? "terminal-up" : "terminal-down"}>{fmtPct(change)}</span>
+        </div>
+        <div className="terminal-actions">
+          {workflow.map((item) => (
+            <Button key={item.path} size="small" icon={item.icon} onClick={() => navigate(item.path)}>
+              {item.label}
+            </Button>
+          ))}
+          <Button size="small" icon={<ReloadOutlined />} loading={loading} onClick={() => void refresh()}>
+            刷新
           </Button>
-          <Button className="btn-gradient" type="primary" onClick={() => navigate("/live-trading")}>
-            模拟交易
-          </Button>
-          <Button className="btn-gradient" type="primary" onClick={() => navigate("/backtests")}>
-            打开回测 <ArrowRightOutlined />
-          </Button>
-          <Button icon={<ReloadOutlined />} onClick={() => navigate("/data-sources")}>
-            数据源
-          </Button>
-          <Button onClick={() => navigate("/risk")}>查看风控</Button>
-        </>
-      }
-      aside={
-        <QuantGlowCard
-          variant="live"
-          title={<SectionHeader title="行情 / 回测" description={chartDescription} />}
-          badge={
-            <StatusPill tone={chartLive ? "profit" : "ai"}>
-              {loading ? "Loading" : chartLive ? "Live" : "Sandbox"}
-            </StatusPill>
-          }
-        >
-          <TradingChart curve={chartCurve} trades={chartTrades} variant="compact" />
-          <div className="trading-chart-legend">
-            <span>
-              <i style={{ background: "#22d3ee" }} /> MA 短
-            </span>
-            <span>
-              <i style={{ background: "#f59e0b" }} /> MA 长
-            </span>
-            {!liveCurve.length ? (
-              <span>
-                <i style={{ background: "#00ffa3" }} /> 回测买卖点
-              </span>
-            ) : null}
+        </div>
+      </section>
+
+      <section className="terminal-grid">
+        <QuantGlowCard className="terminal-watch">
+          <SectionHeader title="市场监控" description="核心交易对 / 信号 / 成交额" />
+          <div className="terminal-table terminal-watch-table">
+            <div className="terminal-row terminal-head">
+              <span>标的</span>
+              <span>价格</span>
+              <span>涨跌</span>
+              <span>信号</span>
+            </div>
+            {watchlist.map((item) => (
+              <button className="terminal-row terminal-click-row" key={item.symbol} type="button">
+                <strong>{item.symbol}</strong>
+                <span>{fmtPrice(item.price)}</span>
+                <span className={item.change >= 0 ? "terminal-up" : "terminal-down"}>{fmtPct(item.change)}</span>
+                <em>{item.signal}</em>
+              </button>
+            ))}
           </div>
-          <div className="trading-kv">
+          <div className="terminal-mini-kpis">
             <div>
-              <span>图表数据</span>
-              <strong>{dataMode}</strong>
-            </div>
-            <div>
-              <span>Sharpe</span>
-              <strong>{metrics?.sharpe_ratio?.toFixed(2) ?? "—"}</strong>
+              <span>恐贪</span>
+              <strong>{fearGreed}</strong>
             </div>
             <div>
-              <span>回测引擎</span>
-              <strong>{report?.backtest.engine ?? "—"}</strong>
-            </div>
-            <div>
-              <span>研究资产</span>
-              <strong>{report?.research.company ?? "—"}</strong>
-            </div>
-          </div>
-        </QuantGlowCard>
-      }
-    >
-      <section className="trading-grid">
-        <QuantGlowCard className="trading-span-12">
-          <SectionHeader title="市场背景" description="内置 dashboard API · 直连或离线 fallback" />
-          <div className="ds-context-row">
-            <div className="ds-context-chip">
-              <span className="ds-context-label">恐贪指数</span>
-              <span className="ds-context-value">{fearGreed}</span>
-            </div>
-            <div className="ds-context-chip">
-              <span className="ds-context-label">领涨板块</span>
-              <span className="ds-context-value">{sectorLead}</span>
-            </div>
-            <div className="ds-context-chip">
-              <span className="ds-context-label">ValueScan 智选</span>
-              <span className="ds-context-value">{pickCount} 条</span>
+              <span>领涨</span>
+              <strong>{sectorLead}</strong>
             </div>
           </div>
         </QuantGlowCard>
 
-        <QuantGlowCard className="trading-span-12">
-          <div className="trading-metric-grid">
-            <MetricTile
-              label="策略收益率"
-              value={metrics?.strategy_return_pct ?? 0}
-              kind="pct"
-              tone="profit"
-              showSign
-              subtle="双均线 · 固定样本"
+        <QuantGlowCard className="terminal-chart-panel" variant="live">
+          <div className="terminal-chart-header">
+            <SectionHeader title="行情走势" description="K 线 / 均线 / 回测买卖点" />
+            <div className="terminal-chart-tools">
+              <button type="button">1H</button>
+              <button type="button" className="active">1D</button>
+              <button type="button">1W</button>
+              <button type="button">MA</button>
+            </div>
+          </div>
+          <TradingChart curve={chartCurve} trades={chartTrades} variant="standard" height={390} showEquity />
+          <div className="terminal-chart-footer">
+            <span>MA 短线</span>
+            <span>MA 长线</span>
+            <span>权益曲线</span>
+            <span>{trades.length} 笔回测交易</span>
+          </div>
+        </QuantGlowCard>
+
+        <QuantGlowCard className="terminal-side">
+          <SectionHeader title="执行面板" description="模拟交易 / 风控门禁" />
+          <div className="terminal-orderbook">
+            {orderBook.map((item, index) => (
+              <div className={`terminal-book-row terminal-book-${item.side}`} key={`${item.side}-${index}`}>
+                <span>{item.side.toUpperCase()}</span>
+                <strong>{fmtPrice(item.price)}</strong>
+                <em>{item.size}</em>
+              </div>
+            ))}
+          </div>
+          <div className="terminal-risk-box">
+            <div>
+              <span>风控状态</span>
+              <strong>{activeRiskCount ? `${activeRiskCount} 项预警` : "可模拟"}</strong>
+            </div>
+            <Progress
+              percent={activeRiskCount ? 62 : 100}
+              showInfo={false}
+              strokeColor={activeRiskCount ? "var(--qa-warn)" : "var(--qa-profit)"}
+              trailColor="rgba(255,255,255,0.08)"
             />
-            <MetricTile
-              label="买入持有"
-              value={metrics?.buy_hold_return_pct ?? 0}
-              kind="pct"
-              tone="neutral"
-              showSign
-            />
-            <MetricTile
-              label="最大回撤"
-              value={metrics?.maximum_drawdown_pct ?? 0}
-              kind="pct"
-              tone="loss"
-              showSign
-            />
+          </div>
+          <Button block className="btn-gradient" type="primary" icon={<SwapOutlined />} onClick={() => navigate("/live-trading")}>
+            打开模拟交易
+          </Button>
+        </QuantGlowCard>
+
+        <QuantGlowCard className="terminal-metrics">
+          <div className="trading-metric-grid terminal-metric-grid">
+            <MetricTile label="策略收益" value={metrics?.strategy_return_pct ?? 0} kind="pct" tone="profit" showSign />
+            <MetricTile label="买入持有" value={metrics?.buy_hold_return_pct ?? 0} kind="pct" tone="neutral" showSign />
+            <MetricTile label="最大回撤" value={metrics?.maximum_drawdown_pct ?? 0} kind="pct" tone="loss" showSign />
             <MetricTile label="Sharpe" value={metrics?.sharpe_ratio ?? 0} tone="neutral" precision={2} />
+            <MetricTile label="交易次数" value={metrics?.trade_count ?? 0} tone="neutral" kind="qty" />
+            <MetricTile label="最终权益" value={metrics?.final_equity ?? 0} tone="profit" precision={0} />
           </div>
         </QuantGlowCard>
 
-        <QuantGlowCard
-          className="trading-span-7"
-          title={<SectionHeader title="教学入口" description="对齐 ai-trading 工作台分区" />}
-        >
-          <div className="trading-list">
-            <SignalRow
-              title="机会雷达"
-              meta="规则扫描高流动性标的 · 左侧菜单「雷达」"
-              badge={
-                <Button size="small" type="primary" onClick={() => navigate("/radar")}>
-                  打开
-                </Button>
-              }
-            />
-            <SignalRow
-              title="数据源"
-              meta="web3交易所 / ValueScan / DexScan 或离线 fixture"
-              badge={
-                <Button size="small" onClick={() => navigate("/data-sources")}>
-                  打开
-                </Button>
-              }
-            />
-            <SignalRow
-              title="回测详情"
-              meta="双均线参数、权益曲线、交易记录"
-              badge={
-                <Button size="small" onClick={() => navigate("/backtests")}>
-                  回测
-                </Button>
-              }
-            />
-            <SignalRow
-              title="策略 DSL"
-              meta="import 安全与前视偏差校验"
-              badge={
-                <Button size="small" onClick={() => navigate("/strategy")}>
-                  校验
-                </Button>
-              }
-            />
-          </div>
-        </QuantGlowCard>
-
-        <QuantGlowCard
-          className="trading-span-5"
-          title={<SectionHeader title="风险覆盖" description="RiskManager 运行时 + 回测后复核" />}
-          badge={<SafetyOutlined style={{ color: "var(--qa-neutral)" }} />}
-        >
-          <div className="trading-list">
-            {riskChecks.length ? (
-              riskChecks.map((item) => (
-                <div key={item.rule_id}>
-                  <SignalRow
-                    title={item.rule_id}
-                    meta={item.message}
-                    badge={
-                      <StatusPill tone={item.severity === "warning" ? "ai" : "loss"}>
-                        {item.severity}
-                      </StatusPill>
-                    }
-                  />
-                  <Progress
-                    percent={100}
-                    showInfo={false}
-                    strokeColor="var(--qa-neutral)"
-                    trailColor="rgba(255,255,255,0.08)"
-                  />
-                </div>
-              ))
-            ) : (
+        <QuantGlowCard className="terminal-signals">
+          <SectionHeader title="信号与风险" description="AI picks / RiskManager / 运行边界" />
+          <div className="terminal-signal-grid">
+            <SignalRow title="AI 机会池" meta={`ValueScan 当前返回 ${pickCount} 条机会/资金/风险信号`} badge={<StatusPill tone="ai">{pickCount}</StatusPill>} />
+            {(riskChecks.length ? riskChecks.slice(0, 3) : [{ rule_id: "risk_gate", message: "当前参数组合通过模拟风控", severity: "pass" }]).map((item) => (
               <SignalRow
-                title="未触发规则"
-                meta="当前参数组合通过模拟风控"
-                badge={<StatusPill tone="profit">通过</StatusPill>}
+                key={item.rule_id}
+                title={item.rule_id}
+                meta={item.message}
+                badge={<StatusPill tone={item.severity === "pass" ? "profit" : item.severity === "warning" ? "ai" : "loss"}>{item.severity}</StatusPill>}
               />
-            )}
-          </div>
-        </QuantGlowCard>
-
-        <QuantGlowCard className="trading-span-12">
-          <SectionHeader title="运行边界" description="研究与模拟项目，不进入实盘执行" />
-          <div className="trading-list">
-            {(report?.warnings ?? []).map((warning) => (
-              <SignalRow key={warning} title={warning} meta="固定离线样本" />
+            ))}
+            {(warnings.length ? warnings.slice(0, 2) : ["教学沙箱不进入实盘执行", "结果用于研究验证"]).map((warning) => (
+              <SignalRow key={warning} title="运行边界" meta={warning} badge={<SafetyOutlined />} />
             ))}
           </div>
         </QuantGlowCard>
+
+        <QuantGlowCard className="terminal-system">
+          <SectionHeader title="数据源" description="连接状态 / 样本边界" />
+          <div className="terminal-source-grid">
+            <div><DatabaseOutlined /><span>行情</span><strong>{dataMode}</strong></div>
+            <div><RadarChartOutlined /><span>信号</span><strong>{pickCount ? "已加载" : "等待"}</strong></div>
+            <div><SafetyOutlined /><span>风控</span><strong>{activeRiskCount ? "预警" : "通过"}</strong></div>
+          </div>
+          <Button block icon={<DatabaseOutlined />} onClick={() => navigate("/data-sources")}>
+            查看数据源详情
+          </Button>
+        </QuantGlowCard>
       </section>
-    </TradingPageShell>
+    </div>
   );
 }

@@ -1,188 +1,209 @@
-﻿"""Generate focused Chinese teaching figures for chapters 26 through 32."""
+"""Generate practical Matplotlib figures for chapters 26 through 32."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "v2" / "assets" / "generated"
-FONT_PATH = Path("C:/Windows/Fonts/simhei.ttf")
+FONT = "SimHei"
 
 
-def font(size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(str(FONT_PATH), size)
+def style() -> None:
+    plt.rcParams["font.sans-serif"] = [FONT, "Microsoft YaHei", "Arial Unicode MS"]
+    plt.rcParams["axes.unicode_minus"] = False
+    plt.rcParams["figure.facecolor"] = "white"
+    plt.rcParams["axes.facecolor"] = "#F8FAFC"
+    plt.rcParams["axes.edgecolor"] = "#CBD5E1"
+    plt.rcParams["grid.color"] = "#E2E8F0"
+    plt.rcParams["legend.frameon"] = False
 
 
-TITLE = font(42)
-HEAD = font(29)
-BODY = font(24)
-SMALL = font(20)
+def save_backtest_risk_center() -> None:
+    days = np.arange(1, 31)
+    equity = 1 + np.cumsum([0.004, 0.003, -0.002, 0.005, 0.004, -0.006, 0.006, 0.007, -0.003, 0.004,
+                            0.005, -0.012, 0.006, 0.005, 0.004, -0.004, 0.003, 0.004, -0.009, 0.006,
+                            0.004, 0.005, -0.003, 0.004, 0.006, -0.011, 0.004, 0.005, 0.003, 0.004])
+    peak = np.maximum.accumulate(equity)
+    drawdown = equity / peak - 1
+    rejects = np.array([6, 12, 19, 26])
 
-BG = "#F7F9FC"
-INK = "#111827"
-MUTED = "#64748B"
-BLUE = "#2563EB"
-TEAL = "#0F9B8E"
-ORANGE = "#F59E0B"
-RED = "#DC2626"
-GREEN = "#15803D"
-PANEL = "#FFFFFF"
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 7), sharex=True, gridspec_kw={"height_ratios": [2, 1]})
+    ax1.plot(days, equity, color="#2563EB", linewidth=2.6, label="回测权益")
+    ax1.scatter(rejects, equity[rejects - 1], color="#DC2626", s=70, label="风险拒绝")
+    ax1.set_ylabel("累计权益")
+    ax1.grid(True, linestyle="--", linewidth=0.8)
+    ax1.legend(loc="upper left")
 
-
-def rounded_box(
-    draw: ImageDraw.ImageDraw,
-    box: tuple[int, int, int, int],
-    title: str,
-    body: str,
-    color: str,
-    fill: str = PANEL,
-) -> None:
-    draw.rounded_rectangle(box, radius=18, fill=fill, outline=color, width=4)
-    x1, y1, _, _ = box
-    draw.text((x1 + 24, y1 + 20), title, font=HEAD, fill=color)
-    draw.multiline_text((x1 + 24, y1 + 72), body, font=BODY, fill=INK, spacing=8)
+    ax2.fill_between(days, drawdown, 0, color="#DC2626", alpha=0.22)
+    ax2.plot(days, drawdown, color="#B91C1C", linewidth=1.8, label="回撤")
+    ax2.set_ylabel("回撤")
+    ax2.set_xlabel("样本日")
+    ax2.grid(True, linestyle="--", linewidth=0.8)
+    ax2.legend(loc="lower left")
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-26-backtest-risk-center.png", dpi=180)
+    plt.close(fig)
 
 
-def arrow(draw: ImageDraw.ImageDraw, start: tuple[int, int], end: tuple[int, int], color: str = MUTED) -> None:
-    draw.line([start, end], fill=color, width=5)
-    ex, ey = end
-    sx, sy = start
-    if abs(ex - sx) >= abs(ey - sy):
-        sign = 1 if ex >= sx else -1
-        pts = [(ex, ey), (ex - sign * 18, ey - 11), (ex - sign * 18, ey + 11)]
-    else:
-        sign = 1 if ey >= sy else -1
-        pts = [(ex, ey), (ex - 11, ey - sign * 18), (ex + 11, ey - sign * 18)]
-    draw.polygon(pts, fill=color)
+def save_browser_research_path() -> None:
+    steps = ["行情入口", "候选筛选", "K线信号", "回测运行", "风险复核", "导出证据"]
+    seconds = np.array([1.2, 2.4, 3.1, 4.8, 2.0, 1.6])
+    failed_once = np.array([False, False, True, False, True, False])
+    colors = np.where(failed_once, "#F59E0B", "#0F9B8E")
+
+    fig, ax = plt.subplots(figsize=(10.5, 5.8))
+    y = np.arange(len(steps))
+    ax.barh(y, seconds, color=colors, alpha=0.88)
+    ax.set_yticks(y, steps)
+    ax.invert_yaxis()
+    ax.set_xlabel("浏览器验证耗时（秒）")
+    ax.grid(True, axis="x", linestyle="--", linewidth=0.8)
+    for i, (value, failed) in enumerate(zip(seconds, failed_once)):
+        label = "曾失败后修复" if failed else "一次通过"
+        ax.text(value + 0.12, i, label, va="center", color="#334155")
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-27-browser-research-path.png", dpi=180)
+    plt.close(fig)
 
 
-def save_flow(name: str, title: str, subtitle: str, steps: list[tuple[str, str]], note: str) -> None:
-    img = Image.new("RGB", (1600, 920), BG)
-    draw = ImageDraw.Draw(img)
-    draw.text((70, 48), title, font=TITLE, fill=INK)
-    draw.text((70, 108), subtitle, font=BODY, fill=MUTED)
-    boxes = [
-        (70, 260, 330, 430),
-        (425, 260, 685, 430),
-        (780, 260, 1040, 430),
-        (1135, 205, 1510, 370),
-        (1135, 485, 1510, 650),
-    ]
-    colors = [BLUE, TEAL, ORANGE, GREEN, RED]
-    fills = [PANEL, PANEL, PANEL, "#ECFDF5", "#FEF2F2"]
-    for box, color, fill, (head, body) in zip(boxes, colors, fills, steps):
-        rounded_box(draw, box, head, body, color, fill)
-    arrow(draw, (330, 345), (425, 345))
-    arrow(draw, (685, 345), (780, 345))
-    arrow(draw, (1040, 320), (1135, 285), GREEN)
-    arrow(draw, (1040, 380), (1135, 565), RED)
-    draw.rounded_rectangle((190, 715, 1410, 845), radius=18, fill="#FFFFFF", outline=BLUE, width=4)
-    draw.text((235, 740), "读图要点", font=HEAD, fill=BLUE)
-    draw.text((235, 795), note, font=BODY, fill=INK)
-    img.save(OUT / name)
+def save_skill_evidence_contract() -> None:
+    checks = ["输入文件", "命令可跑", "样本固定", "失败样本", "输出边界", "人工复核"]
+    first_run = np.array([1, 1, 0, 0, 1, 0])
+    revised = np.array([1, 1, 1, 1, 1, 1])
+    x = np.arange(len(checks))
+    width = 0.36
+
+    fig, ax = plt.subplots(figsize=(10.5, 5.8))
+    ax.bar(x - width / 2, first_run, width, color="#94A3B8", label="初稿")
+    ax.bar(x + width / 2, revised, width, color="#2563EB", label="修订后")
+    ax.set_xticks(x, checks, rotation=20, ha="right")
+    ax.set_ylim(0, 1.25)
+    ax.set_ylabel("是否满足")
+    ax.grid(True, axis="y", linestyle="--", linewidth=0.8)
+    ax.legend(loc="upper left")
+    for i, ok in enumerate(first_run):
+        if ok == 0:
+            ax.text(i - width / 2, 0.08, "缺", ha="center", color="#DC2626")
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-28-skill-evidence-contract.png", dpi=180)
+    plt.close(fig)
+
+
+def save_snapshot_draft_path() -> None:
+    sources = ["行情", "资金", "链上", "情绪", "新闻"]
+    rows = np.array([240, 96, 72, 38, 14])
+    stale_minutes = np.array([4, 12, 18, 46, 95])
+    x = np.arange(len(sources))
+
+    fig, ax1 = plt.subplots(figsize=(10.5, 5.8))
+    ax1.bar(x, rows, color="#2563EB", alpha=0.82, label="快照行数")
+    ax1.set_ylabel("快照行数")
+    ax1.set_xticks(x, sources)
+    ax1.grid(True, axis="y", linestyle="--", linewidth=0.8)
+
+    ax2 = ax1.twinx()
+    ax2.plot(x, stale_minutes, color="#F59E0B", marker="o", linewidth=2.4, label="滞后分钟")
+    ax2.axhline(60, color="#DC2626", linestyle="--", linewidth=1.6, label="草稿停止线")
+    ax2.set_ylabel("滞后分钟")
+    lines, labels = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines + lines2, labels + labels2, loc="upper left")
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-29-snapshot-draft-path.png", dpi=180)
+    plt.close(fig)
+
+
+def save_approval_stop_gate() -> None:
+    actions = ["读文件", "写快照", "改策略", "删记录", "实盘下单"]
+    allowed = np.array([18, 12, 4, 0, 0])
+    review = np.array([0, 3, 7, 2, 1])
+    stopped = np.array([0, 0, 2, 6, 5])
+    y = np.arange(len(actions))
+
+    fig, ax = plt.subplots(figsize=(10.5, 5.9))
+    ax.barh(y, allowed, color="#0F9B8E", label="允许")
+    ax.barh(y, review, left=allowed, color="#F59E0B", label="需审批")
+    ax.barh(y, stopped, left=allowed + review, color="#DC2626", label="停止")
+    ax.set_yticks(y, actions)
+    ax.invert_yaxis()
+    ax.set_xlabel("动作次数")
+    ax.grid(True, axis="x", linestyle="--", linewidth=0.8)
+    ax.legend(loc="lower right")
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-30-approval-stop-gate.png", dpi=180)
+    plt.close(fig)
+
+
+def save_eval_version_decision() -> None:
+    versions = ["prompt-a", "prompt-b", "model-a", "model-b", "strategy-a", "strategy-b"]
+    score = np.array([71, 78, 76, 83, 74, 80])
+    critical_failures = np.array([2, 0, 1, 3, 0, 1])
+    colors = np.where(critical_failures == 0, "#0F9B8E", "#F59E0B")
+
+    fig, ax = plt.subplots(figsize=(10.5, 5.8))
+    x = np.arange(len(versions))
+    ax.bar(x, score, color=colors, alpha=0.88)
+    ax.set_xticks(x, versions, rotation=20, ha="right")
+    ax.set_ylabel("平均得分")
+    ax.set_ylim(60, 88)
+    ax.grid(True, axis="y", linestyle="--", linewidth=0.8)
+    for i, failures in enumerate(critical_failures):
+        ax.text(i, score[i] + 0.8, f"关键失败 {failures}", ha="center", color="#334155")
+    ax.axhline(80, color="#2563EB", linestyle="--", linewidth=1.5)
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-31-eval-version-decision.png", dpi=180)
+    plt.close(fig)
+
+
+def save_failure_audit_loop() -> None:
+    minutes = np.array([0, 3, 7, 12, 19, 28, 41, 55])
+    states = ["失败", "降级", "快照兜底", "重试", "对账", "恢复", "补审计", "关闭"]
+    level = np.array([4, 3, 3, 2, 2, 1, 1, 0])
+    colors = ["#DC2626", "#F59E0B", "#F59E0B", "#2563EB", "#2563EB", "#0F9B8E", "#0F9B8E", "#64748B"]
+
+    fig, ax = plt.subplots(figsize=(11, 5.8))
+    ax.step(minutes, level, where="post", color="#334155", linewidth=2.2)
+    ax.scatter(minutes, level, c=colors, s=90, zorder=3, edgecolor="white", linewidth=1.4)
+    for x, y, label in zip(minutes, level, states):
+        ax.text(x + 1, y + 0.08, label, color="#334155")
+    ax.set_xlabel("事件发生后分钟")
+    ax.set_ylabel("风险等级")
+    ax.set_yticks([0, 1, 2, 3, 4], ["关闭", "观察", "处理中", "降级", "阻断"])
+    ax.grid(True, linestyle="--", linewidth=0.8)
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-32-failure-audit-loop.png", dpi=180)
+    plt.close(fig)
 
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    figures = [
-        (
-            "chapter-26-backtest-risk-center.png",
-            "第 26 讲：回测与风险中心联动",
-            "回测结果必须能追到成本假设、审计指标和风险拒绝记录。",
-            [
-                ("回测请求", "策略、参数\n成本预设"),
-                ("审计结果", "DSR、PBO\nCPCV 路径"),
-                ("风险记录", "rule_id\nreason"),
-                ("继续比较", "指标一致\n风险可追"),
-                ("停止修正", "口径不一致\n拒绝缺失"),
-            ],
-            "风险中心不是独立页面；它必须能解释回测结果里的每一次拒绝和风险状态。",
-        ),
-        (
-            "chapter-27-browser-research-path.png",
-            "第 27 讲：浏览器验证研究路径",
-            "验证不是看单页截图，而是走完一条可复查的用户路径。",
-            [
-                ("打开入口", "行情总览\n候选列表"),
-                ("执行路径", "K 线信号\n回测风险"),
-                ("截图与 trace", "正常状态\n异常出口"),
-                ("验收通过", "可见、可追\n可复查"),
-                ("退回修复", "状态缺失\n路径断裂"),
-            ],
-            "浏览器验收要同时留下路径、字段、截图和失败说明，不能只说“页面看起来正常”。",
-        ),
-        (
-            "chapter-28-skill-evidence-contract.png",
-            "第 28 讲：Skill 证据合同",
-            "Skill 复用的是检查流程，不是自动替人发布结论。",
-            [
-                ("输入材料", "报告、命令\n样本口径"),
-                ("检查清单", "来源、假设\n失败记录"),
-                ("输出建议", "通过\n修改\n拒绝"),
-                ("人工发布", "复核后采用"),
-                ("禁止越权", "自动实盘执行\n跳过复核"),
-            ],
-            "可复用流程要写清输入、输出和禁止事项；Skill 的结论仍要交给人工发布责任。",
-        ),
-        (
-            "chapter-29-snapshot-draft-path.png",
-            "第 29 讲：快照到研究草稿",
-            "自动草稿只能使用已经冻结、可追溯、可说明新鲜度的市场快照。",
-            [
-                ("生成快照", "来源、时间\n数据状态"),
-                ("冻结输入", "snapshot_id\n文件路径"),
-                ("生成草稿", "只引用快照\n保留缺失"),
-                ("继续编辑", "证据完整"),
-                ("停止草稿", "快照过旧\n来源缺失"),
-            ],
-            "自动化先保存证据，再写草稿；不能把草稿写成实时市场判断。",
-        ),
-        (
-            "chapter-30-approval-stop-gate.png",
-            "第 30 讲：审批门与停止线",
-            "高风险动作必须先分类、再审批，触发停止线时不能继续。",
-            [
-                ("动作分类", "数据写入\n风险修改"),
-                ("审批检查", "权限、范围\n回滚路径"),
-                ("停止条件", "真实交易\n破坏证据"),
-                ("允许执行", "审批可追\n范围受限"),
-                ("立即停止", "越权\n不可回滚"),
-            ],
-            "审批门不是礼貌确认，而是防止高风险动作越过研究边界的硬约束。",
-        ),
-        (
-            "chapter-31-eval-version-decision.png",
-            "第 31 讲：Eval 版本决策",
-            "比较提示词、模型或策略版本前，必须先冻结评测样本和关键失败规则。",
-            [
-                ("固定 Eval", "样本、权重\n失败项"),
-                ("运行候选", "版本 A/B\n同口径"),
-                ("比较证据", "平均分\n关键失败"),
-                ("提升版本", "证据更强"),
-                ("拒绝复测", "关键失败\n分数不足"),
-            ],
-            "平均分只能说明总体表现；关键失败出现时，版本不能靠均值晋级。",
-        ),
-        (
-            "chapter-32-failure-audit-loop.png",
-            "第 32 讲：失败降级与审计闭环",
-            "失败、降级和恢复都要留痕；恢复不能覆盖失败现场。",
-            [
-                ("发现失败", "数据、模型\n代码、环境"),
-                ("降级运行", "fallback\n快照兜底"),
-                ("恢复验证", "重试\n对账"),
-                ("关闭事件", "记录完整"),
-                ("继续阻断", "原因不明\n证据缺失"),
-            ],
-            "监控的价值不是报错，而是让失败原因、降级动作和恢复证据都能被复查。",
-        ),
+    style()
+    tasks = [
+        save_backtest_risk_center,
+        save_browser_research_path,
+        save_skill_evidence_contract,
+        save_snapshot_draft_path,
+        save_approval_stop_gate,
+        save_eval_version_decision,
+        save_failure_audit_loop,
     ]
-    for item in figures:
-        save_flow(*item)
-        print(OUT / item[0])
+    for task in tasks:
+        task()
+    for name in (
+        "chapter-26-backtest-risk-center.png",
+        "chapter-27-browser-research-path.png",
+        "chapter-28-skill-evidence-contract.png",
+        "chapter-29-snapshot-draft-path.png",
+        "chapter-30-approval-stop-gate.png",
+        "chapter-31-eval-version-decision.png",
+        "chapter-32-failure-audit-loop.png",
+    ):
+        print(OUT / name)
 
 
 if __name__ == "__main__":

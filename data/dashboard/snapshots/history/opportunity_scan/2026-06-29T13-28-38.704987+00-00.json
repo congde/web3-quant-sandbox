@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "full": false,
+  "scanTime": "2026-06-29T13:28:38Z",
+  "totalScanned": 5,
+  "topK": 3,
+  "opportunities": [
+    {
+      "symbol": "ADI",
+      "pair": "ADI-USDT",
+      "signal": "WEAK_BUY",
+      "label": "温和上涨",
+      "score": 12.9,
+      "confidence": 47.728,
+      "change24h": 0.0288,
+      "volume24h": 3905790.229986,
+      "last": 5.0951,
+      "keyReasons": [
+        "24h 涨幅 2.9%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 1
+    },
+    {
+      "symbol": "BCH",
+      "pair": "BCH-USDT",
+      "signal": "WEAK_BUY",
+      "label": "温和上涨",
+      "score": 12.0,
+      "confidence": 47.2,
+      "change24h": 0.02,
+      "volume24h": 1769129.786348,
+      "last": 196.84,
+      "keyReasons": [
+        "24h 涨幅 2.0%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 2
+    },
+    {
+      "symbol": "BONK",
+      "pair": "BONK-USDT",
+      "signal": "WEAK_BUY",
+      "label": "温和上涨",
+      "score": 10.3,
+      "confidence": 46.174,
+      "change24h": 0.0229,
+      "volume24h": 371194.8401862204,
+      "last": 4.235e-06,
+      "keyReasons": [
+        "24h 涨幅 2.3%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 3
+    }
+  ],
+  "marketOverview": "扫描 5 个币种，市场整体偏多。多头 3、空头 0、中性 0。综合靠前：ADI(温和上涨)、BCH(温和上涨)、BONK(温和上涨)。",
+  "scanDurationMs": 0,
+  "engine": "sandbox-rule-based",
+  "errors": [],
+  "snapshot": {
+    "name": "opportunity_scan",
+    "saved_at": "2026-06-29T13:28:38.704987+00:00",
+    "origin": "live",
+    "history_id": "2026-06-29T13-28-38.704987+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-06-29T13-28-38.704987+00-00.json"
+  }
+}

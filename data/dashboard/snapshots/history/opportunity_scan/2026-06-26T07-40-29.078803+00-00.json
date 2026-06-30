@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "full": false,
+  "scanTime": "2026-06-26T07:40:29Z",
+  "totalScanned": 5,
+  "topK": 3,
+  "opportunities": [
+    {
+      "symbol": "BLEND",
+      "pair": "BLEND-USDT",
+      "signal": "SELL",
+      "label": "明显回调",
+      "score": -21.6,
+      "confidence": 52.978,
+      "change24h": -0.0663,
+      "volume24h": 923635.07687,
+      "last": 0.05713,
+      "keyReasons": [
+        "24h 跌幅 -6.6%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 1
+    },
+    {
+      "symbol": "APT",
+      "pair": "APT-USDT",
+      "signal": "SELL",
+      "label": "明显回调",
+      "score": -20.2,
+      "confidence": 52.15,
+      "change24h": -0.0525,
+      "volume24h": 750393.32087296,
+      "last": 0.6035,
+      "keyReasons": [
+        "24h 跌幅 -5.2%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 2
+    },
+    {
+      "symbol": "ADI",
+      "pair": "ADI-USDT",
+      "signal": "WEAK_BUY",
+      "label": "温和上涨",
+      "score": 13.0,
+      "confidence": 47.775999999999996,
+      "change24h": 0.0296,
+      "volume24h": 3650740.09033,
+      "last": 4.5113,
+      "keyReasons": [
+        "24h 涨幅 3.0%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 3
+    }
+  ],
+  "marketOverview": "扫描 5 个币种，市场方向分化。多头 1、空头 2、中性 0。综合靠前：BLEND(明显回调)、APT(明显回调)、ADI(温和上涨)。",
+  "scanDurationMs": 0,
+  "engine": "sandbox-rule-based",
+  "errors": [],
+  "snapshot": {
+    "name": "opportunity_scan",
+    "saved_at": "2026-06-26T07:40:29.078803+00:00",
+    "origin": "live",
+    "history_id": "2026-06-26T07-40-29.078803+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-06-26T07-40-29.078803+00-00.json"
+  }
+}

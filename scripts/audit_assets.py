@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "docs" / "v2" / "assets"
 V2 = ROOT / "docs" / "v2"
-PAT = re.compile(r"assets/([^\)\"']+\.png)")
+PAT = re.compile(r"assets/([^\s\)\"']+\.png)")
 
 sys.path.insert(0, str(ROOT / "scripts"))
 from asset_chapter_map import ASSET_USAGE  # noqa: E402

@@ -52,6 +52,37 @@ def test_merge_llm_overrides_signal_fields() -> None:
     assert merged["engineMeta"]["model"] == "deepseek-v4-pro"
 
 
+def test_merge_llm_flags_invalid_signal_and_numeric_range() -> None:
+    baseline = {
+        "ok": True,
+        "signal": "HOLD",
+        "signalLabel": "观望",
+        "confidence": 10,
+        "score": 0,
+        "summary": "rule",
+        "analysis": {},
+    }
+    merged = _merge_llm(
+        baseline,
+        {
+            "signal": "BUY_NOW",
+            "confidence": 130,
+            "score": -140,
+            "summary": "invalid",
+        },
+        "deepseek-v4-pro",
+    )
+
+    assert merged["signal"] == "HOLD"
+    assert merged["confidence"] == 10
+    assert merged["score"] == 0
+    assert merged["reviewFlags"] == [
+        "INVALID_SIGNAL_FALLBACK",
+        "CONFIDENCE_OUT_OF_RANGE",
+        "SCORE_OUT_OF_RANGE",
+    ]
+
+
 def test_run_llm_signal_analysis_without_key_falls_back(monkeypatch) -> None:
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     payload = run_llm_signal_analysis("BTC")

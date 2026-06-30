@@ -10,6 +10,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from matplotlib import pyplot as plt
 
+from dashboard.indicators import atr, bollinger_bands, rolling_rsi, rolling_sma
 from dashboard.kline_analysis import analyze_candles
 
 
@@ -173,7 +174,6 @@ def save_indicators_panel() -> None:
     if analysis.get("bbUpper") and analysis.get("bbLower"):
         axes[0].plot(dates, bb_upper, color=ORANGE, linestyle="--", linewidth=1.2, label="布林上轨(最新)")
         axes[0].plot(dates, bb_lower, color=ORANGE, linestyle=":", linewidth=1.2, label="布林下轨(最新)")
-    axes[0].set_title("第 9 章：固定样本上的指标同屏", loc="left", fontsize=15, fontweight="semibold", color=INK)
     axes[0].legend(frameon=False, ncol=4, loc="upper left")
     axes[0].set_ylabel("价格")
 
@@ -206,11 +206,117 @@ def save_indicators_panel() -> None:
     print(output)
 
 
+def load_candle_series() -> tuple[list[datetime], list[float], list[float], list[float], list[float]]:
+    payload = json.loads(DATA.read_text(encoding="utf-8"))
+    candles = sorted(payload.get("candles") or [], key=lambda row: row.get("tsSec") or 0)
+    dates = [datetime.fromisoformat(str(row["date"])) for row in candles]
+    highs = [float(row["high"]) for row in candles]
+    lows = [float(row["low"]) for row in candles]
+    closes = [float(row["close"]) for row in candles]
+    volumes = [float(row.get("volume") or 0) for row in candles]
+    return dates, highs, lows, closes, volumes
+
+
+def save_indicator_diagnostics() -> None:
+    dates, highs, lows, closes, _ = load_candle_series()
+    rsi14 = rolling_rsi(closes, 14)
+    bands = bollinger_bands(closes, 20, 2.0)
+    atr14 = atr(highs, lows, closes, 14)
+
+    pct_b: list[float | None] = []
+    bandwidth: list[float | None] = []
+    atr_pct: list[float | None] = []
+    for close, upper, middle, lower, atr_value in zip(closes, bands["upper"], bands["middle"], bands["lower"], atr14):
+        if upper is None or lower is None or middle in (None, 0):
+            pct_b.append(None)
+            bandwidth.append(None)
+        else:
+            pct_b.append((close - lower) / (upper - lower) * 100 if upper != lower else None)
+            bandwidth.append((upper - lower) / middle * 100)
+        atr_pct.append((atr_value / close * 100) if atr_value is not None and close else None)
+
+    plt.rcParams.update(
+        {
+            "font.sans-serif": ["Microsoft YaHei", "SimHei", "DejaVu Sans", "Arial", "sans-serif"],
+            "axes.unicode_minus": False,
+            "figure.facecolor": "#FCFCFD",
+            "axes.facecolor": "#FFFFFF",
+            "axes.grid": True,
+            "grid.color": "#E6E8F0",
+        }
+    )
+    fig, axes = plt.subplots(4, 1, figsize=(13, 10), dpi=160, sharex=True)
+
+    axes[0].plot(dates, rsi14, color=PURPLE, linewidth=1.8, label="RSI14")
+    axes[0].axhspan(70, 100, color="#FEE2E2", alpha=0.55)
+    axes[0].axhspan(0, 30, color="#DCFCE7", alpha=0.55)
+    axes[0].set_ylim(0, 100)
+    axes[0].set_ylabel("RSI")
+    axes[0].legend(frameon=False, loc="upper left")
+
+    axes[1].plot(dates, pct_b, color=BLUE, linewidth=1.8, label="%B")
+    axes[1].axhline(100, color=RED, linestyle="--", linewidth=1.0)
+    axes[1].axhline(0, color=TEAL, linestyle="--", linewidth=1.0)
+    axes[1].set_ylabel("%B")
+    axes[1].legend(frameon=False, loc="upper left")
+
+    axes[2].plot(dates, bandwidth, color=ORANGE, linewidth=1.8, label="布林带宽度%")
+    axes[2].set_ylabel("BandWidth")
+    axes[2].legend(frameon=False, loc="upper left")
+
+    axes[3].plot(dates, atr_pct, color=RED, linewidth=1.8, label="ATR14 / close")
+    axes[3].set_ylabel("ATR%")
+    axes[3].set_xlabel("日期")
+    axes[3].legend(frameon=False, loc="upper left")
+
+    for ax in axes:
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+
+    output = OUT / "chapter-09-indicator-diagnostics.png"
+    fig.savefig(output, bbox_inches="tight")
+    plt.close(fig)
+    print(output)
+
+
+def save_sma_window_comparison() -> None:
+    dates, _, _, closes, _ = load_candle_series()
+    sma5 = rolling_sma(closes, 5)
+    sma10 = rolling_sma(closes, 10)
+    sma20 = rolling_sma(closes, 20)
+
+    plt.rcParams.update(
+        {
+            "font.sans-serif": ["Microsoft YaHei", "SimHei", "DejaVu Sans", "Arial", "sans-serif"],
+            "axes.unicode_minus": False,
+            "figure.facecolor": "#FCFCFD",
+            "axes.facecolor": "#FFFFFF",
+            "axes.grid": True,
+            "grid.color": "#E6E8F0",
+        }
+    )
+    fig, ax = plt.subplots(figsize=(13, 6.5), dpi=160)
+    ax.plot(dates, closes, color=INK, linewidth=1.6, label="收盘价")
+    ax.plot(dates, sma5, color=BLUE, linewidth=1.4, label="SMA5")
+    ax.plot(dates, sma10, color=TEAL, linewidth=1.4, label="SMA10")
+    ax.plot(dates, sma20, color=ORANGE, linewidth=1.6, label="SMA20")
+    ax.set_ylabel("价格")
+    ax.set_xlabel("日期")
+    ax.legend(frameon=False, ncol=4, loc="upper left")
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+    output = OUT / "chapter-09-sma-window-comparison.png"
+    fig.savefig(output, bbox_inches="tight")
+    plt.close(fig)
+    print(output)
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    save_indicator_boundary_cards()
-    save_conflict_card()
     save_indicators_panel()
+    save_indicator_diagnostics()
+    save_sma_window_comparison()
 
 
 if __name__ == "__main__":

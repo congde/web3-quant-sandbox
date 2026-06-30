@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "full": false,
+  "scanTime": "2026-06-26T12:07:35Z",
+  "totalScanned": 5,
+  "topK": 3,
+  "opportunities": [
+    {
+      "symbol": "APT",
+      "pair": "APT-USDT",
+      "signal": "SELL",
+      "label": "明显回调",
+      "score": -20.9,
+      "confidence": 52.516,
+      "change24h": -0.0586,
+      "volume24h": 699311.71677382,
+      "last": 0.587,
+      "keyReasons": [
+        "24h 跌幅 -5.9%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 1
+    },
+    {
+      "symbol": "ADI",
+      "pair": "ADI-USDT",
+      "signal": "WEAK_BUY",
+      "label": "温和上涨",
+      "score": 12.3,
+      "confidence": 47.38,
+      "change24h": 0.023,
+      "volume24h": 3826786.859802,
+      "last": 4.558,
+      "keyReasons": [
+        "24h 涨幅 2.3%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 2
+    },
+    {
+      "symbol": "BONK",
+      "pair": "BONK-USDT",
+      "signal": "WEAK_SELL",
+      "label": "温和走弱",
+      "score": -10.5,
+      "confidence": 46.3,
+      "change24h": -0.045,
+      "volume24h": 2152027.0338298623,
+      "last": 4.052e-06,
+      "keyReasons": [
+        "24h 跌幅 -4.5%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 3
+    }
+  ],
+  "marketOverview": "扫描 5 个币种，市场方向分化。多头 1、空头 2、中性 0。综合靠前：APT(明显回调)、ADI(温和上涨)、BONK(温和走弱)。",
+  "scanDurationMs": 0,
+  "engine": "sandbox-rule-based",
+  "errors": [],
+  "snapshot": {
+    "name": "opportunity_scan",
+    "saved_at": "2026-06-26T12:07:35.605163+00:00",
+    "origin": "live",
+    "history_id": "2026-06-26T12-07-35.605163+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-06-26T12-07-35.605163+00-00.json"
+  }
+}

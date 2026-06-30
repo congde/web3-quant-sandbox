@@ -23,11 +23,16 @@ class Price:
     close: float
 
 
-def load_prices(path: Path) -> list[Price]:
-    with path.open(encoding="utf-8", newline="") as handle:
+def load_prices(
+    path: Path,
+    *,
+    delimiter: str = ",",
+    encoding: str = "utf-8",
+) -> list[Price]:
+    with path.open(encoding=encoding, newline="") as handle:
         return [
             Price(row["date"], float(row["close"]))
-            for row in csv.DictReader(handle)
+            for row in csv.DictReader(handle, delimiter=delimiter)
         ]
 
 

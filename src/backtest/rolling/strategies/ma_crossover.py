@@ -41,7 +41,7 @@ class MACrossoverStrategy(Strategy):
         fast_ma = sma_at(closes, fast_period)
         slow_ma = sma_at(closes, slow_period)
 
-        prev_closes = [float(candles[i]["close"]) for i in range(idx - slow_period - 1, idx)]
+        prev_closes = [float(candles[i]["close"]) for i in range(idx - slow_period, idx)]
         prev_fast = sma_at(prev_closes, fast_period)
         prev_slow = sma_at(prev_closes, slow_period)
 

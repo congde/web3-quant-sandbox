@@ -115,6 +115,29 @@ def wrap_text(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.ImageFont, w
     return "\n".join(lines)
 
 
+def _point_from_geometry(geom: ET.Element, name: str) -> tuple[int, int] | None:
+    point = geom.find(f"mxPoint[@as='{name}']")
+    if point is None:
+        return None
+    try:
+        return int(float(point.get("x", 0))), int(float(point.get("y", 0)))
+    except ValueError:
+        return None
+
+
+def _draw_arrow(draw: ImageDraw.ImageDraw, start: tuple[int, int], end: tuple[int, int]) -> None:
+    draw.line((*start, *end), fill="#63738C", width=4)
+    sx, sy = start
+    ex, ey = end
+    if abs(ex - sx) >= abs(ey - sy):
+        sign = 1 if ex >= sx else -1
+        points = [(ex, ey), (ex - sign * 14, ey - 8), (ex - sign * 14, ey + 8)]
+    else:
+        sign = 1 if ey >= sy else -1
+        points = [(ex, ey), (ex - 8, ey - sign * 14), (ex + 8, ey - sign * 14)]
+    draw.polygon(points, fill="#63738C")
+
+
 def fallback_render(drawio: Path, output: Path, page_name: str | None) -> bool:
     try:
         from PIL import Image, ImageDraw, ImageFont
@@ -143,8 +166,12 @@ def fallback_render(drawio: Path, output: Path, page_name: str | None) -> bool:
     if not boxes:
         return False
 
-    width = 1440
-    height = 810
+    try:
+        width = int(float(model.get("pageWidth", 1440)))
+        height = int(float(model.get("pageHeight", 810)))
+    except ValueError:
+        width = 1440
+        height = 810
     img = Image.new("RGB", (width, height), "#F7F8FB")
     draw = ImageDraw.Draw(img)
     font_candidates = (
@@ -167,22 +194,26 @@ def fallback_render(drawio: Path, output: Path, page_name: str | None) -> bool:
             continue
         source = box_by_id.get(cell.get("source", ""))
         target = box_by_id.get(cell.get("target", ""))
-        if not source or not target:
-            continue
-        _, _, _, sx, sy, sw, sh = source
-        _, _, _, tx, ty, tw, th = target
-        draw.line(
-            (sx + sw // 2, sy + sh // 2, tx + tw // 2, ty + th // 2),
-            fill="#63738C",
-            width=4,
-        )
+        geom = cell.find("mxGeometry")
+        if source and target:
+            _, _, _, sx, sy, sw, sh = source
+            _, _, _, tx, ty, tw, th = target
+            _draw_arrow(draw, (sx + sw // 2, sy + sh // 2), (tx + tw // 2, ty + th // 2))
+        elif geom is not None:
+            start = _point_from_geometry(geom, "sourcePoint")
+            end = _point_from_geometry(geom, "targetPoint")
+            if start and end:
+                _draw_arrow(draw, start, end)
 
     colors = ["#2563EB", "#0891B2", "#0F9B8E", "#F59E0B", "#7C3AED"]
     for index, (_, style, text, x, y, w, h) in enumerate(boxes):
-        color = colors[index % len(colors)]
+        stroke_match = re.search(r"strokeColor=(#[0-9A-Fa-f]{6})", style)
+        fill_match = re.search(r"fillColor=(#[0-9A-Fa-f]{6})", style)
+        color = stroke_match.group(1) if stroke_match else colors[index % len(colors)]
+        fill_color = fill_match.group(1) if fill_match else "#FFFFFF"
         is_text_only = style.startswith("text;")
         if not is_text_only:
-            draw.rounded_rectangle((x, y, x + w, y + h), radius=12, outline=color, width=4, fill="#FFFFFF")
+            draw.rounded_rectangle((x, y, x + w, y + h), radius=12, outline=color, width=4, fill=fill_color)
         text_font = title_font if h <= 70 and y < 180 else font
         padding = 4 if is_text_only else 16
         wrapped = wrap_text(draw, text, text_font, max(40, w - padding * 2))

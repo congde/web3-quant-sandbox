@@ -1,81 +1,217 @@
-﻿# web3-quant-sandbox
+# web3-quant-sandbox
 
-**《Codex 与 LLM 量化交易实战》配套研究与模拟策略验证台**
+Web3 量化研究与模拟交易沙箱。项目提供一个本地可运行的研究工作台：行情总览、机会雷达、数据源监控、策略回测、模拟交易、风控中心、策略 DSL 校验与研究报告。
 
-可运行的 Web3 市场研究沙箱：固定离线样本、浏览器 UI 与命令行报告，贯穿 35 讲课程正文。产品代码在 `src/`，上游对照在 `vendor/`，教学样本在 `data/`，章节稿在 `docs/v2/`。
+默认使用仓库内置离线样本和本地快照运行，不连接真实交易账户，不管理钱包，也不会执行真实下单。所有交易相关功能都是研究、回测和模拟用途。
 
-> **课堂契约**  
-> 本仓库训练的是 Codex 交付与验收，不是 Web3 交易入门。案例资产 `示例协议（WEB3-DEMO/USDT）` 完全虚构；默认只读固定离线样本，不连接真实交易所账户或钱包，也不能执行真实交易。**不进入实盘执行。**
+## 主要能力
 
----
+| 能力 | Web 路由 | 后端/代码路径 | 说明 |
+| --- | --- | --- | --- |
+| 市场总览 | `/trading` | `src/dashboard/`, `src/web/src/pages/trading/DashboardPage.tsx` | 多资产行情、K 线、交易信号、风控摘要和执行入口 |
+| 机会雷达 | `/radar` | `src/dashboard/opportunity.py` | 按资金、趋势、链上和风险信号扫描机会 |
+| 数据源 | `/data-sources` | `src/dashboard/snapshot.py`, `src/dashboard/catalog.py` | 查看样本、快照、在线 API 的状态和完整性 |
+| 策略回测 | `/backtests` | `src/backtest/`, `src/backtest/rolling/` | 单策略、窗口对比、Walk-forward、组合和鲁棒性检查 |
+| 模拟交易 | `/live-trading` | `src/strategy_engine/`, `src/risk/` | 基于样本行情的模拟执行，不触达实盘 |
+| 风控中心 | `/risk` | `src/risk/`, `src/backtest/audit/` | 回撤、止损、CPCV、PBO、DSR 等风险视角 |
+| 策略 DSL | `/strategy` | `src/strategy_engine/dsl/` | AST 白名单、import 限制、前视偏差检查和编译验证 |
+| 市场情报 | `/research` | `src/research/`, `src/dashboard/llm_signal.py` | 研究摘要、来源卡片和可选 LLM 信号分析 |
+| CLI 报告 | 无 | `report_cli.py`, `src/research/report.py` | 输出 summary 或 JSON 研究报告 |
 
-## 研究路径一览
+## 快速开始
 
-从「看见市场」到「可验收交付」，浏览器侧栏与 CLI 覆盖同一条链路：
+### 环境要求
 
-```text
-市场总览 /trading  →  深度分析 /radar  →  策略回测 /backtests
-        ↓                                      ↓
-    数据源 /data-sources              策略 DSL /strategy
-        ↓                                      ↓
-    市场情报 /research  ← LLM 信号（可选）   风控中心 /risk
+- Python 3.10+
+- Node.js 18+
+- npm
+
+### Windows PowerShell
+
+```powershell
+py scripts/course.py setup
+py app.py
 ```
 
-| 能力 | 入口 | 说明 |
-|------|------|------|
-| 市场总览 | `/trading` | 行情、资金、链上、AI 精选等面板 |
-| 深度分析 | `/radar` | 结构化机会扫描与排序 |
-| 策略回测 | `/backtests` | 双均线、滚动窗口、Walk-forward、组合与因子挖掘 |
-| 模拟交易 | `/live-trading` | 基于样本的模拟执行界面（非真实下单） |
-| 数据源 | `/data-sources` | 快照状态、来源配置与完整性 |
-| 市场情报 | `/research` | 研究摘要、来源卡；可选 LLM 信号分析 |
-| 策略 DSL | `/strategy` | AST 白名单、import 安全与前视偏差检查 |
-| 风控中心 | `/risk` | 基于回测结果的规则化风险提示 |
-| CLI 报告 | `report_cli.py` | 与 Web 同源 JSON / 摘要输出 |
+如果本机 `py` 启动器配置异常，可以改用：
 
-命令行示例：
+```powershell
+python scripts/course.py setup
+python app.py
+```
+
+启动后打开：
+
+```text
+http://127.0.0.1:8765
+```
+
+根路径会自动进入 `/trading`。
+
+### macOS / Linux
+
+```bash
+make setup
+python app.py
+```
+
+### 前端开发模式
+
+生产模式由 `app.py` 直接服务 `src/web/static/`。开发前端时可以同时启动 Vite：
+
+```powershell
+py app.py
+cd src/web
+npm run dev
+```
+
+前端构建命令：
+
+```powershell
+cd src/web
+npm run build
+```
+
+## 数据模式
+
+Dashboard 数据有三层来源：
+
+1. `data/dashboard/snapshots/`：在线抓取后落盘的最新快照和历史快照。
+2. `data/dashboard/*.json`：仓库内置离线样本，断网也能运行。
+3. 在线 API：仅在配置密钥并启用 `DASHBOARD_DATA_MODE=auto` 或 `live` 时使用。
+
+常用命令：
+
+| 命令 | 作用 |
+| --- | --- |
+| `py scripts/course.py snapshot` | 联网抓取 dashboard 数据并写入快照 |
+| `py scripts/course.py sync-fixtures` | 将完整快照同步为内置样本 |
+| `py scripts/course.py save-offline-data` | 抓取快照并同步离线样本 |
+| `py scripts/course.py build-fixtures` | 用快照或种子数据补齐样本 |
+
+可复制 `.env.example` 为 `.env`，按需配置：
+
+| 变量 | 默认 | 说明 |
+| --- | --- | --- |
+| `DASHBOARD_DATA_MODE` | `offline` | `offline` / `auto` / `live` |
+| `WEB3_TRADING_UPSTREAM` | `never` | 是否代理外部 web3-trading 服务 |
+| `VS_OPEN_API_KEY` / `VS_OPEN_SECRET_KEY` | 空 | ValueScan Open API |
+| `DEX_API_KEY` | 空 | DexScan DEX 数据 |
+| `KUCOIN_PUBLIC_API_BASE` | KuCoin 公网 API | 无密钥行情来源 |
+| `FEAR_GREED_API` | alternative.me | 恐惧贪婪指数 |
+| `OPENAI_API_KEY` | 空 | LLM 信号分析，可兼容 DeepSeek/OpenAI API |
+
+未配置密钥时，应用仍会使用离线样本正常启动。
+
+## HTTP API
+
+`app.py` 默认监听 `127.0.0.1:8765`。
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/` | React SPA 入口 |
+| GET | `/api/report?short=3&long=7` | 统一研究报告 |
+| POST | `/api/validate-strategy` | 校验策略 DSL 代码 |
+| GET | `/api/dashboard/config` | 运行配置 |
+| GET | `/api/dashboard/sources/status` | 数据源状态 |
+| GET | `/api/dashboard/snapshots` | 快照状态 |
+| GET | `/api/dashboard/vs/ai-picks` | AI 精选样本/接口数据 |
+| GET | `/api/dashboard/vs/sector-fund` | 板块资金 |
+| GET | `/api/dashboard/vs/token-fund` | Token 资金 |
+| GET | `/api/dashboard/onchain` | 链上摘要 |
+| GET | `/api/dashboard/dex/trending` | DEX 热门资产 |
+| GET | `/api/dashboard/opportunity-scan` | 机会扫描 |
+| GET | `/api/market/candles` | K 线数据 |
+| GET | `/api/market/tickers` | Ticker 列表 |
+| GET | `/api/market/ticker` | 单个 Ticker 统计 |
+| GET | `/api/market/kline-analysis` | K 线分析 |
+| GET | `/api/dashboard/backtest` | 执行回测 |
+| GET | `/api/dashboard/backtest/compare` | 策略对比 |
+| GET | `/api/dashboard/backtest/windows` | 多窗口对比 |
+| GET | `/api/dashboard/backtest/walk-forward` | Walk-forward 验证 |
+| GET | `/api/dashboard/backtest/portfolio` | 组合对比 |
+| GET | `/api/dashboard/backtest/robustness` | 鲁棒性检查 |
+| GET | `/api/dashboard/backtest/cpcv` | CPCV 检查 |
+| GET | `/api/dashboard/factor-mine` | 因子挖掘 |
+| POST | `/api/dashboard/factor-mine/backtest` | 挖掘因子回测 |
+| GET | `/api/dashboard/signal-analysis` | 规则化信号分析 |
+| GET | `/api/dashboard/llm-signal-analysis` | 启动 LLM 信号分析 |
+| GET | `/api/dashboard/llm-signal-analysis/poll` | 轮询 LLM 分析任务 |
+
+## 命令行报告
 
 ```powershell
 python report_cli.py --format summary
 python report_cli.py --format json --short 3 --long 7
 ```
 
----
+报告内容来自 `src/research/report.py`，会合并样本数据、回测指标、风险检查和执行边界说明。
 
-## 快速开始
+## 项目结构
 
-### 环境要求
+```text
+.
+├── app.py                     # 本地 HTTP 服务，默认 127.0.0.1:8765
+├── report_cli.py              # 命令行研究报告
+├── verify.py                  # 产品验证入口
+├── scripts/
+│   └── course.py              # setup / verify / check / snapshot 等任务
+├── src/
+│   ├── backtest/              # 回测、滚动窗口、审计指标
+│   ├── config/                # 环境变量和上游配置
+│   ├── dashboard/             # 行情、快照、机会扫描、API 适配
+│   ├── data/                  # point-in-time 数据工具
+│   ├── factor_mining/         # 因子挖掘与因子回测
+│   ├── research/              # 研究报告组装
+│   ├── risk/                  # 风控规则和模拟边界
+│   ├── strategy_engine/       # 事件驱动策略引擎与 DSL
+│   ├── ta/                    # 技术指标工具
+│   └── web/                   # React + Ant Design 前端
+├── data/                      # 离线样本和 dashboard 快照
+├── tests/                     # pytest 测试
+├── vendor/                    # 上游对照代码，只读参考
+├── outputs/                   # 生成产物，可按需清理
+└── reports/                   # 报告产物
+```
 
-- **Python 3.10+**（推荐用 `py` / `python3`）
-- **Node.js 18+**（仅 `setup` 构建前端时需要）
+`src/` 是当前产品代码。`vendor/` 只用于对照和 baseline 校验，产品代码不应从 `vendor/` import。
 
-### 1. 克隆与初始化
+## 验证
 
-**Windows PowerShell**
+常用检查：
 
 ```powershell
-git clone https://github.com/congde/web3-quant-sandbox.git
-cd web3-quant-sandbox
-py scripts/course.py setup    # 首次克隆后执行一次
-py app.py
+py scripts/course.py verify
 ```
 
-**macOS / Linux**
+该命令会：
 
-```bash
-git clone https://github.com/congde/web3-quant-sandbox.git
-cd web3-quant-sandbox
-make setup
-python app.py
+1. 安装/刷新前端依赖。
+2. 构建 React 前端。
+3. 检查关键项目文件。
+4. 运行上游 baseline 校验。
+5. 运行 `tests/` 下的 pytest 测试。
+
+完整仓库检查：
+
+```powershell
+py scripts/course.py check
 ```
 
-浏览器打开 **http://127.0.0.1:8765**（默认跳转到 `/trading`）。
+`check` 会额外执行资源审计、vendor 漂移检查和文档类检查。如果只关注当前应用代码，优先看 `verify`。
 
-`setup` 会创建 `.venv`、安装 `requirements.txt` 依赖，并在 `src/web/` 执行 `npm ci && npm run build`，产物写入 `src/web/static/`。
+单独构建前端：
 
-### 2. 端口冲突
+```powershell
+cd src/web
+npm run build
+```
 
-若浏览器显示「Connection Failed」，通常是 **8765 端口被多个 `app.py` 占用**。先停止旧进程，再只启动一次：
+## 端口占用处理
+
+如果启动时报错 `Cannot bind 127.0.0.1:8765`，说明已有进程占用端口。
+
+Windows PowerShell：
 
 ```powershell
 Get-NetTCPConnection -LocalPort 8765 -ErrorAction SilentlyContinue |
@@ -84,216 +220,19 @@ Get-NetTCPConnection -LocalPort 8765 -ErrorAction SilentlyContinue |
 py app.py
 ```
 
-### 3. 前端热更新（开发）
+## 安全边界
 
-```powershell
-py app.py          # 终端 1：API 与静态资源
-cd src/web
-npm run dev        # 终端 2：Vite 开发服务器
-```
+- 默认不连接真实交易所账户或钱包。
+- `/live-trading` 是模拟交易界面，不是实盘交易终端。
+- 策略 DSL 会做 AST 白名单、import 限制和前视偏差检查。
+- 在线数据只用于研究展示和回测输入，不构成投资建议。
+- API 密钥只通过本地 `.env` 读取，不应提交到仓库。
 
----
+## 开发约定
 
-## Dashboard 与离线数据
-
-Dashboard、机会雷达、数据源面板均已内置在 `src/`，**只需启动本仓库**，无需单独运行 `vendor/web3-trading`。
-
-### 三层数据加载
-
-`src/dashboard/snapshot.py` 按以下顺序解析数据：
-
-1. **快照层** — `data/dashboard/snapshots/*.json`（各数据集最新指针）；完整历史在 `snapshots/history/<dataset>/`
-2. **样本层** — `data/dashboard/*.json`（仓库内置教学样本；快照缺失或不完整时回退）
-3. **实时层** — 仅在配置了 API 密钥且 `DASHBOARD_DATA_MODE=auto|live` 时尝试公网 API
-
-在线拉取成功时会自动追加历史快照；API 失败时优先展示最新落盘数据。完整性由 `src/dashboard/catalog.py` 校验——不完整的快照会被跳过并回退到完整样本。
-
-### 目录结构
-
-```text
-data/dashboard/
-├── manifest.json              # 数据集索引：来源、完整性、最近更新时间
-├── ai_picks.json              # 内置样本（git 跟踪，断网可演示）
-├── market_candles.json
-├── opportunity_scan.json
-├── …
-└── snapshots/
-    ├── ai_picks.json          # 各数据集最新指针
-    ├── market_candles.json
-    └── history/               # 每次在线成功追加，不覆盖
-        ├── ai_picks/
-        └── …
-```
-
-教学回测仍只用 `data/prices.csv` 与 `data/company.json` 等固定样本。
-
-### 数据维护命令
-
-| 命令 | 作用 |
-|------|------|
-| `py scripts/course.py snapshot` | 联网抓取 dashboard 数据，写入 `snapshots/` 并更新 `manifest.json` |
-| `py scripts/course.py sync-fixtures` | 将完整快照复制到 `data/dashboard/*.json` 内置样本 |
-| `py scripts/course.py save-offline-data` | 一键：`snapshot` + `sync-fixtures` |
-| `py scripts/course.py build-fixtures` | 用快照或种子数据补齐不完整的内置样本 |
-| `py dashboard_snapshot.py --mode auto` | 同上，可加 `--dry-run` 预览 |
-
-推荐工作流：联网时执行一次 `snapshot` → 断网演示自动读快照 → 若快照也没有，读内置样本。
-
-### 可选配置
-
-复制 `.env.example` 为 `.env`，按需填写 API 密钥：
-
-| 变量 | 默认 | 说明 |
-|------|------|------|
-| `DASHBOARD_DATA_MODE` | `offline` | `offline` / `auto` / `live` |
-| `WEB3_TRADING_UPSTREAM` | `never` | 是否代理外部 web3-trading 实例 |
-| `VS_OPEN_API_KEY` | — | ValueScan Open API |
-| `DEX_API_KEY` | — | DexScan DEX 数据 |
-| `OPENAI_API_KEY` | — | LLM 信号分析（DeepSeek / OpenAI 兼容） |
-
-可选从 sibling `../web3-trading/.env` 复用同名密钥；`vendor/web3-trading` 仅作对照，默认不代理。
-
----
-
-## 仓库结构
-
-```text
-web3-quant-sandbox/
-├── src/                      # 可运行产品
-│   ├── backtest/             # 指标、样本加载、滚动回测
-│   ├── factor_mining/        # 因子挖掘（GP / ML）
-│   ├── research/             # 研究摘要与统一报告
-│   ├── risk/                 # 回测后模拟风控
-│   ├── strategy_engine/      # 事件驱动引擎 + 受限 DSL
-│   ├── dashboard/            # 行情、雷达、快照与 API 适配
-│   └── web/                  # React 前端（Vite）→ 构建到 web/static/
-├── vendor/                   # 只读上游：web3-trading、ai-trading、Qbot
-├── data/                     # 固定离线教学样本
-├── docs/v2/                  # 35 讲正文
-├── docs/samples/             # 非代码练习用小样本
-├── skills/                   # 课程示范 Skill
-├── tests/                    # 项目验收测试
-├── app.py                    # HTTP 入口（8765）
-├── report_cli.py             # 命令行报告
-├── verify.py                 # 产品 + 上游 baseline + pytest
-└── scripts/course.py         # setup / verify / check / snapshot …
-```
-
-### 产品模块
-
-| 模块 | 路径 | 作用 |
-|------|------|------|
-| 研究报告 | `src/research/` | 从 `data/` 组装可追溯研究摘要，合并回测与风控 |
-| 回测 | `src/backtest/` | 双均线策略、Calmar / Sharpe 等指标、滚动窗口 |
-| 因子挖掘 | `src/factor_mining/` | 表达式搜索、ML 特征与 mined factor 回测 |
-| 策略引擎 | `src/strategy_engine/backtest/` | ai-trading 风格事件驱动回测循环 |
-| 受限 DSL | `src/strategy_engine/dsl/` | AST 白名单、校验器、前视偏差检查 |
-| 模拟风控 | `src/risk/` | 回测后的规则化风险提示 |
-| Dashboard | `src/dashboard/` | ValueScan / DexScan / 交易所行情 / 机会雷达 + 快照离线 |
-| Web UI | `src/web/` | Ant Design 侧栏 + Quant Atelier 设计系统 |
-
-前端设计系统复用 `vendor/ai-trading/web`（WorkDAO 星空 / 玻璃态、`quant-atelier/` token、`TradingPageShell` 12 列布局）。融合决策与迁移清单见 [`vendor/FUSION.md`](vendor/FUSION.md)、[`vendor/AI_TRADING_MIGRATION.md`](vendor/AI_TRADING_MIGRATION.md)、[`vendor/QBOT_AUDIT.md`](vendor/QBOT_AUDIT.md)。
-
-**`src/` 不得 import `vendor/`**；教学应用只使用根目录产品与 `data/` 样本。
-
----
-
-## HTTP API（摘要）
-
-`app.py` 在 **8765** 端口提供 REST 接口，完整路由见 `app.py` 与 `src/dashboard/api.py`。
-
-| 方法 | 路径 | 说明 |
-|------|------|------|
-| GET | `/` | SPA 入口 |
-| GET | `/api/report?short=3&long=7` | 统一 JSON 报告 |
-| POST | `/api/validate-strategy` | 请求体 `{"code": "..."}`，DSL 与前视偏差结果 |
-| GET | `/api/dashboard/*` | AI 精选、资金、链上、DEX、机会扫描等 |
-| GET | `/api/market/*` | K 线、Ticker、K 线分析 |
-| GET/POST | `/api/dashboard/backtest/*` | 单次 / 对比 / 窗口 / Walk-forward / 组合回测 |
-| GET/POST | `/api/dashboard/factor-mine*` | 因子挖掘与回测 |
-| GET/POST | `/api/dashboard/llm-signal-analysis*` | LLM 结构化信号（异步 poll） |
-
----
-
-## 开发与验收
-
-| 命令 | 作用 |
-|------|------|
-| `py scripts/course.py setup` | 创建 venv、安装依赖、构建前端 |
-| `py scripts/course.py verify` | 交付物检查 + 上游 baseline + pytest |
-| `py scripts/course.py check` | verify + 资源审计 + 章节稿链接检查 |
-| `py scripts/course.py courseware-check` | 章节稿与仓库一致性 |
-| `py scripts/course.py teaching-plots` | 重生成全部课程教学图（Qbot 风格 + 各讲 PIL/流程图） |
-| `py scripts/course.py print-figures` | 同上（`teaching-plots` 别名） |
-| `py scripts/course.py snapshot` | 联网抓取 dashboard 快照 |
-| `py scripts/course.py save-offline-data` | 快照 + 同步内置样本 |
-
-macOS / Linux 等价：`make setup`、`make verify`、`make check`、`make teaching-plots`。
-
-`verify` 确认交付物齐全、报告含必要边界文案与指标字段，并运行 `vendor/web3-trading`、`vendor/ai-trading` baseline 脚本及 `tests/`。无 web3-trading 时也可单独运行沙箱。
-
-### 教学图
-
-课程配图位于 `docs/v2/assets/` 与 `docs/v2/assets/generated/`。回测类 matplotlib 图固定使用 `data/prices.csv` 与 rolling 回测引擎，**不**调用 tushare / backtrader；流程图与证据链图由各讲专用脚本生成。
-
-| 命令 | 作用 |
-|------|------|
-| `py scripts/course.py teaching-plots` | 一键重生成全部教学图（等同 `print-figures`） |
-| `py scripts/generate_qbot_teaching_plots.py` | 第 4、9、16–19、21 讲 Qbot 风格 matplotlib 图（200 DPI） |
-| `py scripts/generate_supplementary_diagrams.py` | 补充流程图与 draw.io 源文件 |
-| `py scripts/scan_qbot_notebooks.py` | 扫描 `vendor/Qbot` notebook 出图模式（维护者） |
-
-按讲次单独重生成：
-
-| 脚本 | 覆盖讲次 |
-|------|----------|
-| `scripts/generate_chapter01_figures.py` | 第 1 讲 |
-| `scripts/generate_chapter03_figures.py` | 第 3 讲 |
-| `scripts/generate_chapter05_curve.py` | 第 5 讲（证据曲线） |
-| `scripts/generate_chapter05_10_figures.py` | 第 5、7、8、10 讲 |
-| `scripts/generate_chapter06_figures.py` / `generate_chapter06_curve.py` | 第 6 讲 |
-| `scripts/generate_chapter07_snapshot_curve.py` | 第 7 讲（快照历史曲线） |
-| `scripts/generate_chapter08_figures.py` … `generate_chapter12_figures.py` | 第 8–12 讲 |
-| `scripts/generate_chapter13_figures.py` … `generate_chapter21_figures.py` | 第 13–21 讲 |
-| `scripts/generate_chapter21_25_figures.py` | 第 22–25 讲 |
-| `scripts/generate_chapter26_32_figures.py` | 第 26–32 讲 |
-| `scripts/generate_chapter33_35_figures.py` | 第 33–35 讲 |
-
-配图与章节映射见 `scripts/asset_chapter_map.py`；Qbot notebook 对照见 [`vendor/QBOT_AUDIT.md`](vendor/QBOT_AUDIT.md)。
-
----
-
-## 课程文档
-
-**正文**
-
-- [35 讲目录](docs/v2/README.md)
-- [Agent / 贡献约定](AGENTS.md)
-- [产品边界与完成标准](product-brief.md)
-
-**Codex 交付链**
-
-| 文档 | 用途 |
-|------|------|
-| [product-brief.md](product-brief.md) | 产品边界、完成标准与待验证假设 |
-| [research-brief.md](research-brief.md) | 调研目标、问题、证据边界与停止条件 |
-| [research-acceptance.md](research-acceptance.md) | 调研证据规则与通过 / 拒绝 / 停止条件 |
-| [context-pack.md](context-pack.md) | 验收条款到资料、权限、风险与缺口的映射 |
-| [research-report.md](research-report.md) | 调研证据包 |
-| [prd.md](prd.md) | 产品需求 |
-| [plan.md](plan.md) | 实施计划 |
-| [user-test.md](user-test.md) | 用户测试记录 |
-| [eval-rubric.md](eval-rubric.md) | 评测量表 |
-| [playbook.md](playbook.md) | 可复用 Codex 工作手册 |
-
----
-
-## 上游与边界
-
-| 目录 | 角色 |
-|------|------|
-| `vendor/web3-trading/` | 产品形态、回测指标、Dashboard baseline（只读对照） |
-| `vendor/ai-trading/` | 受限 DSL、事件驱动引擎、风控、React 前端 baseline（只读对照） |
-| `vendor/Qbot/` | Notebook 出图模式对照与教学图来源 |
-
-更多工作约定见 [AGENTS.md](AGENTS.md)。
+- 产品代码放在 `src/`。
+- 前端代码放在 `src/web/`。
+- 测试放在 `tests/`。
+- 离线样本放在 `data/`。
+- `vendor/` 为只读上游对照，不从产品代码直接引用。
+- 生成型文件优先放入 `outputs/` 或 `reports/`。

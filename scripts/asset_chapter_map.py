@@ -4,15 +4,15 @@ from __future__ import annotations
 
 # filename -> (chapter markdown basename prefix like "02-", alt text, figure caption suffix)
 ASSET_USAGE: dict[str, tuple[str, str, str]] = {
-    "chapter-14-pollution-gate.png": (
-        "14-",
-        "LLM 污染拦截路径",
-        "幻觉、提示泄漏与未来信息进入结论前的拦截路径",
+    "chapter-20-lookahead-effect-curve.png": (
+        "20-",
+        "前视污染抬高权益曲线",
+        "同一组收益下，偷看当日收益方向的污染规则会把回测权益曲线伪装得更好",
     ),
-    "chapter-15-scoring-rubric.png": (
-        "15-",
-        "LLM 信号评分规程",
-        "固定样本、固定权重与关键失败门禁的评分路径",
+    "chapter-20-pbo-winner-decay.png": (
+        "20-",
+        "样本内冠军样本外掉队",
+        "候选参数的样本内 Sharpe 与样本外 Sharpe 对比，展示样本内冠军可能只是选择过程制造出来的",
     ),
     "chapter-20-overfit-pollution-gate.png": (
         "20-",
@@ -413,20 +413,20 @@ ASSET_USAGE: dict[str, tuple[str, str, str]] = {
         "从调研证据收敛核心用户的过程",
         "从调研证据收敛核心用户的过程",
     ),
-    "chapter-08-cleaning-gates.png": (
+    "chapter-08-code-path.png": (
         "08-",
-        "时间序列清洗门禁",
-        "原始记录、字段契约、时间顺序与用途放行",
+        "时间序列标准化代码路径关系图",
+        "原始数据、标准化函数、完整性检查、来源卡片和测试文件之间的处理与验证路径",
     ),
-    "chapter-08-normalization-trace.png": (
+    "chapter-08-kline-quality-curve.png": (
         "08-",
-        "标准化字段追溯路径",
-        "从页面展示字段反向追到 API、标准化函数和原始 payload",
+        "K 线字段标准化质量曲线",
+        "固定 K 线样本按时间排序后的收盘价、3 日均线和 7 日均线",
     ),
-    "chapter-08-pollution-matrix.png": (
+    "chapter-08-gap-gate-example.png": (
         "08-",
-        "污染样本处理矩阵",
-        "重复时间戳、逆序记录、关键字段缺失和不可转换字符串的降级或拒绝规则",
+        "K 线缺口与未收盘样本门禁示例",
+        "缺失收盘价、展示占位线和未收盘样本在展示、指标、回测中的边界",
     ),
     "chapter-08-browser-state-machine.png": (
         "22-",
@@ -448,70 +448,60 @@ ASSET_USAGE: dict[str, tuple[str, str, str]] = {
         "从真实轨迹提炼 Skill",
         "从成功轨迹提炼 Skill 的流程（预告）",
     ),
-    "chapter-09-indicator-boundaries.png": (
-        "09-",
-        "指标计算与解释边界",
-        "SMA、RSI、布林带和 ATR 的状态描述边界与禁止推断",
-    ),
-    "chapter-09-conflict-card.png": (
-        "09-",
-        "指标冲突解释卡",
-        "均线、RSI、布林带和 ATR 冲突时的合格解释与禁止交易动作",
-    ),
     "chapter-09-indicators-panel.png": (
         "09-",
         "固定样本上的趋势动量波动指标",
         "SMA20、RSI、布林带与 ATR 同屏（参考 Qbot notebook 出图）",
     ),
+    "chapter-09-indicator-diagnostics.png": (
+        "09-",
+        "RSI、布林带和 ATR 诊断曲线",
+        "RSI14、布林带位置、带宽与 ATR% 的维度拆分",
+    ),
+    "chapter-09-sma-window-comparison.png": (
+        "09-",
+        "SMA 窗口敏感性比较",
+        "SMA5、SMA10 与 SMA20 的参数敏感性对照",
+    ),
     "chapter-10-solution-space.png": (
         "10-",
-        "从问题定义到候选方案的展开与收敛",
-        "从问题定义到候选方案的展开与收敛",
+        "方案空间",
+        "方案空间",
     ),
     "chapter-10-tradeoff-triangle.png": (
         "10-",
-        "方案选择的价值—风险—可验证性三角",
-        "方案选择的价值—风险—可验证性三角",
+        "权衡三角",
+        "权衡三角",
     ),
-    "chapter-10-report-layers.png": (
+    "chapter-10-report-metrics.png": (
         "10-",
-        "报告五层结构",
-        "事实、解释、信号、未知和来源在研究报告中的分层保存",
+        "固定样本报告关键指标",
+        "固定样本报告关键指标",
     ),
-    "chapter-10-claim-ledger-review.png": (
+    "chapter-10-equity-drawdown.png": (
         "10-",
-        "主张账本评审",
-        "从报告句子反向定位字段并决定保留、降级、删除或拒绝",
-    ),
-    "chapter-10-claim-traceability.png": (
-        "10-",
-        "报告主张追溯路径",
-        "从报告主张回到来源字段、计算口径与限制声明",
+        "权益曲线与回撤复核",
+        "权益曲线与回撤复核",
     ),
     "chapter-11-mvp-loop.png": (
         "11-",
         "功能清单与最小完整闭环的区别",
         "功能清单与最小完整闭环的区别",
     ),
-    "chapter-11-llm-boundary-card.png": (
+    "chapter-11-llm-gate-outcomes.png": (
         "11-",
-        "LLM 使用边界卡",
-        "模型输出进入研究记录前的允许范围、证据要求和拒绝条件",
+        "模型输出门禁流程",
+        "模型输出经过调用状态、schema、信号枚举、证据路径和执行建议检查后的处理去向",
     ),
-    "chapter-11-fallback-merge.png": (
+    "chapter-11-data-pipeline.png": (
         "11-",
-        "规则基线与 LLM 合并路径",
-        "先生成规则基线再合并 LLM 白名单字段，并在失败或越界时回退",
+        "LLM 研究数据处理流水线",
+        "规则基线、模型解释、结构化门禁和人工复核之间的数据处理路径",
     ),
     "chapter-11-scope-boundary.png": (
         "11-",
         "第一版范围内外与审批边界",
         "第一版范围内外与审批边界",
-    ),
-    "chapter-11-data-pipeline.png": (
-        "11-",
-        "数据处理三段流水线",
-        "数据处理：剖析、转换与对账",
     ),
     "chapter-13-slice-vs-module.png": (
         "13-",
@@ -528,16 +518,6 @@ ASSET_USAGE: dict[str, tuple[str, str, str]] = {
         "假设驱动的仓库勘察循环",
         "开工前：假设驱动的仓库勘察循环",
     ),
-    "chapter-12-context-contract.png": (
-        "12-",
-        "LLM 上下文合同",
-        "市场事实、技术状态、证据列表和交易计划进入提示词前的字段合同",
-    ),
-    "chapter-12-visible-window.png": (
-        "12-",
-        "可见时间窗口",
-        "只有决策时点之前已经可见的字段才能进入 LLM 信号解释上下文",
-    ),
     "chapter-12-prd-review.png": (
         "12-",
         "PRD 审查中的发现、建议与人工决定",
@@ -552,6 +532,26 @@ ASSET_USAGE: dict[str, tuple[str, str, str]] = {
         "12-",
         "把规则编译成执行清单",
         "把 AGENTS 与 verify 规则编译成执行清单（对照）",
+    ),
+    "chapter-12-context-shape.png": (
+        "12-",
+        "BTC 规则基线进入模型上下文的字段体量",
+        "市场、K 线、证据、交易计划和规则信号进入 LLM 上下文后的字段数量",
+    ),
+    "chapter-13-signal-enum-chart.png": (
+        "13-",
+        "结构化信号枚举与研究评分映射",
+        "信号枚举与研究评分之间的映射关系",
+    ),
+    "chapter-14-pollution-cases.png": (
+        "14-",
+        "污染样本的拦截层级与处理动作",
+        "安全空策略、危险导入和未来信息样本在 DSL、前视检查和人工复核中的处理路径",
+    ),
+    "chapter-15-factor-metrics.png": (
+        "15-",
+        "结构化信号进入量化评估后的示例指标",
+        "固定示例序列上的覆盖率、方向命中率、平均置信度和关键失败数",
     ),
     "chapter-15-automation-envelope.png": (
         "15-",
@@ -784,9 +784,9 @@ ASSET_USAGE: dict[str, tuple[str, str, str]] = {
         "自动化等级与人工审批门",
     ),
     "chapter-10-automation-envelope.png": (
-        "28-",
+        "10-",
         "自动化权限包络线",
-        "自动化权限包络线（补充）",
+        "自动化权限包络线",
     ),
     "chapter-29-skill-contract.png": (
         "29-",
@@ -827,16 +827,6 @@ ASSET_USAGE: dict[str, tuple[str, str, str]] = {
         "32-",
         "毕业交付包中事实、产品、实现与验证证据关系",
         "毕业交付包中事实、产品、实现与验证证据关系",
-    ),
-    "chapter-33-diagram.png": (
-        "33-",
-        "从个人实践到可复用 Playbook 的知识阶梯",
-        "从个人实践到可复用 Playbook 的知识阶梯",
-    ),
-    "chapter-33-playbook-ladder.png": (
-        "33-",
-        "Playbook 接手测试与持续改进循环",
-        "Playbook 接手测试与持续改进循环",
     ),
 }
 
@@ -930,4 +920,29 @@ ASSET_USAGE.setdefault(
 ASSET_USAGE.setdefault(
     "chapter-21-qbot-factor-pipeline.png",
     ("21-", "Qbot 因子流水线", "Qbot 因子流水线（补充素材）"),
+)
+for _asset_name, _chapter_prefix in {
+    "chapter-11-llm-execution-curve.png": "11-",
+    "chapter-12-visible-context-curve.png": "12-",
+    "chapter-13-practical-contract-flow.png": "13-",
+    "chapter-14-leakage-inflates-metrics.png": "14-",
+    "chapter-14-lookahead-rules.png": "14-",
+    "chapter-15-prompt-version-comparison.png": "15-",
+    "chapter-15-sample-score-matrix.png": "15-",
+    "chapter-16-action-distribution.png": "16-",
+    "chapter-16-cost-sensitivity.png": "16-",
+    "chapter-16-golden-cross-signal.png": "16-",
+    "chapter-16-strategy-rule-card.png": "16-",
+}.items():
+    ASSET_USAGE.setdefault(
+        _asset_name,
+        (
+            _chapter_prefix,
+            "前视检查规则、风险与处理动作" if _asset_name == "chapter-14-lookahead-rules.png" else _asset_name.removesuffix(".png"),
+            "前视检查样本对应的规则号、时间顺序风险和处理动作" if _asset_name == "chapter-14-lookahead-rules.png" else f"{_asset_name.removesuffix('.png')} supplemental teaching asset",
+        ),
+    )
+ASSET_USAGE.setdefault(
+    "首页概览.png",
+    ("00-", "Web3 研究沙箱首页概览", "Web3 研究沙箱首页概览"),
 )

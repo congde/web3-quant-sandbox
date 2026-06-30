@@ -1,97 +1,118 @@
-"""Generate focused Chinese teaching figures for chapters 33 through 35."""
+"""Generate practical Matplotlib figures for chapters 33 through 35."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "v2" / "assets" / "generated"
-FONT_PATH = Path("C:/Windows/Fonts/simhei.ttf")
+FONT = "SimHei"
 
 
-def font(size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(str(FONT_PATH), size)
+def style() -> None:
+    plt.rcParams["font.sans-serif"] = [FONT, "Microsoft YaHei", "Arial Unicode MS"]
+    plt.rcParams["axes.unicode_minus"] = False
+    plt.rcParams["figure.facecolor"] = "white"
+    plt.rcParams["axes.facecolor"] = "#F8FAFC"
+    plt.rcParams["axes.edgecolor"] = "#CBD5E1"
+    plt.rcParams["grid.color"] = "#E2E8F0"
+    plt.rcParams["legend.frameon"] = False
 
 
-TITLE = font(42)
-HEAD = font(29)
-BODY = font(24)
-BG = "#F7F9FC"
-INK = "#111827"
-MUTED = "#64748B"
-BLUE = "#2563EB"
-TEAL = "#0F9B8E"
-ORANGE = "#F59E0B"
-RED = "#DC2626"
-GREEN = "#15803D"
-PANEL = "#FFFFFF"
+def save_sim_trading_boundary() -> None:
+    modules = ["数据", "信号", "策略", "回测", "风控", "Web"]
+    checks = ["来源", "字段", "成本", "失败", "审计"]
+    matrix = np.array(
+        [
+            [1.0, 1.0, 0.3, 0.8, 0.8],
+            [0.8, 1.0, 0.5, 0.7, 0.9],
+            [0.7, 0.9, 1.0, 0.6, 0.8],
+            [0.8, 0.9, 1.0, 0.7, 0.9],
+            [0.9, 0.8, 0.8, 1.0, 1.0],
+            [0.8, 0.8, 0.6, 0.7, 0.9],
+        ]
+    )
+
+    fig, ax = plt.subplots(figsize=(10, 6.4))
+    im = ax.imshow(matrix, cmap="YlGnBu", vmin=0, vmax=1)
+    ax.set_xticks(np.arange(len(checks)), checks)
+    ax.set_yticks(np.arange(len(modules)), modules)
+    for i in range(len(modules)):
+        for j in range(len(checks)):
+            ax.text(j, i, f"{matrix[i, j]:.1f}", ha="center", va="center", color="#0F172A")
+    cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+    cbar.set_label("验收覆盖度")
+    ax.set_xlabel("验收项")
+    ax.set_ylabel("系统层")
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-33-sim-trading-boundary.png", dpi=180)
+    plt.close(fig)
 
 
-def box(draw: ImageDraw.ImageDraw, rect: tuple[int, int, int, int], title: str, body: str, color: str, fill: str = PANEL) -> None:
-    draw.rounded_rectangle(rect, radius=18, fill=fill, outline=color, width=4)
-    x, y, _, _ = rect
-    draw.text((x + 24, y + 20), title, font=HEAD, fill=color)
-    draw.multiline_text((x + 24, y + 72), body, font=BODY, fill=INK, spacing=8)
+def save_research_path_contracts() -> None:
+    contracts = ["signal", "strategy", "backtest", "risk", "api", "web"]
+    provided = np.array([6, 8, 9, 5, 7, 6])
+    missing = np.array([1, 0, 1, 2, 1, 2])
+    risky = np.array([0, 1, 1, 2, 1, 1])
+    x = np.arange(len(contracts))
+
+    fig, ax = plt.subplots(figsize=(10.5, 5.9))
+    ax.bar(x, provided, color="#0F9B8E", label="已验证字段")
+    ax.bar(x, missing, bottom=provided, color="#F59E0B", label="缺失字段")
+    ax.bar(x, risky, bottom=provided + missing, color="#DC2626", label="需停止字段")
+    ax.set_xticks(x, contracts)
+    ax.set_ylabel("字段数量")
+    ax.grid(True, axis="y", linestyle="--", linewidth=0.8)
+    ax.legend(loc="upper left", ncol=3)
+    for i, value in enumerate(missing + risky):
+        if value > 0:
+            ax.text(i, provided[i] + value + 0.2, f"待查 {value}", ha="center", color="#334155")
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-34-research-path-contracts.png", dpi=180)
+    plt.close(fig)
 
 
-def arrow(draw: ImageDraw.ImageDraw, start: tuple[int, int], end: tuple[int, int], color: str = MUTED) -> None:
-    draw.line([start, end], fill=color, width=5)
-    ex, ey = end
-    sign = 1 if ex >= start[0] else -1
-    draw.polygon([(ex, ey), (ex - sign * 18, ey - 11), (ex - sign * 18, ey + 11)], fill=color)
+def save_acceptance_retro_loop() -> None:
+    rounds = np.arange(1, 7)
+    verify_pass = np.array([62, 71, 78, 84, 91, 95])
+    blocked = np.array([11, 8, 6, 4, 2, 1])
+    manual_findings = np.array([7, 6, 5, 3, 2, 2])
 
+    fig, ax1 = plt.subplots(figsize=(10.5, 5.9))
+    ax1.plot(rounds, verify_pass, color="#2563EB", marker="o", linewidth=2.6, label="自动检查通过率")
+    ax1.set_xlabel("迭代轮次")
+    ax1.set_ylabel("通过率（%）")
+    ax1.set_ylim(55, 100)
+    ax1.grid(True, linestyle="--", linewidth=0.8)
 
-def flow(filename: str, title: str, subtitle: str, steps: list[tuple[str, str]], note: str) -> None:
-    img = Image.new("RGB", (1600, 920), BG)
-    draw = ImageDraw.Draw(img)
-    draw.text((70, 48), title, font=TITLE, fill=INK)
-    draw.text((70, 108), subtitle, font=BODY, fill=MUTED)
-    rects = [(70, 270, 330, 440), (425, 270, 685, 440), (780, 270, 1040, 440), (1135, 210, 1510, 375), (1135, 485, 1510, 650)]
-    colors = [BLUE, TEAL, ORANGE, GREEN, RED]
-    fills = [PANEL, PANEL, PANEL, "#ECFDF5", "#FEF2F2"]
-    for rect, (title_i, body_i), color, fill in zip(rects, steps, colors, fills):
-        box(draw, rect, title_i, body_i, color, fill)
-    arrow(draw, (330, 355), (425, 355))
-    arrow(draw, (685, 355), (780, 355))
-    arrow(draw, (1040, 330), (1135, 292), GREEN)
-    arrow(draw, (1040, 390), (1135, 565), RED)
-    draw.rounded_rectangle((190, 715, 1410, 845), radius=18, fill="#FFFFFF", outline=BLUE, width=4)
-    draw.text((235, 740), "读图要点", font=HEAD, fill=BLUE)
-    draw.text((235, 795), note, font=BODY, fill=INK)
-    img.save(OUT / filename)
+    ax2 = ax1.twinx()
+    ax2.bar(rounds - 0.17, blocked, width=0.34, color="#DC2626", alpha=0.72, label="阻断项")
+    ax2.bar(rounds + 0.17, manual_findings, width=0.34, color="#F59E0B", alpha=0.72, label="人工发现")
+    ax2.set_ylabel("问题数量")
+    lines, labels = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines + lines2, labels + labels2, loc="center right")
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-35-acceptance-retro-loop.png", dpi=180)
+    plt.close(fig)
 
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    items = [
-        (
-            "chapter-33-sim-trading-boundary.png",
-            "第 33 讲：端到端模拟交易边界",
-            "模拟交易验证流程完整性，不验证真实可交易收益。",
-            [("数据", "快照、样本\n来源状态"), ("信号策略", "规则、仓位\n禁止真实订单"), ("回测风控", "成本、拒绝\n权益曲线"), ("研究通过", "流程可复查"), ("停止", "越过实盘\n证据缺失")],
-            "模拟系统的价值是让数据、信号、回测、风险和页面能互相对账。",
-        ),
-        (
-            "chapter-34-research-path-contracts.png",
-            "第 34 讲：贯通研究路径合同",
-            "全链路不是一次跑通，而是每一段都有输入、输出、指标和停止线。",
-            [("信号", "score\nevidence"), ("策略回测", "trades\nequity"), ("审计风控", "DSR、PBO\nrisk_id"), ("页面验收", "字段一致"), ("退回修复", "合同断裂")],
-            "端到端验收要能从页面字段反查到 API、回测结果和风险记录。",
-        ),
-        (
-            "chapter-35-acceptance-retro-loop.png",
-            "第 35 讲：验收复盘与下一轮迭代",
-            "最终验收看可接手性；复盘要把失败转成下一轮任务。",
-            [("全量检查", "verify\ncourse check"), ("验收包", "报告、截图\n命令记录"), ("复盘", "保留问题\n下一轮"), ("交付通过", "可接手"), ("拒绝发布", "硬门禁失败")],
-            "硬门禁失败不能被平均分抵消；复盘输出应成为下一轮可执行任务。",
-        ),
-    ]
-    for item in items:
-        flow(*item)
-        print(OUT / item[0])
+    style()
+    save_sim_trading_boundary()
+    save_research_path_contracts()
+    save_acceptance_retro_loop()
+    for name in (
+        "chapter-33-sim-trading-boundary.png",
+        "chapter-34-research-path-contracts.png",
+        "chapter-35-acceptance-retro-loop.png",
+    ):
+        print(OUT / name)
 
 
 if __name__ == "__main__":

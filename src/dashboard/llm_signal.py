@@ -118,9 +118,28 @@ def _call_llm(prompt: str, model: str) -> dict[str, Any]:
 
 def _merge_llm(baseline: dict[str, Any], llm: dict[str, Any], model: str) -> dict[str, Any]:
     merged = dict(baseline)
+    review_flags: list[str] = []
     signal = str(llm.get("signal") or baseline.get("signal") or "HOLD").upper()
     if signal not in SIGNAL_KEYS:
         signal = str(baseline.get("signal") or "HOLD").upper()
+        review_flags.append("INVALID_SIGNAL_FALLBACK")
+
+    confidence = _bounded_number(
+        llm.get("confidence"),
+        default=baseline.get("confidence") or 0,
+        low=0,
+        high=100,
+        flag="CONFIDENCE_OUT_OF_RANGE",
+        review_flags=review_flags,
+    )
+    score = _bounded_number(
+        llm.get("score") if llm.get("score") is not None else baseline.get("score"),
+        default=baseline.get("score") or 0,
+        low=-100,
+        high=100,
+        flag="SCORE_OUT_OF_RANGE",
+        review_flags=review_flags,
+    )
 
     merged.update(
         {
@@ -133,12 +152,14 @@ def _merge_llm(baseline: dict[str, Any], llm: dict[str, Any], model: str) -> dic
             },
             "signal": signal,
             "signalLabel": llm.get("signalLabel") or baseline.get("signalLabel"),
-            "confidence": float(llm.get("confidence") or baseline.get("confidence") or 0),
-            "score": float(llm.get("score") if llm.get("score") is not None else baseline.get("score") or 0),
+            "confidence": confidence,
+            "score": score,
             "summary": llm.get("summary") or baseline.get("summary"),
             "reasons": llm.get("reasons") or baseline.get("reasons"),
         }
     )
+    if review_flags:
+        merged["reviewFlags"] = [*(baseline.get("reviewFlags") or []), *review_flags]
 
     analysis = dict(baseline.get("analysis") or {})
     llm_analysis = llm.get("analysis") if isinstance(llm.get("analysis"), dict) else {}
@@ -149,6 +170,26 @@ def _merge_llm(baseline: dict[str, Any], llm: dict[str, Any], model: str) -> dic
     if isinstance(logic_flow, list) and logic_flow:
         merged["logicFlow"] = logic_flow
     return merged
+
+
+def _bounded_number(
+    value: Any,
+    *,
+    default: Any,
+    low: float,
+    high: float,
+    flag: str,
+    review_flags: list[str],
+) -> float:
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        review_flags.append(flag)
+        return float(default or 0)
+    if parsed < low or parsed > high:
+        review_flags.append(flag)
+        return float(default or 0)
+    return parsed
 
 
 def run_llm_signal_analysis(symbol: str = "BTC", *, model: str | None = None) -> dict[str, Any]:

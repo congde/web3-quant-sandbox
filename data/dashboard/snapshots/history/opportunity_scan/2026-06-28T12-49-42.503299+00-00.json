@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "full": false,
+  "scanTime": "2026-06-28T12:49:42Z",
+  "totalScanned": 4,
+  "topK": 3,
+  "opportunities": [
+    {
+      "symbol": "BLUAI",
+      "pair": "BLUAI-USDT",
+      "signal": "SELL",
+      "label": "明显回调",
+      "score": -24.9,
+      "confidence": 54.94,
+      "change24h": -0.099,
+      "volume24h": 385959.811866,
+      "last": 0.013005,
+      "keyReasons": [
+        "24h 跌幅 -9.9%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 1
+    },
+    {
+      "symbol": "ADI",
+      "pair": "ADI-USDT",
+      "signal": "NEUTRAL",
+      "label": "震荡整理",
+      "score": 2.4,
+      "confidence": 41.416,
+      "change24h": 0.0036,
+      "volume24h": 3850506.432448,
+      "last": 4.949,
+      "keyReasons": [
+        "涨跌幅处于中性区间"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "neutral",
+      "marketState": "uncertain",
+      "rank": 2
+    },
+    {
+      "symbol": "BCH",
+      "pair": "BCH-USDT",
+      "signal": "NEUTRAL",
+      "label": "震荡整理",
+      "score": -1.9,
+      "confidence": 41.146,
+      "change24h": -0.0191,
+      "volume24h": 710875.798738,
+      "last": 193.09,
+      "keyReasons": [
+        "涨跌幅处于中性区间"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "neutral",
+      "marketState": "uncertain",
+      "rank": 3
+    }
+  ],
+  "marketOverview": "扫描 4 个币种，市场整体偏空。多头 0、空头 1、中性 2。综合靠前：BLUAI(明显回调)、ADI(震荡整理)、BCH(震荡整理)。",
+  "scanDurationMs": 0,
+  "engine": "sandbox-rule-based",
+  "errors": [],
+  "snapshot": {
+    "name": "opportunity_scan",
+    "saved_at": "2026-06-28T12:49:42.503299+00:00",
+    "origin": "live",
+    "history_id": "2026-06-28T12-49-42.503299+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-06-28T12-49-42.503299+00-00.json"
+  }
+}

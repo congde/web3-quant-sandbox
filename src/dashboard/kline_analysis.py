@@ -173,11 +173,11 @@ def kline_verdict(analysis: dict[str, Any] | None) -> dict[str, Any]:
 
     score = max(-100, min(100, score))
     if score >= 25:
-        action, label, direction = "LONG", "做多", "bullish"
+        action, label, direction = "LONG", "强偏多状态", "bullish"
     elif score >= 10:
         action, label, direction = "WEAK_LONG", "偏多观望", "bullish"
     elif score <= -25:
-        action, label, direction = "SHORT", "做空", "bearish"
+        action, label, direction = "SHORT", "强偏空状态", "bearish"
     elif score <= -10:
         action, label, direction = "WEAK_SHORT", "偏空观望", "bearish"
     else:

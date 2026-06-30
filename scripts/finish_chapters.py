@@ -59,8 +59,6 @@ ASSET_ALIASES = {
     "chapter-31-eval-loop.png": "chapter-03-diagram.drawio",
     "chapter-32-diagram.png": "chapter-03-diagram.drawio",
     "chapter-32-delivery-bundle.png": "chapter-03-diagram.drawio",
-    "chapter-33-diagram.png": "chapter-02-diagrams.drawio",
-    "chapter-33-playbook-ladder.png": "chapter-02-diagrams.drawio",
     "codex-course-map.png": "chapter-01-diagrams.drawio",
     "codex-delivery-loop.png": "chapter-02-traceability-chain.drawio",
 }

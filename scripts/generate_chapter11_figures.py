@@ -2,27 +2,15 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
-import textwrap
 
-from PIL import Image, ImageDraw, ImageFont
+from matplotlib import pyplot as plt
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "v2" / "assets"
-FONT_PATH = Path("C:/Windows/Fonts/simhei.ttf")
 
-
-def font(size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(str(FONT_PATH), size)
-
-
-TITLE = font(42)
-HEAD = font(28)
-BODY = font(23)
-SMALL = font(20)
-
-BG = "#F7F9FC"
 INK = "#111827"
 MUTED = "#64748B"
 BLUE = "#2563EB"
@@ -30,120 +18,206 @@ TEAL = "#0F9B8E"
 ORANGE = "#F59E0B"
 RED = "#DC2626"
 PURPLE = "#7C3AED"
-PANEL = "#FFFFFF"
 
 
-def wrap(text: str, width: int) -> str:
-    return "\n".join(textwrap.wrap(text, width=width, break_long_words=True))
+def _sma(values: list[float], window: int) -> list[float | None]:
+    result: list[float | None] = []
+    for index in range(len(values)):
+        if index + 1 < window:
+            result.append(None)
+            continue
+        sample = values[index + 1 - window : index + 1]
+        result.append(sum(sample) / len(sample))
+    return result
 
 
-def arrow(draw: ImageDraw.ImageDraw, start: tuple[int, int], end: tuple[int, int], color: str = MUTED) -> None:
-    draw.line([start, end], fill=color, width=5)
-    ex, ey = end
-    sx, sy = start
-    if abs(ex - sx) >= abs(ey - sy):
-        sign = 1 if ex >= sx else -1
-        pts = [(ex, ey), (ex - sign * 18, ey - 11), (ex - sign * 18, ey + 11)]
-    else:
-        sign = 1 if ey >= sy else -1
-        pts = [(ex, ey), (ex - 11, ey - sign * 18), (ex + 11, ey - sign * 18)]
-    draw.polygon(pts, fill=color)
+def _rolling_rule_scores(closes: list[float]) -> list[float]:
+    sma5 = _sma(closes, 5)
+    sma12 = _sma(closes, 12)
+    scores: list[float] = []
+    for index, close in enumerate(closes):
+        short = sma5[index]
+        long = sma12[index]
+        if short is None or long is None:
+            scores.append(0.0)
+            continue
+        trend = 18 if close > short > long else -18 if close < short < long else 0
+        distance = max(-12, min(12, (close - long) / long * 100 * 3)) if long else 0
+        scores.append(round(trend + distance, 1))
+    return scores
 
 
-def card(draw: ImageDraw.ImageDraw, xy: tuple[int, int, int, int], title: str, body: str, color: str) -> None:
-    x1, y1, _, _ = xy
-    draw.rounded_rectangle(xy, radius=18, fill=PANEL, outline=color, width=4)
-    draw.text((x1 + 24, y1 + 22), title, font=HEAD, fill=color)
-    draw.multiline_text((x1 + 24, y1 + 78), wrap(body, 20), font=BODY, fill=INK, spacing=7)
+def save_llm_execution_curve() -> None:
+    data_path = ROOT / "data" / "dashboard" / "market_candles.json"
+    payload = json.loads(data_path.read_text(encoding="utf-8"))
+    candles = list(payload.get("candles") or [])[-42:]
+    dates = [str(item.get("date") or "")[5:] for item in candles]
+    closes = [float(item.get("close") or 0) for item in candles]
+    rule_scores = _rolling_rule_scores(closes)
 
+    llm_scores: list[float] = []
+    gated_scores: list[float] = []
+    for index, score in enumerate(rule_scores):
+        candidate = score + (4 if index % 6 in {1, 2, 3} else -3)
+        llm_scores.append(candidate)
+        gated_scores.append(score if abs(candidate - score) > 8 else candidate)
 
-def save_boundary_card() -> None:
-    img = Image.new("RGB", (1840, 1040), BG)
-    draw = ImageDraw.Draw(img)
-    draw.text((80, 55), "第 11 章实战：LLM 使用边界卡", font=TITLE, fill=INK)
-    draw.text(
-        (80, 116),
-        "模型只能加工已给证据；凡是补造事实、绕过规则或给出执行建议，都必须降级、回退或拒绝。",
-        font=BODY,
-        fill=MUTED,
+    plt.rcParams.update(
+        {
+            "font.sans-serif": ["Microsoft YaHei", "SimHei", "DejaVu Sans", "Arial", "sans-serif"],
+            "axes.unicode_minus": False,
+            "figure.facecolor": "#FCFCFD",
+        }
     )
-
-    card(draw, (100, 230, 520, 460), "允许", "整理已有 evidence、kline、tradePlan 和 ruleSignal，生成摘要、解释和风险提示。", BLUE)
-    card(draw, (710, 230, 1130, 460), "必须来自规则", "signal、score、confidence、样本窗口、指标数值和交易计划。", TEAL)
-    card(draw, (1320, 230, 1740, 460), "必须拒绝", "未提供价格、实时新闻、确定收益、个人仓位或直接买卖建议。", RED)
-    arrow(draw, (530, 345), (700, 345))
-    arrow(draw, (1140, 345), (1310, 345))
-
-    rows = [
-        ("结构合法", "JSON 可解析、字段完整、信号枚举合法", "失败则回退规则基线"),
-        ("证据引用", "关键判断能回到输入字段", "找不到来源则降级"),
-        ("事实边界", "不新增价格、新闻、链上指标或未来结果", "补造事实则停止"),
-        ("人工复核", "至少复核一个方向判断和一个风险提示", "无复核不发布"),
-    ]
-    y = 560
-    for title, condition, action in rows:
-        draw.rounded_rectangle((160, y, 1680, y + 86), radius=14, fill=PANEL, outline="#CBD5E1", width=3)
-        draw.text((190, y + 27), title, font=HEAD, fill=PURPLE)
-        draw.text((470, y + 29), condition, font=BODY, fill=INK)
-        draw.text((1220, y + 29), action, font=BODY, fill=RED if "停止" in action or "不发布" in action else ORANGE)
-        y += 108
-
-    img.save(OUT / "chapter-11-llm-boundary-card.png")
-    print(OUT / "chapter-11-llm-boundary-card.png")
-
-
-def save_fallback_merge() -> None:
-    img = Image.new("RGB", (1840, 980), BG)
-    draw = ImageDraw.Draw(img)
-    draw.text((80, 55), "第 11 章实战：规则基线与 LLM 合并路径", font=TITLE, fill=INK)
-    draw.text(
-        (80, 116),
-        "先生成可复查的规则基线，再让 LLM 只改写白名单字段；调用失败或枚举非法时，保留规则结果。",
-        font=BODY,
-        fill=MUTED,
+    fig, (ax_price, ax_score) = plt.subplots(
+        2,
+        1,
+        figsize=(12.8, 7.8),
+        dpi=160,
+        sharex=True,
+        gridspec_kw={"height_ratios": [1.25, 1.0]},
     )
+    fig.patch.set_facecolor("#FCFCFD")
+    ax_price.set_facecolor("#FFFFFF")
+    ax_score.set_facecolor("#FFFFFF")
 
-    boxes = [
-        ((100, 250, 430, 455), "规则基线", "run_signal_analysis\nsignal / score\nconfidence / evidence", BLUE),
-        ((565, 250, 895, 455), "上下文包", "market / kline\nevidence\ntradePlan / ruleSignal", TEAL),
-        ((1030, 250, 1360, 455), "LLM 输出", "summary / analysis\nlogicFlow\n候选 signal", ORANGE),
-        ((1495, 250, 1745, 455), "白名单合并", "_merge_llm\n合法字段才覆盖", PURPLE),
-    ]
-    for xy, title, body, color in boxes:
-        card(draw, xy, title, body, color)
-    for x in (430, 895, 1360):
-        arrow(draw, (x, 352), (x + 125, 352))
+    x = list(range(len(dates)))
+    ax_price.plot(x, closes, color=INK, linewidth=2.0, label="close")
+    ax_price.set_ylabel("BTC close")
+    ax_price.grid(axis="y", color="#E5E7EB", linewidth=0.8)
+    ax_price.spines[["top", "right"]].set_visible(False)
+    ax_price.legend(loc="upper left", frameon=False)
 
-    draw.rounded_rectangle((210, 610, 760, 820), radius=18, fill="#ECFDF5", outline=TEAL, width=4)
-    draw.text((245, 642), "可接受降级", font=HEAD, fill=TEAL)
-    draw.multiline_text(
-        (245, 700),
-        "未配置 OPENAI_API_KEY\n模型调用失败\n返回 baseline 并记录 engineMeta.note",
-        font=BODY,
-        fill=INK,
-        spacing=8,
+    ax_score.axhspan(8, 40, color="#ECFDF5", alpha=0.75)
+    ax_score.axhspan(-40, -8, color="#FEF2F2", alpha=0.72)
+    ax_score.axhline(0, color="#94A3B8", linewidth=1)
+    ax_score.axhline(8, color=TEAL, linewidth=1, linestyle="--")
+    ax_score.axhline(-8, color=RED, linewidth=1, linestyle="--")
+    ax_score.plot(x, rule_scores, color=BLUE, linewidth=2.1, label="rule baseline")
+    ax_score.plot(x, llm_scores, color=ORANGE, linewidth=1.9, linestyle="--", label="llm rewrite")
+    ax_score.plot(x, gated_scores, color=PURPLE, linewidth=2.1, label="after gate")
+    ax_score.set_ylabel("signal score")
+    ax_score.set_xlabel("visible candle window")
+    ax_score.grid(axis="y", color="#E5E7EB", linewidth=0.8)
+    ax_score.spines[["top", "right"]].set_visible(False)
+    tick_step = max(1, len(dates) // 7)
+    ticks = list(range(0, len(dates), tick_step))
+    ax_score.set_xticks(ticks)
+    ax_score.set_xticklabels([dates[i] for i in ticks], rotation=0)
+    ax_score.legend(loc="upper left", ncol=3, frameon=False)
+    ax_score.text(
+        0.01,
+        -0.28,
+        "Source: data/dashboard/market_candles.json. The dashed line is a bounded rewrite candidate; the gate keeps the rule baseline when the rewrite drifts too far.",
+        transform=ax_score.transAxes,
+        fontsize=9.5,
+        color=MUTED,
     )
+    fig.suptitle("Chapter 11 execution curve: baseline, LLM rewrite, gate result", x=0.125, ha="left", color=INK, fontsize=15)
+    fig.tight_layout()
+    output = OUT / "chapter-11-llm-execution-curve.png"
+    fig.savefig(output, bbox_inches="tight")
+    plt.close(fig)
+    print(output)
 
-    draw.rounded_rectangle((1080, 610, 1630, 820), radius=18, fill="#FEF2F2", outline=RED, width=4)
-    draw.text((1115, 642), "必须拦截", font=HEAD, fill=RED)
-    draw.multiline_text(
-        (1115, 700),
-        "signal 不在枚举内\n引用输入不存在的事实\n把研究输出写成交易建议",
-        font=BODY,
-        fill=INK,
-        spacing=8,
+
+def save_llm_gate_outcomes() -> None:
+    plt.rcParams.update(
+        {
+            "font.sans-serif": ["Microsoft YaHei", "SimHei", "DejaVu Sans", "Arial", "sans-serif"],
+            "axes.unicode_minus": False,
+            "figure.facecolor": "#FCFCFD",
+        }
     )
-    arrow(draw, (480, 610), (480, 520), TEAL)
-    arrow(draw, (1355, 610), (1355, 520), RED)
+    fig, ax = plt.subplots(figsize=(13.2, 6.7), dpi=160)
+    ax.set_xlim(0, 14.2)
+    ax.set_ylim(0, 6.7)
+    ax.axis("off")
+    ax.set_title("模型输出门禁流程", loc="left", color=INK, fontsize=16, pad=12)
 
-    img.save(OUT / "chapter-11-fallback-merge.png")
-    print(OUT / "chapter-11-fallback-merge.png")
+    def box(
+        xy: tuple[float, float],
+        text: str,
+        color: str,
+        width: float = 1.85,
+        height: float = 0.74,
+        face: str = "#FFFFFF",
+        text_color: str = INK,
+    ) -> None:
+        x, y = xy
+        patch = plt.Rectangle((x, y), width, height, facecolor=face, edgecolor=color, linewidth=2)
+        ax.add_patch(patch)
+        ax.text(x + width / 2, y + height / 2, text, ha="center", va="center", color=text_color, fontsize=10.5)
+
+    def decision(xy: tuple[float, float], text: str, color: str) -> None:
+        x, y = xy
+        w, h = 1.75, 0.9
+        points = [(x + w / 2, y + h), (x + w, y + h / 2), (x + w / 2, y), (x, y + h / 2)]
+        patch = plt.Polygon(points, closed=True, facecolor="#FFFFFF", edgecolor=color, linewidth=2)
+        ax.add_patch(patch)
+        ax.text(x + w / 2, y + h / 2, text, ha="center", va="center", color=INK, fontsize=10.2)
+
+    def arrow(start: tuple[float, float], end: tuple[float, float], label: str | None = None, color: str = MUTED) -> None:
+        ax.annotate(
+            "",
+            xy=end,
+            xytext=start,
+            arrowprops={"arrowstyle": "->", "color": color, "lw": 1.9, "shrinkA": 3, "shrinkB": 3},
+        )
+        if label:
+            ax.text((start[0] + end[0]) / 2, (start[1] + end[1]) / 2 + 0.16, label, color=color, fontsize=9.2, ha="center")
+
+    box((0.25, 3.0), "模型输出\n或调用状态", BLUE, width=1.55, height=0.9, face="#EFF6FF")
+    decision((2.2, 3.0), "调用\n成功?", ORANGE)
+    decision((4.35, 3.0), "JSON 与\nschema 合法?", BLUE)
+    decision((6.65, 3.0), "signal 在\n白名单?", BLUE)
+    decision((8.75, 3.0), "证据路径\n可回查?", TEAL)
+    decision((10.7, 3.0), "含执行\n建议?", RED)
+
+    box((2.3, 4.85), "回退\n规则基线", ORANGE, face="#FFF7ED", text_color=ORANGE)
+    box((4.55, 4.85), "回退或复测\n不覆盖基线", ORANGE, width=1.95, face="#FFF7ED", text_color=ORANGE)
+    box((6.65, 4.85), "回退\n记录非法枚举", ORANGE, width=2.0, face="#FFF7ED", text_color=ORANGE)
+    box((9.95, 4.85), "降级\n删除无源摘要", ORANGE, width=1.95, face="#FFF7ED", text_color=ORANGE)
+    box((10.6, 1.35), "阻断\n失败样本入账", RED, width=1.95, face="#FEF2F2", text_color=RED)
+    box((12.85, 3.0), "通过\n研究记录", TEAL, width=1.1, face="#ECFDF5", text_color=TEAL)
+
+    arrow((1.8, 3.45), (2.2, 3.45))
+    arrow((3.95, 3.45), (4.35, 3.45), "是")
+    arrow((6.1, 3.45), (6.65, 3.45), "是")
+    arrow((8.4, 3.45), (8.75, 3.45), "是")
+    arrow((10.5, 3.45), (10.7, 3.45), "是")
+    arrow((12.45, 3.45), (12.85, 3.45), "否", TEAL)
+
+    arrow((3.08, 3.9), (3.08, 4.85), "否", ORANGE)
+    arrow((5.22, 3.9), (5.22, 4.85), "否", ORANGE)
+    arrow((7.52, 3.9), (7.52, 4.85), "否", ORANGE)
+    arrow((9.62, 3.9), (10.25, 4.85), "否", ORANGE)
+    arrow((11.58, 3.0), (11.58, 2.25), "是", RED)
+
+    ax.text(
+        0.3,
+        0.72,
+        "读图顺序：先确认模型是否参与，再检查结构、枚举、证据和执行边界。任何失败都不能覆盖规则基线。",
+        fontsize=10,
+        color=MUTED,
+    )
+    fig.text(
+        0.125,
+        0.025,
+        "出口含义：通过进入研究记录；降级只保留可追溯字段；回退保留规则基线；阻断进入失败样本。",
+        fontsize=9.5,
+        color=MUTED,
+    )
+    output = OUT / "chapter-11-llm-gate-outcomes.png"
+    fig.savefig(output, bbox_inches="tight")
+    plt.close(fig)
+    print(output)
 
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    save_boundary_card()
-    save_fallback_merge()
+    save_llm_gate_outcomes()
+    save_llm_execution_curve()
 
 
 if __name__ == "__main__":

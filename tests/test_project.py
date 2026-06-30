@@ -43,6 +43,27 @@ def test_invalid_windows_are_rejected() -> None:
         run_backtest(prices, short=7, long=3)
 
 
+def test_load_prices_keeps_default_csv_behavior() -> None:
+    prices = load_prices(DATA_DIR / "prices.csv")
+    assert prices[0].date == "2025-01-02"
+    assert prices[0].close == pytest.approx(8.69)
+
+
+def test_load_prices_accepts_custom_delimiter_and_encoding(tmp_path: Path) -> None:
+    source = tmp_path / "prices_semicolon_gbk.csv"
+    source.write_text(
+        'date;note;close\n2025-01-02;"备注;含分号";8.69\n2025-01-03;"正常";8.76\n',
+        encoding="gbk",
+    )
+
+    prices = load_prices(source, delimiter=";", encoding="gbk")
+
+    assert [(item.date, item.close) for item in prices] == [
+        ("2025-01-02", 8.69),
+        ("2025-01-03", 8.76),
+    ]
+
+
 def test_calmar_ratio_adapts_negative_drawdown_convention() -> None:
     assert calmar_ratio(12.0, -4.0) == 3.0
     assert calmar_ratio(12.0, 0.0) == 0.0
@@ -72,6 +93,11 @@ def test_strategy_dsl_reports_lookahead_bias() -> None:
         "def on_tick(ctx, candle):\n    return ctx.history[-1]"
     )
     assert report.clean
+    future_report = check_lookahead_bias(
+        "def on_tick(ctx, candle):\n    return ctx.future_close"
+    )
+    assert not future_report.clean
+    assert future_report.errors[0].rule == "L001"
 
 
 def test_sharpe_ratio_uses_daily_annualization() -> None:

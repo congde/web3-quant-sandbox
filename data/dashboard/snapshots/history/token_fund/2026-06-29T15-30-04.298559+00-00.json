@@ -1,0 +1,675 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "symbol": "BTC",
+  "vsTokenId": 1,
+  "fund": {
+    "updateTime": 1782746700000,
+    "vsTokenId": "1",
+    "symbol": "BTC",
+    "name": "Bitcoin",
+    "coinPrice": "63625.99",
+    "marketCap": "1264227890680.290630843",
+    "hasSpotGoods": true,
+    "spotMaxInflow": "41496340.37803845",
+    "spotGoodsList": [
+      {
+        "timeRange": "5m",
+        "timeParticleEnum": 5,
+        "tradeInflow": "-1863885.592538",
+        "tradeAmount": "7093061.8901564",
+        "tradeInflowChange": -6.27,
+        "tradeIn": "2614588.1488092",
+        "tradeOut": "4478473.7413472"
+      },
+      {
+        "timeRange": "15m",
+        "timeParticleEnum": 15,
+        "tradeInflow": "-3815947.6487755976",
+        "tradeAmount": "22897185.293593",
+        "tradeInflowChange": 0.42,
+        "tradeIn": "9540618.8224082012",
+        "tradeOut": "13356566.4711842988"
+      },
+      {
+        "timeRange": "30m",
+        "timeParticleEnum": 30,
+        "tradeInflow": "-10340688.827283898",
+        "tradeAmount": "46653610.2586063",
+        "tradeInflowChange": -4.93,
+        "tradeIn": "18156460.715661151",
+        "tradeOut": "28497149.542945099"
+      },
+      {
+        "timeRange": "1h",
+        "timeParticleEnum": 101,
+        "tradeInflow": "-12084028.099488592",
+        "tradeAmount": "112264095.78723557",
+        "tradeInflowChange": 0.56,
+        "tradeIn": "50090033.843873484",
+        "tradeOut": "62174061.943362081"
+      },
+      {
+        "timeRange": "2h",
+        "timeParticleEnum": 102,
+        "tradeInflow": "-39826942.916321404",
+        "tradeAmount": "366715143.17063576",
+        "tradeInflowChange": -2.36,
+        "tradeIn": "163444100.127157178",
+        "tradeOut": "203271043.043478582"
+      },
+      {
+        "timeRange": "4h",
+        "timeParticleEnum": 104,
+        "tradeInflow": "-10561942.727647398",
+        "tradeAmount": "654943818.6247225",
+        "tradeInflowChange": -0.64,
+        "tradeIn": "322190937.948537501",
+        "tradeOut": "332752880.676184949"
+      },
+      {
+        "timeRange": "8h",
+        "timeParticleEnum": 108,
+        "tradeInflow": "-16992288.04931609",
+        "tradeAmount": "842950578.3244169",
+        "tradeInflowChange": -2.95,
+        "tradeIn": "412979145.13755036",
+        "tradeOut": "429971433.18686649"
+      },
+      {
+        "timeRange": "12h",
+        "timeParticleEnum": 112,
+        "tradeInflow": "-19186323.534799382",
+        "tradeAmount": "1027872710.4617963",
+        "tradeInflowChange": -0.26,
+        "tradeIn": "504343193.463498409",
+        "tradeOut": "523529516.998297841"
+      },
+      {
+        "timeRange": "24h",
+        "timeParticleEnum": 124,
+        "tradeInflow": "-34428147.29242824",
+        "tradeAmount": "1627585744.3518045",
+        "tradeInflowChange": -0.71,
+        "tradeIn": "796578798.52968808",
+        "tradeOut": "831006945.82211637"
+      },
+      {
+        "timeRange": "2d",
+        "timeParticleEnum": 202,
+        "tradeInflow": "-54546125.454861164",
+        "tradeAmount": "2281140481.1297603",
+        "tradeInflowChange": -2.12,
+        "tradeIn": "1113297177.837449518",
+        "tradeOut": "1167843303.292310732"
+      },
+      {
+        "timeRange": "3d",
+        "timeParticleEnum": 203,
+        "tradeInflow": "41496340.37803845",
+        "tradeAmount": "3266010852.4732304",
+        "tradeInflowChange": 1.16,
+        "tradeIn": "1653753596.42563442",
+        "tradeOut": "1612257256.04759597"
+      },
+      {
+        "timeRange": "5d",
+        "timeParticleEnum": 205,
+        "tradeInflow": "-188314742.69979894",
+        "tradeAmount": "8974491480.367617",
+        "tradeInflowChange": 0.13,
+        "tradeIn": "4393088368.83390853",
+        "tradeOut": "4581403111.53370797"
+      },
+      {
+        "timeRange": "7d",
+        "timeParticleEnum": 207,
+        "tradeInflow": "-398936308.9240963",
+        "tradeAmount": "12146545374.29504",
+        "tradeInflowChange": -0.73,
+        "tradeIn": "5873804532.6854719",
+        "tradeOut": "6272740841.6095681"
+      },
+      {
+        "timeRange": "10d",
+        "timeParticleEnum": 210,
+        "tradeInflow": "-404927610.0437696",
+        "tradeAmount": "14953059443.805672",
+        "tradeInflowChange": -1.97,
+        "tradeIn": "7274065916.8809512",
+        "tradeOut": "7678993526.9247208"
+      },
+      {
+        "timeRange": "15d",
+        "timeParticleEnum": 215,
+        "tradeInflow": "-580382513.2510246",
+        "tradeAmount": "22414351709.69386",
+        "tradeInflowChange": 0.42,
+        "tradeIn": "10916984598.2214177",
+        "tradeOut": "11497367111.4724423"
+      },
+      {
+        "timeRange": "30d",
+        "timeParticleEnum": 230,
+        "tradeInflow": "-1578605133.662938",
+        "tradeAmount": "54814809392.72291",
+        "tradeInflowChange": -3.72,
+        "tradeIn": "26618102129.529981",
+        "tradeOut": "28196707263.192924"
+      },
+      {
+        "timeRange": "40d",
+        "timeParticleEnum": 240,
+        "tradeInflow": "-1613545089.535564",
+        "tradeAmount": "68972727919.89603",
+        "tradeInflowChange": -22.45,
+        "tradeIn": "33679591415.180228",
+        "tradeOut": "35293136504.715797"
+      },
+      {
+        "timeRange": "50d",
+        "timeParticleEnum": 250,
+        "tradeInflow": "-1997823529.7671757",
+        "tradeAmount": "84417125080.72142",
+        "tradeInflowChange": -13.73,
+        "tradeIn": "41209650775.4771222",
+        "tradeOut": "43207474305.2442978"
+      },
+      {
+        "timeRange": "60d",
+        "timeParticleEnum": 260,
+        "tradeInflow": "-1912720745.6316776",
+        "tradeAmount": "99938918853.58267",
+        "tradeInflowChange": -4.93,
+        "tradeIn": "49013099053.9754912",
+        "tradeOut": "50925819799.6071738"
+      },
+      {
+        "timeRange": "90d",
+        "timeParticleEnum": 290,
+        "tradeInflow": "-1513459141.727331",
+        "tradeAmount": "148005486904.01688",
+        "tradeInflowChange": 0.67,
+        "tradeIn": "73246013881.144775",
+        "tradeOut": "74759473022.872105"
+      },
+      {
+        "timeRange": "120d",
+        "timeParticleEnum": 2120,
+        "tradeInflow": "-2235187410.190438",
+        "tradeAmount": "211480294550.55698",
+        "tradeInflowChange": 0.75,
+        "tradeIn": "104622553570.183271",
+        "tradeOut": "106857740980.373709"
+      },
+      {
+        "timeRange": "150d",
+        "timeParticleEnum": 2150,
+        "tradeInflow": "-5757362431.122727",
+        "tradeAmount": "299280797766.95886",
+        "tradeInflowChange": 0.59,
+        "tradeIn": "146761717667.918067",
+        "tradeOut": "152519080099.040793"
+      },
+      {
+        "timeRange": "180d",
+        "timeParticleEnum": 2180,
+        "tradeInflow": "-6114901537.652557",
+        "tradeAmount": "394994354363.3237",
+        "tradeInflowChange": 0.66,
+        "tradeIn": "194439726412.835522",
+        "tradeOut": "200554627950.488128"
+      },
+      {
+        "timeRange": "1y",
+        "timeParticleEnum": 401,
+        "tradeInflow": "-24261672837.937134",
+        "tradeAmount": "1280607845708.1792",
+        "tradeInflowChange": -0.23,
+        "tradeIn": "628173086435.121033",
+        "tradeOut": "652434759273.058167"
+      },
+      {
+        "timeRange": "2y",
+        "timeParticleEnum": 402,
+        "tradeInflow": "-43916317269.34639",
+        "tradeAmount": "3124256152113.252",
+        "tradeInflowChange": -3.1,
+        "tradeIn": "1540169917421.95281",
+        "tradeOut": "1584086234691.29919"
+      },
+      {
+        "timeRange": "3y",
+        "timeParticleEnum": 403,
+        "tradeInflow": "-49242388801.06871",
+        "tradeAmount": "4669456378406.471",
+        "tradeInflowChange": -0.39,
+        "tradeIn": "2310106994802.70065",
+        "tradeOut": "2359349383603.76985"
+      }
+    ],
+    "hasContract": true,
+    "contractMaxInflow": "6827906668.1699",
+    "contractList": [
+      {
+        "timeRange": "5m",
+        "timeParticleEnum": 5,
+        "tradeInflow": "-21580731.620699998",
+        "tradeAmount": "74765999.31949998",
+        "tradeInflowChange": -5.51,
+        "tradeIn": "26592633.849399991",
+        "tradeOut": "48173365.470099989"
+      },
+      {
+        "timeRange": "15m",
+        "timeParticleEnum": 15,
+        "tradeInflow": "-23629460.638499998",
+        "tradeAmount": "201650979.56169996",
+        "tradeInflowChange": -0.12,
+        "tradeIn": "89010759.461599981",
+        "tradeOut": "112640220.100099979"
+      },
+      {
+        "timeRange": "30m",
+        "timeParticleEnum": 30,
+        "tradeInflow": "-44819115.144200005",
+        "tradeAmount": "404841128.73239994",
+        "tradeInflowChange": -18.08,
+        "tradeIn": "180011006.794099968",
+        "tradeOut": "224830121.938299972"
+      },
+      {
+        "timeRange": "1h",
+        "timeParticleEnum": 101,
+        "tradeInflow": "-47168502.8417",
+        "tradeAmount": "1058055388.5641",
+        "tradeInflowChange": 0.43,
+        "tradeIn": "505443442.8612",
+        "tradeOut": "552611945.7029"
+      },
+      {
+        "timeRange": "2h",
+        "timeParticleEnum": 102,
+        "tradeInflow": "-130500541.57480007",
+        "tradeAmount": "3218494082.6452003",
+        "tradeInflowChange": -7.04,
+        "tradeIn": "1543996770.53520007",
+        "tradeOut": "1674497312.11000018"
+      },
+      {
+        "timeRange": "4h",
+        "timeParticleEnum": 104,
+        "tradeInflow": "-108898404.26630005",
+        "tradeAmount": "6386051894.2819",
+        "tradeInflowChange": -0.09,
+        "tradeIn": "3138576745.00774998",
+        "tradeOut": "3247475149.27410002"
+      },
+      {
+        "timeRange": "8h",
+        "timeParticleEnum": 108,
+        "tradeInflow": "-208596154.0645001",
+        "tradeAmount": "7872833608.185901",
+        "tradeInflowChange": -2.97,
+        "tradeIn": "3832118727.0607",
+        "tradeOut": "4040714881.1252005"
+      },
+      {
+        "timeRange": "12h",
+        "timeParticleEnum": 112,
+        "tradeInflow": "-197814908.1392001",
+        "tradeAmount": "9601997437.466202",
+        "tradeInflowChange": 0.06,
+        "tradeIn": "4702091264.663501",
+        "tradeOut": "4899906172.802701"
+      },
+      {
+        "timeRange": "24h",
+        "timeParticleEnum": 124,
+        "tradeInflow": "-409233348.0196001",
+        "tradeAmount": "16451702400.921",
+        "tradeInflowChange": -3.95,
+        "tradeIn": "8021234526.4502",
+        "tradeOut": "8430467874.4703"
+      },
+      {
+        "timeRange": "2d",
+        "timeParticleEnum": 202,
+        "tradeInflow": "-491934561.0343",
+        "tradeAmount": "22316394804.581104",
+        "tradeInflowChange": -7.49,
+        "tradeIn": "10912230121.773452",
+        "tradeOut": "11404164682.807702"
+      },
+      {
+        "timeRange": "3d",
+        "timeParticleEnum": 203,
+        "tradeInflow": "-257030230.06490034",
+        "tradeAmount": "30226683775.460705",
+        "tradeInflowChange": 0.79,
+        "tradeIn": "14984826772.69790183",
+        "tradeOut": "15241857002.76280267"
+      },
+      {
+        "timeRange": "5d",
+        "timeParticleEnum": 205,
+        "tradeInflow": "-1191808139.0967002",
+        "tradeAmount": "80193792936.96469",
+        "tradeInflowChange": -11.34,
+        "tradeIn": "39500992398.9339899",
+        "tradeOut": "40692800538.0306951"
+      },
+      {
+        "timeRange": "7d",
+        "timeParticleEnum": 207,
+        "tradeInflow": "-1949607335.4502",
+        "tradeAmount": "106459437166.5334",
+        "tradeInflowChange": -6.71,
+        "tradeIn": "52254914915.5416",
+        "tradeOut": "54204522250.9918"
+      },
+      {
+        "timeRange": "10d",
+        "timeParticleEnum": 210,
+        "tradeInflow": "-1288388227.0843003",
+        "tradeAmount": "132495544996.02368",
+        "tradeInflowChange": -1.87,
+        "tradeIn": "65603578384.4696899",
+        "tradeOut": "66891966611.5539901"
+      },
+      {
+        "timeRange": "15d",
+        "timeParticleEnum": 215,
+        "tradeInflow": "-895910831.9397002",
+        "tradeAmount": "199993654793.7135",
+        "tradeInflowChange": 0.67,
+        "tradeIn": "99548871980.8868499",
+        "tradeOut": "100444782812.8266001"
+      },
+      {
+        "timeRange": "30d",
+        "timeParticleEnum": 230,
+        "tradeInflow": "-3579051776.6668005",
+        "tradeAmount": "466971813774.65936",
+        "tradeInflowChange": -4.26,
+        "tradeIn": "231696380998.9962798",
+        "tradeOut": "235275432775.6630802"
+      },
+      {
+        "timeRange": "40d",
+        "timeParticleEnum": 240,
+        "tradeInflow": "-4478697151.380501",
+        "tradeAmount": "588871990834.1196",
+        "tradeInflowChange": -1.93,
+        "tradeIn": "292196646841.36955",
+        "tradeOut": "296675343992.75005"
+      },
+      {
+        "timeRange": "50d",
+        "timeParticleEnum": 250,
+        "tradeInflow": "-5471264606.692501",
+        "tradeAmount": "725543265647.8593",
+        "tradeInflowChange": -1.75,
+        "tradeIn": "360036000520.58335",
+        "tradeOut": "365507265127.2759"
+      },
+      {
+        "timeRange": "60d",
+        "timeParticleEnum": 260,
+        "tradeInflow": "-2482385103.7144017",
+        "tradeAmount": "852900459543.7131",
+        "tradeInflowChange": -1.27,
+        "tradeIn": "425209037219.9992992",
+        "tradeOut": "427691422323.7137508"
+      },
+      {
+        "timeRange": "90d",
+        "timeParticleEnum": 290,
+        "tradeInflow": "3299999682.629099",
+        "tradeAmount": "1260629132969.7488",
+        "tradeInflowChange": 1.7,
+        "tradeIn": "631964566326.188949",
+        "tradeOut": "628664566643.55985"
+      },
+      {
+        "timeRange": "120d",
+        "timeParticleEnum": 2120,
+        "tradeInflow": "6827906668.1699",
+        "tradeAmount": "1766864940533.3704",
+        "tradeInflowChange": 1.3,
+        "tradeIn": "886846423600.7701",
+        "tradeOut": "880018516932.6002"
+      },
+      {
+        "timeRange": "150d",
+        "timeParticleEnum": 2150,
+        "tradeInflow": "1851537496.6121001",
+        "tradeAmount": "2339770525511.38",
+        "tradeInflowChange": 1.06,
+        "tradeIn": "1170811031503.99605",
+        "tradeOut": "1168959494007.3839499"
+      },
+      {
+        "timeRange": "180d",
+        "timeParticleEnum": 2180,
+        "tradeInflow": "-1447297006.1275995",
+        "tradeAmount": "2761106382289.7256",
+        "tradeInflowChange": 0.97,
+        "tradeIn": "1379829542641.7990003",
+        "tradeOut": "1381276839647.9265997"
+      },
+      {
+        "timeRange": "1y",
+        "timeParticleEnum": 401,
+        "tradeInflow": "-47438809403.021515",
+        "tradeAmount": "6082103964154.714",
+        "tradeInflowChange": -0.4,
+        "tradeIn": "3017332577375.846243",
+        "tradeOut": "3064771386778.867757"
+      },
+      {
+        "timeRange": "2y",
+        "timeParticleEnum": 402,
+        "tradeInflow": "-81227838507.94165",
+        "tradeAmount": "13335856131625.838",
+        "tradeInflowChange": -1.41,
+        "tradeIn": "6627314146558.94818",
+        "tradeOut": "6708541985066.88982"
+      },
+      {
+        "timeRange": "3y",
+        "timeParticleEnum": 403,
+        "tradeInflow": "-116104231644.91241",
+        "tradeAmount": "18408838415576.957",
+        "tradeInflowChange": -0.99,
+        "tradeIn": "9146367091966.0218",
+        "tradeOut": "9262471323610.9347"
+      }
+    ]
+  },
+  "fundMarketCapRatio": {
+    "updateTime": 1781222400000,
+    "vsTokenId": "1",
+    "symbol": "BTC",
+    "name": "Bitcoin",
+    "marketCap": "1264227890680.290630843",
+    "spotTradeInflow": "44162414.485485844",
+    "spotMarketCapRatio": 0.003493,
+    "contractTradeInflow": "3777631834.5543857",
+    "contractMarketCapRatio": 0.298809,
+    "totalTradeInflow": "3821794249.039871544",
+    "totalMarketCapRatio": 0.302303
+  },
+  "sentiment": {
+    "updateTime": 1782744844000,
+    "vsTokenId": "1",
+    "symbol": "BTC",
+    "name": "Bitcoin",
+    "bullishRatio": 0.3621,
+    "neutralRatio": 0.4822,
+    "bearishRatio": 0.1558,
+    "bearishContents": [
+      {
+        "english": "Saylor’s alleged BTC dumping and “shady calculations” fuel distrust in Bitcoin’s leadership, with sentiment framing $BTC as a “shitcoin” losing public favor amid institutional skepticism. HODLing is labeled financially naive as the 2010–2021 “generational wealth” era declared over, and long-term holders remain underwater—$BTC at ~$60K sits below its 2021 peak of $69K, leaving most buyers since then unprofitable. <br /><br /> On-chain data confirms widespread pain: 35–40% of $BTC holders are underwater, reinforcing narrative fatigue and loss of faith in the “digital gold” thesis. The $BTC dominance surge further pressures alts, deepening disillusionment among multi-year $ETH and altcoin holders who watch real-term value erode while liquidity concentrates in $BTC—despite its frozen price action below key resistance and absence of catalyst-driven momentum.",
+        "updateTime": 1782744900000
+      },
+      {
+        "english": "Investors pulled $4.1 billion from Bitcoin ETFs this month—the largest outflow on record—amplifying bearish momentum as $BTC dumps below $50K and breaks key technical levels like the weekly 200 MA. Saylor’s announced BTC sales, including a reported $2.5B sale by MicroStrategy last week, triggered cascading liquidations and reinforced narrative fears of a “Luna-ish” collapse fueled by treasury liquidations to cover operational costs. <br /><br />Whale activity shows divergence: while short-term holders capitulate—50K $BTC moved to exchanges and sold at a loss, pushing their market cap to a post-October 2024 low—larger players appear to be accumulating opportunistically, with speculation that OTC buyers are waiting for deeper lows. The $800K sell wall, fake pump traps, and broad-based altcoin rotation away from $BTC signal eroded confidence and structural weakness in the flagship asset.",
+        "updateTime": 1782743104000
+      },
+      {
+        "english": "Saylor’s “Monetization Program” triggers widespread bearish interpretation, with $BTC sales framed as a desperate move to protect MicroStrategy’s $1.25B USD reserves, fund dividends, and repurchase $STRC stock — not strategic treasury management. The narrative centers on selling at $60K, widely seen as a capitulation-level top, amplifying fears of cascading liquidations and forced lower-volume dumps as market pressure mounts. <br /><br /> ETF outflows hit a record $4.06B in June, pushing $BTC below $60,000 and down ~30% YTD — reinforcing structural weakness amid institutional withdrawal and eroded confidence in the “hold forever” thesis. Whale-driven short liquidations spike near €59,991–€60,173, signaling tight, volatile positioning where bearish momentum feeds itself through stop hunts and panic-driven exits. <br /><br /> Memetic and hostile sentiment dominates: $BTC is labeled a “scam”, Saylor’s strategy mocked as “buying high and selling low”, and comparisons drawn to Do Kwon’s UST collapse — “2026: Saylor used $STRC to accumulate BTC, now dumping BTC to save STRC.” The phrase “death circle”, “micro-strategist”, and “Bytehead death by day” reflect community disillusionment, framing MSTR’s pivot as terminal rather than tactical.",
+        "updateTime": 1782741287000
+      },
+      {
+        "english": "Bitcoin ETFs executed the largest monthly sell-off in history—over $4 billion—driving $BTC down 20% in 30 days amid institutional liquidation pressure. BlackRock’s record sale and MicroStrategy’s pivot from “never sell” to active BTC seller underscore a structural shift, with Saylor’s Bitcoin Monetization Program now enabling operational funding through BTC sales. <br /><br />Whale short positioning intensified on Hyperliquid, with a trader closing $4M in gains then reopening $70M+ in 20x shorts across $BTC, $ETH, and $SOL—signaling aggressive bearish conviction. Liquidation data shows $145K in short positions wiped out at $60,200, yet persistent selling pressure, failed support retests (58k → 55k → 48k), and phrases like “BTC blow up!” and “collapse is going to be enormous” reflect deepening fear-driven momentum.",
+        "updateTime": 1782735903000
+      },
+      {
+        "english": "BTC trades at $59,828 amid an 8-week collapse from $80,086, marking a brutal -25.7% decline; the recent green candle was fully erased, confirming a failed dead cat bounce, with weekly MACD at -6,209 and -DI dominating +DI by 2.37x. Price sits below the 200 EMA, reinforcing structural weakness, while bearish technical bias prevails with key downside target at $58,115 and resistance noted at $65,622 — short positions remain active after partial profit-taking near $60K and re-entry around $68K. <br /><br />Sentiment is deeply skeptical: BTC is labeled “done” with charts declared “life” but the asset reduced to pure speculation, lacking utility beyond marginal speculator demand. Fake “I bought” screenshots flood social media, exposing engagement farming and MLM-like dynamics, eroding trust in retail onboarding. Whale activity appears absent, institutional support questioned after claims of BlackRock’s historic ETF exit, and miner/PM sentiment aligns with the broader downturn.",
+        "updateTime": 1782734117000
+      },
+      {
+        "english": "Bitcoin ETFs executed the largest monthly $BTC sell-off ever—over $4 billion—signaling aggressive de-risking rather than rotation, with $2.5B pulled from Bitcoin and Ethereum ETFs by June 18 while alternative funds saw negligible inflows. A single whale amplified bearish pressure by opening $54.67M $BTC and $15.7M $ETH shorts at 20x leverage, netting $3.3M in profits with a perfect win rate, raising questions about asymmetric information. <br /><br /> Technical structure deteriorates: $BTC faces a critical weekly close below support, with potential downside to $54,800; hidden bearish divergence appears on the 2-day RSI, and price action confirms weakness amid calls for a “fake bounce” before the next leg down. Sentiment echoes cycle fatigue—“BTC is dead”, “every 3rd year of cycle = Dying”—while BlackRock’s $446M BTC deposit into Coinbase is interpreted as precursor to further selling.",
+        "updateTime": 1782732311000
+      },
+      {
+        "english": "Bitcoin faces intense bearish pressure amid collapsing ETF inflows, with $4 billion withdrawn from U.S. spot Bitcoin ETFs in June—the worst monthly outflow since launch. Whale short positions totaling $125M cluster at $61K–$61.7K, aligning with strong sell-side resistance as price hovers near $59.5K–$60K. Technical structure deteriorates sharply: BTC has broken below the 200-week SMA and registered a bearish Break of Structure (BOS) on the weekly chart, signaling deepening weakness and potential retest of $33K–$45K. <br /><br /> Market sentiment is fractured—NUPL shows Bitcoin hasn’t yet hit historical capitulation levels, but dominance charts reveal lower highs and fading momentum, suggesting rotation away from BTC into altcoins or broader risk-off dynamics. Narratives clash: one camp cites frozen $15B in crypto, sanctioned oil flows, and macro debasement as existential threats pushing BTC toward $10K; another dismisses long-term bottom calls (e.g., October 2026) as baffling fantasy. “Crypto is dead” rhetoric circulates alongside urgent HODL appeals—“Opt out now”—amplifying polarization without consensus on timing or depth of the next leg down.",
+        "updateTime": 1782730486000
+      },
+      {
+        "english": "$BTC is widely perceived as structurally compromised and bearish, with multiple tweets citing a breakdown below the 200 EMA, violent fee spikes on minimal demand, and accusations of protocol neutering — all reinforcing a narrative of systemic fragility. The $60K level is treated as a psychological choke point, where retail-driven relief rallies are dismissed as futile, and market makers are accused of exploiting sideways consolidation for easy shorts. <br /><br /> Accusations escalate to institutional critique: Coinbase is linked to the “Epstein (banking) cartel”, and broader distrust extends to U.S.-based entities like Bitget, undermining confidence in custodial and exchange infrastructure. Sentiment is laced with ideological hostility — calling $BTC a “scamcoin” — while technical setups suggest entrenched bear control and fading conviction across the broader crypto market, with $ETH appearing exhausted and $SOL’s resilience mocked as delusional.",
+        "updateTime": 1782728686000
+      },
+      {
+        "english": "$BTC faces strong bearish pressure as price retests major support near $60K after rejecting resistance at $65K and breaking down from $67K in early June; Elliott Wave analysis suggests impulse completion or extended sideways consolidation, while DXY/ES correlations reinforce downside momentum. Liquidations surge with $240K in short positions liquidated at €60,018.56, yet bears retain control as long as price remains below the main supply zone. <br /><br />Market sentiment deteriorates broadly—“most tokens are dumping,” including $BTC and $ETH, amid poor overall conditions; narratives emphasize systemic stress, with analysts citing 60K as a critical pivot and warning of worst-case levels under stress. The “95% of crypto holders will be left forever” rhetoric amplifies capitulation fears, while insider trading accusations and satirical jabs (“Satoshi’s ghost is waiting to yank the chain”) reflect deepening distrust in $BTC’s scalability and role versus higher-throughput chains.",
+        "updateTime": 1782726907000
+      },
+      {
+        "english": "$BTC faces intense selling pressure amid $4B in U.S. spot ETF outflows—the worst month since launch—amplified by institutional withdrawal and exchange inflows, with thousands of BTC moved to Binance and OKX signaling imminent liquidation risk. South Korea’s new KOSDAQ delisting rules add regulatory overhang, while macro fears tie $BTC’s downside to broader credit contagion scenarios targeting $20K as the bear-case floor.  Market structure shows rejection at key supply zones, triggering short-dominant positioning across retail and algo traders; repeated “short dca” tweets underscore coordinated bearish sentiment, reinforced by portfolio damage reports, emotional capitulation narratives (“f’d by my portfolio”), and technical confirmation of failed rallies amid stock market divergence.  Despite brief rebounds near $60K, momentum remains fragile—7-day drop of 6.8% to $59,974 reflects deepening weakness, with derivatives and whale behavior pointing to further downside before any sustainable pump.",
+        "updateTime": 1782725111000
+      }
+    ],
+    "neutralContents": [
+      {
+        "english": "Whales and institutions are liquidating $BTC positions amid macro caution and weak ETF flows, with $1.79B net outflows over the past week and $447M in 1-day outflows; $117.70M of the $309.60M total 24-hour liquidations were long $BTC positions, signaling intensified bearish pressure near $59,603. <br /><br /> $BTC is described as “spiritual,” tied to long-term HODLing identity and adoption narratives emphasizing simplicity, liquidity unlocking, and stablecoin utility—yet price action reflects disappointment (“BTC keeps disappointing”) and technical vulnerability, trading just under $60K amid fading ETF demand and quantum-security debates that remain theoretical but market-sensitive.",
+        "updateTime": 1782744900000
+      },
+      {
+        "english": "$BTC is trading near $59K–$60K amid extreme fear (Fear & Greed Index at 12), with ETF outflows totaling $4B this month acting as a dominant headwind. Price action remains range-bound, with repeated tests of $59,500–$60,500 and no confirmed intraweek trade signals yet—traders are waiting for Monday’s range formation and liquidity shifts flagged by FireCharts. Whales appear cautious: one tweet notes “BTC flowing onto Sui is one thing. BTC actually working is another,” highlighting idle holdings versus active onchain utility via high-LTV, fixed-rate borrowing. <br /><br />Michael Saylor’s $1.25B BTC monetization program is under scrutiny, framed as a forced sale mechanism if price remains depressed—sparking debate over strategy vs. desperation. Sentiment oscillates between fatigue (“Får fan lite PTSD av price action på btc”) and technical optimism (“BTC rebotara entre 46 y 47k… ese es el fondo del canal”), while macro policy noise emerges via the Clarity Act’s two-week window ahead of potential Senate vote—implied to carry indirect $BTC impact. Coinbase is noted as leading current flow, and institutional narratives remain conflicted: Jeremy Grantham declares $BTC “guaranteed to go to zero,” provoking mockery from the crypto community.",
+        "updateTime": 1782743104000
+      },
+      {
+        "english": "$BTC remains range-bound near $60K, with multiple tweets noting resistance at this level and muted price action across sessions; sentiment is cautious as traders await a decisive breakout or breakdown, reflected in flat US-session performance and repeated references to the $60K psychological barrier. <br /><br /> Whale activity and order flow are highlighted as impactful — one tweet notes “blasted the open $btc the most impactful my orderflow is, happens to be high tps high vol”, while macro indicators like Node21’s “Alarmstufe Rot” signal tightening liquidity and rising real yields, pressuring hodler and trader confidence. <br /><br /> Narrative fatigue and structural uncertainty emerge: questions arise about whether BTC narratives are outpacing substance (“Are there more $BTC narratives or more ‘plans’?”), and concerns mount over sustaining the $60K level — with one user stating “losing 60k level would be pretty bad”, linking BTC’s stability to broader altcoin and Saylor-adjacent momentum.",
+        "updateTime": 1782741287000
+      },
+      {
+        "english": "Whales and institutions are active in $BTC markets, with BlackRock’s confirmed $446M deposit of 7,432 BTC to Coinbase Prime marking the largest single-day net outflow on record — aligned with IBIT ETF activity. Concurrently, U.S. spot $BTC ETFs logged $4.06B in net outflows this month, the highest monthly redemption ever recorded, signaling intense institutional profit-taking and macro-driven caution. $BTC is testing the $60K level amid weakening ETF flows and persistent macro pressure, with price slipping below that threshold triggering directional uncertainty. <br /><br /> On-chain UTXO profit/loss data has entered a historically significant zone associated with market bottoms, though confirmation awaits further decline in the 365-day moving average — suggesting potential capitulation but not yet full bottom formation. Historical bear market drawdowns show the current cycle at -52% so far, possibly the shallowest in Bitcoin’s history if $BTC has already bottomed. <br /><br /> Community narratives emphasize $BTC’s foundational role — “digital gold”, “satoshis”, “Satoshi’s coin” — while technical discussions revolve around $60K as a pivotal battle zone, ETF dynamics, Iran’s Bitcoin adoption challenges (notably off-ramp limitations), and structural debates like BIP-110’s perceived threat to network cohesion. A surge in live trading sessions, signal groups, and multi-market scalping coverage highlights sustained retail engagement despite bearish price action.",
+        "updateTime": 1782735903000
+      },
+      {
+        "english": "$BTC shows immediate intraday pressure with price at $59,818 (–0.59%) and sentiment at 12/100 — “Extreme Fear” — as crowd direction remains contested and tape reveals selling pressure. Bulls have a narrow 24–36 hour window to ignite a pump; failure risks bear dominance on the 1-hour chart. DCA discipline is emphasized amid grinding lower price action, with deep-value metrics holding: Mayer Multiple 0.792, SSR 4.531, MSTR Premium 0.552, and MVRV Z-score 0.209 — signaling accumulation territory despite short-term weakness. <br /><br />Multiple leveraged trade setups reference $BTC in broader altcoin positions (e.g., $SLX, $SYN, $UB, $COOKIE), confirming its role as anchor collateral and liquidity reference across Bybit and other platforms. ETF flows remain massive ($17.9B weekly net inflow, third-highest ever), with Bitcoin-related ETF activity dominating institutional volume — though exact BTC-specific allocation isn’t broken out. Quantum security concerns resurface with new qubit breakthroughs, reinforcing long-term protocol-level risk narratives.",
+        "updateTime": 1782734117000
+      },
+      {
+        "english": "$BTC is consolidating near $60K, with price action oscillating between key liquidity zones at $58K (long liquidations) and $62K (short positions), suggesting an imminent directional breakout. A large 334.07 BTC bid at $58,888 on Binance was fully filled in ~10 hours—indicating aggressive buyer absorption at the lows—followed by recovery to $60,097. Market structure remains range-bound but tense, with extended time spent near June lows increasing potential magnitude of next move. <br /><br />Michael Saylor’s cryptic tweet—“We’ll need more charts”—has ignited speculation of another MicroStrategy BTC purchase, reinforcing institutional accumulation narrative. Meanwhile, BlackRock and Coinbase Prime executed a 7.432 BTC trade, adding weight to macro-level confidence. Sentiment remains cautious yet anticipatory: Fear & Greed Index sits at 12, dominance holds at 58.1%, and traders debate whether capitulation has concluded or further downside lies ahead.",
+        "updateTime": 1782732311000
+      },
+      {
+        "english": "$BTC is consolidating near the $60K resistance zone, with price action described as “chopping around” at June lows and repeatedly capped near $60K, while forming marginally higher low wicks below. A dense short liquidation cluster sits just above current price (~$59.9K–$61K), indicating potential magnet-level volatility and a possible squeeze if price breaks upward. The $58K level is flagged as critical support to watch amid range-bound indecision. <br /><br /> Sentiment remains cautious but anticipatory — “BTC needs more confirmation for sure,” and traders are monitoring macro signals like DXY and gold peaks before rotating heavier into $BTC. Whales and institutional context appear indirectly via references to MicroStrategy’s BTC holdings and ETF-related outflows, while structural maturity is noted through falling cycle drawdown ceilings (93% → 53%). A liquidation event of $105K longs occurred near €60,080.90, reinforcing near-term fragility.",
+        "updateTime": 1782730486000
+      },
+      {
+        "english": "$BTC is testing $60K amid macro uncertainty, with oil relief present but liquidity pressure mounting as DXY nears a 13-month high and Fed hike risk remains alive. Technical structure shows sellers in control below the 200 EMA, with price respecting a descending channel — a reclaim above it required to shift momentum. <br /><br /> Whales and algos remain active: one trading bot closed a short position with 1.56% gain, while another trader reported a $36 profit from a closed $BTC long. Sentiment oscillates — “$BTC seems to enjoy breaking hearts at 62k” contrasts with “guess it’s time to buy that dip”, reflecting tight-range indecision. Market cap contraction and ETF outflows signal broader risk-off positioning, yet $BTC retains its role as macro barometer amid gold and oil volatility.",
+        "updateTime": 1782728686000
+      },
+      {
+        "english": "Whales are accumulating $BTC near the $58,000–$59,800 range, with a critical macro floor at $54,500 and strong focus on breakout potential above $61,500. Glassnode signals early bottom formation, noting $BTC trades at a 20% discount to its True Market Mean of $77k — indicating structural undervaluation and accumulation phase. <br /><br /> $BTC is described as “digital gold” in storage mode, with estimated annualized yield around 117% based on current on-chain activity, while institutional flows and miner behavior (e.g., using 0.18 BTC/block in financial models) reinforce long-term network strength. Market cap stands at $1.20 Trillion (-0.49%), showing mild pullback but stable structure amid mixed broader crypto sentiment.",
+        "updateTime": 1782726907000
+      },
+      {
+        "english": "Bitcoin faces immediate pressure below the $60,000 psychological level, with price slipping to $59,796–$59,854 across multiple reports and liquidity clusters forming at $58,500 (24H/1M) and $62,300 (1W). Weak spot ETF flows—$1.79B in net outflows last week—compound macro caution, contributing to a potential back-to-back quarterly decline. <br /><br /> Whales and technical traders are monitoring Wyckoff accumulation patterns, while liquidation heatmaps highlight key cluster zones; $BTC caught a brief relief bid following ceasefire headlines but remains untrusted by green flows. Institutional narratives persist around Bitcoin as “digital gold” and the only property users truly own via self-custody, though skepticism lingers from macro voices like Grantham warning of zero value under traditional valuation frameworks.",
+        "updateTime": 1782725111000
+      }
+    ],
+    "bullishContents": [
+      {
+        "english": "Saylor’s approval of up to $1.25B in BTC sales to fund Strategy’s USD Reserve underscores strategic liquidity management while reaffirming long-term Bitcoin conviction — Strategy explicitly commits to $BTC as its primary treasury reserve asset and builds a formal framework to preserve long-term exposure. Corporate-scale Bitcoin adoption is now institutionalized, not speculative, with structural emphasis on reserves, liquidity, and exposure centrality. <br /><br /> $BTC holds firm at ~$59.4K, anchoring market structure amid broader pressure; the 60K zone remains a critical support benchmark, repeatedly absorbed during dips. Dollar weakness and macro tailwinds are cited as catalysts for upcoming moves, while ETF outflows contrast with $XRP’s $23M inflows — highlighting $BTC’s role as the unchallenged hedge even as altcoin narratives heat up. Whales and smart money continue holding $BTC as core insurance, with derivative positioning suggesting tight range-bound action ($58K–$62K) pending catalysts like Middle East tension or Trump-related volatility.",
+        "updateTime": 1782744900000
+      },
+      {
+        "english": "Whales and treasuries are shifting from “never sell” dogma to active BTC monetization, with Strategy’s $1.25B Digital Credit Capital Framework enabling liquidity generation while preserving ~847k BTC long-term. This structural maturity signals institutional adoption deepening—not capitulation—as reflected in $1.76B annual dividend/interest obligations backed by $2.55B cash reserves (17.4 months coverage) and a newly authorized BTC sale mechanism for operational flexibility. <br /><br /> Market sentiment remains resilient amid price turbulence: BTC is described as “pumping,” “giving joy,” and trading near key psychological levels ($48K–$68K range discussed), while Kalshi markets assign 76% probability to $50K before $100K—up 35% recently—with $54K in volume on the contract. Nibbling activity, swing-long setups, and HODL narratives persist despite short-term volatility, reinforcing accumulation logic during “boring and painful periods.”",
+        "updateTime": 1782743104000
+      },
+      {
+        "english": "$BTC shows signs of structural stabilization near $59.4K, with Coinbase-Binance premium turning positive after two weeks of red — indicating renewed institutional confidence and potential bottom formation. Whale accumulation narratives persist, reinforced by BlackRock’s $446M BTC deposit and El Salvador’s Bitcoin reserve growth to 7,696 BTC, despite IMF restrictions. Defensive positioning and on-chain consolidation suggest patience is being tested ahead of potential upside, especially if $BTC holds the recent higher low at $58K and clears resistance toward $60K+. <br /><br /> Sentiment oscillates between conviction and fatigue: “This is #BTC temporary bottom” clashes with “Monday: Bearish Tuesday: Bearish Bulls: ‘This is the bottom.’ $BTC: ‘Watch this.’”, yet consistent themes emerge — self-custody advocacy, long-term holding (“Long-term BTC exposure maintained”), and rejection of noise amid weekend panic selling followed by green opens. The “power up” and “Time to power up... #BTC” signals align with renewed momentum expectations, while liquidation alerts ($105K longs wiped at €59,444) highlight fragility within the range. <br /><br /> Narrative drivers extend beyond price: White House’s “Trump Account” launch ties BTC to policy-focused retail savings chatter, and $SOL rotation flows indirectly affirm BTC’s role as anchor — “After #BTC, #SOL is the coin I've accumulated the most” underscores BTC-first portfolio construction. Despite bearish intraday volatility and ETF inflow competition, $BTC remains the undisputed reference point for altcoin direction, leverage triggers, and macro crypto sentiment.",
+        "updateTime": 1782741287000
+      },
+      {
+        "english": "$BTC reached 1R target at $61,172 with 25% profit-taking executed; remaining position now risk-free after stop-loss moved to entry. Traders anticipate further upside with tiered profit targets at $62,172 and $63,219. <br /><br /> Current price stands at $60,126.01, reflecting strong momentum and disciplined trade management amid bullish structure.",
+        "updateTime": 1782740051000
+      },
+      {
+        "english": "Whales and institutions continue accumulating $BTC despite sideways price action near $60k, with B2C2 adding $11.67M in holdings and Wintermute increasing $BTC exposure amid broad altcoin rotation. On-chain signals show bullish divergence mirroring 2022 bottom patterns, and $59,130 reclaim is flagged as a critical trigger—loss implies risk to $49k, but retention suggests structural strength building for Q4 momentum. <br /><br /> Michael Saylor’s Strategy launched a $1.25B BTC Monetization Program to fund its $2.55B USD Reserve and dividends, yet explicitly reaffirmed Bitcoin as its primary treasury asset—blending active capital management with long-term conviction. Concurrently, U.S. spot $BTC ETFs suffered $4B+ net outflows—the worst month since launch—highlighting institutional liquidity stress, though derivative positioning and whale DCA behavior (e.g., weekly buys, October-aggressive scaling) signal enduring accumulation beneath the surface.",
+        "updateTime": 1782735903000
+      },
+      {
+        "english": "Whales are moving $BTC out of Coinbase Institutional into unknown wallets—2,595 BTC ($156M) across three transfers—signaling accumulation and reduced immediate selling pressure. BlackRock simultaneously deposited 7,432 $BTC ($446M) and 8,150 $ETH into Coinbase Prime for ETF custody operations, reinforcing institutional infrastructure build-out and long-term positioning. <br /><br /> Real-world adoption accelerates: the first Fannie Mae-backed BTC mortgage closed in the US, enabling borrowers to pledge $BTC or USDC as collateral for home down payments—$250M initial volume, nationwide rollout expected this summer. U.S. Treasury Secretary calls digital assets “one of the most important phenomena in the world today,” underscoring regulatory maturation and macro legitimacy. <br /><br /> Price action shows resilience amid volatility: $BTC holds near $59.8K after dipping from $70K, with calls for a return to $70K “within the next few days” and technical focus on $90M ATH as next support for $POOH—a memecoin riding $BTC and $ETH narrative momentum. Market structure remains anchored by native accumulation, derivative calm, and recurring signals of smart money inflow.",
+        "updateTime": 1782734117000
+      },
+      {
+        "english": "Whales and institutions are aggressively accumulating $BTC, with BlackRock’s $446.38M deposit of 7,432 $BTC into Coinbase signaling strong institutional conviction and reinforcing the $BTC-as-digital-gold narrative. Multiple tweets confirm this inflow as bullish fuel, citing onchain validation and macro confidence amid sideways price action near $60,000. <br /><br /> Technical structure shows four equal lows forming a dense accumulation zone — interpreted as liquidity buildup poised to trigger a strong impulse move toward $58,000, possibly via a short squeeze before final flush. Momentum is visibly returning after weeks of consolidation, with traders reporting green PnL, renewed HODL sentiment, and euphoric cues like “Bull balls are tingling” and “Coffee tastes better on green days.”",
+        "updateTime": 1782732311000
+      },
+      {
+        "english": "Bullish technical signals are mounting for $BTC: RSI recovery to neutral territory, MACD bullish divergence, and formation of four equal lows within a tight high-density range—interpreted as liquidity buildup priming a strong impulsive move toward $58,000 or higher. Price action near $59,500 is seen as pivotal, with $61,400 as the first upside target and potential extension to $70,000 if support holds; loss of $59,500 would trigger a liquidity grab below $58,000. Historical pattern reinforces optimism—every red June since 2013 has been followed by a July bounce, suggesting cyclical relief may be imminent despite June 2026 being the worst month so far. <br /><br />Narrative momentum is intensifying: $BTC is framed as digital gold and wealth/freedom protection, with institutional credibility underscored by MicroStrategy’s market cap falling below its Bitcoin holdings’ value. Sentiment spans from disciplined accumulation (“marathon not a sprint”) to aggressive conviction (“$250,000 in 4–8 months”), while whale activity, retests of key levels like $60,000, and references to Binance/OKX gold addresses signal deepening market structure. Leverage caution remains, but long positions are actively held, scaled, and anticipated to resolve imminently—with one trader noting progress on a 6% gain target versus 2% risk.",
+        "updateTime": 1782730486000
+      },
+      {
+        "english": "BTC reclaimed $60,000 with a confirmed 1-hour close above the level, marking it as a key structural flip and breakout signal for traders. Institutional ETF demand remains strong despite recent outflows—21Shares still projects $100K by year-end while rotating out of $HYPE, signaling strategic reallocation rather than broad capitulation. Whale accumulation is implied by persistent SOPR below 1 and formation of a bottoming range, with no SOPR spike above 3.4 this cycle, indicating absence of a mature rally and ongoing cost-basis compression. <br /><br /> RSI has revisited prior cycle lows near $50K demand zone, echoing 2022’s divergence setup; analysts draw parallels to $60K vs $30K bear-market framing and warn of imminent volatility shifts as June closes. Sentiment reflects conviction in long-term upside—“BTC all the way”, “BTC is coming at an easy price for thousands”, and belief in 2026 as a historic inflection point. Community momentum builds around Moonshot listing efforts and narrative reinforcement via #Bitcoin branding, ETF Floe speculation, and macro alignment with digital gold positioning.",
+        "updateTime": 1782728686000
+      },
+      {
+        "english": "Whales are accumulating $BTC amid institutional momentum, with Kiwoom Securities seeking a Bithumb stake ahead of Korea’s July FSC reforms — signaling rising regulatory clarity and liquidity inflows. El Salvador added 8 more $BTC to its treasury, now holding 7,696.37 BTC ($461M+), reinforcing sovereign adoption as a structural bullish catalyst. Historical pattern shows three consecutive red 3-month candles precede multi-year uptrends — the third is closing in two days, suggesting a final accumulation phase may be underway. <br /><br />$BTC is holding key support between $55K–$58K after a ~30% pullback from $82K, with weekly RSI showing bullish divergence — price making lower lows while momentum stabilizes near $60K, echoing 2018 and 2022 cycle-bottom setups. Seasonality reinforces strength: July–August has delivered consistent bullish performance over six years. Analysts remain confident in a move toward $74K, rejecting breaks below $59K as unsustainable — current price sits at $59,940.01, up +0.60% on the day.",
+        "updateTime": 1782726907000
+      }
+    ]
+  },
+  "supportResistance": [
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": "60531.24",
+      "denseArea": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": "60905.19",
+      "denseArea": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": "59045.28005",
+      "denseArea": 2
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": "58750.05364975",
+      "denseArea": 2
+    }
+  ],
+  "snapshot": {
+    "name": "token_fund",
+    "saved_at": "2026-06-29T15:30:04.298559+00:00",
+    "origin": "live",
+    "history_id": "2026-06-29T15-30-04.298559+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\token_fund\\2026-06-29T15-30-04.298559+00-00.json"
+  }
+}

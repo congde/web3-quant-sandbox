@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "full": false,
+  "scanTime": "2026-06-26T02:36:58Z",
+  "totalScanned": 5,
+  "topK": 3,
+  "opportunities": [
+    {
+      "symbol": "APT",
+      "pair": "APT-USDT",
+      "signal": "SELL",
+      "label": "明显回调",
+      "score": -22.7,
+      "confidence": 53.608,
+      "change24h": -0.0768,
+      "volume24h": 757848.3282265,
+      "last": 0.5791,
+      "keyReasons": [
+        "24h 跌幅 -7.7%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 1
+    },
+    {
+      "symbol": "BONK",
+      "pair": "BONK-USDT",
+      "signal": "SELL",
+      "label": "明显回调",
+      "score": -18.2,
+      "confidence": 50.95,
+      "change24h": -0.0525,
+      "volume24h": 2172897.169249637,
+      "last": 3.985e-06,
+      "keyReasons": [
+        "24h 跌幅 -5.2%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 2
+    },
+    {
+      "symbol": "BLEND",
+      "pair": "BLEND-USDT",
+      "signal": "WEAK_BUY",
+      "label": "温和上涨",
+      "score": 14.6,
+      "confidence": 48.76,
+      "change24h": 0.046,
+      "volume24h": 2384488.456532,
+      "last": 0.05743,
+      "keyReasons": [
+        "24h 涨幅 4.6%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 3
+    }
+  ],
+  "marketOverview": "扫描 5 个币种，市场方向分化。多头 1、空头 2、中性 0。综合靠前：APT(明显回调)、BONK(明显回调)、BLEND(温和上涨)。",
+  "scanDurationMs": 0,
+  "engine": "sandbox-rule-based",
+  "errors": [],
+  "snapshot": {
+    "name": "opportunity_scan",
+    "saved_at": "2026-06-26T02:36:58.892056+00:00",
+    "origin": "live",
+    "history_id": "2026-06-26T02-36-58.892056+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-06-26T02-36-58.892056+00-00.json"
+  }
+}

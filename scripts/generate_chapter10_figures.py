@@ -174,39 +174,108 @@ def save_metric_bars() -> None:
 
     plt.rcParams["font.sans-serif"] = ["SimHei", "Microsoft YaHei", "Arial Unicode MS", "DejaVu Sans"]
     plt.rcParams["axes.unicode_minus"] = False
-    fig, ax = plt.subplots(figsize=(10, 5.6), dpi=160)
+    fig, ax = plt.subplots(figsize=(10, 6.2), dpi=160)
     fig.patch.set_facecolor(BG)
     ax.set_facecolor("#FFFFFF")
     bars = ax.bar(names, values, color=colors, width=0.56)
     ax.axhline(0, color="#334155", linewidth=1.2)
-    ax.set_title("固定样本报告关键指标", fontsize=18, pad=16)
     ax.set_ylabel("百分比（%）", fontsize=12)
+    ax.set_ylim(-26, 64)
     ax.grid(axis="y", color="#E5E7EB", linewidth=0.8)
     ax.spines[["top", "right"]].set_visible(False)
     for bar, value in zip(bars, values):
-        y = value + 2 if value >= 0 else value - 3
+        y = value + 2 if value >= 0 else value - 2.6
         va = "bottom" if value >= 0 else "top"
         ax.text(bar.get_x() + bar.get_width() / 2, y, f"{value:.2f}%", ha="center", va=va, fontsize=11)
     ax.text(
         0.02,
-        -0.18,
+        -0.16,
         f"参数 short=3、long=7；交易次数 {metrics['trade_count']}；数据来自 report_cli.py 的 build_report 输出。",
         transform=ax.transAxes,
         fontsize=10,
         color=MUTED,
     )
-    fig.tight_layout()
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
     fig.savefig(OUT / "chapter-10-report-metrics.png", bbox_inches="tight")
     plt.close(fig)
     print(OUT / "chapter-10-report-metrics.png")
 
 
+def save_equity_drawdown() -> None:
+    report = build_report(short=3, long=7)
+    curve = report["backtest"]["curve"]
+    dates = [row["date"] for row in curve]
+    equity = [float(row["equity"]) for row in curve]
+    closes = [float(row["close"]) for row in curve]
+    first_close = closes[0]
+    buy_hold = [10000.0 * close / first_close for close in closes]
+
+    peak = []
+    running_peak = equity[0]
+    for value in equity:
+        running_peak = max(running_peak, value)
+        peak.append(running_peak)
+    drawdown = [(value / high - 1.0) * 100 for value, high in zip(equity, peak)]
+
+    plt.rcParams["font.sans-serif"] = ["SimHei", "Microsoft YaHei", "Arial Unicode MS", "DejaVu Sans"]
+    plt.rcParams["axes.unicode_minus"] = False
+    fig, (ax1, ax2) = plt.subplots(
+        2,
+        1,
+        figsize=(11, 7.2),
+        dpi=160,
+        sharex=True,
+        gridspec_kw={"height_ratios": [2.2, 1]},
+    )
+    fig.patch.set_facecolor(BG)
+    for ax in (ax1, ax2):
+        ax.set_facecolor("#FFFFFF")
+        ax.grid(axis="y", color="#E5E7EB", linewidth=0.8)
+        ax.spines[["top", "right"]].set_visible(False)
+
+    x = range(len(dates))
+    ax1.plot(x, equity, color=BLUE, linewidth=2.0, label="策略权益")
+    ax1.plot(x, buy_hold, color=TEAL, linewidth=2.0, label="买入持有权益")
+    ax1.set_ylabel("权益（初始 10000）", fontsize=11)
+    ax1.legend(loc="upper left", frameon=False)
+    ax1.annotate(
+        "最终权益 8464.93",
+        xy=(len(dates) - 1, equity[-1]),
+        xytext=(len(dates) * 0.66, equity[-1] + 1200),
+        arrowprops={"arrowstyle": "->", "color": BLUE},
+        color=BLUE,
+        fontsize=10,
+    )
+
+    ax2.fill_between(x, drawdown, 0, color=RED, alpha=0.22)
+    ax2.plot(x, drawdown, color=RED, linewidth=1.8, label="策略回撤")
+    ax2.axhline(-15.0, color=ORANGE, linestyle="--", linewidth=1.4, label="风险阈值 -15%")
+    ax2.set_ylabel("回撤（%）", fontsize=11)
+    ax2.legend(loc="lower left", frameon=False)
+    ax2.set_ylim(min(drawdown) - 2, 2)
+
+    tick_count = 7
+    tick_positions = [round(i * (len(dates) - 1) / (tick_count - 1)) for i in range(tick_count)]
+    ax2.set_xticks(tick_positions)
+    ax2.set_xticklabels([dates[i] for i in tick_positions], rotation=25, ha="right", fontsize=9)
+    ax2.text(
+        0.01,
+        -0.52,
+        "来源：report_cli.py --format json --short 3 --long 7 中的 backtest.curve；回撤阈值来自 risk_checks。",
+        transform=ax2.transAxes,
+        fontsize=9.5,
+        color=MUTED,
+    )
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-10-equity-drawdown.png", bbox_inches="tight")
+    plt.close(fig)
+    print(OUT / "chapter-10-equity-drawdown.png")
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    save_claim_traceability()
-    save_report_layers()
-    save_claim_ledger_review()
     save_metric_bars()
+    save_equity_drawdown()
 
 
 if __name__ == "__main__":

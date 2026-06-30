@@ -76,6 +76,21 @@ def test_ma_crossover_golden_cross_produces_long_signal() -> None:
     assert any(s["action"] == "LONG" and s["score"] >= 25 for s in signals)
 
 
+def test_ma_crossover_boundary_does_not_read_last_candle_as_previous_window() -> None:
+    class GuardedCandles(list):
+        def __getitem__(self, index):
+            assert index >= 0, "strategy must not use negative indices as history"
+            return super().__getitem__(index)
+
+    candles = GuardedCandles(_synthetic_candles([100.0 + i for i in range(12)]))
+    strategy = get_strategy("ma_crossover")
+    params = {"fast_period": 3, "slow_period": 5, "entry_threshold": 25}
+
+    signal = strategy.generate_signal(candles, 5, params)
+
+    assert signal.action in {"LONG", "WAIT"}
+
+
 def test_macd_crossover_golden_cross_produces_long_signal() -> None:
     closes = [100 - i * 0.4 for i in range(40)] + [84 + i * 1.5 for i in range(40)]
     candles = _synthetic_candles(closes)

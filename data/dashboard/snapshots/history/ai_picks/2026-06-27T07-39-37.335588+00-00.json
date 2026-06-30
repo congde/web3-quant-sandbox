@@ -1,0 +1,944 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "chance": [
+    {
+      "vsTokenId": "38590",
+      "symbol": "币安人生",
+      "price": "0.7304",
+      "maxPrice": "0.8968003790207607",
+      "minPrice": "0.00010444711620172",
+      "percentChange1h": "0.1673417",
+      "percentChange24h": "-0.6119458",
+      "percentChange7d": "3.30005529",
+      "percentChange30d": "71.64271756",
+      "percentChange60d": "97.17598186",
+      "percentChange90d": "1676.01005814",
+      "cost": "0.310090338625055563",
+      "costChange": "0",
+      "deviation": "-57.346583",
+      "marketCap": "733138347.3336638",
+      "marketCapRanking": 55,
+      "circulatingSupply": "1000000000",
+      "circulationRate": "100",
+      "active": "1499",
+      "newly": "1499",
+      "tradeType": 1,
+      "chanceCoinTradeDataV1Vos": [
+        {
+          "timeRange": "D3",
+          "timeParticleEnum": 203,
+          "tradeInflow": "-471284.5913200007",
+          "tradeAmount": "17682001.820720002"
+        },
+        {
+          "timeRange": "M1",
+          "timeParticleEnum": 301,
+          "tradeInflow": "14660791.187880008",
+          "tradeAmount": "532306973.76050013"
+        },
+        {
+          "timeRange": "D90",
+          "timeParticleEnum": 290,
+          "tradeInflow": "22947955.51705",
+          "tradeAmount": "2632778143.41113"
+        },
+        {
+          "timeRange": "D7",
+          "timeParticleEnum": 207,
+          "tradeInflow": "-1065142.31772",
+          "tradeAmount": "33095295.34353999"
+        },
+        {
+          "timeRange": "M5",
+          "timeParticleEnum": 305,
+          "tradeInflow": "4862356.37325",
+          "tradeAmount": "3251280298.4221296"
+        },
+        {
+          "timeRange": "D5",
+          "timeParticleEnum": 205,
+          "tradeInflow": "-640389.0092",
+          "tradeAmount": "25909453.892799996"
+        },
+        {
+          "timeRange": "M3",
+          "timeParticleEnum": 303,
+          "tradeInflow": "21655240.136170022",
+          "tradeAmount": "2641190757.451189"
+        },
+        {
+          "timeRange": "D2",
+          "timeParticleEnum": 202,
+          "tradeInflow": "400656.4879399995",
+          "tradeAmount": "12605548.193320002"
+        },
+        {
+          "timeRange": "D1",
+          "timeParticleEnum": 201,
+          "tradeInflow": "293580.7438399997",
+          "tradeAmount": "6891681.64616"
+        },
+        {
+          "timeRange": "H6",
+          "timeParticleEnum": 106,
+          "tradeInflow": "-137786.67450000002",
+          "tradeAmount": "861834.55464"
+        },
+        {
+          "timeRange": "D20",
+          "timeParticleEnum": 220,
+          "tradeInflow": "-2926118.683430002",
+          "tradeAmount": "199534528.40069"
+        },
+        {
+          "timeRange": "D150",
+          "timeParticleEnum": 2150,
+          "tradeInflow": "5405287.254920011",
+          "tradeAmount": "3238525065.529119"
+        },
+        {
+          "timeRange": "H4",
+          "timeParticleEnum": 104,
+          "tradeInflow": "-109149.94918000004",
+          "tradeAmount": "569568.45722"
+        },
+        {
+          "timeRange": "H12",
+          "timeParticleEnum": 112,
+          "tradeInflow": "-140618.10828000004",
+          "tradeAmount": "1260537.5368600003"
+        },
+        {
+          "timeRange": "H24",
+          "timeParticleEnum": 124,
+          "tradeInflow": "293580.7438399997",
+          "tradeAmount": "6891681.64616"
+        },
+        {
+          "timeRange": "m30",
+          "timeParticleEnum": 30,
+          "tradeInflow": "5887.568119999998",
+          "tradeAmount": "90604.99644000002"
+        },
+        {
+          "timeRange": "D120",
+          "timeParticleEnum": 2120,
+          "tradeInflow": "13296290.438080017",
+          "tradeAmount": "2811544539.317059"
+        },
+        {
+          "timeRange": "H8",
+          "timeParticleEnum": 108,
+          "tradeInflow": "-133418.54898000002",
+          "tradeAmount": "1038937.4379800002"
+        },
+        {
+          "timeRange": "M4",
+          "timeParticleEnum": 304,
+          "tradeInflow": "13296290.438080017",
+          "tradeAmount": "2811544539.3170595"
+        },
+        {
+          "timeRange": "H2",
+          "timeParticleEnum": 102,
+          "tradeInflow": "-48585.56985000003",
+          "tradeAmount": "225142.90881000005"
+        },
+        {
+          "timeRange": "m5",
+          "timeParticleEnum": 5,
+          "tradeInflow": "-251.11343000000073",
+          "tradeAmount": "17367.87827"
+        },
+        {
+          "timeRange": "m15",
+          "timeParticleEnum": 15,
+          "tradeInflow": "3785.8780799999986",
+          "tradeAmount": "41094.74486"
+        },
+        {
+          "timeRange": "M2",
+          "timeParticleEnum": 302,
+          "tradeInflow": "-14423319.838409998",
+          "tradeAmount": "923546509.7972696"
+        },
+        {
+          "timeRange": "H1",
+          "timeParticleEnum": 101,
+          "tradeInflow": "13248.55494",
+          "tradeAmount": "118692.24042000005"
+        },
+        {
+          "timeRange": "D10",
+          "timeParticleEnum": 210,
+          "tradeInflow": "-2769179.42095",
+          "tradeAmount": "57800489.67319"
+        },
+        {
+          "timeRange": "D40",
+          "timeParticleEnum": 240,
+          "tradeInflow": "-10842567.158209998",
+          "tradeAmount": "637128337.3409699"
+        },
+        {
+          "timeRange": "D60",
+          "timeParticleEnum": 260,
+          "tradeInflow": "-12706406.883600008",
+          "tradeAmount": "903152289.04388"
+        },
+        {
+          "timeRange": "D50",
+          "timeParticleEnum": 250,
+          "tradeInflow": "-11197055.081530005",
+          "tradeAmount": "754850530.89125"
+        },
+        {
+          "timeRange": "D30",
+          "timeParticleEnum": 230,
+          "tradeInflow": "14670062.293240003",
+          "tradeAmount": "527174509.32422"
+        },
+        {
+          "timeRange": "D15",
+          "timeParticleEnum": 215,
+          "tradeInflow": "-4651997.595940001",
+          "tradeAmount": "91100423.80718005"
+        }
+      ],
+      "updateTime": 1782167740000,
+      "pushPrice": "0.7132",
+      "pushMaxPrice": "0.7618",
+      "gains": 6.8143579999999995,
+      "pushMinPrice": "0.684",
+      "declines": 4.094223,
+      "score": 62.0,
+      "scoreChange": 2.0,
+      "grade": 1,
+      "alpha": false,
+      "fomo": false,
+      "fomoEscalation": false,
+      "bullishRatio": 1.0,
+      "bearishRatio": 0.0
+    },
+    {
+      "vsTokenId": "37338",
+      "symbol": "TAC",
+      "price": "0.023107",
+      "maxPrice": "0.04253741620149965",
+      "minPrice": "0.00128624959163794",
+      "percentChange1h": "-0.63555503",
+      "percentChange24h": "-9.70876994",
+      "percentChange7d": "9.68620485",
+      "percentChange30d": "34.35828856",
+      "percentChange60d": "107.11174889",
+      "percentChange90d": "503.77946123",
+      "cost": "0.019909039352461429",
+      "costChange": "0.022097",
+      "deviation": "-19.474845",
+      "marketCap": "106708862.210060694629507518",
+      "marketCapRanking": 148,
+      "circulatingSupply": "4656734411",
+      "circulationRate": "45.396538",
+      "active": "167",
+      "newly": "167",
+      "tradeType": 2,
+      "chanceCoinTradeDataV1Vos": [],
+      "updateTime": 1782450040000,
+      "pushPrice": "0.024874",
+      "pushMaxPrice": "0.02626",
+      "gains": 5.572083,
+      "pushMinPrice": "0.022647",
+      "declines": 8.953123999999999,
+      "score": 45.0,
+      "scoreChange": 0.0,
+      "grade": 2,
+      "alpha": false,
+      "fomo": false,
+      "fomoEscalation": false,
+      "bullishRatio": 0.5,
+      "bearishRatio": 0.5
+    },
+    {
+      "vsTokenId": "5426",
+      "symbol": "SOL",
+      "price": "72.02",
+      "maxPrice": "294.33494870928604",
+      "minPrice": "0.505193636791",
+      "percentChange1h": "0.47930097",
+      "percentChange24h": "3.00405695",
+      "percentChange7d": "0.32131238",
+      "percentChange30d": "-10.88107951",
+      "percentChange60d": "-14.20344362",
+      "percentChange90d": "-12.54511605",
+      "cost": "",
+      "costChange": "",
+      "deviation": "",
+      "marketCap": "41818489000.503835693368411917",
+      "marketCapRanking": 6,
+      "circulatingSupply": "580635380.49265719",
+      "circulationRate": "92.280654",
+      "active": "",
+      "newly": "",
+      "tradeType": 1,
+      "chanceCoinTradeDataV1Vos": [
+        {
+          "timeRange": "D3",
+          "timeParticleEnum": 203,
+          "tradeInflow": "5411317.69650999",
+          "tradeAmount": "1021850812.1428297"
+        },
+        {
+          "timeRange": "M6",
+          "timeParticleEnum": 306,
+          "tradeInflow": "83144731.96063995",
+          "tradeAmount": "72713365191.23763"
+        },
+        {
+          "timeRange": "M1",
+          "timeParticleEnum": 301,
+          "tradeInflow": "-6864395.205589965",
+          "tradeAmount": "7849484543.56227"
+        },
+        {
+          "timeRange": "M7",
+          "timeParticleEnum": 307,
+          "tradeInflow": "-47125291.084720045",
+          "tradeAmount": "96720463569.04169"
+        },
+        {
+          "timeRange": "D90",
+          "timeParticleEnum": 290,
+          "tradeInflow": "281435935.05411017",
+          "tradeAmount": "23915618105.550873"
+        },
+        {
+          "timeRange": "D7",
+          "timeParticleEnum": 207,
+          "tradeInflow": "4050695.342179982",
+          "tradeAmount": "1823198538.58464"
+        },
+        {
+          "timeRange": "M5",
+          "timeParticleEnum": 305,
+          "tradeInflow": "104711289.98056006",
+          "tradeAmount": "52114395074.5521"
+        },
+        {
+          "timeRange": "D5",
+          "timeParticleEnum": 205,
+          "tradeInflow": "-11510843.239870016",
+          "tradeAmount": "1423335174.65433"
+        },
+        {
+          "timeRange": "M3",
+          "timeParticleEnum": 303,
+          "tradeInflow": "281587716.4057801",
+          "tradeAmount": "24355797446.44944"
+        },
+        {
+          "timeRange": "M9",
+          "timeParticleEnum": 309,
+          "tradeInflow": "-1216329779.0278294",
+          "tradeAmount": "178605522228.51282"
+        },
+        {
+          "timeRange": "D180",
+          "timeParticleEnum": 2180,
+          "tradeInflow": "47041670.47155002",
+          "tradeAmount": "71758568389.9448"
+        },
+        {
+          "timeRange": "D2",
+          "timeParticleEnum": 202,
+          "tradeInflow": "18108863.059339993",
+          "tradeAmount": "722972351.5587997"
+        },
+        {
+          "timeRange": "M11",
+          "timeParticleEnum": 311,
+          "tradeInflow": "-1123261737.2218208",
+          "tradeAmount": "293541273873.52026"
+        },
+        {
+          "timeRange": "D1",
+          "timeParticleEnum": 201,
+          "tradeInflow": "11958836.395039998",
+          "tradeAmount": "338152444.90266"
+        },
+        {
+          "timeRange": "Y1",
+          "timeParticleEnum": 401,
+          "tradeInflow": "-1636259661.2609797",
+          "tradeAmount": "346596944718.8739"
+        },
+        {
+          "timeRange": "M8",
+          "timeParticleEnum": 308,
+          "tradeInflow": "-664212261.4443998",
+          "tradeAmount": "134429444732.42044"
+        },
+        {
+          "timeRange": "Y2",
+          "timeParticleEnum": 402,
+          "tradeInflow": "-3192357144.4478803",
+          "tradeAmount": "799234929977.8601"
+        },
+        {
+          "timeRange": "H6",
+          "timeParticleEnum": 106,
+          "tradeInflow": "6931183.936320002",
+          "tradeAmount": "50267319.8221"
+        },
+        {
+          "timeRange": "D20",
+          "timeParticleEnum": 220,
+          "tradeInflow": "50424826.80331001",
+          "tradeAmount": "4698262081.3265915"
+        },
+        {
+          "timeRange": "D150",
+          "timeParticleEnum": 2150,
+          "tradeInflow": "116014546.92706008",
+          "tradeAmount": "51575832958.75261"
+        },
+        {
+          "timeRange": "H4",
+          "timeParticleEnum": 104,
+          "tradeInflow": "5446305.00082",
+          "tradeAmount": "37585073.9992"
+        },
+        {
+          "timeRange": "H12",
+          "timeParticleEnum": 112,
+          "tradeInflow": "6391955.597140003",
+          "tradeAmount": "120613898.88436"
+        },
+        {
+          "timeRange": "Y3",
+          "timeParticleEnum": 403,
+          "tradeInflow": "-2103581287.4515424",
+          "tradeAmount": "1025831762943.3916"
+        },
+        {
+          "timeRange": "H24",
+          "timeParticleEnum": 124,
+          "tradeInflow": "11958836.395039998",
+          "tradeAmount": "338152444.90266"
+        },
+        {
+          "timeRange": "m30",
+          "timeParticleEnum": 30,
+          "tradeInflow": "67352.00637999996",
+          "tradeAmount": "2042101.2239200005"
+        },
+        {
+          "timeRange": "D120",
+          "timeParticleEnum": 2120,
+          "tradeInflow": "298944538.77005005",
+          "tradeAmount": "35071277886.01871"
+        },
+        {
+          "timeRange": "H8",
+          "timeParticleEnum": 108,
+          "tradeInflow": "8552749.473300004",
+          "tradeAmount": "65220243.42944001"
+        },
+        {
+          "timeRange": "M4",
+          "timeParticleEnum": 304,
+          "tradeInflow": "298944538.7700501",
+          "tradeAmount": "35071277886.01871"
+        },
+        {
+          "timeRange": "H2",
+          "timeParticleEnum": 102,
+          "tradeInflow": "802031.1365799995",
+          "tradeAmount": "9997791.040739998"
+        },
+        {
+          "timeRange": "M12",
+          "timeParticleEnum": 312,
+          "tradeInflow": "-1636259661.2609792",
+          "tradeAmount": "346596944718.8739"
+        },
+        {
+          "timeRange": "M10",
+          "timeParticleEnum": 310,
+          "tradeInflow": "-536519255.346989",
+          "tradeAmount": "233459307304.77"
+        },
+        {
+          "timeRange": "m5",
+          "timeParticleEnum": 5,
+          "tradeInflow": "38581.65367000001",
+          "tradeAmount": "203556.56929"
+        },
+        {
+          "timeRange": "m15",
+          "timeParticleEnum": 15,
+          "tradeInflow": "128686.99394000006",
+          "tradeAmount": "871828.3817200001"
+        },
+        {
+          "timeRange": "M2",
+          "timeParticleEnum": 302,
+          "tradeInflow": "76125582.39365",
+          "tradeAmount": "15608826181.97739"
+        },
+        {
+          "timeRange": "H1",
+          "timeParticleEnum": 101,
+          "tradeInflow": "228412.94481999945",
+          "tradeAmount": "5391703.757699999"
+        },
+        {
+          "timeRange": "D10",
+          "timeParticleEnum": 210,
+          "tradeInflow": "-13734293.79669002",
+          "tradeAmount": "2453003263.0318303"
+        },
+        {
+          "timeRange": "D40",
+          "timeParticleEnum": 240,
+          "tradeInflow": "32348758.758720003",
+          "tradeAmount": "9994753430.96338"
+        },
+        {
+          "timeRange": "D60",
+          "timeParticleEnum": 260,
+          "tradeInflow": "79334134.10604",
+          "tradeAmount": "15375227385.7798"
+        },
+        {
+          "timeRange": "D50",
+          "timeParticleEnum": 250,
+          "tradeInflow": "42175013.55749003",
+          "tradeAmount": "13031953109.201488"
+        },
+        {
+          "timeRange": "D30",
+          "timeParticleEnum": 230,
+          "tradeInflow": "-3076507.8528300077",
+          "tradeAmount": "7567310161.471911"
+        },
+        {
+          "timeRange": "D15",
+          "timeParticleEnum": 215,
+          "tradeInflow": "12582995.223990008",
+          "tradeAmount": "3471885729.1978297"
+        }
+      ],
+      "updateTime": 1782483940000,
+      "pushPrice": "71.54",
+      "pushMaxPrice": "73.93",
+      "gains": 3.340788,
+      "pushMinPrice": "70.31",
+      "declines": 1.719318,
+      "score": 57.0,
+      "scoreChange": 2.0,
+      "grade": 1,
+      "alpha": true,
+      "fomo": false,
+      "fomoEscalation": false,
+      "bullishRatio": 0.4845,
+      "bearishRatio": 0.0745
+    }
+  ],
+  "risk": [
+    {
+      "vsTokenId": "6535",
+      "symbol": "NEAR",
+      "price": "1.809",
+      "maxPrice": "20.41834471901754",
+      "minPrice": "0.52596364",
+      "percentChange1h": "-0.38565274",
+      "percentChange24h": "-2.58422521",
+      "percentChange7d": "-16.40212684",
+      "percentChange30d": "-24.141085",
+      "percentChange60d": "33.09818094",
+      "percentChange90d": "54.25511135",
+      "cost": "2.640492683327454814",
+      "costChange": "0.499515",
+      "deviation": "46.368774",
+      "marketCap": "2340521448.7170145270304839",
+      "marketCapRanking": 26,
+      "circulatingSupply": "1299322741",
+      "circulationRate": "100",
+      "active": "107",
+      "newly": "107",
+      "tradeType": 1,
+      "chanceCoinTradeDataV1Vos": [
+        {
+          "timeRange": "D3",
+          "timeParticleEnum": 203,
+          "tradeInflow": "2279752.025100001",
+          "tradeAmount": "144231833.90129998"
+        },
+        {
+          "timeRange": "M6",
+          "timeParticleEnum": 306,
+          "tradeInflow": "-56701247.64170005",
+          "tradeAmount": "7653661056.9543"
+        },
+        {
+          "timeRange": "M1",
+          "timeParticleEnum": 301,
+          "tradeInflow": "-42433063.87200001",
+          "tradeAmount": "3043655042.5544004"
+        },
+        {
+          "timeRange": "M7",
+          "timeParticleEnum": 307,
+          "tradeInflow": "-64104056.807500035",
+          "tradeAmount": "8458731225.3225"
+        },
+        {
+          "timeRange": "D90",
+          "timeParticleEnum": 290,
+          "tradeInflow": "-24334694.63300003",
+          "tradeAmount": "5212373249.163401"
+        },
+        {
+          "timeRange": "D7",
+          "timeParticleEnum": 207,
+          "tradeInflow": "-1838097.5699000005",
+          "tradeAmount": "295362554.5559001"
+        },
+        {
+          "timeRange": "M5",
+          "timeParticleEnum": 305,
+          "tradeInflow": "-53738441.34920004",
+          "tradeAmount": "6875012259.443"
+        },
+        {
+          "timeRange": "D5",
+          "timeParticleEnum": 205,
+          "tradeInflow": "-2412051.097600001",
+          "tradeAmount": "221338210.73480007"
+        },
+        {
+          "timeRange": "M3",
+          "timeParticleEnum": 303,
+          "tradeInflow": "-22247792.74810003",
+          "tradeAmount": "5237105010.308701"
+        },
+        {
+          "timeRange": "M9",
+          "timeParticleEnum": 309,
+          "tradeInflow": "-118624309.70790005",
+          "tradeAmount": "12530585095.273098"
+        },
+        {
+          "timeRange": "D180",
+          "timeParticleEnum": 2180,
+          "tradeInflow": "-57943034.44500004",
+          "tradeAmount": "7618647280.553805"
+        },
+        {
+          "timeRange": "D2",
+          "timeParticleEnum": 202,
+          "tradeInflow": "2845651.1017000005",
+          "tradeAmount": "107503384.8197"
+        },
+        {
+          "timeRange": "M11",
+          "timeParticleEnum": 311,
+          "tradeInflow": "-144097017.56540006",
+          "tradeAmount": "15082450593.027002"
+        },
+        {
+          "timeRange": "D1",
+          "timeParticleEnum": 201,
+          "tradeInflow": "201192.22730000003",
+          "tradeAmount": "46862610.5081"
+        },
+        {
+          "timeRange": "Y1",
+          "timeParticleEnum": 401,
+          "tradeInflow": "-159853799.41430002",
+          "tradeAmount": "16159388489.141895"
+        },
+        {
+          "timeRange": "M8",
+          "timeParticleEnum": 308,
+          "tradeInflow": "-77244119.74550004",
+          "tradeAmount": "10833489397.4039"
+        },
+        {
+          "timeRange": "Y2",
+          "timeParticleEnum": 402,
+          "tradeInflow": "-428358143.1766001",
+          "tradeAmount": "36781463532.085594"
+        },
+        {
+          "timeRange": "H6",
+          "timeParticleEnum": 106,
+          "tradeInflow": "282368.83620000025",
+          "tradeAmount": "6594591.296600002"
+        },
+        {
+          "timeRange": "D20",
+          "timeParticleEnum": 220,
+          "tradeInflow": "-15238598.862500008",
+          "tradeAmount": "1268703764.9127002"
+        },
+        {
+          "timeRange": "D150",
+          "timeParticleEnum": 2150,
+          "tradeInflow": "-54488025.18350002",
+          "tradeAmount": "6858949554.7523"
+        },
+        {
+          "timeRange": "H4",
+          "timeParticleEnum": 104,
+          "tradeInflow": "-135592.14440000002",
+          "tradeAmount": "4243904.3684"
+        },
+        {
+          "timeRange": "H12",
+          "timeParticleEnum": 112,
+          "tradeInflow": "87198.20270000027",
+          "tradeAmount": "18077789.5483"
+        },
+        {
+          "timeRange": "Y3",
+          "timeParticleEnum": 403,
+          "tradeInflow": "-503368090.1409752",
+          "tradeAmount": "60565919702.91316"
+        },
+        {
+          "timeRange": "H24",
+          "timeParticleEnum": 124,
+          "tradeInflow": "201192.22730000003",
+          "tradeAmount": "46862610.5081"
+        },
+        {
+          "timeRange": "m30",
+          "timeParticleEnum": 30,
+          "tradeInflow": "3077.8150999999853",
+          "tradeAmount": "294016.23669999995"
+        },
+        {
+          "timeRange": "D120",
+          "timeParticleEnum": 2120,
+          "tradeInflow": "-42340131.74920003",
+          "tradeAmount": "6101472727.0494"
+        },
+        {
+          "timeRange": "H8",
+          "timeParticleEnum": 108,
+          "tradeInflow": "426316.2767000003",
+          "tradeAmount": "7978902.5161000015"
+        },
+        {
+          "timeRange": "M4",
+          "timeParticleEnum": 304,
+          "tradeInflow": "-42340131.74920005",
+          "tradeAmount": "6101472727.049398"
+        },
+        {
+          "timeRange": "H2",
+          "timeParticleEnum": 102,
+          "tradeInflow": "-9111.765299999926",
+          "tradeAmount": "1846896.7931"
+        },
+        {
+          "timeRange": "M12",
+          "timeParticleEnum": 312,
+          "tradeInflow": "-159853799.41430005",
+          "tradeAmount": "16159388489.1419"
+        },
+        {
+          "timeRange": "M10",
+          "timeParticleEnum": 310,
+          "tradeInflow": "-131359486.3246",
+          "tradeAmount": "13886819548.78"
+        },
+        {
+          "timeRange": "m5",
+          "timeParticleEnum": 5,
+          "tradeInflow": "1939.2727000000025",
+          "tradeAmount": "31975.6267"
+        },
+        {
+          "timeRange": "m15",
+          "timeParticleEnum": 15,
+          "tradeInflow": "27533.45110000001",
+          "tradeAmount": "116869.0099"
+        },
+        {
+          "timeRange": "M2",
+          "timeParticleEnum": 302,
+          "tradeInflow": "-25258797.78550004",
+          "tradeAmount": "4704129516.639102"
+        },
+        {
+          "timeRange": "H1",
+          "timeParticleEnum": 101,
+          "tradeInflow": "44940.46689999999",
+          "tradeAmount": "939830.3687"
+        },
+        {
+          "timeRange": "D10",
+          "timeParticleEnum": 210,
+          "tradeInflow": "-6299817.996600002",
+          "tradeAmount": "473153434.9557999"
+        },
+        {
+          "timeRange": "D40",
+          "timeParticleEnum": 240,
+          "tradeInflow": "-31162271.250000022",
+          "tradeAmount": "4228888885.957599"
+        },
+        {
+          "timeRange": "D60",
+          "timeParticleEnum": 260,
+          "tradeInflow": "-24867371.28140003",
+          "tradeAmount": "4693989758.2506"
+        },
+        {
+          "timeRange": "D50",
+          "timeParticleEnum": 250,
+          "tradeInflow": "-27301213.42910002",
+          "tradeAmount": "4515029788.504299"
+        },
+        {
+          "timeRange": "D30",
+          "timeParticleEnum": 230,
+          "tradeInflow": "-38003333.60500002",
+          "tradeAmount": "2875301978.8816"
+        },
+        {
+          "timeRange": "D15",
+          "timeParticleEnum": 215,
+          "tradeInflow": "-13964113.879200004",
+          "tradeAmount": "815823066.6911999"
+        }
+      ],
+      "updateTime": 1781620240000,
+      "pushPrice": "2.334",
+      "pushMaxPrice": "2.389",
+      "gains": 2.3564700000000003,
+      "pushMinPrice": "1.752",
+      "declines": 24.935733,
+      "score": 38.5,
+      "bullishRatio": 0.1818,
+      "bearishRatio": 0.0455
+    }
+  ],
+  "funds": [
+    {
+      "updateTime": 1782545400000,
+      "tradeType": 2,
+      "vsTokenId": "33223",
+      "symbol": "LAB",
+      "name": "LAB",
+      "startTime": 1782276000000,
+      "endTime": 1782545400000,
+      "number24h": 29,
+      "numberNot24h": 39,
+      "price": "19.576",
+      "pushPrice": "14.987",
+      "gains": 35.083739,
+      "decline": 1.7415090000000002,
+      "percentChange24h": "17.63194254",
+      "marketCap": "6272515842.358173693588316",
+      "alpha": true,
+      "fomo": false,
+      "fomoEscalation": false,
+      "bullishRatio": 0.322
+    },
+    {
+      "updateTime": 1782545100000,
+      "tradeType": 2,
+      "vsTokenId": "5426",
+      "symbol": "SOL",
+      "name": "Solana",
+      "startTime": 1782424800000,
+      "endTime": 1782545100000,
+      "number24h": 31,
+      "numberNot24h": 0,
+      "price": "72.02",
+      "pushPrice": "67.28",
+      "gains": 9.884067,
+      "decline": 2.036266,
+      "percentChange24h": "0.51183905",
+      "marketCap": "41818489000.503835693368411917",
+      "alpha": true,
+      "fomo": false,
+      "fomoEscalation": false,
+      "bullishRatio": 0.4845
+    },
+    {
+      "updateTime": 1782545700000,
+      "tradeType": 2,
+      "vsTokenId": "7278",
+      "symbol": "AAVE",
+      "name": "Aave",
+      "startTime": 1782444300000,
+      "endTime": 1782545700000,
+      "number24h": 12,
+      "numberNot24h": 19,
+      "price": "95.45",
+      "pushPrice": "82.49",
+      "gains": 19.081101,
+      "decline": 0.47278499999999996,
+      "percentChange24h": "4.42322163",
+      "marketCap": "1472942045.803085697339344747",
+      "alpha": false,
+      "fomo": false,
+      "fomoEscalation": false,
+      "bullishRatio": 0.4362
+    },
+    {
+      "updateTime": 1782521400000,
+      "tradeType": 2,
+      "vsTokenId": "100496",
+      "symbol": "SLX",
+      "name": "Solstice",
+      "startTime": 1782521400000,
+      "endTime": 1782521400000,
+      "number24h": 1,
+      "numberNot24h": 1,
+      "price": "0.45556",
+      "pushPrice": "0.43509",
+      "gains": 11.057482,
+      "decline": 0.6458430000000001,
+      "percentChange24h": "5.59600472",
+      "marketCap": "99423555.85888068096499595",
+      "alpha": false,
+      "fomo": false,
+      "fomoEscalation": false,
+      "bullishRatio": 0.8667
+    },
+    {
+      "updateTime": 1782533100000,
+      "tradeType": 2,
+      "vsTokenId": "28541",
+      "symbol": "JTO",
+      "name": "Jito",
+      "startTime": 1782533100000,
+      "endTime": 1782533100000,
+      "number24h": 1,
+      "numberNot24h": 0,
+      "price": "0.813",
+      "pushPrice": "0.8306",
+      "gains": 2.155069,
+      "decline": 3.6600050000000004,
+      "percentChange24h": "11.64867177",
+      "marketCap": "398208299.61796945811625389",
+      "alpha": true,
+      "fomo": false,
+      "fomoEscalation": false,
+      "bullishRatio": 0.5
+    }
+  ],
+  "snapshot": {
+    "name": "ai_picks",
+    "saved_at": "2026-06-27T07:39:37.335588+00:00",
+    "origin": "live",
+    "history_id": "2026-06-27T07-39-37.335588+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\ai_picks\\2026-06-27T07-39-37.335588+00-00.json"
+  }
+}

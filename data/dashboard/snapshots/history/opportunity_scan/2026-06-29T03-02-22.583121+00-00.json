@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "full": false,
+  "scanTime": "2026-06-29T03:02:22Z",
+  "totalScanned": 5,
+  "topK": 3,
+  "opportunities": [
+    {
+      "symbol": "BLUAI",
+      "pair": "BLUAI-USDT",
+      "signal": "SELL",
+      "label": "明显回调",
+      "score": -20.7,
+      "confidence": 52.426,
+      "change24h": -0.0571,
+      "volume24h": 383170.633136,
+      "last": 0.012792,
+      "keyReasons": [
+        "24h 跌幅 -5.7%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 1
+    },
+    {
+      "symbol": "ADI",
+      "pair": "ADI-USDT",
+      "signal": "WEAK_BUY",
+      "label": "温和上涨",
+      "score": 12.4,
+      "confidence": 47.422,
+      "change24h": 0.0237,
+      "volume24h": 3865045.836834,
+      "last": 5.0455,
+      "keyReasons": [
+        "24h 涨幅 2.4%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 2
+    },
+    {
+      "symbol": "BONK",
+      "pair": "BONK-USDT",
+      "signal": "NEUTRAL",
+      "label": "震荡整理",
+      "score": 1.1,
+      "confidence": 40.636,
+      "change24h": 0.0106,
+      "volume24h": 347246.18471023266,
+      "last": 4.194e-06,
+      "keyReasons": [
+        "涨跌幅处于中性区间"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "neutral",
+      "marketState": "uncertain",
+      "rank": 3
+    }
+  ],
+  "marketOverview": "扫描 5 个币种，市场方向分化。多头 1、空头 1、中性 1。综合靠前：BLUAI(明显回调)、ADI(温和上涨)、BONK(震荡整理)。",
+  "scanDurationMs": 0,
+  "engine": "sandbox-rule-based",
+  "errors": [],
+  "snapshot": {
+    "name": "opportunity_scan",
+    "saved_at": "2026-06-29T03:02:22.583121+00:00",
+    "origin": "live",
+    "history_id": "2026-06-29T03-02-22.583121+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-06-29T03-02-22.583121+00-00.json"
+  }
+}

@@ -63,7 +63,11 @@ def setup() -> None:
 
 
 def python_task(script: str, *args: str) -> None:
-    run([str(require_venv("python")), script, *args])
+    env = os.environ.copy()
+    src_path = str(ROOT / "src")
+    existing = env.get("PYTHONPATH")
+    env["PYTHONPATH"] = src_path if not existing else os.pathsep.join([src_path, existing])
+    run([str(require_venv("python")), script, *args], env=env)
 
 
 def save_offline_data() -> None:
@@ -108,6 +112,7 @@ def print_figures() -> None:
 TASKS = {
     "setup": setup,
     "verify": lambda: python_task("verify.py"),
+    "implementation-matrix": lambda: python_task("scripts/chapter_implementation_matrix.py"),
     "snapshot": lambda: python_task("dashboard_snapshot.py"),
     "build-fixtures": lambda: python_task("scripts/build_dashboard_fixtures.py"),
     "sync-fixtures": lambda: python_task("scripts/build_dashboard_fixtures.py", "--sync-all"),
@@ -123,7 +128,7 @@ TASKS = {
 
 
 def check() -> None:
-    for task in ("verify", "vendor-drift", "asset-audit", "courseware-check"):
+    for task in ("verify", "implementation-matrix", "vendor-drift", "asset-audit", "courseware-check"):
         print(f"==> {task}", flush=True)
         TASKS[task]()
     print("All repository checks passed.")

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -58,7 +59,10 @@ def resolve_cache_key(name: str, **parts: str | int) -> str:
 def _read_payload(path: Path) -> dict[str, Any] | None:
     if not path.is_file():
         return None
-    payload = json.loads(path.read_text(encoding="utf-8"))
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return None
     if not isinstance(payload, dict):
         return None
     payload.setdefault("ok", True)
@@ -129,7 +133,11 @@ def load_snapshot(name: str) -> dict[str, Any] | None:
     history_files = sorted(hist.glob("*.json"), reverse=True)
     if not history_files:
         return None
-    return _read_payload(history_files[0])
+    for path in history_files:
+        payload = _read_payload(path)
+        if payload is not None:
+            return payload
+    return None
 
 
 def list_snapshot_history(name: str, *, limit: int = 50) -> list[dict[str, Any]]:
@@ -141,6 +149,8 @@ def list_snapshot_history(name: str, *, limit: int = 50) -> list[dict[str, Any]]
         if len(items) >= limit:
             break
         payload = _read_payload(path)
+        if payload is None:
+            continue
         meta = (payload or {}).get("snapshot") if isinstance(payload, dict) else {}
         items.append(
             {
@@ -175,6 +185,11 @@ def load_offline(name: str, **parts: str | int) -> dict[str, Any]:
     if resolved != name:
         keys.append(name)
 
+    fixture = load_fixture(name)
+    fixture_first = os.environ.get("DASHBOARD_OFFLINE_SOURCE", "").strip().lower() == "fixture"
+    if fixture_first and fixture.get("ok") is not False and is_complete(name, fixture):
+        return fixture
+
     cached: dict[str, Any] | None = None
     for key in keys:
         snap = load_snapshot(key)
@@ -182,7 +197,6 @@ def load_offline(name: str, **parts: str | int) -> dict[str, Any]:
             cached = snap
             break
 
-    fixture = load_fixture(name)
     if cached and is_complete(name, cached):
         return cached
     if fixture.get("ok") is not False and is_complete(name, fixture):

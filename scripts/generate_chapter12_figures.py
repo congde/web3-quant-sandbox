@@ -19,6 +19,7 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from dashboard.signal_analysis import run_signal_analysis  # noqa: E402
+from dashboard.dataset_views import trim_market_candles  # noqa: E402
 
 
 def font(size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
@@ -181,7 +182,6 @@ def save_context_shape() -> None:
     fig.patch.set_facecolor(BG)
     ax.set_facecolor("#FFFFFF")
     ax.barh(labels, values, color=[BLUE, TEAL, ORANGE, PURPLE, RED, "#334155"])
-    ax.set_title("BTC 规则基线进入模型上下文的字段体量", fontsize=17, pad=14)
     ax.set_xlabel("JSON 字符数", fontsize=12)
     ax.grid(axis="x", color="#E5E7EB", linewidth=0.8)
     ax.spines[["top", "right"]].set_visible(False)
@@ -201,11 +201,63 @@ def save_context_shape() -> None:
     print(OUT / "chapter-12-context-shape.png")
 
 
+def save_visible_context_curve() -> None:
+    payload = json.loads((ROOT / "data" / "dashboard" / "market_candles.json").read_text(encoding="utf-8"))
+    view = trim_market_candles(payload, limit=35, short=3, long=7)
+    curve = list(view.get("curve") or [])
+    dates = [str(row.get("date") or "")[5:] for row in curve]
+    close = [float(row.get("close") or 0) for row in curve]
+    short_ma = [row.get("short_ma") for row in curve]
+    long_ma = [row.get("long_ma") for row in curve]
+    x = list(range(len(curve)))
+
+    plt.rcParams.update(
+        {
+            "font.sans-serif": ["SimHei", "Microsoft YaHei", "Arial Unicode MS", "DejaVu Sans"],
+            "axes.unicode_minus": False,
+            "figure.facecolor": BG,
+        }
+    )
+    fig, ax = plt.subplots(figsize=(12.8, 6.6), dpi=160)
+    fig.patch.set_facecolor(BG)
+    ax.set_facecolor("#FFFFFF")
+    ax.plot(x, close, color=INK, linewidth=2.2, label="close")
+    ax.plot(x, short_ma, color=BLUE, linewidth=1.8, label="short_ma(3)")
+    ax.plot(x, long_ma, color=TEAL, linewidth=1.8, label="long_ma(7)")
+    ax.axvspan(0, len(x) - 1, color="#EFF6FF", alpha=0.45, label="model visible window")
+    if x:
+        ax.axvline(x[-1], color=ORANGE, linewidth=2.0, linestyle="--", label="decision_time")
+        ax.scatter([x[-1]], [close[-1]], color=ORANGE, s=48, zorder=5)
+    ax.set_title("Chapter 12 context curve: trimmed visible K-line window", loc="left", color=INK, fontsize=15, pad=12)
+    ax.set_ylabel("BTC close")
+    ax.set_xlabel("visible candles after trim_market_candles(limit=35, short=3, long=7)")
+    ax.grid(axis="y", color="#E5E7EB", linewidth=0.8)
+    ax.spines[["top", "right"]].set_visible(False)
+    tick_step = max(1, len(dates) // 7)
+    ticks = list(range(0, len(dates), tick_step))
+    ax.set_xticks(ticks)
+    ax.set_xticklabels([dates[index] for index in ticks], rotation=0)
+    ax.legend(loc="upper left", frameon=False, ncol=4)
+    ax.text(
+        0.01,
+        -0.2,
+        "Source: data/dashboard/market_candles.json; view metadata: "
+        f"{json.dumps(view.get('view'), ensure_ascii=False)}. Future candles are not included in this context.",
+        transform=ax.transAxes,
+        fontsize=9.5,
+        color=MUTED,
+    )
+    fig.tight_layout()
+    output = OUT / "chapter-12-visible-context-curve.png"
+    fig.savefig(output, bbox_inches="tight")
+    plt.close(fig)
+    print(output)
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    save_context_contract()
-    save_visible_window()
     save_context_shape()
+    save_visible_context_curve()
 
 
 if __name__ == "__main__":

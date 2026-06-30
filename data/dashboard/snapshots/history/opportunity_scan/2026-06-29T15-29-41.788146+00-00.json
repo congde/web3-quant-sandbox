@@ -1,0 +1,79 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "full": false,
+  "scanTime": "2026-06-29T15:29:41Z",
+  "totalScanned": 5,
+  "topK": 3,
+  "opportunities": [
+    {
+      "symbol": "ADI",
+      "pair": "ADI-USDT",
+      "signal": "BUY",
+      "label": "强势上涨",
+      "score": 29.9,
+      "confidence": 57.934,
+      "change24h": 0.0989,
+      "volume24h": 7453646.310756,
+      "last": 5.4484,
+      "keyReasons": [
+        "24h 涨幅 9.9%",
+        "24h 成交额活跃"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 1
+    },
+    {
+      "symbol": "BLUAI",
+      "pair": "BLUAI-USDT",
+      "signal": "WEAK_BUY",
+      "label": "温和上涨",
+      "score": 11.6,
+      "confidence": 46.942,
+      "change24h": 0.0357,
+      "volume24h": 524699.356316,
+      "last": 0.013454,
+      "keyReasons": [
+        "24h 涨幅 3.6%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bullish",
+      "marketState": "uncertain",
+      "rank": 2
+    },
+    {
+      "symbol": "BCH",
+      "pair": "BCH-USDT",
+      "signal": "NEUTRAL",
+      "label": "震荡整理",
+      "score": 2.7,
+      "confidence": 41.596000000000004,
+      "change24h": 0.0066,
+      "volume24h": 1870573.038876,
+      "last": 194.7,
+      "keyReasons": [
+        "涨跌幅处于中性区间"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "neutral",
+      "marketState": "uncertain",
+      "rank": 3
+    }
+  ],
+  "marketOverview": "扫描 5 个币种，市场整体偏多。多头 2、空头 0、中性 1。综合靠前：ADI(强势上涨)、BLUAI(温和上涨)、BCH(震荡整理)。",
+  "scanDurationMs": 0,
+  "engine": "sandbox-rule-based",
+  "errors": [],
+  "snapshot": {
+    "name": "opportunity_scan",
+    "saved_at": "2026-06-29T15:29:41.788146+00:00",
+    "origin": "live",
+    "history_id": "2026-06-29T15-29-41.788146+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-06-29T15-29-41.788146+00-00.json"
+  }
+}

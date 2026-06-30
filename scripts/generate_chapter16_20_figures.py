@@ -62,24 +62,22 @@ def arrow(draw: ImageDraw.ImageDraw, start: tuple[int, int], end: tuple[int, int
 def save_overfit_pollution_gate() -> None:
     img = Image.new("RGB", (1600, 920), BG)
     draw = ImageDraw.Draw(img)
-    draw.text((70, 48), "第 20 讲：过拟合与前视偏差拦截", font=TITLE, fill=INK)
-    draw.text((70, 108), "先检查研究过程是否作弊，再讨论收益、Sharpe 和回撤。", font=BODY, fill=MUTED)
 
-    rounded_box(draw, (80, 245, 350, 430), "候选策略", "规则、参数、样本\n必须先冻结", BLUE)
-    rounded_box(draw, (445, 245, 715, 430), "污染检查", "危险导入\nshift(-n)\n未来标签", RED, "#FEF2F2")
-    rounded_box(draw, (810, 245, 1080, 430), "试验日志", "参数次数\n淘汰理由\n时间切分", ORANGE, "#FFF7ED")
-    rounded_box(draw, (1175, 190, 1505, 355), "进入滚动回测", "无前视\n日志完整\n口径可复查", GREEN, "#ECFDF5")
-    rounded_box(draw, (1175, 465, 1505, 630), "拒绝或重建样本", "未来信息\n窥探样本\n记录缺失", RED, "#FEF2F2")
+    rounded_box(draw, (80, 190, 350, 375), "候选策略", "规则、参数、样本\n必须先冻结", BLUE)
+    rounded_box(draw, (445, 190, 715, 375), "污染检查", "危险导入\nshift(-n)\n未来标签", RED, "#FEF2F2")
+    rounded_box(draw, (810, 190, 1080, 375), "试验日志", "参数次数\n淘汰理由\n时间切分", ORANGE, "#FFF7ED")
+    rounded_box(draw, (1175, 135, 1505, 300), "进入滚动回测", "无前视\n日志完整\n口径可复查", GREEN, "#ECFDF5")
+    rounded_box(draw, (1175, 410, 1505, 575), "拒绝或重建样本", "未来信息\n窥探样本\n记录缺失", RED, "#FEF2F2")
 
-    arrow(draw, (350, 335), (445, 335))
-    arrow(draw, (715, 335), (810, 335))
-    arrow(draw, (1080, 310), (1175, 275), GREEN)
-    arrow(draw, (1080, 370), (1175, 545), RED)
+    arrow(draw, (350, 280), (445, 280))
+    arrow(draw, (715, 280), (810, 280))
+    arrow(draw, (1080, 255), (1175, 220), GREEN)
+    arrow(draw, (1080, 315), (1175, 490), RED)
 
-    draw.rounded_rectangle((190, 705, 1410, 845), radius=18, fill="#FFFFFF", outline=TEAL, width=4)
-    draw.text((235, 730), "读图要点", font=HEAD, fill=TEAL)
-    draw.text((235, 785), "若策略读取未来收益或只保留多次尝试后的赢家，绩效指标再漂亮也不能发布为研究结论。", font=BODY, fill=INK)
-    draw.text((235, 818), "被拒绝的样本同样是证据：它说明系统没有让作弊路径继续前进。", font=SMALL, fill=MUTED)
+    draw.rounded_rectangle((190, 650, 1410, 790), radius=18, fill="#FFFFFF", outline=TEAL, width=4)
+    draw.text((235, 675), "读图要点", font=HEAD, fill=TEAL)
+    draw.text((235, 730), "若策略读取未来收益或只保留多次尝试后的赢家，绩效指标再漂亮也不能发布为研究结论。", font=BODY, fill=INK)
+    draw.text((235, 763), "被拒绝的样本同样是证据：它说明系统没有让作弊路径继续前进。", font=SMALL, fill=MUTED)
 
     img.save(OUT / "chapter-20-overfit-pollution-gate.png")
 

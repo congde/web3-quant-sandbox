@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict
 from decimal import Decimal
 from typing import Any
 
@@ -11,7 +10,7 @@ from paths import DATA_DIR
 from risk.config import default_risk_manager
 from strategy_engine.backtest.candles import Candle
 from strategy_engine.backtest.engine import BacktestEngine, StrategyContext
-from strategy_engine.backtest.protocol import OrderIntent, OrderSide, OrderType
+from strategy_engine.backtest.protocol import OrderIntent
 from strategy_engine.strategies.ma_crossover import make_ma_crossover_strategy
 
 
@@ -73,7 +72,12 @@ def _scripted_teaching_strategy(ctx: StrategyContext, candle: Candle) -> OrderIn
     if index == 2:
         return ctx.order_intent("buy", Decimal("1"))
     if index == 3:
-        return ctx.order_intent("buy", Decimal("1"), type="limit", price=candle.close * Decimal("0.5"))
+        return ctx.order_intent(
+            "buy",
+            Decimal("1"),
+            type="limit",
+            price=candle.close * Decimal("0.5"),
+        )
     if index == 4:
         return ctx.order_intent("buy", Decimal("2000"))
     return None

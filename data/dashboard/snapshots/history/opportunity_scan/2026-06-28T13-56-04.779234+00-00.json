@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "full": false,
+  "scanTime": "2026-06-28T13:56:04Z",
+  "totalScanned": 4,
+  "topK": 3,
+  "opportunities": [
+    {
+      "symbol": "BLUAI",
+      "pair": "BLUAI-USDT",
+      "signal": "SELL",
+      "label": "明显回调",
+      "score": -24.6,
+      "confidence": 54.754,
+      "change24h": -0.0959,
+      "volume24h": 396516.120354,
+      "last": 0.013007,
+      "keyReasons": [
+        "24h 跌幅 -9.6%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "medium",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 1
+    },
+    {
+      "symbol": "BCH",
+      "pair": "BCH-USDT",
+      "signal": "WEAK_SELL",
+      "label": "温和走弱",
+      "score": -10.7,
+      "confidence": 46.402,
+      "change24h": -0.0267,
+      "volume24h": 696960.02617,
+      "last": 192.66,
+      "keyReasons": [
+        "24h 跌幅 -2.7%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 2
+    },
+    {
+      "symbol": "BONK",
+      "pair": "BONK-USDT",
+      "signal": "WEAK_SELL",
+      "label": "温和走弱",
+      "score": -10.3,
+      "confidence": 46.198,
+      "change24h": -0.0233,
+      "volume24h": 403709.5550838393,
+      "last": 4.135e-06,
+      "keyReasons": [
+        "24h 跌幅 -2.3%"
+      ],
+      "tradePlan": null,
+      "riskLevel": "high",
+      "bias": "bearish",
+      "marketState": "uncertain",
+      "rank": 3
+    }
+  ],
+  "marketOverview": "扫描 4 个币种，市场整体偏空。多头 0、空头 3、中性 0。综合靠前：BLUAI(明显回调)、BCH(温和走弱)、BONK(温和走弱)。",
+  "scanDurationMs": 0,
+  "engine": "sandbox-rule-based",
+  "errors": [],
+  "snapshot": {
+    "name": "opportunity_scan",
+    "saved_at": "2026-06-28T13:56:04.779234+00:00",
+    "origin": "live",
+    "history_id": "2026-06-28T13-56-04.779234+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-06-28T13-56-04.779234+00-00.json"
+  }
+}
