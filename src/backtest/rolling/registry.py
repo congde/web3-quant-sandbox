@@ -47,11 +47,26 @@ def _ensure_loaded() -> None:
         MLTemporalBoostingStrategy,
         MLTemporalEnsembleStrategy,
         MLTemporalKNNStrategy,
+        MLTemporalNaiveBayesStrategy,
+        MLTemporalPerceptronStrategy,
+        MLTemporalPriorBlendStrategy,
+        MLTemporalRidgeStrategy,
         MLTemporalStrategy,
         MLTemporalTreeStrategy,
     )
     from backtest.rolling.strategies.funding_rate import FundingRateStrategy
-    from backtest.rolling.strategies.mined_factor import MinedFactorStrategy
+    from backtest.rolling.strategies.mined_factor import (
+        MinedFactorStrategy,
+        MinedFactorLRStrategy,
+        MinedFactorRFStrategy,
+        MinedFactorGBMStrategy,
+        MinedFactorNNStrategy,
+        MinedFactorEnsembleStrategy,
+        MinedFactorBayesStrategy,
+        MinedFactorKNNStrategy,
+        MinedFactorGPStrategy,
+        MinedFactorLLMStrategy,
+    )
     from backtest.rolling.strategies.rsi_mean_reversion import RSIMeanReversionStrategy
     from backtest.rolling.strategies.technical_signal import TechnicalSignalStrategy
 
@@ -70,7 +85,20 @@ def _ensure_loaded() -> None:
         MLTemporalTreeStrategy,
         MLTemporalBoostingStrategy,
         MLTemporalEnsembleStrategy,
+        MLTemporalNaiveBayesStrategy,
+        MLTemporalPerceptronStrategy,
+        MLTemporalRidgeStrategy,
+        MLTemporalPriorBlendStrategy,
         MinedFactorStrategy,
+        MinedFactorLRStrategy,
+        MinedFactorRFStrategy,
+        MinedFactorGBMStrategy,
+        MinedFactorNNStrategy,
+        MinedFactorEnsembleStrategy,
+        MinedFactorBayesStrategy,
+        MinedFactorKNNStrategy,
+        MinedFactorGPStrategy,
+        MinedFactorLLMStrategy,
         FundingRateStrategy,
     ]:
         register(cls)

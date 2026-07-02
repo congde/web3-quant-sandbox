@@ -48,8 +48,61 @@ const STRATEGY_FAMILY: Record<string, "rules" | "ml" | "factor"> = {
   ml_temporal_tree: "ml",
   ml_temporal_boosting: "ml",
   ml_temporal_ensemble: "ml",
+  ml_temporal_naive_bayes: "ml",
+  ml_temporal_perceptron: "ml",
+  ml_temporal_ridge: "ml",
+  ml_temporal_prior_blend: "ml",
   mined_factor: "factor",
+  mined_factor_lr: "factor",
+  mined_factor_rf: "factor",
+  mined_factor_gbm: "factor",
+  mined_factor_nn: "factor",
+  mined_factor_ensemble: "factor",
+  mined_factor_bayes: "factor",
+  mined_factor_knn_factor: "factor",
+  mined_factor_gp: "factor",
+  mined_factor_llm: "factor",
 };
+
+const FALLBACK_STRATEGY_OPTIONS = [
+  { label: "技术信号策略", value: "technical_signal" },
+  { label: "均线交叉策略（Qbot 双均线）", value: "ma_crossover" },
+  { label: "布林带均值回归（Qbot）", value: "boll_mean_reversion" },
+  { label: "RSI均值回归策略", value: "rsi_mean_reversion" },
+  { label: "MACD策略", value: "macd" },
+  { label: "MACD 金叉死叉（Qbot）", value: "macd_crossover" },
+  { label: "ADX+MACD 趋势（Qbot）", value: "adx_macd_trend" },
+  { label: "布林带收缩策略", value: "bollinger_squeeze" },
+  { label: "买入持有基准", value: "buy_and_hold" },
+  { label: "ML 时序 Logistic 分类", value: "ml_temporal" },
+  { label: "ML 时序 KNN 分类", value: "ml_temporal_knn" },
+  { label: "ML 时序树集成", value: "ml_temporal_tree" },
+  { label: "ML 时序梯度提升", value: "ml_temporal_boosting" },
+  { label: "ML 时序投票集成", value: "ml_temporal_ensemble" },
+  { label: "ML 时序朴素贝叶斯", value: "ml_temporal_naive_bayes" },
+  { label: "ML 时序感知机", value: "ml_temporal_perceptron" },
+  { label: "ML 时序 Ridge 线性", value: "ml_temporal_ridge" },
+  { label: "ML 时序动量先验混合", value: "ml_temporal_prior_blend" },
+  { label: "挖掘因子策略", value: "mined_factor" },
+  { label: "挖掘因子 - 线性回归", value: "mined_factor_lr" },
+  { label: "挖掘因子 - 随机森林", value: "mined_factor_rf" },
+  { label: "挖掘因子 - 梯度提升", value: "mined_factor_gbm" },
+  { label: "挖掘因子 - 神经网络", value: "mined_factor_nn" },
+  { label: "挖掘因子 - 集成模型", value: "mined_factor_ensemble" },
+  { label: "挖掘因子 - 贝叶斯模型", value: "mined_factor_bayes" },
+  { label: "挖掘因子 - KNN 模型", value: "mined_factor_knn_factor" },
+  { label: "挖掘因子 - 遗传规划", value: "mined_factor_gp" },
+  { label: "挖掘因子 - LLM 智能因子", value: "mined_factor_llm" },
+  { label: "资金费率套利策略", value: "funding_rate" },
+];
+
+function mergeStrategyOptions(items: { label: string; value: string }[]) {
+  const merged = new Map(FALLBACK_STRATEGY_OPTIONS.map((item) => [item.value, item]));
+  for (const item of items) {
+    merged.set(item.value, item);
+  }
+  return Array.from(merged.values());
+}
 
 function tsToDate(ts: number): string {
   return tsToChartDay(ts);
@@ -152,14 +205,12 @@ export default function BacktestsPage() {
   useEffect(() => {
     fetchBacktestStrategies()
       .then((items) => {
-        setStrategies(items.map((item) => ({ label: item.displayName, value: item.name })));
+        setStrategies(
+          mergeStrategyOptions(items.map((item) => ({ label: item.displayName, value: item.name }))),
+        );
       })
       .catch(() => {
-        setStrategies([
-          { label: "技术信号策略", value: "technical_signal" },
-          { label: "均线交叉策略", value: "ma_crossover" },
-          { label: "买入持有基准", value: "buy_and_hold" },
-        ]);
+        setStrategies(FALLBACK_STRATEGY_OPTIONS);
       });
   }, []);
 

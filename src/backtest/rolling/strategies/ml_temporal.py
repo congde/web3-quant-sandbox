@@ -45,6 +45,9 @@ class _MLTemporalBase(Strategy):
             "neighbors": 9,
             "tree_count": 21,
             "boost_rounds": 12,
+            "ridge_lambda": 0.25,
+            "perceptron_epochs": 12,
+            "prior_strength": 0.35,
         }
 
     def param_grid(self) -> Dict[str, List[Any]]:
@@ -123,6 +126,34 @@ class MLTemporalEnsembleStrategy(_MLTemporalBase):
     display_name = "ML 时序投票集成"
 
 
+class MLTemporalNaiveBayesStrategy(_MLTemporalBase):
+    model_key = "naive_bayes"
+    model_label = "Naive Bayes"
+    name = "ml_temporal_naive_bayes"
+    display_name = "ML 时序朴素贝叶斯"
+
+
+class MLTemporalPerceptronStrategy(_MLTemporalBase):
+    model_key = "perceptron"
+    model_label = "Perceptron"
+    name = "ml_temporal_perceptron"
+    display_name = "ML 时序感知机"
+
+
+class MLTemporalRidgeStrategy(_MLTemporalBase):
+    model_key = "ridge"
+    model_label = "Ridge Linear"
+    name = "ml_temporal_ridge"
+    display_name = "ML 时序 Ridge 线性"
+
+
+class MLTemporalPriorBlendStrategy(_MLTemporalBase):
+    model_key = "prior_blend"
+    model_label = "Prior Blend"
+    name = "ml_temporal_prior_blend"
+    display_name = "ML 时序动量先验混合"
+
+
 def _build_training_set(
     candles: List[Dict],
     idx: int,
@@ -169,12 +200,32 @@ def _predict_probability(training: _TrainingSet, params: Dict[str, Any], model: 
         return _predict_tree_ensemble(training, tree_count=int(params.get("tree_count", 21)))
     if model == "boosted_stumps":
         return _predict_boosted_stumps(training, rounds=int(params.get("boost_rounds", 12)))
+    if model == "naive_bayes":
+        return _predict_naive_bayes(training)
+    if model == "perceptron":
+        return _predict_perceptron(
+            training,
+            learning_rate=float(params.get("learning_rate", 0.18)),
+            epochs=max(4, min(40, int(params.get("perceptron_epochs", 12)))),
+        )
+    if model == "ridge":
+        return _predict_ridge(
+            training,
+            penalty=max(0.01, min(5.0, float(params.get("ridge_lambda", 0.25)))),
+        )
+    if model == "prior_blend":
+        prior = _predict_momentum_prior(training)
+        logistic = _predict_logistic(training, params)
+        strength = max(0.0, min(0.9, float(params.get("prior_strength", 0.35))))
+        return strength * prior + (1.0 - strength) * logistic
     if model == "ensemble":
         votes = [
             _predict_logistic(training, params),
             _predict_knn(training, neighbors=int(params.get("neighbors", 9))),
             _predict_tree_ensemble(training, tree_count=int(params.get("tree_count", 21))),
             _predict_boosted_stumps(training, rounds=int(params.get("boost_rounds", 12))),
+            _predict_naive_bayes(training),
+            _predict_ridge(training, penalty=max(0.01, min(5.0, float(params.get("ridge_lambda", 0.25))))),
         ]
         return sum(votes) / len(votes)
     return _predict_logistic(training, params)
@@ -266,6 +317,106 @@ def _fit_logistic(
             weights[i] -= learning_rate * (grad[i] / n + l2 * weights[i])
         bias -= learning_rate * bias_grad / n
     return weights, bias
+
+
+def _predict_naive_bayes(training: _TrainingSet) -> float:
+    positives = [row for row, label in zip(training.rows, training.labels) if label == 1]
+    negatives = [row for row, label in zip(training.rows, training.labels) if label == 0]
+    if not positives or not negatives:
+        return _label_prior(training.labels)
+    pos_prior = (len(positives) + 1.0) / (len(training.rows) + 2.0)
+    neg_prior = 1.0 - pos_prior
+    pos_mean, pos_var = _class_stats(positives)
+    neg_mean, neg_var = _class_stats(negatives)
+    log_pos = math.log(pos_prior)
+    log_neg = math.log(neg_prior)
+    for value, mean, var in zip(training.x_now, pos_mean, pos_var):
+        log_pos += _gaussian_logpdf(value, mean, var)
+    for value, mean, var in zip(training.x_now, neg_mean, neg_var):
+        log_neg += _gaussian_logpdf(value, mean, var)
+    return _sigmoid(log_pos - log_neg)
+
+
+def _class_stats(rows: list[list[float]]) -> tuple[list[float], list[float]]:
+    width = len(rows[0])
+    means = [sum(row[i] for row in rows) / len(rows) for i in range(width)]
+    variances = []
+    for i, mean in enumerate(means):
+        var = sum((row[i] - mean) ** 2 for row in rows) / max(1, len(rows) - 1)
+        variances.append(max(var, 1e-4))
+    return means, variances
+
+
+def _gaussian_logpdf(value: float, mean: float, var: float) -> float:
+    return -0.5 * (math.log(2.0 * math.pi * var) + ((value - mean) ** 2) / var)
+
+
+def _predict_perceptron(training: _TrainingSet, *, learning_rate: float, epochs: int) -> float:
+    width = len(training.rows[0])
+    weights = [0.0] * width
+    bias = 0.0
+    lr = max(0.01, min(1.0, learning_rate))
+    for _ in range(epochs):
+        for row, label in zip(training.rows, training.labels):
+            target = 1 if label == 1 else -1
+            margin = sum(w * x for w, x in zip(weights, row)) + bias
+            if target * margin <= 0:
+                for i, value in enumerate(row):
+                    weights[i] += lr * target * value
+                bias += lr * target
+    return _sigmoid(sum(w * x for w, x in zip(weights, training.x_now)) + bias)
+
+
+def _predict_ridge(training: _TrainingSet, *, penalty: float) -> float:
+    weights = _fit_ridge_weights(training.rows, training.labels, penalty=penalty)
+    labels_mean = _label_prior(training.labels)
+    score = sum(w * x for w, x in zip(weights, training.x_now)) + _logit(labels_mean)
+    return _sigmoid(score)
+
+
+def _fit_ridge_weights(rows: list[list[float]], labels: list[int], *, penalty: float) -> list[float]:
+    width = len(rows[0])
+    gram = [[0.0 for _ in range(width)] for _ in range(width)]
+    rhs = [0.0 for _ in range(width)]
+    centered_labels = [label - _label_prior(labels) for label in labels]
+    for row, target in zip(rows, centered_labels):
+        for i in range(width):
+            rhs[i] += row[i] * target
+            for j in range(width):
+                gram[i][j] += row[i] * row[j]
+    for i in range(width):
+        gram[i][i] += penalty * len(rows)
+    return _solve_linear_system(gram, rhs)
+
+
+def _solve_linear_system(matrix: list[list[float]], rhs: list[float]) -> list[float]:
+    n = len(rhs)
+    aug = [row[:] + [rhs_value] for row, rhs_value in zip(matrix, rhs)]
+    for col in range(n):
+        pivot = max(range(col, n), key=lambda row: abs(aug[row][col]))
+        if abs(aug[pivot][col]) < 1e-9:
+            continue
+        aug[col], aug[pivot] = aug[pivot], aug[col]
+        scale = aug[col][col]
+        for j in range(col, n + 1):
+            aug[col][j] /= scale
+        for row in range(n):
+            if row == col:
+                continue
+            factor = aug[row][col]
+            if factor == 0:
+                continue
+            for j in range(col, n + 1):
+                aug[row][j] -= factor * aug[col][j]
+    return [aug[i][n] for i in range(n)]
+
+
+def _predict_momentum_prior(training: _TrainingSet) -> float:
+    recent = training.x_now[:5]
+    momentum = sum(recent) / max(1, len(recent))
+    volatility = abs(training.x_now[7]) if len(training.x_now) > 7 else 0.0
+    base = _logit(_label_prior(training.labels))
+    return _sigmoid(base + 0.85 * momentum - 0.18 * volatility)
 
 
 def _predict_knn(training: _TrainingSet, *, neighbors: int) -> float:
@@ -405,3 +556,8 @@ def _sigmoid(value: float) -> float:
     if value <= -35:
         return 0.0
     return 1.0 / (1.0 + math.exp(-value))
+
+
+def _logit(value: float) -> float:
+    clipped = max(1e-6, min(1.0 - 1e-6, value))
+    return math.log(clipped / (1.0 - clipped))

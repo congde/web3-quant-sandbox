@@ -286,6 +286,9 @@ COMPARE_STRATEGY_KEYS = (
     "rsi_mean_reversion",
     "macd",
     "ml_temporal",
+    "ml_temporal_naive_bayes",
+    "ml_temporal_ridge",
+    "ml_temporal_ensemble",
     "buy_and_hold",
 )
 
