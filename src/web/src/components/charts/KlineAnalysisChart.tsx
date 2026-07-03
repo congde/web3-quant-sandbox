@@ -2,12 +2,12 @@ import { useEffect, useRef } from "react";
 import {
   ColorType,
   CrosshairMode,
+  createChart,
   type CandlestickData,
   type HistogramData,
   type IChartApi,
   type ISeriesApi,
   type LineData,
-  createChart,
 } from "lightweight-charts";
 
 import type { KlineCandle, TradePlan } from "../../types";
@@ -33,14 +33,18 @@ function beijingTime(tsSec: number) {
 
 function sma(values: number[], window: number): Array<number | null> {
   return values.map((_, index) => {
-    if (index + 1 < window) return null;
+    if (index + 1 < window) {
+      return null;
+    }
     const sample = values.slice(index + 1 - window, index + 1);
     return sample.reduce((sum, item) => sum + item, 0) / window;
   });
 }
 
 function formatPriceLine(value?: number | null) {
-  if (value == null || Number.isNaN(value)) return undefined;
+  if (value == null || Number.isNaN(value)) {
+    return undefined;
+  }
   return value;
 }
 
@@ -60,7 +64,9 @@ export function KlineAnalysisChart({
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container || !candles.length) return;
+    if (!container || !candles.length) {
+      return;
+    }
 
     const colors =
       mode === "dark"
@@ -174,8 +180,8 @@ export function KlineAnalysisChart({
 
     if (showPriceLines && tradePlan) {
       const lines = [
-        { price: tradePlan.entryLow, title: "入场低", color: "#3b82f6" },
-        { price: tradePlan.stopLoss, title: "支撑/止损", color: "#6366f1" },
+        { price: tradePlan.entryLow, title: "入场", color: "#3b82f6" },
+        { price: tradePlan.stopLoss, title: "止损", color: "#6366f1" },
         { price: tradePlan.target1, title: "目标1", color: "#22c55e" },
         { price: tradePlan.target2, title: "目标2", color: "#16a34a" },
       ];
