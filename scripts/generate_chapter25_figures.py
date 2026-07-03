@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import os
+import html
 from pathlib import Path
+import subprocess
 import sys
-from textwrap import fill
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyArrowPatch, Rectangle
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,31 +57,93 @@ def setup_matplotlib() -> None:
     plt.rcParams["axes.unicode_minus"] = False
 
 
+def _drawio_label(title: str, body: str, color: str) -> str:
+    body_html = html.escape(body).replace("\n", "<br>")
+    raw = (
+        f'<font style="font-size:24px" color="{color}"><b>{html.escape(title)}</b></font>'
+        f'<br><br><font style="font-size:18px" color="{INK}">{body_html}</font>'
+    )
+    return html.escape(raw, quote=True)
+
+
+def _drawio_cell(cell_id: str, value: str, x: int, y: int, w: int, h: int, color: str, fill: str = "#FFFFFF") -> str:
+    return f"""        <mxCell id="{cell_id}" value="{value}" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor={fill};strokeColor={color};strokeWidth=3;spacing=20;align=left;verticalAlign=top;fontFamily=Microsoft YaHei;" parent="1" vertex="1">
+          <mxGeometry x="{x}" y="{y}" width="{w}" height="{h}" as="geometry" />
+        </mxCell>"""
+
+
+def _drawio_edge(edge_id: str, source: str, target: str, color: str = MUTED, dashed: bool = False) -> str:
+    dash = "dashed=1;" if dashed else ""
+    return f"""        <mxCell id="{edge_id}" value="" style="endArrow=block;html=1;rounded=0;{dash}strokeColor={color};strokeWidth=4;endFill=1;" parent="1" source="{source}" target="{target}" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>"""
+
+
+def _write_drawio(path: Path, diagram_id: str, page_name: str, title: str, subtitle: str, cells: list[str], edges: list[str], note: str) -> None:
+    note_value = html.escape(f'<font style="font-size:20px" color="{BLUE}">{html.escape(note)}</font>', quote=True)
+    xml = f"""<mxfile host="app.diagrams.net" modified="2026-07-03T00:00:00Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="{diagram_id}" name="{html.escape(page_name)}">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor={PAPER};strokeColor=none;" parent="1" vertex="1">
+          <mxGeometry x="0" y="0" width="1600" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="title" value="{html.escape(title)}" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=34;fontColor={INK};fontFamily=Microsoft YaHei;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="70" y="48" width="1180" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="{html.escape(subtitle)}" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontColor={MUTED};fontFamily=Microsoft YaHei;" parent="1" vertex="1">
+          <mxGeometry x="70" y="108" width="1320" height="34" as="geometry" />
+        </mxCell>
+{chr(10).join(cells)}
+{chr(10).join(edges)}
+        <mxCell id="note" value="{note_value}" style="rounded=1;whiteSpace=wrap;html=1;arcSize=8;fillColor=#EEF2FF;strokeColor={BLUE};strokeWidth=3;spacingLeft=28;spacingRight=28;align=left;verticalAlign=middle;fontFamily=Microsoft YaHei;" parent="1" vertex="1">
+          <mxGeometry x="240" y="795" width="1120" height="64" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+"""
+    path.write_text(xml, encoding="utf-8")
+
+
+def _export_drawio(drawio: Path, png: Path) -> None:
+    subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "export_drawio_png.py"), str(drawio), "-o", str(png), "--width", "1440"],
+        check=True,
+    )
+
+
 def save_kline_llm_binding() -> None:
-    steps = [
-        ("K线样本", "candles\nopen/high/low/close/volume"),
-        ("指标层", "MA20 / MA60\nRSI / ATR / 支撑阻力"),
-        ("规则信号", "signal / score\nconfidence / tradePlan"),
-        ("LLM解释", "summary / logicFlow\n必须引用规则证据"),
-        ("页面状态", "engineMeta / fallback\n错误说明 / 边界"),
+    cells = [
+        _drawio_cell("step-kline", _drawio_label("K 线样本", "OHLCV\n周期与时间戳\n离线快照边界", BLUE), 70, 245, 220, 230, BLUE),
+        _drawio_cell("step-indicator", _drawio_label("指标计算", "MA20 / MA60\nRSI / volume\n支撑 / 阻力", "#0891B2"), 340, 245, 230, 230, "#0891B2"),
+        _drawio_cell("step-rule", _drawio_label("规则基线", "signal\nscore / confidence\n交易计划字段", TEAL), 620, 245, 230, 230, TEAL),
+        _drawio_cell("step-context", _drawio_label("LLM 上下文", "只传必要字段\n带上基线与限制\n禁止未来信息", ORANGE), 900, 245, 230, 230, ORANGE),
+        _drawio_cell("step-explain", _drawio_label("结构化解释", "logicFlow\nriskAssessment\nreviewFlags", PURPLE), 1180, 245, 230, 230, PURPLE),
+        _drawio_cell("page", _drawio_label("页面同屏复核", "图表、指标、规则基线、模型状态和风险边界必须同时可见。", RED), 390, 590, 820, 150, RED),
     ]
-    colors = [BLUE, TEAL, ORANGE, PURPLE, RED]
-    fig, ax = plt.subplots(figsize=(12.5, 4.8), dpi=160)
-    fig.patch.set_facecolor(PAPER)
-    ax.set_facecolor(PAPER)
-    ax.axis("off")
-    ax.text(0.04, 0.9, "单币种页面必须先有证据，再有模型解释", transform=ax.transAxes, fontsize=15, color=INK, weight="bold")
-    xs = [0.04, 0.23, 0.42, 0.61, 0.80]
-    width = 0.14
-    for idx, ((title, body), color, x) in enumerate(zip(steps, colors, xs, strict=True)):
-        ax.add_patch(Rectangle((x, 0.34), width, 0.4, transform=ax.transAxes, facecolor="#FFFFFF", edgecolor=color, linewidth=2))
-        ax.text(x + 0.012, 0.66, title, transform=ax.transAxes, fontsize=12, color=color, weight="bold")
-        ax.text(x + 0.012, 0.56, body, transform=ax.transAxes, fontsize=9.4, color=INK, va="top")
-        if idx < len(xs) - 1:
-            ax.add_patch(FancyArrowPatch((x + width + 0.01, 0.54), (xs[idx + 1] - 0.01, 0.54), transform=ax.transAxes, arrowstyle="-|>", mutation_scale=14, linewidth=1.8, color=MUTED))
-    ax.text(0.04, 0.15, "对应代码：ResearchPage 调用 fetchKlineAnalysis、submitLlmSignalAnalysis、pollLlmSignalAnalysis；后端先生成规则基线，再合并 LLM 输出。", transform=ax.transAxes, fontsize=10.2, color=MUTED)
-    fig.savefig(OUT / "chapter-25-kline-llm-binding.png", bbox_inches="tight")
-    plt.close(fig)
+    edges = [
+        _drawio_edge("arrow-1", "step-kline", "step-indicator"),
+        _drawio_edge("arrow-2", "step-indicator", "step-rule"),
+        _drawio_edge("arrow-3", "step-rule", "step-context"),
+        _drawio_edge("arrow-4", "step-context", "step-explain"),
+        _drawio_edge("arrow-5", "step-explain", "page", RED),
+    ]
+    drawio = OUT / "chapter-25-kline-llm-binding.drawio"
+    _write_drawio(
+        drawio,
+        "chapter-25-kline-llm-binding",
+        "图 25-3 K 线证据与 LLM 信号解释绑定",
+        "K 线证据与 LLM 信号解释绑定",
+        "顺序必须是先证据、再规则基线、再模型解释；页面只展示能回到输入字段的结论。",
+        cells,
+        edges,
+        "LLM 只能解释已进入上下文的证据，不能先给结论再反向挑选 K 线理由。",
+    )
+    _export_drawio(drawio, OUT / "chapter-25-kline-llm-binding.png")
     print(OUT / "chapter-25-kline-llm-binding.png")
 
 
@@ -132,182 +194,38 @@ def save_kline_indicator_chart() -> None:
     print(OUT / "chapter-25-kline-indicator-chart.png")
 
 
-def save_metric_verdict_card() -> None:
-    payload = run_kline_analysis("BTC-USDT", kline_type="1hour", limit=120)
-    metrics = payload.get("metrics") or {}
-    verdict = payload.get("verdict") or {}
-    rows = [
-        ("最新价", f"{metrics.get('latestClose'):.2f}", "页面价格卡"),
-        ("RSI", metrics.get("rsi"), "动量状态"),
-        ("MA20 / MA60", f"{metrics.get('sma20'):.2f} / {metrics.get('sma60'):.2f}", "趋势基线"),
-        ("支撑 / 阻力", f"{metrics.get('support20'):.2f} / {metrics.get('resistance20'):.2f}", "tradePlan 价位线"),
-        ("规则判断", f"{verdict.get('actionLabel')} / {verdict.get('score')}", "LLM 解释前的基线"),
-        ("原因", "；".join(verdict.get("reasons") or []), "可复算证据"),
-    ]
-    fig, ax = plt.subplots(figsize=(12, 5.6), dpi=160)
-    fig.patch.set_facecolor(PAPER)
-    ax.set_facecolor(PAPER)
-    ax.axis("off")
-    ax.text(0.04, 0.91, "K线页面的结论必须先落在可复算指标上", transform=ax.transAxes, fontsize=15, color=INK, weight="bold")
-    col_x = [0.05, 0.25, 0.48]
-    col_w = [0.16, 0.18, 0.38]
-    headers = ["字段", "真实值", "页面职责"]
-    y0 = 0.78
-    row_h = 0.105
-    for x, w, header in zip(col_x, col_w, headers, strict=True):
-        ax.add_patch(Rectangle((x, y0), w, 0.07, transform=ax.transAxes, facecolor="#334155", edgecolor="#334155"))
-        ax.text(x + 0.012, y0 + 0.035, header, transform=ax.transAxes, va="center", fontsize=10.8, color="#FFFFFF", weight="bold")
-    for i, row in enumerate(rows):
-        y = y0 - (i + 1) * row_h
-        fill_color = "#FFFFFF" if i % 2 == 0 else "#F8FAFC"
-        for x, w, value in zip(col_x, col_w, row, strict=True):
-            ax.add_patch(Rectangle((x, y), w, row_h, transform=ax.transAxes, facecolor=fill_color, edgecolor=GRID))
-            ax.text(x + 0.012, y + row_h / 2, fill(str(value), 34), transform=ax.transAxes, va="center", fontsize=9.8, color=INK)
-    ax.text(0.05, 0.05, "来源：dashboard.kline_analysis.run_kline_analysis('BTC-USDT', '1hour')。", transform=ax.transAxes, fontsize=10, color=MUTED)
-    fig.savefig(OUT / "chapter-25-metric-verdict-card.png", bbox_inches="tight")
-    plt.close(fig)
-    print(OUT / "chapter-25-metric-verdict-card.png")
-
-
-def save_multitimeframe_signal_matrix() -> None:
-    payload = run_signal_analysis("BTC")
-    bundle = payload.get("kline") or {}
-    labels = list(bundle.keys())
-    scores = [float(bundle[tf].get("score") or 0) for tf in labels]
-    rsi_values = [float(bundle[tf].get("rsi") or 0) for tf in labels]
-    colors = [TEAL if score > 0 else RED if score < 0 else "#64748B" for score in scores]
-    x = list(range(len(labels)))
-    fig, ax = plt.subplots(figsize=(10.8, 5.6), dpi=160)
-    fig.patch.set_facecolor(PAPER)
-    ax.set_facecolor("#FFFFFF")
-    ax.bar(x, scores, color=colors, width=0.55, label="规则分数")
-    ax.plot(x, rsi_values, color=ORANGE, marker="o", linewidth=2, label="RSI")
-    ax.axhline(0, color="#94A3B8", linewidth=1)
-    ax.set_xticks(x)
-    ax.set_xticklabels(labels)
-    ax.set_ylabel("score / RSI")
-    ax.grid(axis="y", color=GRID, linewidth=0.8)
-    ax.spines[["top", "right"]].set_visible(False)
-    for idx, tf in enumerate(labels):
-        row = bundle[tf]
-        ax.text(idx, scores[idx] + (2 if scores[idx] >= 0 else -4), row.get("trend", ""), ha="center", va="bottom" if scores[idx] >= 0 else "top", fontsize=9.5, color=INK)
-    ax.legend(frameon=False, loc="upper right")
-    ax.text(0.0, -0.18, f"signal={payload.get('signalLabel')}，score={payload.get('score')}，marketState={payload.get('analysis', {}).get('marketState')}。", transform=ax.transAxes, fontsize=10, color=MUTED)
-    fig.tight_layout()
-    fig.savefig(OUT / "chapter-25-multitimeframe-signal-matrix.png", bbox_inches="tight")
-    plt.close(fig)
-    print(OUT / "chapter-25-multitimeframe-signal-matrix.png")
-
-
-def save_rule_llm_comparison() -> None:
-    rule = run_signal_analysis("BTC")
-    llm = dict(rule)
-    llm["engine"] = "sandbox-rule-based"
-    llm["engineMeta"] = {
-        "provider": "sandbox",
-        "model": "deepseek-v4-pro",
-        "displayModel": "DeepSeek V4 Pro",
-        "note": "教学图禁用 OPENAI_API_KEY；页面应展示 fallback 状态。",
-    }
-    llm["summary"] = f"{rule.get('signalLabel')}，但当前为规则基线 fallback，不能当成 LLM 成功调用。"
-    rows = [
-        ("引擎", rule.get("engine"), llm.get("engine")),
-        ("模型状态", rule.get("engineMeta", {}).get("model"), llm.get("engineMeta", {}).get("displayModel") or llm.get("engineMeta", {}).get("model")),
-        ("信号", rule.get("signalLabel"), llm.get("signalLabel")),
-        ("分数", rule.get("score"), llm.get("score")),
-        ("置信度", rule.get("confidence"), llm.get("confidence")),
-        ("市场状态", rule.get("analysis", {}).get("marketState"), llm.get("analysis", {}).get("marketState")),
-        ("执行准备度", rule.get("analysis", {}).get("executionReadiness"), llm.get("analysis", {}).get("executionReadiness")),
-    ]
-    fig, ax = plt.subplots(figsize=(12, 5.8), dpi=160)
-    fig.patch.set_facecolor(PAPER)
-    ax.set_facecolor(PAPER)
-    ax.axis("off")
-    ax.text(0.04, 0.91, "规则基线和 LLM 输出要同屏比较", transform=ax.transAxes, fontsize=15, color=INK, weight="bold")
-    col_x = [0.05, 0.25, 0.55]
-    col_w = [0.16, 0.24, 0.34]
-    headers = ["字段", "规则基线", "LLM / fallback 输出"]
-    y0 = 0.78
-    row_h = 0.092
-    for x, w, header in zip(col_x, col_w, headers, strict=True):
-        ax.add_patch(Rectangle((x, y0), w, 0.07, transform=ax.transAxes, facecolor="#334155", edgecolor="#334155"))
-        ax.text(x + 0.012, y0 + 0.035, header, transform=ax.transAxes, va="center", fontsize=10.8, color="#FFFFFF", weight="bold")
-    for i, row in enumerate(rows):
-        y = y0 - (i + 1) * row_h
-        fill_color = "#FFFFFF" if i % 2 == 0 else "#F8FAFC"
-        for x, w, value in zip(col_x, col_w, row, strict=True):
-            ax.add_patch(Rectangle((x, y), w, row_h, transform=ax.transAxes, facecolor=fill_color, edgecolor=GRID))
-            ax.text(x + 0.012, y + row_h / 2, fill(str(value), 34), transform=ax.transAxes, va="center", fontsize=9.6, color=INK)
-    ax.text(0.05, 0.05, "要点：LLM 可以改写解释，但不能隐藏规则基线、engineMeta、fallback note 和风险边界。", transform=ax.transAxes, fontsize=10, color=MUTED)
-    fig.savefig(OUT / "chapter-25-rule-llm-comparison.png", bbox_inches="tight")
-    plt.close(fig)
-    print(OUT / "chapter-25-rule-llm-comparison.png")
-
-
-def save_field_trace_matrix() -> None:
-    rows = [
-        ("K线图", "candles[].open/high/low/close", "fetchKlineAnalysis", "OK"),
-        ("MA20 / MA60", "metrics.sma20 / metrics.sma60", "run_kline_analysis", "OK"),
-        ("RSI", "metrics.rsi", "run_kline_analysis", "OK"),
-        ("信号标签", "signalLabel", "run_signal_analysis / LLM", "OK"),
-        ("置信度", "confidence", "run_signal_analysis / LLM", "OK"),
-        ("交易计划", "tradePlan.entry/stop/target", "run_signal_analysis", "OK"),
-        ("模型状态", "engineMeta", "run_llm_signal_analysis", "OK"),
-        ("失败说明", "engineMeta.note / signalError", "LLM fallback", "OK"),
-    ]
-    fig, ax = plt.subplots(figsize=(12, 5.8), dpi=160)
-    fig.patch.set_facecolor(PAPER)
-    ax.set_facecolor(PAPER)
-    ax.axis("off")
-    ax.text(0.04, 0.91, "页面字段必须能回到 API 输出", transform=ax.transAxes, fontsize=15, color=INK, weight="bold")
-    col_x = [0.05, 0.24, 0.53, 0.78]
-    col_w = [0.15, 0.25, 0.21, 0.08]
-    headers = ["页面元素", "API 字段", "来源函数", "追溯"]
-    y0 = 0.79
-    row_h = 0.078
-    for x, w, header in zip(col_x, col_w, headers, strict=True):
-        ax.add_patch(Rectangle((x, y0), w, 0.065, transform=ax.transAxes, facecolor="#334155", edgecolor="#334155"))
-        ax.text(x + 0.01, y0 + 0.032, header, transform=ax.transAxes, va="center", fontsize=10.5, color="#FFFFFF", weight="bold")
-    for i, row in enumerate(rows):
-        y = y0 - (i + 1) * row_h
-        fill_color = "#FFFFFF" if i % 2 == 0 else "#F8FAFC"
-        for x, w, value in zip(col_x, col_w, row, strict=True):
-            ax.add_patch(Rectangle((x, y), w, row_h, transform=ax.transAxes, facecolor=fill_color, edgecolor=GRID))
-            ax.text(x + 0.01, y + row_h / 2, fill(str(value), 28), transform=ax.transAxes, va="center", fontsize=9.2, color=INK)
-    ax.text(0.05, 0.05, "字段追溯率 = matched_fields / required_fields；本章核心字段应达到 100%。", transform=ax.transAxes, fontsize=10, color=MUTED)
-    fig.savefig(OUT / "chapter-25-field-trace-matrix.png", bbox_inches="tight")
-    plt.close(fig)
-    print(OUT / "chapter-25-field-trace-matrix.png")
-
-
 def save_llm_fallback_ladder() -> None:
-    steps = [
-        ("规则基线", "run_signal_analysis\n永远先产出"),
-        ("检查密钥", "OPENAI_API_KEY\n未配置则规则输出"),
-        ("提交任务", "submit_task / poll\n异步状态可见"),
-        ("合并 JSON", "_merge_llm\n校验 signal/score/confidence"),
-        ("失败回退", "engineMeta.note\n保留错误原因"),
-        ("页面边界", "不是投资建议\n不得隐藏 fallback"),
+    cells = [
+        _drawio_cell("rule", _drawio_label("规则基线", "run_signal_analysis()\nsignal / score\nconfidence / 计划", BLUE), 70, 255, 250, 220, BLUE),
+        _drawio_cell("context", _drawio_label("构造上下文", "只包含可复算字段\n附带规则输出\n写明解释边界", "#0891B2"), 370, 255, 250, 220, "#0891B2"),
+        _drawio_cell("gate", _drawio_label("调用门禁", "OPENAI_API_KEY\n模型配置\n超时与异常", TEAL), 670, 255, 250, 220, TEAL),
+        _drawio_cell("llm", _drawio_label("LLM 结构化输出", "signal 枚举\nconfidence 范围\nlogicFlow / risk", PURPLE), 970, 255, 250, 220, PURPLE),
+        _drawio_cell("merge", _drawio_label("合并与复核", "保留 ruleBaseline\n写入 engineMeta\n展示 reviewFlags", RED), 1270, 255, 250, 220, RED),
+        _drawio_cell("fallback", _drawio_label("失败回退", "未配置密钥\n调用失败\n非法枚举或越界数值", "#B45309"), 670, 585, 340, 170, "#B45309", "#FFF7ED"),
+        _drawio_cell("page", _drawio_label("页面输出", "规则模式、LLM 成功和 fallback 都要能被用户一眼区分。", INK), 1060, 585, 460, 170, INK),
     ]
-    colors = [BLUE, TEAL, ORANGE, PURPLE, RED, "#334155"]
-    fig, ax = plt.subplots(figsize=(12.8, 4.8), dpi=160)
-    fig.patch.set_facecolor(PAPER)
-    ax.set_facecolor(PAPER)
-    ax.axis("off")
-    ax.text(0.04, 0.9, "LLM 信号必须有规则基线和失败回退", transform=ax.transAxes, fontsize=15, color=INK, weight="bold")
-    x0 = 0.04
-    width = 0.125
-    gap = 0.03
-    for i, ((title, body), color) in enumerate(zip(steps, colors, strict=True)):
-        x = x0 + i * (width + gap)
-        ax.add_patch(Rectangle((x, 0.34), width, 0.38, transform=ax.transAxes, facecolor="#FFFFFF", edgecolor=color, linewidth=2))
-        ax.text(x + 0.01, 0.64, title, transform=ax.transAxes, fontsize=11.3, color=color, weight="bold")
-        ax.text(x + 0.01, 0.55, body, transform=ax.transAxes, fontsize=8.8, color=INK, va="top")
-        if i < len(steps) - 1:
-            ax.add_patch(FancyArrowPatch((x + width + 0.006, 0.53), (x + width + gap - 0.006, 0.53), transform=ax.transAxes, arrowstyle="-|>", mutation_scale=13, linewidth=1.7, color=MUTED))
-    ax.text(0.04, 0.14, "对应代码：dashboard.llm_signal.run_llm_signal_analysis()；LLM 成功、未配置和调用失败都要有可见状态。", transform=ax.transAxes, fontsize=10.2, color=MUTED)
-    fig.savefig(OUT / "chapter-25-llm-fallback-ladder.png", bbox_inches="tight")
-    plt.close(fig)
+    edges = [
+        _drawio_edge("arrow-1", "rule", "context"),
+        _drawio_edge("arrow-2", "context", "gate"),
+        _drawio_edge("arrow-3", "gate", "llm"),
+        _drawio_edge("arrow-4", "llm", "merge"),
+        _drawio_edge("arrow-5", "gate", "fallback", "#B45309", dashed=True),
+        _drawio_edge("arrow-6", "llm", "fallback", "#B45309", dashed=True),
+        _drawio_edge("arrow-7", "fallback", "page", "#B45309"),
+        _drawio_edge("arrow-8", "merge", "page", RED),
+    ]
+    drawio = OUT / "chapter-25-llm-fallback-ladder.drawio"
+    _write_drawio(
+        drawio,
+        "chapter-25-llm-fallback-ladder",
+        "图 25-5 LLM 信号必须有规则基线和失败回退",
+        "LLM 信号必须有规则基线和失败回退",
+        "模型可用时进入结构化解释；模型不可用、越界或失败时保留规则基线并显式标记 fallback。",
+        cells,
+        edges,
+        "没有规则基线的 LLM 文字不能进入回测；没有显式 fallback 的页面不能用于教学验收。",
+    )
+    _export_drawio(drawio, OUT / "chapter-25-llm-fallback-ladder.png")
     print(OUT / "chapter-25-llm-fallback-ladder.png")
 
 
@@ -316,10 +234,6 @@ def main() -> None:
     setup_matplotlib()
     save_kline_llm_binding()
     save_kline_indicator_chart()
-    save_metric_verdict_card()
-    save_multitimeframe_signal_matrix()
-    save_rule_llm_comparison()
-    save_field_trace_matrix()
     save_llm_fallback_ladder()
 
 

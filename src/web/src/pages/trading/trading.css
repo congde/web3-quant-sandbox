@@ -1,4 +1,4 @@
-.trading-shell {
+﻿.trading-shell {
   color: var(--qa-text-1);
   display: flex;
   flex-direction: column;
@@ -231,7 +231,7 @@
   z-index: 10;
 }
 
-.backtest-section-nav a {
+.backtest-section-nav button {
   align-items: center;
   border: 1px solid transparent;
   border-radius: 7px;
@@ -246,7 +246,7 @@
   transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
 }
 
-.backtest-section-nav a span {
+.backtest-section-nav button span {
   color: var(--qa-neutral);
   font-family: var(--qa-font-mono);
   font-size: 10px;
@@ -254,8 +254,9 @@
   opacity: 0.86;
 }
 
-.backtest-section-nav a:hover,
-.backtest-section-nav a:focus-visible {
+.backtest-section-nav button:hover,
+.backtest-section-nav button:focus-visible,
+.backtest-section-nav button.is-active {
   background: rgba(34, 211, 238, 0.09);
   border-color: rgba(34, 211, 238, 0.28);
   color: var(--qa-neutral);
@@ -387,76 +388,6 @@
 .backtest-disclaimer a {
   color: var(--qa-neutral);
   font-weight: 700;
-}
-
-.backtest-workflow-card {
-  background:
-    linear-gradient(135deg, rgba(34, 211, 238, 0.08), transparent 42%),
-    linear-gradient(115deg, rgba(16, 185, 129, 0.07), transparent 58%),
-    rgba(255, 255, 255, 0.04);
-  order: 3;
-}
-
-.factor-mining-card {
-  order: 5;
-}
-
-.backtest-workflow-grid {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.backtest-workflow-step {
-  align-items: start;
-  background: rgba(4, 8, 18, 0.34);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 8px;
-  color: inherit;
-  cursor: pointer;
-  display: grid;
-  gap: 8px;
-  grid-template-columns: 30px minmax(0, 1fr);
-  min-height: 104px;
-  padding: 14px;
-  text-align: left;
-  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
-}
-
-.backtest-workflow-step:hover,
-.backtest-workflow-step:focus-visible {
-  background: rgba(34, 211, 238, 0.08);
-  border-color: rgba(34, 211, 238, 0.36);
-  outline: none;
-  transform: translateY(-1px);
-}
-
-.backtest-workflow-step .anticon {
-  align-items: center;
-  background: rgba(34, 211, 238, 0.12);
-  border: 1px solid rgba(34, 211, 238, 0.22);
-  border-radius: 7px;
-  color: var(--qa-neutral);
-  display: inline-flex;
-  height: 30px;
-  justify-content: center;
-  width: 30px;
-}
-
-.backtest-workflow-step strong {
-  color: var(--qa-text-1);
-  display: block;
-  font-size: 13px;
-  font-weight: 750;
-  line-height: 1.35;
-}
-
-.backtest-workflow-step span {
-  color: var(--qa-text-2);
-  display: block;
-  font-size: 12px;
-  grid-column: 2;
-  line-height: 1.45;
 }
 
 .trading-metric-grid-dense {
@@ -1221,7 +1152,6 @@
 [data-theme="light"] .trading-heading,
 [data-theme="light"] .backtest-config-panel,
 [data-theme="light"] .backtest-summary-panel,
-[data-theme="light"] .backtest-workflow-card,
 [data-theme="light"] .result-overview-card,
 [data-theme="light"] .factor-mining-card,
 [data-theme="light"] .trade-detail-card,
@@ -1245,16 +1175,17 @@
   box-shadow: 0 8px 24px rgba(23, 33, 24, 0.08);
 }
 
-[data-theme="light"] .backtest-section-nav a {
+[data-theme="light"] .backtest-section-nav button {
   color: #475569;
 }
 
-[data-theme="light"] .backtest-section-nav a span {
+[data-theme="light"] .backtest-section-nav button span {
   color: #0f766e;
 }
 
-[data-theme="light"] .backtest-section-nav a:hover,
-[data-theme="light"] .backtest-section-nav a:focus-visible {
+[data-theme="light"] .backtest-section-nav button:hover,
+[data-theme="light"] .backtest-section-nav button:focus-visible,
+[data-theme="light"] .backtest-section-nav button.is-active {
   background: #f0fdfa;
   border-color: rgba(14, 116, 144, 0.24);
   color: #0f766e;
@@ -1262,7 +1193,6 @@
 
 [data-theme="light"] .backtest-run-card,
 [data-theme="light"] .backtest-disclaimer,
-[data-theme="light"] .backtest-workflow-step,
 [data-theme="light"] .backtest-verdict-row,
 [data-theme="light"] .trading-metric-tile,
 [data-theme="light"] .trading-list-row,
@@ -1276,15 +1206,12 @@
   border-color: rgba(23, 33, 24, 0.10) !important;
 }
 
-[data-theme="light"] .backtest-workflow-step:hover,
-[data-theme="light"] .backtest-workflow-step:focus-visible,
 [data-theme="light"] .trading-action-tile:hover,
 [data-theme="light"] .trading-action-tile:focus-visible {
   background: #f0fdfa !important;
   border-color: rgba(14, 116, 144, 0.24) !important;
 }
 
-[data-theme="light"] .backtest-workflow-step .anticon,
 [data-theme="light"] .trading-action-icon {
   background: #f0fdfa;
   border-color: rgba(13, 148, 136, 0.22);
@@ -1299,7 +1226,6 @@
 [data-theme="light"] .trading-kv strong,
 [data-theme="light"] .backtest-run-card strong,
 [data-theme="light"] .backtest-verdict-row strong,
-[data-theme="light"] .backtest-workflow-step strong,
 [data-theme="light"] .trading-action-tile strong {
   color: #172118 !important;
 }
@@ -1315,7 +1241,6 @@
 [data-theme="light"] .backtest-config-footer > span,
 [data-theme="light"] .backtest-disclaimer,
 [data-theme="light"] .backtest-verdict-row p,
-[data-theme="light"] .backtest-workflow-step span,
 [data-theme="light"] .backtest-field > span,
 [data-theme="light"] .factor-backtest-action span,
 [data-theme="light"] .trading-action-tile span,
@@ -1495,10 +1420,6 @@
   .backtest-form-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .backtest-workflow-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 720px) {
@@ -1542,7 +1463,7 @@
     scrollbar-width: thin;
   }
 
-  .backtest-section-nav a {
+  .backtest-section-nav button {
     white-space: nowrap;
   }
 
@@ -1564,9 +1485,6 @@
   .trading-action-grid,
   .backtest-form-grid,
   .backtest-summary-metrics,
-  .backtest-workflow-grid {
-    grid-template-columns: 1fr;
-  }
 
   .backtest-field-wide {
     grid-column: span 1;
@@ -2143,4 +2061,108 @@
   .terminal-mini-kpis {
     grid-template-columns: 1fr;
   }
+}
+
+.workflow-guide-content p {
+  color: var(--qa-text-2);
+  line-height: 1.65;
+  margin: 0 0 12px;
+}
+
+.workflow-guide-content ul {
+  color: var(--qa-text-1);
+  margin: 0;
+  padding-left: 20px;
+}
+
+.workflow-guide-content li {
+  line-height: 1.7;
+  margin: 6px 0;
+}
+.backtest-section-banner {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+}
+
+.backtest-section-nav button {
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.backtest-step-page {
+  align-items: start;
+}
+
+.backtest-section-nav {
+  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.backtest-section-nav button {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 88px;
+  padding: 11px;
+  text-align: left;
+}
+
+.backtest-section-nav button span {
+  line-height: 1;
+}
+
+.backtest-section-nav button b {
+  color: var(--qa-text-3);
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 1;
+}
+
+.backtest-section-nav button strong {
+  color: var(--qa-text-1);
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.backtest-section-nav button em {
+  color: var(--qa-text-2);
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.backtest-section-nav button.is-active b,
+.backtest-section-nav button.is-active strong,
+.backtest-section-nav button:hover b,
+.backtest-section-nav button:hover strong,
+.backtest-section-nav button:focus-visible b,
+.backtest-section-nav button:focus-visible strong {
+  color: var(--qa-neutral);
+}
+.backtest-section-nav {
+  order: 3;
+}
+
+.backtest-step-page {
+  order: 4;
+}
+
+@media (max-width: 1180px) {
+  .backtest-section-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .backtest-section-nav {
+    grid-template-columns: 1fr;
+  }
+}
+.backtest-section-nav {
+  position: static;
+  top: auto;
+  z-index: auto;
 }
