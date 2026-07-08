@@ -1,4 +1,18 @@
-from risk.config import DEFAULT_RULE_IDS, default_risk_manager
+﻿from risk.config import DEFAULT_RULE_IDS, default_risk_manager
+from risk.engine_schema import (
+    DEFAULT_RULE_CONFIGS,
+    MYSQL_RISK_ENGINE_DDL,
+    POSTGRES_RISK_ENGINE_DDL,
+    RISK_ENGINE_TABLES,
+    OnchainHealthPosition,
+    RiskAssetSnapshot,
+    RiskRuleConfig,
+    build_asset_snapshot,
+    classify_rule_value,
+    compute_drawdown,
+    compute_health_factor,
+    steth_borrow_cap_multiplier,
+)
 from risk.execution_boundary import (
     ExecutionBoundaryRequest,
     ExecutionBoundaryResult,
@@ -18,18 +32,30 @@ from risk.simulation import RiskFinding, evaluate_backtest_risk
 
 __all__ = [
     "AbnormalCandleRule",
+    "DEFAULT_RULE_CONFIGS",
     "DEFAULT_RULE_IDS",
     "ExecutionBoundaryRequest",
     "ExecutionBoundaryResult",
     "KillSwitch",
+    "MYSQL_RISK_ENGINE_DDL",
     "MaxDrawdownRule",
     "MaxPositionRule",
     "MaxSlippageRule",
+    "OnchainHealthPosition",
+    "POSTGRES_RISK_ENGINE_DDL",
+    "RISK_ENGINE_TABLES",
+    "RiskAssetSnapshot",
     "RiskCheckResult",
     "RiskFinding",
     "RiskManager",
+    "RiskRuleConfig",
     "RiskThresholdPatchError",
+    "build_asset_snapshot",
     "classify_execution_request",
+    "classify_rule_value",
+    "compute_drawdown",
+    "compute_health_factor",
     "default_risk_manager",
     "evaluate_backtest_risk",
+    "steth_borrow_cap_multiplier",
 ]
