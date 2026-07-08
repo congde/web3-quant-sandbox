@@ -1,50 +1,116 @@
 {
   "version": 1,
-  "updated_at": "2026-07-08T11:04:40+00:00",
+  "updated_at": "2026-07-08T11:46:06+00:00",
   "datasets": {
     "market_tickers": {
       "layer": "snapshot",
       "origin": "live",
-      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\market_tickers\\2026-07-08T11-04-38.633276+00-00.json",
+      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\market_tickers\\2026-07-08T11-45-59.368648+00-00.json",
       "complete": true,
       "reason": "",
-      "updated_at": "2026-07-08T11:04:38+00:00",
+      "updated_at": "2026-07-08T11:45:59+00:00",
       "cache_key": "market_tickers",
       "latest_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\market_tickers.json",
-      "history_id": "2026-07-08T11-04-38.633276+00-00"
+      "history_id": "2026-07-08T11-45-59.368648+00-00"
     },
     "opportunity_scan": {
       "layer": "snapshot",
       "origin": "live",
-      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-07-08T11-04-38.764190+00-00.json",
+      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\opportunity_scan\\2026-07-08T11-40-37.779457+00-00.json",
       "complete": true,
       "reason": "",
-      "updated_at": "2026-07-08T11:04:38+00:00",
+      "updated_at": "2026-07-08T11:40:37+00:00",
       "cache_key": "opportunity_scan",
       "latest_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\opportunity_scan.json",
-      "history_id": "2026-07-08T11-04-38.764190+00-00"
+      "history_id": "2026-07-08T11-40-37.779457+00-00"
     },
     "kucoin_markets": {
       "layer": "snapshot",
       "origin": "live",
-      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\kucoin_markets\\2026-07-08T11-04-39.555261+00-00.json",
+      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\kucoin_markets\\2026-07-08T11-46-00.574716+00-00.json",
       "complete": true,
       "reason": "",
-      "updated_at": "2026-07-08T11:04:39+00:00",
+      "updated_at": "2026-07-08T11:46:00+00:00",
       "cache_key": "kucoin_markets",
       "latest_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\kucoin_markets.json",
-      "history_id": "2026-07-08T11-04-39.555261+00-00"
+      "history_id": "2026-07-08T11-46-00.574716+00-00"
     },
     "onchain": {
       "layer": "snapshot",
       "origin": "live",
-      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\onchain\\2026-07-08T11-04-40.406217+00-00.json",
+      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\onchain\\2026-07-08T11-46-06.671540+00-00.json",
       "complete": true,
       "reason": "",
-      "updated_at": "2026-07-08T11:04:40+00:00",
+      "updated_at": "2026-07-08T11:46:06+00:00",
       "cache_key": "onchain",
       "latest_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\onchain.json",
-      "history_id": "2026-07-08T11-04-40.406217+00-00"
+      "history_id": "2026-07-08T11-46-06.671540+00-00"
+    },
+    "test_ai_picks": {
+      "layer": "snapshot",
+      "origin": "test",
+      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\test_ai_picks\\2026-07-08T11-45-25.263591+00-00.json",
+      "complete": true,
+      "reason": "",
+      "updated_at": "2026-07-08T11:45:25+00:00",
+      "cache_key": "test_ai_picks",
+      "latest_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\test_ai_picks.json",
+      "history_id": "2026-07-08T11-45-25.263591+00-00"
+    },
+    "test_persist_history": {
+      "layer": "snapshot",
+      "origin": "live",
+      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\test_persist_history\\2026-07-08T11-45-26.204379+00-00.json",
+      "complete": true,
+      "reason": "",
+      "updated_at": "2026-07-08T11:45:26+00:00",
+      "cache_key": "test_persist_history",
+      "latest_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\test_persist_history.json",
+      "history_id": "2026-07-08T11-45-26.204379+00-00"
+    },
+    "test_persist_corrupt_history": {
+      "layer": "snapshot",
+      "origin": "live",
+      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\test_persist_corrupt_history\\2026-07-08T11-45-26.211929+00-00.json",
+      "complete": true,
+      "reason": "",
+      "updated_at": "2026-07-08T11:45:26+00:00",
+      "cache_key": "test_persist_corrupt_history",
+      "latest_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\test_persist_corrupt_history.json",
+      "history_id": "2026-07-08T11-45-26.211929+00-00"
+    },
+    "test_persist_priority": {
+      "layer": "snapshot",
+      "origin": "live",
+      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\test_persist_priority\\2026-07-08T11-45-26.221138+00-00.json",
+      "complete": true,
+      "reason": "",
+      "updated_at": "2026-07-08T11:45:26+00:00",
+      "cache_key": "test_persist_priority",
+      "latest_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\test_persist_priority.json",
+      "history_id": "2026-07-08T11-45-26.221138+00-00"
+    },
+    "market_candles": {
+      "layer": "snapshot",
+      "origin": "live",
+      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\market_candles\\2026-07-08T11-45-26.492509+00-00.json",
+      "complete": true,
+      "reason": "",
+      "updated_at": "2026-07-08T11:45:26+00:00",
+      "cache_key": "market_candles",
+      "latest_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\market_candles.json",
+      "history_id": "2026-07-08T11-45-26.492509+00-00"
+    },
+    "web3_news": {
+      "layer": "snapshot",
+      "origin": "live",
+      "path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\web3_news\\2026-07-08T11-45-55.697198+00-00.json",
+      "complete": true,
+      "reason": "",
+      "updated_at": "2026-07-08T11:45:55+00:00",
+      "cache_key": "web3_news",
+      "latest_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\web3_news.json",
+      "history_id": "2026-07-08T11-45-55.697198+00-00"
     }
   }
 }
