@@ -290,7 +290,7 @@ export default function ResearchPage() {
   return (
     <TradingPageShell
       eyebrow="Research / Analysis"
-      title="市场情报与分析"
+      title="市场情报"
       description="币种 K 线分析 + 规则信号引擎（教学沙箱）。离线模式下使用快照数据，不代表真实交易建议。"
       actions={
         <div className="research-signal-actions">
@@ -730,86 +730,6 @@ export default function ResearchPage() {
                 <div className="research-news-empty">当前筛选没有命中新闻，放宽来源、主题或搜索条件。</div>
               ) : null}
             </div>
-          </div>
-        </QuantGlowCard>
-      </section>
-
-      <section className="trading-grid research-news-section research-news-legacy">
-        <QuantGlowCard
-          className="trading-span-12"
-          title={
-            <SectionHeader
-              title="Web3 消息面情报"
-              description={`No-key RSS/GDELT · ${web3News?.source ?? "loading"} · ${web3News?.updated_at ?? "—"}`}
-            />
-          }
-          badge={<StatusPill tone={(web3News?.metrics?.risk_event_count ?? 0) > 0 ? "loss" : "neutral"}>News</StatusPill>}
-        >
-          <div className="research-stat-row">
-            <div className="research-stat-card">
-              <div className="label">新闻热度</div>
-              <div className="value">{web3News?.metrics?.article_count ?? "—"}</div>
-            </div>
-            <div className="research-stat-card">
-              <div className="label">情绪均值</div>
-              <div className={`value ${newsSentimentTone}`}>
-                {web3News?.metrics?.sentiment_score?.toFixed(2) ?? "—"}
-              </div>
-            </div>
-            <div className="research-stat-card">
-              <div className="label">风险事件</div>
-              <div className="value research-negative">{web3News?.metrics?.risk_event_count ?? "—"}</div>
-            </div>
-            <div className="research-stat-card">
-              <div className="label">正面占比</div>
-              <div className="value">
-                {web3News?.metrics?.positive_ratio != null
-                  ? `${(web3News.metrics.positive_ratio * 100).toFixed(1)}%`
-                  : "—"}
-              </div>
-            </div>
-            <div className="research-stat-card">
-              <div className="label">热门资产</div>
-              <div className="value">
-                {topNewsAssets.length ? topNewsAssets.map(([asset, count]) => `${asset} ${count}`).join(" / ") : "—"}
-              </div>
-            </div>
-            <div className="research-stat-card">
-              <div className="label">热门主题</div>
-              <div className="value">
-                {topNewsTopics.length ? topNewsTopics.map(([topic, count]) => `${topic} ${count}`).join(" / ") : "—"}
-              </div>
-            </div>
-          </div>
-          <div className="trading-list">
-            {(web3News?.items ?? []).slice(0, 12).map((item) => (
-              <a
-                key={`${item.source_id}-${item.url || item.title}`}
-                className="trading-list-row research-news-link"
-                href={item.url || "#"}
-                target="_blank"
-                rel="noreferrer"
-                aria-disabled={!item.url}
-                onClick={(event) => {
-                  if (!item.url) {
-                    event.preventDefault();
-                  }
-                }}
-              >
-                <div>
-                  <strong>{item.title}</strong>
-                  <span>
-                    {item.source ?? "source"} · {(item.assets ?? []).join(", ") || "market"} ·{" "}
-                    {(item.topics ?? []).join(", ") || "general"} · {item.published_at ?? "—"}
-                  </span>
-                </div>
-                {
-                  <StatusPill tone={item.risk_event ? "loss" : (item.sentiment ?? 0) > 0 ? "profit" : "neutral"}>
-                    {item.risk_event ? "Risk" : (item.sentiment ?? 0) > 0 ? "Bullish" : "Neutral"}
-                  </StatusPill>
-                }
-              </a>
-            ))}
           </div>
         </QuantGlowCard>
       </section>

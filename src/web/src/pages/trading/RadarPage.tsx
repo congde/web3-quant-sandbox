@@ -1,4 +1,4 @@
-import { ReloadOutlined, SearchOutlined } from "@ant-design/icons";
+﻿import { ReloadOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Segmented, Select } from "antd";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,7 @@ interface TickerRow {
 }
 
 type RadarSortKey = "score" | "confidence" | "volume" | "change";
+type RadarPathKey = "hot" | "cold" | "blocked";
 
 function formatVolume(value: number) {
   if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(1)}B`;
@@ -32,7 +33,7 @@ function formatVolume(value: number) {
 }
 
 function formatSource(source?: string, engine?: string) {
-  if (source === "web3-trading-upstream") return "上游代理";
+  if (source === "web3-trading-upstream") return "上游适配器";
   if (source === "snapshot") return "离线样本";
   if (engine === "sandbox-rule-based") return "规则引擎 · 直连";
   if (source === "live") return "直连 API";
@@ -93,21 +94,54 @@ function formatBias(value?: string) {
   return "中性";
 }
 
-function opportunityPhase(item: OpportunityItem) {
-  const score = Math.abs(Number(item.score || 0));
-  const confidence = Number(item.confidence || 0);
-  const volume = Number(item.volume24h || 0);
-  if (score >= 25 && confidence >= 55 && volume >= 1_000_000) return "可跟踪";
-  if (score >= 15 && volume >= 500_000) return "观察中";
-  if (String(item.riskLevel || "") === "high") return "高波动";
-  return "待验证";
-}
-
 function actionHint(item: OpportunityItem) {
+  const risk = String(item.riskLevel || "");
+  if (risk === "high") return "阻断";
   const signal = String(item.signal || "").toUpperCase();
   if (signal.includes("BUY")) return "研究";
   if (signal.includes("SELL")) return "避险";
   return "观察";
+}
+
+function classifyRadarPath(item: OpportunityItem): RadarPathKey {
+  const score = Math.abs(Number(item.score || 0));
+  const confidence = Number(item.confidence || 0);
+  const volume = Number(item.volume24h || 0);
+  const risk = String(item.riskLevel || "");
+
+  if (risk === "high") return "blocked";
+  if (score >= 28 && confidence >= 58 && volume >= 1_000_000) return "hot";
+  return "cold";
+}
+
+function radarPathLabel(path: RadarPathKey) {
+  if (path === "hot") return "热路径观察";
+  if (path === "blocked") return "风控阻断";
+  return "冷路径研究";
+}
+
+function radarPathNote(path: RadarPathKey) {
+  if (path === "hot") return "适合秒级复算，但沙箱只标注不执行";
+  if (path === "blocked") return "先做流动性、安全与确认数复核";
+  return "进入市场情报、回测和中低频策略评估";
+}
+
+function stateCheckLabel(path: RadarPathKey) {
+  if (path === "hot") return "需 eth_call / getReserves 复算";
+  if (path === "blocked") return "需 Honeypot / 滑点 / 深度复核";
+  return "可用快照做研究起点";
+}
+
+function confirmationLabel(path: RadarPathKey) {
+  if (path === "hot") return "零确认仅观察";
+  if (path === "blocked") return "等待 1-2 区块";
+  return "按研究周期确认";
+}
+
+function netEdgeLabel(path: RadarPathKey) {
+  if (path === "hot") return "未扣 Gas / Tip / 滑点";
+  if (path === "blocked") return "净收益不可用";
+  return "需回测扣成本";
 }
 
 function leadingSector(sectors: Awaited<ReturnType<typeof fetchSectorFund>>["sectors"]) {
@@ -132,10 +166,10 @@ function RadarCard({
   const pair = item.pair || `${item.symbol}-USDT`;
   const reasons = (item.keyReasons || []).slice(0, 2).join(" · ");
   const risk = String(item.riskLevel || "");
-  const phase = opportunityPhase(item);
+  const path = classifyRadarPath(item);
 
   return (
-    <article className={`radar-card ${signalClass(item.signal)}${featured ? " featured" : ""}`}>
+    <article className={`radar-card ${signalClass(item.signal)} radar-path-${path}${featured ? " featured" : ""}`}>
       <div className="radar-card-rank-col">
         <div className="radar-card-rank">#{item.rank ?? "-"}</div>
         <div className="radar-score-ring" style={{ ["--ring-pct" as string]: Math.min(100, Math.abs(score)) }}>
@@ -150,6 +184,7 @@ function RadarCard({
           <span className="radar-card-symbol">{item.symbol}</span>
           <span className="radar-card-pair">{pair}</span>
           <span className="radar-signal-pill">{item.label || item.signal || "中性"}</span>
+          <span className={`radar-path-pill ${path}`}>{radarPathLabel(path)}</span>
         </div>
         <div className="radar-card-metrics">
           <div>
@@ -169,15 +204,20 @@ function RadarCard({
             <span className="radar-metric-value">{formatRisk(risk)}</span>
           </div>
           <div>
-            <span className="radar-metric-label">状态</span>
-            <span className="radar-metric-value">{phase}</span>
+            <span className="radar-metric-label">方向</span>
+            <span className="radar-metric-value">{formatBias(item.bias)}</span>
           </div>
         </div>
         {reasons ? <div className="radar-card-reason">{reasons}</div> : null}
+        <div className="radar-guardrail-row">
+          <span>净边界：{netEdgeLabel(path)}</span>
+          <span>状态：{stateCheckLabel(path)}</span>
+          <span>确认：{confirmationLabel(path)}</span>
+        </div>
         <div className="radar-factor-row">
           <span>动量 {formatChange(item.change24h)}</span>
           <span>流动性 ${formatVolume(Number(item.volume24h || 0))}</span>
-          <span>方向 {formatBias(item.bias)}</span>
+          <span>{radarPathNote(path)}</span>
         </div>
       </div>
       <div className="radar-card-actions">
@@ -277,6 +317,7 @@ export default function RadarPage() {
   const ethRow = findTickerRow(tickers, "ETH");
   const btcChange = btcRow?.changeRate;
   const ethChange = ethRow?.changeRate;
+
   const scanTimeLabel = useMemo(() => {
     if (!scanResult?.scanTime) return "-";
     return new Date(scanResult.scanTime).toLocaleTimeString("zh-CN", {
@@ -287,9 +328,9 @@ export default function RadarPage() {
   }, [scanResult?.scanTime]);
 
   const overview = useMemo(() => {
-    if (scanning && !scanResult) return "正在加载离线样本...";
-    if (refreshing) return "后台刷新实时数据中...";
-    if (scanError) return "请稍后重试或点击「扫描机会」";
+    if (scanning && !scanResult) return "正在加载离线样本并构建候选队列...";
+    if (refreshing) return "后台刷新行情、链上情绪与机会扫描结果...";
+    if (scanError) return "扫描失败，请稍后重试或检查数据源。";
     const base = scanResult?.marketOverview || "";
     const duration = scanResult?.scanDurationMs ? ` · ${(scanResult.scanDurationMs / 1000).toFixed(1)}s` : "";
     if (base) return `${base}${duration}`;
@@ -327,18 +368,60 @@ export default function RadarPage() {
     return { bullish, bearish, highRisk, avgConfidence, topVolume };
   }, [opportunities]);
 
+  const pathStats = useMemo(() => {
+    return opportunities.reduce(
+      (acc, item) => {
+        acc[classifyRadarPath(item)] += 1;
+        return acc;
+      },
+      { hot: 0, cold: 0, blocked: 0 } as Record<RadarPathKey, number>,
+    );
+  }, [opportunities]);
+
   const playbook = useMemo(() => {
     const top = visibleOpportunities[0];
     if (!top) return "等待扫描结果后生成机会摘要。";
     const direction = formatBias(top.bias);
-    return `${top.symbol} 当前排名靠前，方向 ${direction}，置信度 ${Number(top.confidence || 0).toFixed(0)}%，风险 ${formatRisk(top.riskLevel)}。先进入市场情报核验 K 线、消息面与资金面，再决定是否进入实验配置。`;
+    const path = classifyRadarPath(top);
+    return `${top.symbol} 当前排名靠前，方向 ${direction}，置信度 ${Number(top.confidence || 0).toFixed(0)}%，路径为${radarPathLabel(path)}。先用市场情报核验 K 线、消息面与资金面；若进入热路径，必须先完成链上状态复算、Gas/滑点扣减和私有通道评估。`;
   }, [visibleOpportunities]);
+
+  const flowLanes = [
+    {
+      key: "hot" as const,
+      title: "热路径观察",
+      count: pathStats.hot,
+      meta: "CEX-DEX、跨池套利、MEV 类信号",
+      detail: "不走 Kafka/Flink；真实执行前需内存状态复算与执行器直连。",
+    },
+    {
+      key: "cold" as const,
+      title: "冷路径研究",
+      count: pathStats.cold,
+      meta: "Smart Money、资金费率、异动跟踪",
+      detail: "适合进入市场情报、回测、多因子排序和人工研判。",
+    },
+    {
+      key: "blocked" as const,
+      title: "风控阻断",
+      count: pathStats.blocked,
+      meta: "高波动、低确认或高风险候选",
+      detail: "滑点、Gas、蜜罐、流动性深度与区块确认数拥有否决权。",
+    },
+  ];
+
+  const guardCards = [
+    { title: "状态模拟", value: "必检", detail: "热路径不能只信 newHeads，发送前需 eth_call / Multicall 复算池子状态。" },
+    { title: "Gas 与滑点", value: "扣成本", detail: "机会收益必须扣 Base Fee、Priority Fee、Jito Tip、Swap 税和价格冲击。" },
+    { title: "私有通道", value: "防夹", detail: "EVM 使用 Flashbots / Builder Bundle；Solana 评估 Jito Block Engine 与 CU。" },
+    { title: "Reorg 防御", value: "确认数", detail: "跟随型资金等待 1-2 个区块，高频小额才允许零确认冒险。" },
+  ];
 
   return (
     <TradingPageShell
       eyebrow="Opportunity Radar"
       title="机会雷达"
-      description="内置规则扫描：优先展示 data/dashboard 离线全量样本；auto 模式下后台可静默刷新实时数据。"
+      description="候选扫描、冷热路径标注与 Web3 风控停止线。当前为教学沙箱，只输出研究信号，不连接真实执行器。"
       actions={
         <>
           <Button
@@ -358,7 +441,7 @@ export default function RadarPage() {
         <section className="radar-pulse-strip">
           <div className="radar-pulse-group">
             <div className="radar-pulse-ticker">
-              <span className="radar-pulse-icon">₿</span>
+              <span className="radar-pulse-icon">B</span>
               <div>
                 <span className="radar-pulse-label">BTC</span>
                 <span className="radar-pulse-price">{formatPrice(btcRow?.last)}</span>
@@ -368,7 +451,7 @@ export default function RadarPage() {
               </div>
             </div>
             <div className="radar-pulse-ticker">
-              <span className="radar-pulse-icon eth">Ξ</span>
+              <span className="radar-pulse-icon eth">E</span>
               <div>
                 <span className="radar-pulse-label">ETH</span>
                 <span className="radar-pulse-price">{formatPrice(ethRow?.last)}</span>
@@ -397,7 +480,7 @@ export default function RadarPage() {
           <div className="radar-pulse-group radar-pulse-highlight-group">
             <div className={`radar-pulse-highlight${opportunities.length ? " active" : ""}`}>
               <span className="radar-pulse-highlight-num">{opportunities.length || "-"}</span>
-              <span className="radar-pulse-highlight-label">高机会标的</span>
+              <span className="radar-pulse-highlight-label">候选信号</span>
             </div>
             <div className="radar-pulse-highlight">
               <span className="radar-pulse-meta-value">{scanTimeLabel}</span>
@@ -409,20 +492,31 @@ export default function RadarPage() {
         <section className="radar-hero-card">
           <div className="radar-hero-head">
             <div>
-              <div className="trading-eyebrow">OPPORTUNITY RADAR</div>
-              <h2 className="radar-hero-title">今日机会</h2>
+              <div className="trading-eyebrow">RADAR CONTROL</div>
+              <h2 className="radar-hero-title">机会队列与执行边界</h2>
               <p className="radar-hero-overview">{overview}</p>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-end" }}>
-              <span className="radar-engine-badge">
-                {formatSource(scanResult?.source, scanResult?.engine)}
-              </span>
+            <div className="radar-source-stack">
+              <span className="radar-engine-badge">{formatSource(scanResult?.source, scanResult?.engine)}</span>
               {scanResult?.source ? (
                 <StatusPill tone={scanResult.source === "snapshot" ? "ai" : "profit"}>
-                  {scanResult.source === "snapshot" ? "离线" : "就绪"}
+                  {scanResult.source === "snapshot" ? "离线快照" : "实时模式"}
                 </StatusPill>
               ) : null}
             </div>
+          </div>
+
+          <div className="radar-flow-lanes">
+            {flowLanes.map((lane) => (
+              <div className={`radar-flow-lane ${lane.key}`} key={lane.key}>
+                <div>
+                  <span>{lane.title}</span>
+                  <strong>{lane.count}</strong>
+                </div>
+                <p>{lane.meta}</p>
+                <small>{lane.detail}</small>
+              </div>
+            ))}
           </div>
 
           <div className="radar-terminal-grid">
@@ -439,18 +533,28 @@ export default function RadarPage() {
             <div className="radar-terminal-panel">
               <span>平均置信度</span>
               <strong>{radarStats.avgConfidence ? `${radarStats.avgConfidence.toFixed(0)}%` : "-"}</strong>
-              <p>过滤噪声后的命中质量</p>
+              <p>过滤器命中质量</p>
             </div>
             <div className="radar-terminal-panel">
               <span>高风险</span>
               <strong>{radarStats.highRisk}</strong>
-              <p>需二次确认的波动标的</p>
+              <p>需要二次确认的标的</p>
             </div>
             <div className="radar-terminal-panel">
               <span>队列成交额</span>
               <strong>${formatVolume(radarStats.topVolume)}</strong>
               <p>Top 队列合计流动性</p>
             </div>
+          </div>
+
+          <div className="radar-guard-grid">
+            {guardCards.map((guard) => (
+              <div className="radar-guard-card" key={guard.title}>
+                <span>{guard.title}</span>
+                <strong>{guard.value}</strong>
+                <p>{guard.detail}</p>
+              </div>
+            ))}
           </div>
 
           <div className="radar-command-bar">
@@ -524,7 +628,7 @@ export default function RadarPage() {
             </div>
           ) : (
             <div className="radar-state-box">
-              <span>暂无符合条件的机会，可调整筛选或稍后重试</span>
+              <span>暂无符合条件的机会，可调整筛选或稍后重试。</span>
             </div>
           )}
         </section>

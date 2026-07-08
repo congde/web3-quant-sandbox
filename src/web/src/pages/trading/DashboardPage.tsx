@@ -1,10 +1,8 @@
 import {
   BarChartOutlined,
-  DatabaseOutlined,
   ExperimentOutlined,
   RadarChartOutlined,
   ReloadOutlined,
-  SafetyOutlined,
   SwapOutlined,
 } from "@ant-design/icons";
 import { Button, Progress } from "antd";
@@ -25,7 +23,6 @@ import {
   MetricTile,
   QuantGlowCard,
   SectionHeader,
-  SignalRow,
   StatusPill,
 } from "./TradingPageShell";
 import "./trading.css";
@@ -64,13 +61,37 @@ function latestChange(curve: CurvePoint[]) {
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const { report, loading, short, long, refresh } = useReport();
+  const { report, loading, short, long, refresh, setShort, setLong } = useReport();
   const [fearGreed, setFearGreed] = useState("-");
   const [sectorLead, setSectorLead] = useState("-");
   const [pickCount, setPickCount] = useState(0);
   const [dataMode, setDataMode] = useState("离线样本");
   const [liveCurve, setLiveCurve] = useState<CurvePoint[]>([]);
   const [liveSymbol, setLiveSymbol] = useState("");
+  const [timeframe, setTimeframe] = useState<"1H" | "1D" | "1W" | "MA">("1D");
+
+  const handleTimeframeChange = (tf: "1H" | "1D" | "1W" | "MA") => {
+    setTimeframe(tf);
+    // Map timeframe to moving average periods
+    switch (tf) {
+      case "1H":
+        setShort(5);
+        setLong(10);
+        break;
+      case "1D":
+        setShort(3);
+        setLong(7);
+        break;
+      case "1W":
+        setShort(13);
+        setLong(26);
+        break;
+      case "MA":
+        setShort(50);
+        setLong(200);
+        break;
+    }
+  };
 
   useEffect(() => {
     void (async () => {
@@ -112,7 +133,6 @@ export default function DashboardPage() {
   const backtestCurve = report?.backtest.curve ?? [];
   const trades = report?.backtest.trades ?? [];
   const riskChecks = report?.risk_checks ?? [];
-  const warnings = report?.warnings ?? [];
   const chartCurve = liveCurve.length ? liveCurve : backtestCurve;
   const chartTrades = liveCurve.length ? [] : trades;
   const chartLive = liveCurve.length > 0;
@@ -209,10 +229,10 @@ export default function DashboardPage() {
           <div className="terminal-chart-header">
             <SectionHeader title="行情走势" description="K 线 / 均线 / 回测买卖点" />
             <div className="terminal-chart-tools">
-              <button type="button">1H</button>
-              <button type="button" className="active">1D</button>
-              <button type="button">1W</button>
-              <button type="button">MA</button>
+              <button type="button" onClick={() => handleTimeframeChange("1H")} className={timeframe === "1H" ? "active" : ""}>1H</button>
+              <button type="button" onClick={() => handleTimeframeChange("1D")} className={timeframe === "1D" ? "active" : ""}>1D</button>
+              <button type="button" onClick={() => handleTimeframeChange("1W")} className={timeframe === "1W" ? "active" : ""}>1W</button>
+              <button type="button" onClick={() => handleTimeframeChange("MA")} className={timeframe === "MA" ? "active" : ""}>MA</button>
             </div>
           </div>
           <TradingChart curve={chartCurve} trades={chartTrades} variant="standard" height={390} showEquity />
@@ -263,34 +283,36 @@ export default function DashboardPage() {
           </div>
         </QuantGlowCard>
 
-        <QuantGlowCard className="terminal-signals">
-          <SectionHeader title="信号与风险" description="AI picks / RiskManager / 运行边界" />
-          <div className="terminal-signal-grid">
-            <SignalRow title="AI 机会池" meta={`ValueScan 当前返回 ${pickCount} 条机会/资金/风险信号`} badge={<StatusPill tone="ai">{pickCount}</StatusPill>} />
-            {(riskChecks.length ? riskChecks.slice(0, 3) : [{ rule_id: "risk_gate", message: "当前参数组合通过模拟风控", severity: "pass" }]).map((item) => (
-              <SignalRow
-                key={item.rule_id}
-                title={item.rule_id}
-                meta={item.message}
-                badge={<StatusPill tone={item.severity === "pass" ? "profit" : item.severity === "warning" ? "ai" : "loss"}>{item.severity}</StatusPill>}
-              />
-            ))}
-            {(warnings.length ? warnings.slice(0, 2) : ["教学沙箱不进入实盘执行", "结果用于研究验证"]).map((warning) => (
-              <SignalRow key={warning} title="运行边界" meta={warning} badge={<SafetyOutlined />} />
-            ))}
+        <QuantGlowCard className="terminal-signals terminal-status-summary">
+          <SectionHeader
+            title="风险与数据"
+            description="快速概览 / 触达数据源与风控详情"
+            action={
+              <div className="terminal-summary-actions">
+                <Button size="small" onClick={() => navigate("/data-sources")}>数据源</Button>
+                <Button size="small" onClick={() => navigate("/risk")}>风控</Button>
+              </div>
+            }
+          />
+          <div className="terminal-status-grid">
+            <div className="terminal-status-card">
+              <span>AI 机会池</span>
+              <strong>{pickCount ? `${pickCount} 条待审机会` : "暂无机会"}</strong>
+              <StatusPill tone="ai">{pickCount}</StatusPill>
+            </div>
+            <div className="terminal-status-card">
+              <span>数据源</span>
+              <strong>{dataMode}</strong>
+              <StatusPill tone="neutral">{pickCount ? "已加载" : "等待"}</StatusPill>
+            </div>
+            <div className="terminal-status-card">
+              <span>风控状态</span>
+              <strong>{activeRiskCount ? `${activeRiskCount} 项预警` : "可模拟"}</strong>
+              <StatusPill tone={activeRiskCount ? "loss" : "profit"}>
+                {activeRiskCount ? "预警" : "通过"}
+              </StatusPill>
+            </div>
           </div>
-        </QuantGlowCard>
-
-        <QuantGlowCard className="terminal-system">
-          <SectionHeader title="数据源" description="连接状态 / 样本边界" />
-          <div className="terminal-source-grid">
-            <div><DatabaseOutlined /><span>行情</span><strong>{dataMode}</strong></div>
-            <div><RadarChartOutlined /><span>信号</span><strong>{pickCount ? "已加载" : "等待"}</strong></div>
-            <div><SafetyOutlined /><span>风控</span><strong>{activeRiskCount ? "预警" : "通过"}</strong></div>
-          </div>
-          <Button block icon={<DatabaseOutlined />} onClick={() => navigate("/data-sources")}>
-            查看数据源详情
-          </Button>
         </QuantGlowCard>
       </section>
     </div>

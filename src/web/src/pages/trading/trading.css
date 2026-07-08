@@ -568,6 +568,11 @@
   padding: 12px 14px;
 }
 
+.trading-list-row > div:first-child {
+  min-width: 0;
+  overflow: hidden;
+}
+
 .trading-list-row strong {
   color: var(--qa-text-1);
   display: block;
@@ -575,6 +580,9 @@
   font-weight: 650;
   line-height: 1.4;
   margin-bottom: 4px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .trading-list-row span {
@@ -582,6 +590,9 @@
   display: block;
   font-size: 12px;
   line-height: 1.45;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .trading-toolbar {
@@ -1987,6 +1998,52 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.terminal-status-summary {
+  grid-column: 1 / -1;
+}
+
+.terminal-status-summary .terminal-status-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.terminal-status-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--qa-line-subtle);
+  border-radius: 12px;
+  min-height: 92px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.terminal-status-card span {
+  color: var(--qa-text-2);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.terminal-status-card strong {
+  color: var(--qa-text-1);
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.terminal-summary-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.terminal-summary-actions .ant-btn {
+  min-width: 84px;
+}
+
 .terminal-source-grid {
   grid-template-columns: 1fr;
   margin: 0 0 10px;
@@ -2042,7 +2099,8 @@
   }
 
   .terminal-metric-grid,
-  .terminal-signal-grid {
+  .terminal-signal-grid,
+  .terminal-status-summary .terminal-status-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2058,6 +2116,7 @@
 
   .terminal-metric-grid,
   .terminal-signal-grid,
+  .terminal-status-summary .terminal-status-grid,
   .terminal-mini-kpis {
     grid-template-columns: 1fr;
   }

@@ -482,6 +482,7 @@ def run_mined_factor_backtest(
     max_hold_bars: int = 0,
     refresh: bool = False,
     entry_threshold: float = 0.5,
+    cost_preset: str | None = "teaching",
 ) -> dict[str, Any]:
     """Run rolling backtest using a mined GP / ML factor spec."""
     from backtest.rolling.service import execute_backtest
@@ -510,6 +511,7 @@ def run_mined_factor_backtest(
         trailing_stop_pct=trailing_stop_pct,
         max_hold_bars=max_hold_bars,
         refresh=refresh,
+        cost_preset=cost_preset,
         strategy_params=strategy_params,
     )
     payload["factor_source"] = source

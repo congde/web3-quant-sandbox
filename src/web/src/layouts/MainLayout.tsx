@@ -18,7 +18,7 @@ const { Header, Sider, Content } = Layout;
 
 const NAV_ITEMS = [
   { key: "/trading", icon: <DashboardOutlined />, label: "市场总览" },
-  { key: "/radar", icon: <RadarChartOutlined />, label: "深度分析" },
+  { key: "/radar", icon: <RadarChartOutlined />, label: "机会雷达" },
   { key: "/backtests", icon: <BarChartOutlined />, label: "策略回测" },
   { key: "/live-trading", icon: <SwapOutlined />, label: "模拟交易" },
   { key: "/data-sources", icon: <DatabaseOutlined />, label: "数据源" },

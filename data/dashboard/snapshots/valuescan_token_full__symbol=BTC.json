@@ -3,7 +3,7 @@
   "source": "snapshot",
   "full": true,
   "symbol": "BTC",
-  "fetchedAt": 1783064461347,
+  "fetchedAt": 1783155409387,
   "vsTokenId": 1,
   "tokenDetail": {
     "vsTokenId": "1",
@@ -11,517 +11,517 @@
     "symbol": "BTC",
     "icon": "https://static.valuescan.io/valuescan/cmc/coins/1.png",
     "oldSymbol": "",
-    "price": "61761.64",
+    "price": "62609.67",
     "highPrice": "126198.06960343386",
     "lowPrice": "0.04864654",
     "marketCapDominance": "",
-    "volume24h": "36833953440.42556",
-    "volumeChange24h": "-8.0495",
-    "percentChange1h": "-0.07852798",
-    "percentChange24h": "2.54475307",
-    "percentChange7d": "1.90573152",
-    "percentChange30d": "-8.24356885",
-    "percentChange60d": "-22.77136534",
-    "percentChange90d": "-7.92764132",
-    "marketCap": "1236302655893.75822871426",
-    "totalSupply": "20051418",
-    "circulationSupply": "20051418",
+    "volume24h": "23249946219.95655441",
+    "volumeChange24h": "-36.4831",
+    "percentChange1h": "0.03291236",
+    "percentChange24h": "1.34465308",
+    "percentChange7d": "3.59076642",
+    "percentChange30d": "-1.40501452",
+    "percentChange60d": "-22.63611904",
+    "percentChange90d": "-6.48418949",
+    "marketCap": "1253733985020.88701048882",
+    "totalSupply": "20051934",
+    "circulationSupply": "20051934",
     "maxSupply": "21000000",
-    "cost": "58861.629957884422178396",
+    "cost": "60123.577523734769703729",
     "chainAddresses": [
       {
         "contractAddress": "BTC",
         "chainName": "BTC",
-        "holderCount": "56713345",
-        "transCount": "1389602360",
+        "holderCount": "56722271",
+        "transCount": "1390369204",
         "issueDate": 1230998400000,
         "precision": "8",
-        "totalSupply": "20051427",
+        "totalSupply": "20051936",
         "coinKey": "BTC_BTC"
       }
     ]
   },
   "fund": {
-    "updateTime": 1783064400000,
+    "updateTime": 1783155300000,
     "vsTokenId": "1",
     "symbol": "BTC",
     "name": "Bitcoin",
     "coinPrice": "63625.99",
     "marketCap": "1264227890680.290630843",
     "hasSpotGoods": true,
-    "spotMaxInflow": "158048532.72809985",
+    "spotMaxInflow": "204515256.47611675",
     "spotGoodsList": [
       {
         "timeRange": "5m",
         "timeParticleEnum": 5,
-        "tradeInflow": "2385481.3755888985",
-        "tradeAmount": "13710146.098736905",
-        "tradeInflowChange": 5.27,
-        "tradeIn": "8047813.7371629012",
-        "tradeOut": "5662332.3615740032"
+        "tradeInflow": "40040.46648919975",
+        "tradeAmount": "1655180.4197254",
+        "tradeInflowChange": -0.94,
+        "tradeIn": "847610.44310729987",
+        "tradeOut": "807569.97661810012"
       },
       {
         "timeRange": "15m",
         "timeParticleEnum": 15,
-        "tradeInflow": "2405890.142897604",
-        "tradeAmount": "40411285.172149174",
-        "tradeInflowChange": 4.87,
-        "tradeIn": "21408587.657523389",
-        "tradeOut": "19002697.514625785"
+        "tradeInflow": "887989.0192557996",
+        "tradeAmount": "8033406.3960544",
+        "tradeInflowChange": 1.84,
+        "tradeIn": "4460697.7076550998",
+        "tradeOut": "3572708.6883993002"
       },
       {
         "timeRange": "30m",
         "timeParticleEnum": 30,
-        "tradeInflow": "1784128.0943522041",
-        "tradeAmount": "44509798.421310164",
-        "tradeInflowChange": 6.32,
-        "tradeIn": "23146963.257831184",
-        "tradeOut": "21362835.1634789799"
+        "tradeInflow": "-170303.2434621019",
+        "tradeAmount": "15825514.235618299",
+        "tradeInflowChange": -1.26,
+        "tradeIn": "7827605.4960780981",
+        "tradeOut": "7997908.7395402004"
       },
       {
         "timeRange": "1h",
         "timeParticleEnum": 101,
-        "tradeInflow": "1448742.9338820048",
-        "tradeAmount": "54317582.001956165",
-        "tradeInflowChange": 1.88,
-        "tradeIn": "27883162.4679190844",
-        "tradeOut": "26434419.5340370801"
+        "tradeInflow": "496631.241462698",
+        "tradeAmount": "22543363.4583475",
+        "tradeInflowChange": -0.89,
+        "tradeIn": "11519997.349905049",
+        "tradeOut": "11023366.108442401"
       },
       {
         "timeRange": "2h",
         "timeParticleEnum": 102,
-        "tradeInflow": "-200363.90821647976",
-        "tradeAmount": "112825800.91654533",
-        "tradeInflowChange": 0.98,
-        "tradeIn": "56312718.50416442012",
-        "tradeOut": "56513082.41238090488"
+        "tradeInflow": "5158989.212820597",
+        "tradeAmount": "57569621.18997284",
+        "tradeInflowChange": 2.6,
+        "tradeIn": "31364305.201396718",
+        "tradeOut": "26205315.988576121"
       },
       {
         "timeRange": "4h",
         "timeParticleEnum": 104,
-        "tradeInflow": "-8796655.152050877",
-        "tradeAmount": "228135429.64841363",
-        "tradeInflowChange": 0.09,
-        "tradeIn": "109669387.248181372",
-        "tradeOut": "118466042.400232253"
+        "tradeInflow": "1928228.0465524015",
+        "tradeAmount": "113207377.51247202",
+        "tradeInflowChange": 1.1,
+        "tradeIn": "57567802.7795122107",
+        "tradeOut": "55639574.7329598092"
       },
       {
         "timeRange": "8h",
         "timeParticleEnum": 108,
-        "tradeInflow": "-18477841.154343784",
-        "tradeAmount": "398123285.6112859",
-        "tradeInflowChange": -1.43,
-        "tradeIn": "189822722.228471008",
-        "tradeOut": "208300563.382814842"
+        "tradeInflow": "-17522405.97052519",
+        "tradeAmount": "226370536.70634854",
+        "tradeInflowChange": -1.52,
+        "tradeIn": "104424065.36791168",
+        "tradeOut": "121946471.33843686"
       },
       {
         "timeRange": "12h",
         "timeParticleEnum": 112,
-        "tradeInflow": "-11692672.853347281",
-        "tradeAmount": "533062219.8844727",
-        "tradeInflowChange": -1.14,
-        "tradeIn": "260684773.51556266",
-        "tradeOut": "272377446.36890999"
+        "tradeInflow": "-16139584.774472205",
+        "tradeAmount": "390214860.8856714",
+        "tradeInflowChange": -1.23,
+        "tradeIn": "187037638.055599598",
+        "tradeOut": "203177222.830071802"
       },
       {
         "timeRange": "24h",
         "timeParticleEnum": 124,
-        "tradeInflow": "69008821.12822229",
-        "tradeAmount": "1649200705.6396585",
-        "tradeInflowChange": -0.22,
-        "tradeIn": "859104763.38394034",
-        "tradeOut": "790095942.2557181"
+        "tradeInflow": "55326322.70716956",
+        "tradeAmount": "943397356.1342721",
+        "tradeInflowChange": 0.06,
+        "tradeIn": "499361839.42072078",
+        "tradeOut": "444035516.71355127"
       },
       {
         "timeRange": "2d",
         "timeParticleEnum": 202,
-        "tradeInflow": "158048532.72809985",
-        "tradeAmount": "3556865866.278615",
-        "tradeInflowChange": 1.98,
-        "tradeIn": "1857457199.50335692",
-        "tradeOut": "1699408666.77525757"
+        "tradeInflow": "107392408.51917471",
+        "tradeAmount": "2578731453.043891",
+        "tradeInflowChange": 3.59,
+        "tradeIn": "1343061930.78153235",
+        "tradeOut": "1235669522.26235814"
       },
       {
         "timeRange": "3d",
         "timeParticleEnum": 203,
-        "tradeInflow": "7338375.957752572",
-        "tradeAmount": "5419458086.524506",
-        "tradeInflowChange": 1.14,
-        "tradeIn": "2713398231.241129286",
-        "tradeOut": "2706059855.283376714"
+        "tradeInflow": "204515256.47611675",
+        "tradeAmount": "4514430691.183102",
+        "tradeInflowChange": 2.08,
+        "tradeIn": "2359472973.82960937",
+        "tradeOut": "2154957717.35349262"
       },
       {
         "timeRange": "5d",
         "timeParticleEnum": 205,
-        "tradeInflow": "-29425427.56596023",
-        "tradeAmount": "8126398056.980242",
-        "tradeInflowChange": 0.89,
-        "tradeIn": "4048486314.70714089",
-        "tradeOut": "4077911742.27310111"
+        "tradeInflow": "48522433.5237072",
+        "tradeAmount": "8069162393.279145",
+        "tradeInflowChange": 1.21,
+        "tradeIn": "4058842413.4014256",
+        "tradeOut": "4010319979.8777189"
       },
       {
         "timeRange": "7d",
         "timeParticleEnum": 207,
-        "tradeInflow": "1418497.8135403066",
-        "tradeAmount": "10519165608.56869",
-        "tradeInflowChange": 1.0,
-        "tradeIn": "5260292053.1911101533",
-        "tradeOut": "5258873555.3775748467"
+        "tradeInflow": "11801495.473308412",
+        "tradeAmount": "9745965272.556805",
+        "tradeInflowChange": 1.04,
+        "tradeIn": "4878883384.015056206",
+        "tradeOut": "4867081888.541748294"
       },
       {
         "timeRange": "10d",
         "timeParticleEnum": 210,
-        "tradeInflow": "-294882751.40212655",
-        "tradeAmount": "17617992337.297207",
-        "tradeInflowChange": -0.11,
-        "tradeIn": "8661554792.94753973",
-        "tradeOut": "8956437544.34966677"
+        "tradeInflow": "-180900519.00767815",
+        "tradeAmount": "16988975420.708633",
+        "tradeInflowChange": 0.48,
+        "tradeIn": "8404037450.85047693",
+        "tradeOut": "8584937969.85815557"
       },
       {
         "timeRange": "15d",
         "timeParticleEnum": 215,
-        "tradeInflow": "-463764303.65325963",
-        "tradeAmount": "23159645913.313198",
-        "tradeInflowChange": 0.44,
-        "tradeIn": "11347940804.82996919",
-        "tradeOut": "11811705108.48322881"
+        "tradeInflow": "-362689165.2741776",
+        "tradeAmount": "22656651808.243366",
+        "tradeInflowChange": 0.31,
+        "tradeIn": "11146981321.4845942",
+        "tradeOut": "11509670486.7587718"
       },
       {
         "timeRange": "30d",
         "timeParticleEnum": 230,
-        "tradeInflow": "-1287914503.7653742",
-        "tradeAmount": "53525584525.702515",
-        "tradeInflowChange": -1.34,
-        "tradeIn": "26118835010.9685699",
-        "tradeOut": "27406749514.7339446"
+        "tradeInflow": "-887192230.6008688",
+        "tradeAmount": "50875611416.376656",
+        "tradeInflowChange": 0.0,
+        "tradeIn": "24994209592.8878936",
+        "tradeOut": "25881401823.4887624"
       },
       {
         "timeRange": "40d",
         "timeParticleEnum": 240,
-        "tradeInflow": "-1524163027.407024",
-        "tradeAmount": "70648788667.97781",
-        "tradeInflowChange": -8.51,
-        "tradeIn": "34562312820.285388",
-        "tradeOut": "36086475847.692417"
+        "tradeInflow": "-1532413863.689065",
+        "tradeAmount": "70513862866.09673",
+        "tradeInflowChange": -7.7,
+        "tradeIn": "34490724501.203828",
+        "tradeOut": "36023138364.892897"
       },
       {
         "timeRange": "50d",
         "timeParticleEnum": 250,
-        "tradeInflow": "-1800021049.698562",
-        "tradeAmount": "85003912782.03287",
-        "tradeInflowChange": -15.01,
-        "tradeIn": "41601945866.167149",
-        "tradeOut": "43401966915.865716"
+        "tradeInflow": "-1890786193.389718",
+        "tradeAmount": "83508839144.76813",
+        "tradeInflowChange": -7.43,
+        "tradeIn": "40809026475.689201",
+        "tradeOut": "42699812669.078924"
       },
       {
         "timeRange": "60d",
         "timeParticleEnum": 260,
-        "tradeInflow": "-1839124526.0026436",
-        "tradeAmount": "101630008464.32864",
-        "tradeInflowChange": -3.66,
-        "tradeIn": "49895441969.1629982",
-        "tradeOut": "51734566495.1656418"
+        "tradeInflow": "-1776543828.6486723",
+        "tradeAmount": "99953600706.33162",
+        "tradeInflowChange": -6.61,
+        "tradeIn": "49088528438.8414739",
+        "tradeOut": "50865072267.4901461"
       },
       {
         "timeRange": "90d",
         "timeParticleEnum": 290,
-        "tradeInflow": "-1527965751.318644",
-        "tradeAmount": "148980171678.5207",
-        "tradeInflowChange": 0.68,
-        "tradeIn": "73726102963.600978",
-        "tradeOut": "75254068714.919672"
+        "tradeInflow": "-1478907227.0698996",
+        "tradeAmount": "149260884602.6975",
+        "tradeInflowChange": 0.69,
+        "tradeIn": "73890988687.8137502",
+        "tradeOut": "75369895914.8836998"
       },
       {
         "timeRange": "120d",
         "timeParticleEnum": 2120,
-        "tradeInflow": "-2233499752.4991536",
-        "tradeAmount": "206838915403.1201",
-        "tradeInflowChange": 0.73,
-        "tradeIn": "102302707825.3104232",
-        "tradeOut": "104536207577.8096268"
+        "tradeInflow": "-2010005585.9555564",
+        "tradeAmount": "205263334861.05756",
+        "tradeInflowChange": 0.76,
+        "tradeIn": "101626664637.5510018",
+        "tradeOut": "103636670223.5065582"
       },
       {
         "timeRange": "150d",
         "timeParticleEnum": 2150,
-        "tradeInflow": "-5244718810.597916",
-        "tradeAmount": "290692774963.37836",
-        "tradeInflowChange": 0.63,
-        "tradeIn": "142724028076.390222",
-        "tradeOut": "147968746886.988138"
+        "tradeInflow": "-4719231060.135454",
+        "tradeAmount": "287315513049.597",
+        "tradeInflowChange": 0.68,
+        "tradeIn": "141298140994.730273",
+        "tradeOut": "146017372054.866227"
       },
       {
         "timeRange": "180d",
         "timeParticleEnum": 2180,
-        "tradeInflow": "-6303582748.758201",
-        "tradeAmount": "391958025532.6266",
-        "tradeInflowChange": 0.64,
-        "tradeIn": "192827221391.9342",
-        "tradeOut": "199130804140.6924"
+        "tradeInflow": "-6313553598.655254",
+        "tradeAmount": "390041075056.49554",
+        "tradeInflowChange": 0.63,
+        "tradeIn": "191863760728.920143",
+        "tradeOut": "198177314327.575397"
       },
       {
         "timeRange": "1y",
         "timeParticleEnum": 401,
-        "tradeInflow": "-24063046154.04403",
-        "tradeAmount": "1273601709257.4067",
-        "tradeInflowChange": -0.22,
-        "tradeIn": "624769331551.68129",
-        "tradeOut": "648832377705.72536"
+        "tradeInflow": "-24031283855.16629",
+        "tradeAmount": "1270176546307.9438",
+        "tradeInflowChange": -0.24,
+        "tradeIn": "623072631226.38876",
+        "tradeOut": "647103915081.55504"
       },
       {
         "timeRange": "2y",
         "timeParticleEnum": 402,
-        "tradeInflow": "-43728860433.69294",
-        "tradeAmount": "3116601297327.3623",
-        "tradeInflowChange": -3.08,
-        "tradeIn": "1536436218446.83463",
-        "tradeOut": "1580165078880.52762"
+        "tradeInflow": "-43365680833.30449",
+        "tradeAmount": "3111324183777.9263",
+        "tradeInflowChange": -2.97,
+        "tradeIn": "1533979251472.31086",
+        "tradeOut": "1577344932305.61539"
       },
       {
         "timeRange": "3y",
         "timeParticleEnum": 403,
-        "tradeInflow": "-49031678844.37585",
-        "tradeAmount": "4670347778931.445",
+        "tradeInflow": "-48826879362.2261",
+        "tradeAmount": "4670294890313.316",
         "tradeInflowChange": -0.38,
-        "tradeIn": "2310658050043.53408",
-        "tradeOut": "2359689728887.91042"
+        "tradeIn": "2310734005475.545",
+        "tradeOut": "2359560884837.771"
       }
     ],
     "hasContract": true,
-    "contractMaxInflow": "4441332197.310996",
+    "contractMaxInflow": "5165010515.3578",
     "contractList": [
       {
         "timeRange": "5m",
         "timeParticleEnum": 5,
-        "tradeInflow": "-5508581.0589000005",
-        "tradeAmount": "29013173.359700006",
-        "tradeInflowChange": -0.54,
-        "tradeIn": "11752296.1504000028",
-        "tradeOut": "17260877.2093000032"
+        "tradeInflow": "-593842.7759999998",
+        "tradeAmount": "11681176.456000004",
+        "tradeInflowChange": -1.18,
+        "tradeIn": "5543666.8400000021",
+        "tradeOut": "6137509.6160000019"
       },
       {
         "timeRange": "15m",
         "timeParticleEnum": 15,
-        "tradeInflow": "-13679891.277800001",
-        "tradeAmount": "80369642.0042",
-        "tradeInflowChange": -4.84,
-        "tradeIn": "33344875.3632",
-        "tradeOut": "47024766.641"
+        "tradeInflow": "4292132.650000001",
+        "tradeAmount": "42623726.29800001",
+        "tradeInflowChange": -0.61,
+        "tradeIn": "23457929.474",
+        "tradeOut": "19165796.824000004"
       },
       {
         "timeRange": "30m",
         "timeParticleEnum": 30,
-        "tradeInflow": "-10119333.313900001",
-        "tradeAmount": "109423795.99330002",
-        "tradeInflowChange": -3.71,
-        "tradeIn": "49652231.33970001",
-        "tradeOut": "59771564.65360001"
+        "tradeInflow": "15318118.947599972",
+        "tradeAmount": "139552805.9358",
+        "tradeInflowChange": 16.32,
+        "tradeIn": "77435462.441699986",
+        "tradeOut": "62117343.494100014"
       },
       {
         "timeRange": "1h",
         "timeParticleEnum": 101,
-        "tradeInflow": "-6379475.870599996",
-        "tradeAmount": "220127607.99539992",
-        "tradeInflowChange": 0.53,
-        "tradeIn": "106874066.062399962",
-        "tradeOut": "113253541.932999958"
+        "tradeInflow": "14318079.169699987",
+        "tradeAmount": "193944465.08170003",
+        "tradeInflowChange": -0.22,
+        "tradeIn": "104131272.125700003",
+        "tradeOut": "89813192.956000021"
       },
       {
         "timeRange": "2h",
         "timeParticleEnum": 102,
-        "tradeInflow": "-19918505.973899994",
-        "tradeAmount": "511796604.7221001",
-        "tradeInflowChange": -1.4,
-        "tradeIn": "245939049.374100003",
-        "tradeOut": "265857555.348000047"
+        "tradeInflow": "32662816.703999963",
+        "tradeAmount": "352844420.79579985",
+        "tradeInflowChange": 1.44,
+        "tradeIn": "192753618.749899901",
+        "tradeOut": "160090802.045899943"
       },
       {
         "timeRange": "4h",
         "timeParticleEnum": 104,
-        "tradeInflow": "30127118.18640001",
-        "tradeAmount": "1125260270.8754",
-        "tradeInflowChange": 0.03,
-        "tradeIn": "577693694.5309",
-        "tradeOut": "547566576.34449999"
+        "tradeInflow": "-41831550.89409998",
+        "tradeAmount": "791292796.4005",
+        "tradeInflowChange": -0.2,
+        "tradeIn": "374730622.75315001",
+        "tradeOut": "416562173.64729999"
       },
       {
         "timeRange": "8h",
         "timeParticleEnum": 108,
-        "tradeInflow": "59368913.41520002",
-        "tradeAmount": "2268102684.2022004",
-        "tradeInflowChange": 1.34,
-        "tradeIn": "1163735798.80870021",
-        "tradeOut": "1104366885.39350019"
+        "tradeInflow": "-76684094.573",
+        "tradeAmount": "1685978651.4824004",
+        "tradeInflowChange": -1.24,
+        "tradeIn": "804647278.4552002",
+        "tradeOut": "881331373.0277002"
       },
       {
         "timeRange": "12h",
         "timeParticleEnum": 112,
-        "tradeInflow": "-75883637.35130005",
-        "tradeAmount": "3319555441.204899",
-        "tradeInflowChange": -1.24,
-        "tradeIn": "1621835901.92679898",
-        "tradeOut": "1697719539.27809952"
+        "tradeInflow": "-31223972.44259999",
+        "tradeAmount": "3026739794.9034023",
+        "tradeInflowChange": -1.07,
+        "tradeIn": "1497757911.23040111",
+        "tradeOut": "1528981883.67300114"
       },
       {
         "timeRange": "24h",
         "timeParticleEnum": 124,
-        "tradeInflow": "242588028.05729985",
-        "tradeAmount": "14577232203.366299",
-        "tradeInflowChange": -0.48,
-        "tradeIn": "7409910115.71179892",
-        "tradeOut": "7167322087.65449957"
+        "tradeInflow": "413382665.3163",
+        "tradeAmount": "9422801014.534897",
+        "tradeInflowChange": 1.55,
+        "tradeIn": "4918091839.925548",
+        "tradeOut": "4504709174.609298"
       },
       {
         "timeRange": "2d",
         "timeParticleEnum": 202,
-        "tradeInflow": "711195735.5776",
-        "tradeAmount": "32687211983.63562",
-        "tradeInflowChange": 1.92,
-        "tradeIn": "16699203859.60661",
-        "tradeOut": "15988008124.02901"
+        "tradeInflow": "575626415.6166997",
+        "tradeAmount": "23685243586.390697",
+        "tradeInflowChange": 61.55,
+        "tradeIn": "12130435001.0036978",
+        "tradeOut": "11554808585.3869986"
       },
       {
         "timeRange": "3d",
         "timeParticleEnum": 203,
-        "tradeInflow": "120477705.04170012",
-        "tradeAmount": "49363615574.00429",
-        "tradeInflowChange": 1.45,
-        "tradeIn": "24742046639.52299006",
-        "tradeOut": "24621568934.48129494"
+        "tradeInflow": "1113820631.8226995",
+        "tradeAmount": "42064130542.57573",
+        "tradeInflowChange": 2.08,
+        "tradeIn": "21588975587.1992097",
+        "tradeOut": "20475154955.3765152"
       },
       {
         "timeRange": "5d",
         "timeParticleEnum": 205,
-        "tradeInflow": "-276936541.5058002",
-        "tradeAmount": "75647196702.79897",
-        "tradeInflowChange": 0.78,
-        "tradeIn": "37685130080.6465799",
-        "tradeOut": "37962066622.1523851"
+        "tradeInflow": "347568083.9767999",
+        "tradeAmount": "74454702006.21803",
+        "tradeInflowChange": 1.26,
+        "tradeIn": "37401135045.0974099",
+        "tradeOut": "37053566961.120615"
       },
       {
         "timeRange": "7d",
         "timeParticleEnum": 207,
-        "tradeInflow": "-485463414.1225005",
-        "tradeAmount": "96905321117.31873",
-        "tradeInflowChange": -0.03,
-        "tradeIn": "48209928851.5981098",
-        "tradeOut": "48695392265.7206152"
+        "tradeInflow": "210468126.50379947",
+        "tradeAmount": "90946878517.57935",
+        "tradeInflowChange": 1.18,
+        "tradeIn": "45578673322.04156973",
+        "tradeOut": "45368205195.53777526"
       },
       {
         "timeRange": "10d",
         "timeParticleEnum": 210,
-        "tradeInflow": "-1523181569.5803003",
-        "tradeAmount": "155505737845.2445",
-        "tradeInflowChange": -2.91,
-        "tradeIn": "76991278137.8320499",
-        "tradeOut": "78514459707.4124001"
+        "tradeInflow": "-993648037.7241002",
+        "tradeAmount": "154085472487.4189",
+        "tradeInflowChange": -2.9,
+        "tradeIn": "76545912224.8473499",
+        "tradeOut": "77539560262.5715001"
       },
       {
         "timeRange": "15d",
         "timeParticleEnum": 215,
-        "tradeInflow": "-1275428096.4214005",
-        "tradeAmount": "207820845369.96967",
-        "tradeInflowChange": -2.18,
-        "tradeIn": "103272708636.7741298",
-        "tradeOut": "104548136733.1955352"
+        "tradeInflow": "-538769138.5600008",
+        "tradeAmount": "202935410979.32657",
+        "tradeInflowChange": -1.81,
+        "tradeIn": "101198320920.3832796",
+        "tradeOut": "101737090058.9432854"
       },
       {
         "timeRange": "30d",
         "timeParticleEnum": 230,
-        "tradeInflow": "-1676051241.0269015",
-        "tradeAmount": "458748539136.581",
-        "tradeInflowChange": 0.29,
-        "tradeIn": "228536243947.7765493",
-        "tradeOut": "230212295188.8039507"
+        "tradeInflow": "123771625.78059837",
+        "tradeAmount": "436666596600.4922",
+        "tradeInflowChange": 1.04,
+        "tradeIn": "218395184113.13639918",
+        "tradeOut": "218271412487.35580081"
       },
       {
         "timeRange": "40d",
         "timeParticleEnum": 240,
-        "tradeInflow": "-4231153460.7138023",
-        "tradeAmount": "603136636058.0392",
-        "tradeInflowChange": -2.13,
-        "tradeIn": "299452741298.6626989",
-        "tradeOut": "303683894759.3765011"
+        "tradeInflow": "-4227694130.1457014",
+        "tradeAmount": "602590370436.0728",
+        "tradeInflowChange": -2.16,
+        "tradeIn": "299181338152.9635493",
+        "tradeOut": "303409032283.1092507"
       },
       {
         "timeRange": "50d",
         "timeParticleEnum": 250,
-        "tradeInflow": "-5198141451.7800045",
-        "tradeAmount": "730097127802.0967",
-        "tradeInflowChange": -1.72,
-        "tradeIn": "362449493175.1582978",
-        "tradeOut": "367647634626.9383522"
+        "tradeInflow": "-5513800874.8593025",
+        "tradeAmount": "719797525957.2571",
+        "tradeInflowChange": -1.7,
+        "tradeIn": "357141862541.1988488",
+        "tradeOut": "362655663416.0582012"
       },
       {
         "timeRange": "60d",
         "timeParticleEnum": 260,
-        "tradeInflow": "-4039542224.699302",
-        "tradeAmount": "871362166238.8436",
-        "tradeInflowChange": -1.48,
-        "tradeIn": "433661312007.072149",
-        "tradeOut": "437700854231.771451"
+        "tradeInflow": "-3350379613.4486017",
+        "tradeAmount": "856212682200.7894",
+        "tradeInflowChange": -1.4,
+        "tradeIn": "426431151293.6703992",
+        "tradeOut": "429781530907.1190008"
       },
       {
         "timeRange": "90d",
         "timeParticleEnum": 290,
-        "tradeInflow": "3212029346.214597",
-        "tradeAmount": "1273927897514.8027",
-        "tradeInflowChange": 1.64,
-        "tradeIn": "638569963430.508598",
-        "tradeOut": "635357934084.294051"
+        "tradeInflow": "3594660244.888099",
+        "tradeAmount": "1278496171091.1694",
+        "tradeInflowChange": 1.7,
+        "tradeIn": "641045415668.028749",
+        "tradeOut": "637450755423.14065"
       },
       {
         "timeRange": "120d",
         "timeParticleEnum": 2120,
-        "tradeInflow": "4441332197.310996",
-        "tradeAmount": "1740257656841.4216",
-        "tradeInflowChange": 1.25,
-        "tradeIn": "872349494519.366298",
-        "tradeOut": "867908162322.055302"
+        "tradeInflow": "5036702809.362299",
+        "tradeAmount": "1730155550707.3823",
+        "tradeInflowChange": 1.27,
+        "tradeIn": "867596126758.372249",
+        "tradeOut": "862559423949.01"
       },
       {
         "timeRange": "150d",
         "timeParticleEnum": 2150,
-        "tradeInflow": "4193983862.1409",
-        "tradeAmount": "2317129601522.6035",
-        "tradeInflowChange": 1.12,
-        "tradeIn": "1160661792692.3721",
-        "tradeOut": "1156467808830.2313"
+        "tradeInflow": "5165010515.3578",
+        "tradeAmount": "2298815845193.9307",
+        "tradeInflowChange": 1.15,
+        "tradeIn": "1151990427854.6442",
+        "tradeOut": "1146825417339.2864"
       },
       {
         "timeRange": "180d",
         "timeParticleEnum": 2180,
-        "tradeInflow": "-1793599383.6802936",
-        "tradeAmount": "2780060006402.6104",
-        "tradeInflowChange": 0.96,
-        "tradeIn": "1389133203509.4650532",
-        "tradeOut": "1390926802893.1453468"
+        "tradeInflow": "-1543946385.777196",
+        "tradeAmount": "2777511658233.273",
+        "tradeInflowChange": 0.97,
+        "tradeIn": "1387983855923.747402",
+        "tradeOut": "1389527802309.525098"
       },
       {
         "timeRange": "1y",
         "timeParticleEnum": 401,
-        "tradeInflow": "-47656969408.61992",
-        "tradeAmount": "6080216810378.906",
-        "tradeInflowChange": -0.44,
-        "tradeIn": "3016279920485.14304",
-        "tradeOut": "3063936889893.76296"
+        "tradeInflow": "-47486106815.5005",
+        "tradeAmount": "6071704411370.034",
+        "tradeInflowChange": -0.5,
+        "tradeIn": "3012109152277.2668",
+        "tradeOut": "3059595259092.7672"
       },
       {
         "timeRange": "2y",
         "timeParticleEnum": 402,
-        "tradeInflow": "-80853355127.43195",
-        "tradeAmount": "13336808436256.297",
-        "tradeInflowChange": -1.43,
-        "tradeIn": "6627977540564.43203",
-        "tradeOut": "6708830895691.86447"
+        "tradeInflow": "-79151323182.15607",
+        "tradeAmount": "13318127378461.754",
+        "tradeInflowChange": -1.29,
+        "tradeIn": "6619488027639.79897",
+        "tradeOut": "6698639350821.95503"
       },
       {
         "timeRange": "3y",
         "timeParticleEnum": 403,
-        "tradeInflow": "-115889981498.54979",
-        "tradeAmount": "18418766859790.2",
+        "tradeInflow": "-115267525026.28925",
+        "tradeAmount": "18419263021563.74",
         "tradeInflowChange": -0.98,
-        "tradeIn": "9151438439145.82511",
-        "tradeOut": "9267328420644.37489"
+        "tradeIn": "9151997748268.72538",
+        "tradeOut": "9267265273295.01462"
       }
     ]
   },
@@ -546,335 +546,335 @@
       {
         "timeRange": "H1",
         "timeParticleEnum": 101,
-        "tradeIn": "21913591.3960725969",
-        "tradeOut": "1350690.9027074298",
-        "tradeInNumber": "355.28886008",
-        "tradeOutNumber": "21.88818219",
-        "tradeInflow": "20562900.4933651671",
-        "tradeAmount": "23264282.2987800267",
-        "tradeInflowChange": 27.0782166868
+        "tradeIn": "34208694.2760039003",
+        "tradeOut": "1864854.1628358415",
+        "tradeInNumber": "547.23073066",
+        "tradeOutNumber": "29.84201824",
+        "tradeInflow": "32343840.1131680588",
+        "tradeAmount": "36073548.4388397418",
+        "tradeInflowChange": 2.8624670343
       },
       {
         "timeRange": "H2",
         "timeParticleEnum": 102,
-        "tradeIn": "28936347.391437152",
-        "tradeOut": "9161955.5886896807",
-        "tradeInNumber": "469.41392771",
-        "tradeOutNumber": "149.08792904",
-        "tradeInflow": "19774391.8027474713",
-        "tradeAmount": "38098302.9801268327",
-        "tradeInflowChange": -0.876904533
+        "tradeIn": "42692460.0851988046",
+        "tradeOut": "1974738.7645883948",
+        "tradeInNumber": "683.19164369",
+        "tradeOutNumber": "31.60286582",
+        "tradeInflow": "40717721.3206104098",
+        "tradeAmount": "44667198.8497871994",
+        "tradeInflowChange": 2.6904847324
       },
       {
         "timeRange": "H4",
         "timeParticleEnum": 104,
-        "tradeIn": "197152905.7237232098",
-        "tradeOut": "16735784.4938522622",
-        "tradeInNumber": "3211.26387712",
-        "tradeOutNumber": "272.60305939",
-        "tradeInflow": "180417121.2298709476",
-        "tradeAmount": "213888690.217575472",
-        "tradeInflowChange": 1.5125916624
+        "tradeIn": "70683277.4535910112",
+        "tradeOut": "18932392.6672740406",
+        "tradeInNumber": "1130.42144124",
+        "tradeOutNumber": "303.08811866",
+        "tradeInflow": "51750884.7863169706",
+        "tradeAmount": "89615670.1208650518",
+        "tradeInflowChange": -0.2986669196
       },
       {
         "timeRange": "H8",
         "timeParticleEnum": 108,
-        "tradeIn": "297221484.1231170626",
-        "tradeOut": "44999173.085092332",
-        "tradeInNumber": "4841.18329169",
-        "tradeOutNumber": "733.56568379",
-        "tradeInflow": "252222311.0380247306",
-        "tradeAmount": "342220657.2082093946",
-        "tradeInflowChange": 0.8549209205
+        "tradeIn": "180679641.8215923403",
+        "tradeOut": "55139446.0287097109",
+        "tradeInNumber": "2890.96753923",
+        "tradeOutNumber": "882.62364497",
+        "tradeInflow": "125540195.7928826294",
+        "tradeAmount": "235819087.8503020512",
+        "tradeInflowChange": 0.1552064301
       },
       {
         "timeRange": "H12",
         "timeParticleEnum": 112,
-        "tradeIn": "420365880.181068774",
-        "tradeOut": "113409803.0329512236",
-        "tradeInNumber": "6844.63774421",
-        "tradeOutNumber": "1846.71769797",
-        "tradeInflow": "306956077.1481175504",
-        "tradeAmount": "533775683.2140199976",
-        "tradeInflowChange": -0.1831976342
+        "tradeIn": "254147058.7292126078",
+        "tradeOut": "77723803.878728522",
+        "tradeInNumber": "4065.06429715",
+        "tradeOutNumber": "1243.78399122",
+        "tradeInflow": "176423254.8504840858",
+        "tradeAmount": "331870862.6079411298",
+        "tradeInflowChange": -0.3392806121
       },
       {
         "timeRange": "H24",
         "timeParticleEnum": 124,
-        "tradeIn": "957156708.6119549921",
-        "tradeOut": "274398491.3125703989",
-        "tradeInNumber": "15600.78423847",
-        "tradeOutNumber": "4468.05096844",
-        "tradeInflow": "682758217.2993845932",
-        "tradeAmount": "1231555199.924525391",
-        "tradeInflowChange": 0.1690784111
+        "tradeIn": "574147771.4121461366",
+        "tradeOut": "130707598.2241572269",
+        "tradeInNumber": "9234.75097748",
+        "tradeOutNumber": "2099.96882374",
+        "tradeInflow": "443440173.1879889097",
+        "tradeAmount": "704855369.6363033635",
+        "tradeInflowChange": -0.3523317395
       },
       {
         "timeRange": "D2",
         "timeParticleEnum": 202,
-        "tradeIn": "1710858568.147509173",
-        "tradeOut": "444086301.1255433925",
-        "tradeInNumber": "28249.70905846",
-        "tradeOutNumber": "7307.84058489",
-        "tradeInflow": "1266772267.0219657805",
-        "tradeAmount": "2154944869.2730525655",
-        "tradeInflowChange": -0.0612573895
+        "tradeIn": "1530810908.1073266131",
+        "tradeOut": "402698966.6005628465",
+        "tradeInNumber": "24815.35004401",
+        "tradeOutNumber": "6527.58579046",
+        "tradeInflow": "1128111941.5067637666",
+        "tradeAmount": "1933509874.7078894596",
+        "tradeInflowChange": -0.0802253518
       },
       {
         "timeRange": "D3",
         "timeParticleEnum": 203,
-        "tradeIn": "2530011538.755295388",
-        "tradeOut": "762300374.0366184578",
-        "tradeInNumber": "42472.49627742",
-        "tradeOutNumber": "12790.77064134",
-        "tradeInflow": "1767711164.7186769302",
-        "tradeAmount": "3292311912.7919138458",
-        "tradeInflowChange": 0.3499725034
+        "tradeIn": "2532999161.0356266971",
+        "tradeOut": "700854777.7884007242",
+        "tradeInNumber": "42035.65020625",
+        "tradeOutNumber": "11650.96069555",
+        "tradeInflow": "1832144383.2472259729",
+        "tradeAmount": "3233853938.8240274213",
+        "tradeInflowChange": 0.256831092
       },
       {
         "timeRange": "D7",
         "timeParticleEnum": 207,
-        "tradeIn": "5829010566.2655209598",
-        "tradeOut": "1780177634.3750757183",
-        "tradeInNumber": "97648.04388475",
-        "tradeOutNumber": "29767.75842053",
-        "tradeInflow": "4048832931.8904452415",
-        "tradeAmount": "7609188200.6405966781",
-        "tradeInflowChange": 0.1783605648
+        "tradeIn": "5332084357.307090447",
+        "tradeOut": "1622490731.5719839221",
+        "tradeInNumber": "88853.47655017",
+        "tradeOutNumber": "27019.30159151",
+        "tradeInflow": "3709593625.7351065249",
+        "tradeAmount": "6954575088.8790743691",
+        "tradeInflowChange": 0.0072936885
       },
       {
         "timeRange": "D10",
         "timeParticleEnum": 210,
-        "tradeIn": "8554184293.7959445786",
-        "tradeOut": "2706922254.7740854136",
-        "tradeInNumber": "141836.00774596",
-        "tradeOutNumber": "44805.24699729",
-        "tradeInflow": "5847262039.021859165",
-        "tradeAmount": "11261106548.5700299922",
-        "tradeInflowChange": 0.6418917324
+        "tradeIn": "8554322446.4235962215",
+        "tradeOut": "2726976708.1634664075",
+        "tradeInNumber": "142198.39695695",
+        "tradeOutNumber": "45222.81722384",
+        "tradeInflow": "5827345738.260129814",
+        "tradeAmount": "11281299154.587062629",
+        "tradeInflowChange": 0.5611734445
       },
       {
         "timeRange": "D15",
         "timeParticleEnum": 215,
-        "tradeIn": "11335019649.9734105348",
-        "tradeOut": "3415095474.7521995851",
-        "tradeInNumber": "185517.42294342",
-        "tradeOutNumber": "55915.90899401",
-        "tradeInflow": "7919924175.2212109497",
-        "tradeAmount": "14750115124.7256101199",
-        "tradeInflowChange": -0.0104368786
+        "tradeIn": "11475684874.274878048",
+        "tradeOut": "3358423683.8296606573",
+        "tradeInNumber": "188257.49398265",
+        "tradeOutNumber": "55163.36498738",
+        "tradeInflow": "8117261190.4452173907",
+        "tradeAmount": "14834108558.1045387053",
+        "tradeInflowChange": 0.1051609387
       },
       {
         "timeRange": "D30",
         "timeParticleEnum": 230,
-        "tradeIn": "23705844854.3201246469",
-        "tradeOut": "7782465412.7769070548",
-        "tradeInNumber": "379971.53886312",
-        "tradeOutNumber": "124409.51442552",
-        "tradeInflow": "15923379441.5432175921",
-        "tradeAmount": "31488310267.0970317017",
-        "tradeInflowChange": -0.1467632647
+        "tradeIn": "22840184050.2307325949",
+        "tradeOut": "7378054880.7846315201",
+        "tradeInNumber": "368179.21915859",
+        "tradeOutNumber": "118656.76964308",
+        "tradeInflow": "15462129169.4461010748",
+        "tradeAmount": "30218238931.015364115",
+        "tradeInflowChange": -0.1767054436
       },
       {
         "timeRange": "D60",
         "timeParticleEnum": 260,
-        "tradeIn": "50068194705.0313129396",
-        "tradeOut": "15482492390.3102064023",
-        "tradeInNumber": "721380.60039538",
-        "tradeOutNumber": "223169.91261946",
-        "tradeInflow": "34585702314.7211065373",
-        "tradeAmount": "65550687095.3415193419",
-        "tradeInflowChange": 0.1402664857
+        "tradeIn": "49165857999.4718808338",
+        "tradeOut": "14922930329.704279685",
+        "tradeInNumber": "713063.22786484",
+        "tradeOutNumber": "216845.39660946",
+        "tradeInflow": "34242927669.7676011488",
+        "tradeAmount": "64088788329.1761605188",
+        "tradeInflowChange": 0.1123927583
       },
       {
         "timeRange": "D90",
         "timeParticleEnum": 290,
-        "tradeIn": "80266311771.5072428388",
-        "tradeOut": "29519444294.3290277096",
-        "tradeInNumber": "1121877.6291588",
-        "tradeOutNumber": "409000.93707965",
-        "tradeInflow": "50746867477.1782151292",
-        "tradeAmount": "109785756065.8362705484",
-        "tradeInflowChange": 0.000934991
+        "tradeIn": "80879898142.688946794",
+        "tradeOut": "29682128913.9576356475",
+        "tradeInNumber": "1132136.43229683",
+        "tradeOutNumber": "411702.05414144",
+        "tradeInflow": "51197769228.7313111465",
+        "tradeAmount": "110562027056.6465824415",
+        "tradeInflowChange": 0.0111528558
       },
       {
         "timeRange": "Y1",
         "timeParticleEnum": 401,
-        "tradeIn": "487881666217.7930278661",
-        "tradeOut": "185679804041.3658112086",
-        "tradeInNumber": "5176311.31663727",
-        "tradeOutNumber": "2034277.04058748",
-        "tradeInflow": "302201862176.4272166575",
-        "tradeAmount": "673561470259.1588390747",
+        "tradeIn": "484366929877.0269366517",
+        "tradeOut": "185482570063.050996273",
+        "tradeInNumber": "5149199.79452694",
+        "tradeOutNumber": "2033897.29843476",
+        "tradeInflow": "298884359813.9759403787",
+        "tradeAmount": "669849499940.0779329247",
         "tradeInflowChange": 0.0
       },
       {
         "timeRange": "D120",
         "timeParticleEnum": 2120,
-        "tradeIn": "104164414018.3184557965",
-        "tradeOut": "39247466553.3555423652",
-        "tradeInNumber": "1462566.47196371",
-        "tradeOutNumber": "546926.37617765",
-        "tradeInflow": "64916947464.9629134313",
-        "tradeAmount": "143411880571.6739981617",
-        "tradeInflowChange": 0.3043093428
+        "tradeIn": "104013785211.211303567",
+        "tradeOut": "38987730434.7644872341",
+        "tradeInNumber": "1462612.38201082",
+        "tradeOutNumber": "543901.88374101",
+        "tradeInflow": "65026054776.4468163329",
+        "tradeAmount": "143001515645.9757908011",
+        "tradeInflowChange": 0.3290862065
       },
       {
         "timeRange": "D150",
         "timeParticleEnum": 2150,
-        "tradeIn": "131666487060.032011374",
-        "tradeOut": "49303078761.0926671615",
-        "tradeInNumber": "1863715.79683509",
-        "tradeOutNumber": "692882.25075551",
-        "tradeInflow": "82363408298.9393442125",
-        "tradeAmount": "180969565821.1246785355",
-        "tradeInflowChange": 0.0203162068
+        "tradeIn": "131613229304.7756436499",
+        "tradeOut": "49100074259.2416036667",
+        "tradeInNumber": "1865971.08155279",
+        "tradeOutNumber": "691025.19646648",
+        "tradeInflow": "82513155045.5340399832",
+        "tradeAmount": "180713303564.0172473166",
+        "tradeInflowChange": 0.0199402723
       },
       {
         "timeRange": "D180",
         "timeParticleEnum": 2180,
-        "tradeIn": "161195607530.6498928422",
-        "tradeOut": "59749276116.4450560591",
-        "tradeInNumber": "2196817.96025894",
-        "tradeOutNumber": "808625.34535404",
-        "tradeInflow": "101446331414.2048367831",
-        "tradeAmount": "220944883647.0949489013",
-        "tradeInflowChange": -0.4442368251
+        "tradeIn": "161625578070.1341777346",
+        "tradeOut": "59794742894.0311002696",
+        "tradeInNumber": "2205950.50938963",
+        "tradeOutNumber": "810212.73882107",
+        "tradeInflow": "101830835176.103077465",
+        "tradeAmount": "221420320964.1652780042",
+        "tradeInflowChange": -0.4359404988
       }
     ]
   },
   "sentiment": {
-    "updateTime": 1783063444000,
+    "updateTime": 1783153444000,
     "vsTokenId": "1",
     "symbol": "BTC",
     "name": "Bitcoin",
-    "bullishRatio": 0.2766,
-    "neutralRatio": 0.6099,
-    "bearishRatio": 0.1135,
+    "bullishRatio": 0.3328,
+    "neutralRatio": 0.5686,
+    "bearishRatio": 0.0987,
     "bearishContents": [
       {
-        "english": "CZ’s public commentary is blamed for market crashes, with repeated accusations labeling him a “thief” and “scamming pimp” amid #HACASH and $BTC mentions — reflecting deep community frustration and attribution of downward pressure to his influence. <br /><br /> Riot Platforms transferred 500 $BTC ($30.7M) to NYDIG Custody, fueling speculation of institutional profit-taking ahead of a potential downturn; concurrent claims about $222K BTC ($13B) frozen reinforce perceptions of systemic risk and liquidity constraints. <br /><br /> A signal-laden tweet flags $BTC alongside high-risk memecoins and altcoins in a “Tac dump 40%” context, implying coordinated selling pressure and technical weakness. Scam warnings around #bitnordex further erode trust in on-ramp infrastructure, while ideological critiques call for $BTC to “go back to its roots” — signaling disillusionment with institutionalization and mining centralization.",
-        "updateTime": 1783063508000
+        "english": "Bitcoin faces mounting pressure as ETF outflows intensify—10 consecutive days of net withdrawals totaling 35,980 $BTC ($2.24B), signaling institutional or large-holder distribution. Short-term price action shows technical resilience near prior points of interest, yet weekend liquidity constraints heighten volatility risk and limit reliable directional conviction. <br /><br /> Scam narratives continue to circulate under $BTC branding, with warnings against fraudulent schemes like #Brainsplan exploiting trust in Bitcoin’s reputation; these erode retail confidence and amplify FUD in already fragile conditions. <br /><br /> No supportive on-chain, macro, or ecosystem signals appear in the provided bearish texts—only outflows, liquidity fragility, and reputational risk from scams.",
+        "updateTime": 1783153486000
       },
       {
-        "english": "Fidelity’s warning triggers institutional concern, signaling potential $BTC weakness that could cascade across the broader market; rejection at current levels is being closely watched as a critical inflection point. <br /><br /> $BTC is declared “over” amid deteriorating price action, while $ETH is framed as comparatively stable—suggesting a possible rotation or short-line opportunity tied to $BTC’s breakdown.",
-        "updateTime": 1783061697000
+        "english": "BTC faces strong near-term bearish pressure with a heavy liquidation pool identified near $61K, raising high probability of a pullback from current levels. Market structure shows weakness persisting for weeks, contrasting with S&P’s flat consolidation — yet BTC is now leading broader crypto declines. <br /><br /> July 4th historical price analogies highlight volatility: $108K peak in 2025 followed by a projected 42% crash to $62K in 2026 — aligning closely with the current $62,588 price and suggesting potential exhaustion or reversal setup. Sentiment remains conflicted, with no clear fundamental catalyst to flip BTC bullish, while altcoin strength (e.g., $SOL, $ANSEM) draws liquidity away.",
+        "updateTime": 1783151709000
       },
       {
-        "english": "K Wave Media’s full exit from Bitcoin—abandoning its 10,000 BTC treasury plan—signals a macro-level narrative shift toward AI infrastructure, fueling skepticism about institutional commitment to $BTC as digital gold. The pivot is widely interpreted as hype-chasing rather than strategic reallocation, weakening confidence in long-term corporate accumulation trends. <br /><br /> Short positioning is active near €61,814.30, with $139K in $BTC shorts liquidated recently—indicating volatile, range-bound price action and potential squeeze dynamics amid thin liquidity. Saylor’s historical endurance through five major drawdowns (including -75% in 2021–22) is cited as contrast to current fragility, yet no new accumulation signals emerge. <br /><br /> Scam warnings referencing #GBPMarkets and #CryptoScam muddy trust layers around $BTC onboarding venues, amplifying FUD without direct price impact—yet reinforcing perception of ecosystem risk concentration outside core infrastructure.",
-        "updateTime": 1783059886000
+        "english": "$BTC faces mounting institutional pressure as IBIT posts 10 straight days of outflows totaling 35,980 BTC ($2.24B), signaling a broad-based ETF exodus. Concurrently, ETH ETFs saw their first positive daily inflow (+$36.6M), highlighting capital rotation away from Bitcoin toward Ethereum amid shifting sentiment. <br /><br /> Bearish technical structure emerges with $BTC forming a lower high and exhibiting bull trap dynamics, reinforcing downside momentum. Eight consecutive weeks of Bitcoin ETF outflows underscore frosty institutional sentiment and growing skepticism around near-term price sustainability.",
+        "updateTime": 1783149896000
       },
       {
-        "english": "$BTC is in a pronounced bear-market decoupling from equities, trading 50% below S&P 500 ATHs—the widest gap in a year—fueling macro confusion and uncertainty about the next 6–12 months. Price action at $62k reflects fragile short-squeeze mechanics, not fundamental conviction, with liquidity driven by borrowed desperation and position unwinds rather than organic demand. <br /><br /> Multiple scam alerts referencing #Orbitchain and #GBPMarkets explicitly tie $BTC to fraud risks—including delayed fund access, opaque operations, and regulatory voids—amplifying trust erosion and risk-aversion. Traders express caution, sizing small (e.g., 0.3x) for quick exits amid expectations of imminent pullbacks, while sentiment leans toward capitulation and late-cycle fatigue.",
-        "updateTime": 1783058074000
+        "english": "Free fall intensifies as $BTC plunges through key levels, with traders citing resistance at $64,000 and signaling swing shorts activated — stop loss set at $64,000, contingent on 4-hour candle rejection. <br /><br /> Extreme Fear dominates sentiment amid $468M+ liquidations, ETF outflows, and a collapsing chart structure visualized as a giant red candle falling off a clock into stormy seas — mirroring sharp ~2% declines in both $BTC and $ETH. <br /><br /> Scam warnings surface around $BTC-related schemes like #Brainsplan, reinforcing distrust and caution in the current environment; meanwhile, absurd claims about $BTC failing at $67,500 and mocking its age (“the week is 82885 years old”) reflect meme-driven frustration and narrative fatigue.",
+        "updateTime": 1783148099000
       },
       {
-        "english": "$BTC faces strong bearish pressure from leveraged long liquidation risk, with $4.6B in long positions vulnerable near $54,951 — a critical downside threshold just ~10% below current price of $61,583. The asymmetry in BTC leverage (longs heavily outweighing shorts) suggests heightened vulnerability to cascading liquidations and potential sharp downside momentum. <br /><br /> Multiple scam warnings dominate the narrative around $BTC, with repeated cautions against platforms like #bitnordex, #bitbotcex, #quantrodex, #tbhindex, #GBPMarkets, #Orbitchain, #attate, #nexxexchange, #ptxai, and #multicoininvestcom — all flagged for delayed withdrawals, regulatory opacity, and unclear business practices. These recurring alerts erode trust in peripheral $BTC on-ramps and amplify systemic risk perception. <br /><br /> Sentiment fractures further with structural skepticism: one tweet dismisses $BTC hype as manufactured (“it took a stage and three hype men to make 1 btc sound like 3”), while another notes that sustained investor selling would inevitably drive $BTC lower — directly contradicting bullish “$100K soon” claims. The $BTC/$ETH ratio collapse (0.086 → 0.027 since 2021 top) also reinforces relative weakness and loss of dominance narrative.",
-        "updateTime": 1783056299000
+        "english": "$BTC sentiment is dominated by extreme fear, with the Fear & Greed Index at 22 — signaling capitulation-level pessimism. Price stalls near $60K amid broad altcoin weakness, reinforcing absence of altseason and macro uncertainty. <br /><br /> Multiple scam alerts target platforms misusing $BTC branding — #Slon, #Areamining, and multicoininvestcom — citing withdrawal delays, hidden fees, and regulatory opacity, eroding trust in peripheral $BTC-adjacent services. <br /><br /> Satoshis are being distributed via faucets at rapid pace, depleting daily allocations quickly; this micro-level demand reflects grassroots engagement but contrasts sharply with institutional hesitancy and on-chain caution.",
+        "updateTime": 1783146281000
       },
       {
-        "english": "Bro 500 BTC to custody is interpreted as a clear sell signal amid tightening mining margins and urgent liquidity needs, reinforcing bearish pressure. Multiple scam alerts dominate sentiment, citing withdrawal delays, unexpected charges, and regulatory opacity tied to platforms referencing $BTC — eroding trust and triggering caution across retail channels. <br /><br /> JPMorgan’s systemic risk framing contrasts sharply with political BTC accumulation, creating narrative dissonance but failing to offset immediate technical concerns; price sits at $61,428 (−0.11%), briefly pumping yet facing near-term dip risk toward $59,600–$60,500 before testing long-term electric cost support near $57,000 — only a S&P 500 crash or black swan event seen capable of breaking that floor.",
-        "updateTime": 1783054500000
+        "english": "$BTC is in a clear bearish phase with active shorting pressure targeting the $63,500–$64,700 range. Price action lacks conviction amid market closures, and sentiment reflects doubt in near-term direction — “it could be anywhere” — while calls to “sell” and “book 2% from short” signal tactical downside positioning. <br /><br /> Institutional rotation away from $BTC is evident as cash flows into small-caps ($IWM) and away from mega-cap assets, with $BTC outflows flagged as a risk-off signal. Broader macro uncertainty — referenced via “deep water bombs” emerging in capital markets — compounds bearish momentum, and skepticism deepens with outright dismissal: “I don’t think that bitcoin is worth it.”",
+        "updateTime": 1783144478000
       },
       {
-        "english": "$BTC faces selling pressure as traders rotate into $HBAR, signaling short-term bearish sentiment and potential capitulation concerns despite historical cycle comparisons offering limited predictive value. <br /><br /> A scam warning circulates around #multicoininvestcom, associating $BTC with fraudulent investment practices, delayed fund access, and weak regulatory oversight—amplifying FUD and eroding trust in peripheral $BTC-linked opportunities. <br /><br /> The “tap is temporarily dry” faucet message implies satoshi-level engagement remains active but fragmented, with no direct price or market structure implications for $BTC beyond micro-level community interaction.",
-        "updateTime": 1783052688000
+        "english": "$BTC faces immediate downside pressure with explicit FOMO Friday expectations of a dump, reinforcing bearish sentiment around current price levels. Market structure shows ETF funding remains net positive for 10 days despite intensifying volatility — a divergence suggesting weakening conviction amid rising storm-like conditions. <br /><br /> The $60,000 resistance level is highlighted as a critical battleground that failed to reverse broader market conditions, indicating persistent overhead supply and inability to sustain breakout momentum. References to “satoshis” and “digital gold” appear absent — no narrative support or macro anchoring is present in the texts to counter the prevailing dump anticipation.",
+        "updateTime": 1783142689000
       },
       {
-        "english": "BlackRock is dumping $40M in $BTC via ETF, signaling continued institutional outflows and sustained pressure on the spot price. Clifton Collins, an OG whale, has moved 500+ $BTC ($30M+) to Coinbase Prime, with 4,500 $BTC remaining — marking active distribution from ancient, low-cost stacks. A South Korean digital asset treasury firm, K Wave Media, exited its entire 88 $BTC position after previously announcing plans to accumulate up to 10,000 $BTC, indicating a sharp reversal in institutional conviction. <br /><br /> $BTC is facing structural rotation pressure as alts fade and liquidity concentrates into majors — yet resilience at $61K is being tested as traders debate whether the bounce reflects genuine strength or merely short-term stabilization ahead of further downside. One trader claims to have correctly called the $82K top and entered shorts, citing broad long-chasing behavior as confirmation of exhaustion. <br /><br /> Repeated scam warnings referencing $BTC dominate multiple tweets, tying the asset to fraudulent platforms like #GBPMarkets, #stretto, and #multicoininvestcom — highlighting reputational drag and trust erosion amid regulatory ambiguity. A contradictory narrative persists: while some assert “it’s all a scam except the top few,” others insist $BTC remains the only legitimate store of value — “digital gold” holding up “pretty well” despite mounting distribution signals and fading altcoin bids.",
-        "updateTime": 1783050898000
+        "english": "$BTC is implicated in a bearish scam-related narrative as #TudasudaChange and #Bitgrex platforms abruptly block withdrawals—flagged as a clear red flag by the tweet. The mention ties $BTC to urgent crypto recovery efforts amid suspected fraudulent activity. <br /><br /> No price context or market reaction is provided beyond the $62,726.0 level; sentiment is driven entirely by trust erosion and platform risk—not technicals, fundamentals, or macro drivers.",
+        "updateTime": 1783140891000
       },
       {
-        "english": "Whales are selling $BTC amid heightened fear and uncertainty, with multiple tweets referencing panic-driven liquidations and a recurring 2022-style collapse narrative. Sentiment reflects trauma from repeated false breakouts, leading traders to freeze activity until decisive $BTC movement occurs. <br /><br />Scam warnings dominate the feed—repeated alerts about platforms like #Orbitchain, #bitnordex, #bitbotcex, #stretto, and #multicoininvestcom all cite delayed fund access, regulatory gaps, and opaque operations—all tagged with #BTC and #cryptorecovery, signaling erosion of trust in $BTC-adjacent infrastructure. <br /><br />Accusations of insider manipulation surface alongside claims that top wallets hold 60M $TCY tokens, framing broader market corruption as systemic theft targeting $BTC, $LTC, and $DOGE holders. A satirical jab notes “20k for a btc… instant block LOL”, underscoring disbelief in current price action and infrastructure reliability.",
-        "updateTime": 1783049085000
+        "english": "The largest $BTC holder has suffered an 80% loss in a year, signaling extreme pain and potential capitulation among top-tier holders. Market sentiment reflects deep skepticism about Bitcoin’s resilience amid macro deterioration. <br /><br /> Speculation intensifies around $BTC’s vulnerability in a 2027 scenario marked by global unemployment, aggressive rate hikes, geopolitical conflict, and SP500 collapse — with $MSTR’s leverage amplifying $BTC exposure to systemic risk. <br /><br /> Calls to “get rid of $BTC” reflect active rejection of its store-of-value narrative, while acknowledgment of further downside potential suggests consensus on extended bear pressure — alts expected to drop at least another 15% if $BTC breaks lower.",
+        "updateTime": 1783139084000
       },
       {
-        "english": "$BTC is repeatedly flagged in scam-related warnings across multiple unverified platforms—#nevocoin, #tbhindex, #attate, and #multicoininvestcom—all citing delayed withdrawals, opaque operations, and regulatory absence; users are urged to seek DM-based recovery support amid growing distrust. <br /><br /> A confrontational tweet mocks overconfidence in $BTC price prediction, equating uninformed advice to unlicensed medical practice, underscoring volatility risk and behavioral fragility in retail sentiment. <br /><br /> One chaotic post declares “It's only profitbit coin left to cut off the air,” implying broader market exhaustion or capitulation context—though not directly referencing $BTC, it appears amid a cascade of $BTC-linked scam alerts, reinforcing ambient bearish pressure and loss of trust in adjacent crypto vehicles.",
-        "updateTime": 1783047295000
+        "english": "BTC faces mounting bearish pressure amid consecutive US ETF net outflows, with the eighth weekly withdrawal signaling institutional retreat and weakening macro confidence. Price action reflects growing skepticism, as traders anticipate a retest of $50K support and prepare for deeper correction toward bear market territory—explicitly cited as “stronger than by BTC.” <br /><br /> Whale activity adds to fragility: a massive 2,315 BTC transfer to OKX hints at exchange inflows preceding potential selling pressure, while $60K purchases are framed as defensive positioning ahead of further downside. Scam warnings tied to #BTC underscore eroding trust in peripheral platforms, compounding risk sentiment. <br /><br /> Historical references—including the 2008 whitepaper and “digital gold” framing—contrast sharply with current price decay, highlighting a narrative dissonance where foundational legitimacy clashes with deteriorating market structure and liquidity erosion.",
+        "updateTime": 1783137270000
       }
     ],
     "neutralContents": [
       {
-        "english": "$BTC is trading near $61,752 with multiple tweets referencing the $62k level as a critical psychological and technical threshold — some cautioning against chasing price there, others framing it as a hold zone amid weak macro data. Market structure shows strong net buying ($2.8M), zero-gamma lines anchored at $60k (put wall) and $63k (call wall), and dealers adding ~+10.7M net gamma delta to dampen volatility without range expansion. <br /><br /> Sentiment remains mixed but anchored in spot strength: “Bad data saved the tape” is cited as a short-term catalyst, yet consensus avoids declaring a bull market; ETH/SOL outperformance relative to BTC is noted repeatedly, suggesting rotation pressure. Technical signals include MACD bearish crossovers on $BTC/USDT (30m), while broader context highlights $BTC’s dominance in trending lists, community signal groups, and cross-asset correlation analysis — consistently ranked #1 or #2 across multiple “Top Trending Coins” and “Crypto Movers” snapshots.",
-        "updateTime": 1783063508000
+        "english": "$BTC shows mixed technical signals amid ETF-driven inflows and macro uncertainty: $221M net inflow breaks a 10-day outflow streak, led by Fidelity’s $166M surge, though BlackRock’s IBIT remains in red — yet total YTD outflows still sit at $5.4B. Price hovers near $62,572 with key resistance at $63K and support at $57.8K; the 50M EMA acts as a decisive bear/bull inflection point — rejection confirms relief rally, reclaim-and-hold triggers structural shift. <br /><br /> Russian-language commentary highlights aggressive long positioning through liquidation events, calling current levels “low enough to collect,” citing fast downside potential but strong accumulation zones; sentiment leans toward disciplined waiting for new long entries post-consolidation. US government holdings of 328,372 $BTC — exceeding all other nations combined — underscore institutional gravity and seizure-driven supply dynamics.<br /><br />Whale activity and derivatives remain active: 22 BTC perp/futures contracts tracked on July 4, while Solana-based BTC duels signal rising on-chain speculative engagement. Multiple scam warnings reference $BTC repeatedly — HyperbolicGlobal, PrometheusMarkets, Equitros — flagging risks of delayed access and regulatory opacity, reinforcing caution around third-party $BTC exposure. <br /><br /> Meme-adjacent and fragmented references (“BTC ETF, Knife”, “US$BTC (STH-RP) is a freelance company… also known as ‘Squeeze’”, “Sol or BTC?”) reflect ongoing narrative tension between Bitcoin’s macro role and altcoin rotation — yet no clear breakout catalyst emerges beyond ETF flows and technical structure tests.",
+        "updateTime": 1783153486000
       },
       {
-        "english": "Whales pulled 733 $BTC off Binance in a single wallet — interpreted as likely OTC settlement rather than macro bearish signal. $BTC sits at $61,621.43 with weekly chart showing 200 WMA resistance and impending bearish 50–100 WMA crossover. July 3 options expiry saw 31,000 $BTC options expire at $1.9B notional, put-call ratio of 0.7, and maximum pain at $61,000 — tightly aligned with current spot price. <br /><br /> ETF flows surged: $221.72M net inflow into $BTC spot ETFs on July 2, reinforcing institutional demand despite extreme fear (Fear & Greed Index: 21). Narrative framing positions $BTC as “digital gold” with liquid, ETF-backed institutional bid — contrasted sharply against less liquid altassets like $AVAX. $BTC dominates top-tier rankings, cross-chain infrastructure mentions (Bridgers), and macro discourse around treasury models, sovereign accumulation, and margin resilience.",
-        "updateTime": 1783061697000
+        "english": "$BTC dominates spot volume on Coinbase and remains central to market structure, with options expiry at 62K signaling potential near-term consolidation around $62,588. Whale activity includes small BTC transfers for personal gestures—birthday gifts and support during hardship—highlighting its role as digital gold and peer-to-peer value transfer. <br /><br /> Technical focus intensifies around $62,476–$63,900 price action, with multiple short and long setups published across platforms, referencing precise entry zones, stop losses, and multi-tier targets. ETF flows show $203M inflow on July 2nd, reinforcing institutional accumulation despite 86k traders liquidated overnight amid volatility. <br /><br /> Historical context anchors current levels: $62K aligns with 2026 BTC expiry max pain and echoes past July 4th prices—$58,600 in 2024, $30,901 in 2023—while long-term projections extend to $108,000 (2025) and $200,000 (2029). Community forums like #BTC Bar and derivative signals reinforce ongoing technical and narrative engagement.",
+        "updateTime": 1783151709000
       },
       {
-        "english": "$BTC liquidation heatmap shows key 24-hour liquidity zones at $61,100 (upper) and $59,000 (lower), with wider 1-month ranges extending to $68,000 and $58,600 — indicating structural support and resistance levels under active monitoring. The 200W moving average is cited as a pivotal technical threshold where price action converges with institutional allocation logic. <br /><br /> Crypto options data reveals $1.9B notional open interest for $BTC, a put/call ratio of 0.71, and max pain at $61K — aligning closely with current price ($61,706) and suggesting near-term consolidation pressure. U.S. spot Bitcoin ETFs have reversed 10 straight days of outflows, resuming net buying amid rebuilding leverage — interpreted as either early conviction or a potential bull trap pending macro confirmation.",
-        "updateTime": 1783059886000
+        "english": "$BTC shows muted price action at $62,563 amid low holiday volume and quiet conviction — holding just above $62K support with 1.4% gain on the day. ETF flows remain deeply negative YTD ($-5.49B), though recent net inflows of +$224M signal short-term institutional re-entry. Perpetuals are decoupling from broader crypto, gaining independent orderflow gravity as macro instruments like S&P 500 perps draw comparable or higher volume. <br /><br /> Nigerian Naira pair data reflects localized strength: BTC/NGN trades at ₦86.44M (-0.16%), while Solana outperforms with +0.44%, hinting at regional altcoin rotation pressure. Whale activity surfaces indirectly — a satoshi-era holder is referenced in context of long-term HODLing, and miner-focused narratives tie $BTC to energy and network difficulty as foundational value anchors. Attention remains fragmented, with repeated WhatsApp group promotions diluting signal but reinforcing retail BTC-centric engagement around $BASED, $SATS, and $OFC.",
+        "updateTime": 1783149896000
       },
       {
-        "english": "$BTC shows persistent narrative presence across fragmented, meme-adjacent, and technical tweets — from repeated standalone “BTC.” utterances signaling ambient market awareness to chart-based bullish signals like a detected triangle pattern on Binance with active bias, entry at 61638.68, and defined risk/reward. Whale activity echoes in references to historic BTC movements: 500 BTC ($31M) flowing to Coinbase Prime, tied to the Irish drug dealer’s “lost” keys resurfacing — reinforcing themes of dormant supply reactivation and long-term holder conviction. <br /><br /> ETF flows rebound with $223.50M in native bitcoin inflows after two weeks of outflows, anchoring institutional demand amid broader macro context — non-farm data, RWA acceleration, and dollar index volatility influencing sentiment. Scam warnings referencing #BTC highlight ongoing trust friction, yet coexist with neutral technical framing (e.g., “$BTC _BAR_UI”, “#BTC#transport”) suggesting infrastructure-level utility focus rather than price speculation.",
-        "updateTime": 1783058074000
+        "english": "$BTC shows strong onchain divergence: price sits at the 18th percentile of its last 90-day range while active addresses are at the 92nd percentile — signaling accumulation despite muted price action. MVRV Z-Score at 0.32 and NUPL at 13.6% indicate the market is statistically in the lower half of its cycle, far from exhaustion. <br /><br /> Short-term price action centers around $62k–$62.4k, with a visible short setup at $62,405.8 and retail fear noted near $25k (likely typo or mislabeling, contextually aligned with $60k–$60.5k support zone). Post-holiday ETF flows expected Monday could confirm or break key support; sustained hold above $60k implies strength. <br /><br /> Narrative layers include infrastructure scalability debates (Teranode BSV comparisons), mempool congestion concerns (“mempool emergency”), and persistent macro framing — “$BTC still doin the most volume says where the real attention is.” Community activity remains high via WhatsApp trading groups pushing $BTC-centric swing setups and alt rotations ($BASED, $SATS, $OFC, $YB), reinforcing its role as the dominant liquidity and sentiment anchor.",
+        "updateTime": 1783148099000
       },
       {
-        "english": "Whales are actively trading $BTC on Hyperliquid with large leveraged positions: a $15.4M long opened at $61,461 (profit +$40K) and a $19.3M short at $58,611 (liquidation at $74,645), indicating sharp directional divergence and elevated volatility. Spot price is confirmed at $61,472–$61,583 across multiple sources, rebounding from a 21-month low of $57,800 after weak US jobs data removed Fed hike expectations — triggering relief-driven buying. <br /><br /> BTC ETF flows turned decisively positive for the first time in 10 days: +3.73K BTC (+$223.50M net inflow), led by Fidelity’s FBTC (+2.77K BTC) and ARKB (+1.53K BTC), reversing prior outflows; however, broader US spot ETF data shows net outflow of $296M on the same day, highlighting intra-day whiplash and institutional positioning flux. <br /><br /> Market structure remains fragile but resilient: $BTC reclaimed $61K amid “RISK-ON” macro shift, yet sentiment remains cautious (Fear & Greed Index at 22), and derivative books show tight flow concentration — “BTC neutral” in multi-asset regimes, with SOL anchoring directional conviction instead. A trader reports successful long entry from $58.6K following liquidity sweep of the $57K zone, taking profit near $60–61K — confirming tactical accumulation below psychological support.",
-        "updateTime": 1783056299000
+        "english": "Whales are actively moving $BTC, with the Bhutanese government sending 700 BTC to a CEX — signaling institutional on-chain movement and potential short-term supply pressure. On-chain volume dipped 12% to $6.8B, while DEX fees rose 8% to $45M, indicating quiet protocol-level rotation and DeFi-driven demand beneath spot market calm. <br /><br /> JPMorgan flags MicroStrategy’s newly permitted BTC sales as a “two-way risk”, highlighting shifting market structure: from pure accumulation to conditional supply reintroduction. Though only $1.25B in sales capacity is authorized against 847K BTC holdings, the psychological impact coincides with U.S. spot ETF net outflows and price consolidation near $62,420. <br /><br /> Technicals show mixed signals: a Bearish Engulfing pattern formed on the 1-hour $BTC/USDT chart, yet derivative volumes heavily favor sellers ($114.6M vs $71.5M), while spot shows stronger selling pressure ($12.9M vs $8.4M) — suggesting short-term bearish dominance amid neutral RSI (43) and extreme fear (F&G: 22). $BTC remains range-bound with key resistance at $62,404 breached, targeting $62,979–$64,000 and potentially $65,622 on momentum.",
+        "updateTime": 1783146281000
       },
       {
-        "english": "Bitcoin trades at $61,430 with a 4-Year CAGR of 34%, reflecting sustained long-term appreciation amid macro financial flows and institutional adoption narratives. Mining activity remains active, highlighted by S19 XP+ hydro-cooled ASIC rigs emphasizing stable, efficient hashpower deployment. Technical structure shows consolidation—44 coils under compression—with $BTC holding key support alongside BNB, signaling potential for violent recoil upon breakout. <br /><br /> BTC/SPY ratio recently tagged the 2.0 Fibonacci extension in log scale, though resistance looms at 1.618 with dense candle congestion; this suggests near-term obstruction despite structural bullish alignment. Futures positioning includes active short setups on BTCUSDT (15m) at $61,415.4, while broader market commentary ties Bitcoin to AI infrastructure debates, GPU ownership shifts, and tokenization’s systemic implications—positioning $BTC as foundational collateral in evolving digital finance rails.",
-        "updateTime": 1783054500000
+        "english": "Whales and institutions are driving momentum as $BTC trades at $62,546.00 with +1.85% daily gain, reflecting renewed confidence amid macro uncertainty. Technical analysis highlights 63,610 as a critical resistance level — the “big boss” — while short-term bulls signal counterattack energy despite unresolved macro pressure. Spot markets demand patience, but futures offer tactical long entries on trend alignment. <br /><br /> Bitdeer reported zero net BTC added for the week ending July 3, 2026: 223.1 BTC mined and fully sold, indicating no strategic accumulation by this major miner. Meanwhile, Lightning Network evolution is framed as a three-stage infrastructure play — from Speed Protocol to ultimate clearing layer — reinforcing $BTC’s long-term utility beyond speculation. <br /><br /> Community narratives remain anchored in legacy and identity: Genesis storylines emphasize collective authorship and foundational strength, while memes like “DingDing Cross-Market Analysis” and fragmented references to “Bitmond” or “BTK” suggest ambient technical chatter and speculative ambiguity. Persistent WhatsApp group promotions push $BTC alongside altcoins like $BASED and $OFC — signaling retail channel saturation but also sustained $BTC-centric outreach.",
+        "updateTime": 1783144478000
       },
       {
-        "english": "$BTC holds within trading bands with no rebalance triggered, reflecting stable but conflicted long-term vs. momentum positioning; sentiment registers at 21 Extreme Fear per Alternative, 22 Fear per CoinMarketCap, and 31 Fear per CNN, indicating broad market caution despite recent +2.51% price lift to $61,487. <br /><br /> MetriqueAI ranks $BTC at 97/100 — among the highest in crypto — signaling strong technical and fundamental consensus; concurrent mentions of US wallets driving Polymarket political betting volume underscore $BTC’s role as default settlement layer for off-chain speculative activity. <br /><br /> Whale-level attention persists: “There's a lot of people on the ground 16.66BTC” implies localized accumulation or over-the-counter interest, while “is $BTC back?” and “BTC's down now and I'm slow” reveal reactive, time-sensitive trader sentiment amid volatility.",
-        "updateTime": 1783052688000
+        "english": "$BTC holds above $62K with recent price updates showing resilience: $62,637 USD (+2.11% 24h), $62,520.42, and $62,596.50 across multiple snapshots. Market structure remains stable amid sustained institutional-level interest and macro confidence in digital gold as a hedge. <br /><br /> Sentiment fragments point to $BTC-centric focus — “Only BTC!” — reinforcing its role as the dominant benchmark; references to “satoshis”, “₿”, and “Satoshi’s coin” anchor narrative identity. Price anchoring appears active, with users quoting BTC in valuation contexts (“I priced it in BTC”) and exchange-rate tables listing $BTC at ₦86.1M, signaling localized demand intensity in Nigeria.",
+        "updateTime": 1783142689000
       },
       {
-        "english": "$BTC reclaimed $61K, shifting market mood with potential for sustained hold — technical structure shows balanced buy/sell commitment near key levels and institutional flows reinforcing macro confidence. <br /><br /> Whale activity and derivative positioning remain stable amid elevated volatility; BTC/USD demonstrates effectiveness at pivotal thresholds, including repeated tests of $67K resistance post-recovery. <br /><br /> Trading signals across multiple tweets emphasize $BTC as core exposure alongside memecoins and altcoins, with recurring mentions in volume-driven contexts ($6.6M crypto volume), signal groups, and strategy discussions — yet no explicit bullish or bearish catalysts beyond price action and structural resilience.",
-        "updateTime": 1783050898000
+        "english": "Bitcoin rebounds as chip stocks cool, signaling a shift in investor focus from AI hardware toward crypto risk assets. Memory and semiconductor shares lost momentum while $BTC recovered, reinforcing its role as a macro-sensitive digital asset. <br /><br /> Multiple trading signals reference $BTC in cross-margin leveraged setups across Bingx and other exchanges, with entries tied to altcoin pairs like $PHA/USDT, $DYDDX/USDT, and $TAC/USDT — indicating $BTC is being used as both collateral and directional benchmark. <br /><br /> Community speculation highlights $BTC’s potential infrastructure role beyond store-of-value: one proposal suggests allocating 100,000+ $BTC to build a secondary settlement layer for AI, energy, and currency exchange — reflecting long-term narrative expansion beyond pure price action.",
+        "updateTime": 1783140891000
       },
       {
-        "english": "$BTC trades at $61,361–$61,382 amid mixed macro signals—gold at $4,198 and VIX at 16 indicate neutral risk sentiment, with AI Macro Radar confirming no dominant trend. Technical structure shows short-term constructive price action conflicting with a decisively bearish macro backdrop; Fear & Greed Index sits at 21 (Extreme Fear), amplifying behavioral tension. <br /><br /> ETF flows show $BTC spot ETF inflows of $294.62M contrasting sharply with massive ETH outflows ($1.489B) and Solana-related fund movements, signaling intra-crypto rotation pressure. Historical analogs suggest potential upside toward $82K if $57,700 holds as cycle low, aligning with Bitmond’s four-year rhythm and June–August seasonal lift. <br /><br /> Cultural and structural narratives persist: $BTC is framed as digital gold, p2p money resisting TradFi interference, and a cultural artifact via Ordinals ($VRQQ). Yet skepticism lingers—questions about quantum resistance, uniqueness, and “hopium” reflect underlying doubt even amid institutional-grade price anchoring and miner/whale accumulation subtext.",
-        "updateTime": 1783049085000
+        "english": "$BTC trades at $62,620 amid heightened market attention and narrative cross-currents: traders debate $TRUMP vs $BTC as a store-of-value proxy, while macro commentary frames Bitcoin as both “digital gold” and a volatile catalyst requiring discipline. The phrase “Make or break moment for $BTC” signals acute technical uncertainty, reinforced by references to a key decision zone near $63K resistance and prior rally validation from the $61K level. <br /><br /> Sentiment oscillates between conviction and fatigue—some assert “BTC is the easiest crypto to trade” and frame it as the foundational asset (“$BTC is king”), while others express exhaustion with its price action, citing manipulation in “consoles” and difficulty “ogarni\\u0142ciem BTC” (Polish for “getting a grip on BTC”). Whales and institutional flows are implied but not explicitly detailed; instead, focus lands on behavioral dynamics—weekly chart reviews, Sunday rituals, and the psychological weight of long-term holding (“The road starts now, it’s hard and never ends”).",
+        "updateTime": 1783139084000
       },
       {
-        "english": "Bitcoin holds steady at $61,409 amid broad market consolidation, with technical analysis pointing to a breakout above the 4-hour range and a potential target of $62,231. MACD indicators show bearish momentum—MACD at -227.408, signal line at -85.497, histogram at -141.910—suggesting short-term downward pressure despite price resilience. <br /><br /> Community activity centers on coordinated trading guidance via WhatsApp groups, where $BTC is consistently paired with diverse altcoins ($SOL, $LUNC, $WIF, $AVAX, etc.) as part of daily tip-based strategies; profit claims reinforce $BTC’s role as core hedge and liquidity anchor. Concerns persist around staking mechanisms (“Why can no longer earn btc by staking geb?”), bridge risk for $WBTC, and withdrawal reliability—highlighting infrastructure friction despite price stability.",
-        "updateTime": 1783047295000
+        "english": "Bitcoin holds $61K support amid macro uncertainty, with US jobs data and AI sector weakness shaping cautious market positioning. $BTC halved year-to-date, though the implications remain ambiguous amid ongoing technical and institutional scrutiny. <br /><br /> Whales and long-term holders appear active, as seen in references to native “bittime” resilience and sustained network-level confidence despite short-term volatility. The $BTC price is currently at $62,683.58, reflecting structural stability near key psychological and technical levels.",
+        "updateTime": 1783137270000
       }
     ],
     "bullishContents": [
       {
-        "english": "Bullish momentum is accelerating as $BTC breaks its downtrend and reclaims key levels near $60K support, with strong institutional inflows reinforcing the breakout: spot ETFs recorded their first positive daily inflow in 10 days at +$221.72M, pushing cumulative ETF inflows to $51.08B. Whale activity is intensifying—exchange inflows surged past 50,000 BTC daily—and Saylor’s MicroStrategy continues aggressive accumulation, buying more $BTC than all US spot ETFs combined this year via preferred equity issuance. <br /><br />Market structure shows resilience despite extreme fear (Fear & Greed Index at 19–21), with $BTC dominance holding at 55.66% and price consolidating in a tight range ($57.8K–$62.2K); traders anticipate a decisive breakout toward the next major supply zone near $64.6K. Historical context adds weight: Bitcoin supply held at a loss now exceeds profitable supply for the first time this cycle (10.8M vs. 9.22M BTC), a stress signal that often precedes renewed upward pressure after capitulation.",
-        "updateTime": 1783063508000
+        "english": "$BTC holds $60K with resilience, now trading above $62K as whales acquire $16.7B amid record ETF outflows — signaling strong conviction despite macro pressure. Realized profit-to-loss ratio at its lowest since 2022 suggests most weak hands have exited, setting up historically favorable accumulation conditions. The “sunrise of a new digital world” narrative reinforces long-cycle adoption, while institutional buying and structural support above $62K confirm absence of breakdown. <br /><br /> Sentiment shifts bullish across markets: weekend green candles, massive liquidation recovery, and #Cryptobullish momentum spreading to alts — yet BTC dominance remains elevated at 55.7%, indicating leadership before broad alt-season rotation. “Multilocutor” entry and early-morning accumulation reinforce conviction, with traders citing constructive investor signals and high-clarity technical structure intact.",
+        "updateTime": 1783153486000
       },
       {
-        "english": "Whales and institutions are repositioning aggressively: Bitcoin exchange inflows surged to 49,000 BTC on June 30 — an extreme level seen only four times in 2026 — with average deposit size doubling from 1 to 2 BTC. Riot Platforms moved another 500 BTC to NYDIG custody, reinforcing institutional custody adoption. US Spot Crypto ETF flows hit +$223.5M on July 2, the first full green sweep across all major crypto ETFs in over seven weeks, signaling macro-level conviction and Q3 momentum.<br /><br />$BTC is now under control of “money lenders” who have pivoted from viewing it as “evil money laundering criminal cash” to actively advocating “buy/hold”. Technical structure shows a high-leverage short position near $62,300 at risk of liquidation, while price approaches a major multi-timeframe flip zone — cautioning against chasing longs but affirming structural strength. Gold/BTC ratio is setting up for an upward move, reinforcing $BTC’s role as digital gold amid macro uncertainty.",
-        "updateTime": 1783061697000
+        "english": "$BTC is exhibiting strong bullish structure, holding key support zones and pushing toward $67K with confirmed upward momentum; traders are actively long, citing accumulation zone signals reminiscent of 2019 and 2022 cycles, and viewing every dip as a buying opportunity. Whales and institutions are reinforcing conviction, evidenced by massive BTC inflows dwarfing all other assets combined amid the multi-asset ETF narrative. <br /><br /> Short liquidations recently surged, driving $BTC back above $62K and confirming trend resilience; perps remain overheated (funding near 932% annualized), but on-chain data shows holders aren’t dumping into rallies — suggesting sustainable strength. Fed commentary provided a catalyst, lifting $BTC above $60K alongside ETH and gold, though rate cut uncertainty remains a watchpoint. <br /><br /> Market sentiment reflects growing confidence in macro re-entry: bold predictions target $150K within three years, historical analogs point to explosive upside (e.g., July 4, 2016 at $683 → projected $108K or $180K peaks), and community narratives emphasize “BTC keeps proving them wrong again” amid recurring top-call failures.",
+        "updateTime": 1783151709000
       },
       {
-        "english": "$BTC is holding above $61K amid thin liquidity ahead of the July 4th long weekend, with price bouncing from the $60K zone and volume pushing $132M on MGBX. Whale activity remains notable—7.4K BTC ($459M) moved cold-to-cold, signaling accumulation rather than distribution. Spot ETF inflows rebounded strongly at +$222M on July 2, reinforcing macro confidence alongside weak jobs data triggering a rally and shifting the setup in crypto’s favor. Technical structure shows bullish divergence over three days, with resistance eyed at $62,200–$63,000 and longer-term targets near $64K–$70K backed by $15M+ call notional at 250x leverage. <br /><br />Sentiment reflects cautious optimism: traders see this as a potential accumulation phase, with long positions being built between $58.5K–$57.5K and repeated emphasis on “HODL”, “buy the pullbacks”, and “bottom in?”. Despite Citi slashing its 12-month target to $82K and concerns about ETF outflows stalling legislation, institutional flows, miner resilience, and structural strength (per Tom Lee’s BitMine analysis) underpin conviction. Market mood is described as “crypto woke up in a good mood”, with $BTC anchoring broader strength across ETH, SOL, and altseason narratives.",
-        "updateTime": 1783059886000
+        "english": "Whales and retail are reinforcing $BTC’s bullish structure at $62,500, with $200M in shorts liquidated in 24 hours and ETF flows flipping green at $221M — the strongest inflow in two months. Institutional conviction is underscored by Saylor’s ambiguous “might sell” comment being dismissed as noise amid relentless DCA culture and long-term HODL narratives. <br /><br /> Momentum is accelerating across timeframes: $BTC holds key FVG zones, retests $62,300 with upside targets at $63,500–$63,800, and anchors broader altcoin strength — $SOL, $XRP, $ETH all rallying in sync. Community energy surges via Moonshot leaderboard voting drives and meme-fueled confidence (“Bitcoin makes me rich from last cycle”, “You are not idiot”), while macro tailwinds like rate-cut hopes and weekend chart reviews signal sustained accumulation pressure.",
+        "updateTime": 1783149896000
       },
       {
-        "english": "$BTC shows strong technical and on-chain conviction: a confirmed major trend line upside breakout signals massive bullish momentum ahead, while price holds firm near $60K support amid surging exchange inflows (50K+ daily) and elevated whale activity. Historical pattern reinforces optimism—two consecutive red 6-month candles are closing, a setup that previously preceded multi-year uptrends. <br /><br /> Miner activity adds nuance: Riot Platforms ($RIOT) transferred 500 $BTC ($30.7M) to NYDIG custody, possibly presaging sales, yet broader accumulation narratives persist—traders are parking BTC on Nexo to borrow against it and earn interest, signaling long-term confidence in $BTC as collateral and store of value. <br /><br /> Derivative data reflects resilience: $BTC funding rates remain positive (+0.0112%), with longs holding strong despite broader market fear; ETF flows show +$263.9M inflow, reinforcing institutional demand. Sentiment anchors around structural strength—early October $BTC bottom is referenced, DCA strategies acknowledge sideways patience mode, and native $BTC performance (+14.55% in 47 days) underscores underlying momentum.",
-        "updateTime": 1783058074000
+        "english": "Whales are aggressively accumulating $BTC as ETF inflows rebound with a $221.7M daily purchase—the largest in 59 days—after 10 straight days of selling. Miner activity signals potential distribution pressure with 5,000 BTC moved to exchanges (largest transfer in 3 months), yet spot ETF inflows remain strong and open interest hits a 3-month high of $38B, interpreted as accumulation rather than distribution. <br /><br /> Price action shows resilience amid volatility: $BTC trades at $62,514, up 1.1%–2.1% across reports, testing key resistance near $63,000–$64,000; breakout confirmation above this zone targets $64,000–$66,000. Short-term leverage positioning favors longs, and 280 large prints totaling $18.27M in net sell-side volume occurred in one hour—25x the coin’s usual pace—highlighting intense short-term liquidity absorption. <br /><br /> Narrative momentum is anchored in macro conviction: “The real wealth transfer is just getting started,” amid regulatory awakening, national debt concerns, and institutional adoption acceleration. Sentiment metrics reflect deepening belief—half of $BTC holders are underwater, now framed as a bullish support signal—while community engagement surges via Moonshot voting drives and private group promotions emphasizing patience, HODLing, and structural confidence in $BTC as digital gold.",
+        "updateTime": 1783148099000
       },
       {
-        "english": "$BTC defended $60K decisively amid institutional accumulation, with whales aggressively buying the dip and a $300M+ single-day ETF inflow confirming durable demand from regulated vehicles like BlackRock and Fidelity. The bounce from $58K lows—triggered by cooler US jobs data and fading hawkish Fed fears—pushed price to $61K–$61.4K, reinforcing structural strength and setting up a $65K relief rally. <br /><br /> Community momentum is surging around $BTC listings and visibility, with urgent calls to vote for $BTC on the Moonshot Top 100 Leaderboard (IDs 1592 and 3021), signaling strong grassroots engagement. Trading activity remains elevated: limit long entries are being placed near $61.4K with tight risk parameters, and sentiment reflects conviction—not speculation—as $BTC holds in a “gray zone” where shorts feel pressured but longs retain control.",
-        "updateTime": 1783056299000
+        "english": "Whales are aggressively accumulating $BTC, purchasing $16.7B in two weeks amid ETF outflows of $4B—smart money is loading as $BTC rebounds above $62K following short squeezes and easing rate-hike fears. Technicals show a rising wedge formation, bullish MACD divergence from $58,625 to $60,885, and strong defense of key support; upside targets sit at $62,979, $64,000, and $65,622. <br /><br />Historical patterns suggest July may deliver strong gains after a brutal June, with parallels drawn to 2018 and 2022 cycle bottoms—though nine red monthly candles may still be needed for confirmation. Institutional tailwinds intensify as Germany’s largest banks expand crypto trading services under clear EU regulation, and SBI Holdings’ CEO advocates global $BTC standardization. <br /><br />On-chain momentum accelerates via Ordinals activity—Nakamoto Puppets minted at 300,000 sats—and cross-chain swap demand surges with low-fee $BTC integrations across DeFi platforms. Sentiment is decisively bullish: “$BTC is coming back to life,” “Higher $btc,” and “STONKS!” reflect broad-based conviction amid compressed coil structures signaling imminent volatility expansion.",
+        "updateTime": 1783146281000
       },
       {
-        "english": "Whales and institutions are signaling strong conviction: Riot Platforms deposits 500 $BTC ($30.72M) into NYDIG custody, while Metaplanet acquires 2,823 more $BTC to reach 43,000 total. Trump’s public endorsement — “crypto is a big deal” and “we’re #1 in crypto” — fuels macro-level bullish narrative momentum and broad-based retail enthusiasm. <br /><br /> $BTC is described as “breathing before next run,” with market structure showing resilience amid crypto winter fatigue; derivative and on-chain activity suggests accumulation phase, reinforced by liquidation-resistant positioning and rising BTC-backed borrowing via Liquidium in Plug Wallet.",
-        "updateTime": 1783054500000
+        "english": "$BTC surges past $62.5K amid sovereign adoption momentum, with over 40 countries reportedly committing to hold Bitcoin on national balance sheets—reinforcing macro legitimacy and long-term store-of-value narrative. Institutional on-ramps widen as European banks, particularly German lenders, expand crypto trading access amid neutral fear index, signaling normalization of $BTC holdings in traditional finance. <br /><br /> Whales and believers double down on conviction: “HODL $BTC to the moon!” echoes across sentiment, while community-driven initiatives like Moonshot voting (Listing ID: 5601 and 9955) reflect strong grassroots mobilization and ecosystem engagement. Technical structure shows sustained uptrend—15 hours of upward movement, 1.98% peak intraday gain, and tight support zone (0.28% wide)—though short-term overextension noted on lower timeframes with scalp opportunities flagged.<br /><br />Genesis $BTC strength is framed as vision-driven, not hype-driven—rooted in patience, resilience, and community-building, contrasting with volatile meme or speculative plays. Enforcement actions—including seizure of 1,500 BTC from Clifton Collins—highlight real-world risk but also underscore $BTC’s increasing visibility and regulatory scrutiny as it matures. Meanwhile, market watch links $BTC’s rebound to renewed strength in Bitcoin-related equities like $MSTR, reinforcing correlation with public market sentiment and institutional positioning. <br /><br /> Calls to “stack & secure” dominate, with AINX cited as a resource for deeper sovereign adoption insights, and tools like PING Live radar gaining traction as infrastructure for tracking $BTC alongside top-tier and emerging assets—underscoring growing demand for real-time, actionable intelligence in a maturing $BTC ecosystem.",
+        "updateTime": 1783144478000
       },
       {
-        "english": "$BTC shows strong technical momentum with a breakout above $61K and consolidation in a narrowing range, signaling potential upward retest of resistance; whale accumulation is evident via Metaplanet’s Q2 addition of 2,823 $BTC, bringing its treasury to 43,000 $BTC (2.57% of tracked public holdings). Institutional inflows remain robust, highlighted by $223.5M spot ETF flows and BlackRock’s referenced $40M+ BTC sale block — interpreted as strategic positioning rather than distribution. <br /><br /> Community engagement surges around $BTC with active Moonshot voting for leaderboard listing, reinforcing narrative strength and grassroots visibility; sentiment shifts from “extreme fear” (21 Fear & Greed Index) to cautious optimism as $BTC leads broader market stability amid ETH-led gains. Trading activity reflects conviction: tight long entries near $61,614, rejection of bear-flag narratives, and persistent HODL culture emphasized across tweets — “I don’t buy crypto to sell into fiat”, “$btc&$eth is a brother”, and long-term accumulation goals reaffirming $BTC’s role as digital gold and monetary base layer.",
-        "updateTime": 1783052688000
+        "english": "Whales and institutions are actively accumulating $BTC, with a $43.75M transfer of 700 $BTC to Binance signaling strategic positioning—possibly for liquidity or leverage. Spot accumulation wallets just saw their 3rd largest inflow on record, reinforcing strong underlying demand despite short-term volatility. Price action shows resilience: $BTC bounced cleanly from $61,343 support, with spot buyers stepping in fast, and traders setting long entries near $62,000 amid tight-range consolidation ahead of potential breakout.<br /><br />Market sentiment is broadly bullish, fueled by macro optimism, narrative momentum around Bitcoin as “digital gold”, and structural scarcity—only 5.6% of supply remains available to buy as the rest is permanently locked. Community engagement surges with voting campaigns like Moonshot Top 100 listing, while retail participation intensifies via memecoin rotations anchored to $BTC, and technical setups like GoBull’s $62K prediction market highlight price-sensitive bullish conviction.",
+        "updateTime": 1783142689000
       },
       {
-        "english": "Whales are aggressively accumulating $BTC, with 270,000 BTC bought amid retail panic selling — a recurring macro pattern preceding ATH breaks. RIOT Platforms moved 500 $BTC ($30.72M) to NYDIG custody, and Clifton Collins deposited another 500 $BTC ($30.85M) to Coinbase Prime, reinforcing institutional-grade Bitcoin securing behavior. $BTC is trading at $61,373.65, within the critical $58K–$62K consolidation zone described as “best winding ever,” with targets unchanged ahead of expected retracement and behavioral shift. <br /><br /> ETF outflows remain a headwind — $8.95B bled over two months — yet price jumped to $62,000 amid persistent accumulation signals and macro confidence. Sentiment reflects long-term conviction: “You’ve been training for 8 years,” “Never $goon until BTC goes to $100,000,” and “hope y’all bought enough $BTC during the dips” underscore deep HODL culture. The $BTC spot holding narrative remains dominant, with no leverage or funding pressure indicated — rate of funding near zero confirms organic, non-speculative strength.",
-        "updateTime": 1783050898000
+        "english": "Whales are aggressively accumulating $BTC amid a four-day consecutive price increase, with the Royal Government of Bhutan depositing 643 $BTC ($39.6M) to Binance for selling—interpreted as strategic liquidity placement rather than bearish pressure. A major unknown wallet moved 2,315 $BTC ($144.7M) to OKX, signaling institutional-scale OTC settlement preparation and reinforcing exchange inflow as a precursor to volatility-driven moves. <br /><br /> $BTC shows strong macro resilience: up 3% on weak US jobs data, with $16.7B in whale accumulation offsetting a record $4B ETF outflow on July 4—the same day Ondo Finance launched tokenized stocks with BlackRock, reinforcing Bitcoin’s role as a macro hedge. Technical sentiment highlights bullish divergence near $62,704, with traders positioning for sustained upside after holding above key support near $57,802.",
+        "updateTime": 1783140891000
       },
       {
-        "english": "$BTC rebounds strongly above $61K amid Fed policy relief and macro tailwinds, with spot ETFs showing mixed flows—despite a record $4B outflow, institutional confidence persists. Clifton Collins’ recent $30.85M deposit of 500 $BTC to Coinbase Prime signals continued whale activity and long-term conviction. JPMorgan’s warning on corporate $BTC sales introduces near-term risk, yet market structure holds firm above $58K, with upside targets at $65K if momentum sustains.  <br /><br />Bitcoin’s narrative strength deepens through elite endorsements—Jack Dorsey declares it will render the current financial system “as irrelevant as the fax machine,” while a former Thai Prime Minister projects $850K long-term. Historical analogies reinforce belief: a 14-year HODL of 10,000 $BTC from 2011 yielded $1.09B at $109K, epitomizing diamond-hand resilience. Security metrics remain robust, with corporate treasury strategies adding ~9,000 BTC in June, reinforcing network trust.",
-        "updateTime": 1783049085000
+        "english": "Whales and public companies are aggressively accumulating $BTC, with Metaplanet adding 2,823 BTC in Q2 and MicroStrategy acquiring 5,050 BTC—pushing total corporate holdings to 1,264,867 BTC (~6% of supply). Institutional demand is accelerating: public firms bought 166,984 BTC in 2026 alone, nearly double the 81,153 BTC mined—translating to ~912 BTC per day absorbed. The Royal Government of Bhutan deposited 700 $BTC ($43.75M) into Binance, signaling sovereign-level accumulation. <br /><br /> Spot BTC ETFs saw $221M inflow on July 2, reinforcing near-term bullish structure as price snaps higher from multi-year lows and breaches key resistance at $63K after holding above $61K. Technical signals align with macro conviction: BTC recently fell below the Rainbow Chart—a rare event last seen at $15,500 in 2022 and now at $63,000 in 2026—triggering OG-driven narrative reinforcement. Traders report successful long entries following market-structure breaks, with one holding for 8 days and another capitalizing on a 4% raw move post-short.",
+        "updateTime": 1783139084000
       },
       {
-        "english": "Whales holding 1,000–10,000 $BTC have accumulated over 270,000 $BTC in the past ~30 days — a scale exceeding both the COVID and FTX collapse bottoms — signaling intense long-term conviction amid U.S. spot Bitcoin ETF inflows. <br /><br /> $BTC is trading at $61,404, up +2.28% on the day and holding strong above the $61k support level; bulls are locked in a 3-day bullish divergence and pushing toward prior range lows, with potential upside to $62,500–$63,000 resistance. The current signal remains active with +5.87% momentum — a $3,446 move per coin — reinforcing institutional and macro-driven strength.",
-        "updateTime": 1783047295000
+        "english": "$BTC is setting the tone for the broader market, with every dip testing conviction rather than reversing the structural uptrend. Institutional flows remain strong—$221M in BTC ETF inflows over nine days and Kjira’s purchase of 27,000 $BTC in two weeks signal sustained accumulation. Whale activity reinforces this: large transfers to OKX suggest strategic reallocation, likely ahead of a breakout. <br /><br />Market participants are aligning around key technical thresholds—$72K and $77K are cited as decisive levels to confirm bull-phase resumption, while $100K is framed as the next major psychological and narrative catalyst. At $62,683, traders see asymmetric upside, with one investor calling a move past $100K inevitable and positioning $BTC as the anchor for portfolio allocation shifts across altcoins and memecoins. <br /><br />Policy momentum adds tailwind: Trump’s public framing of $BTC as “money” and push to exempt small transactions from capital gains tax strengthens legitimacy and mainstream adoption narratives. Community engagement remains high—Moonshot voting efforts and persistent references to $BTC as digital gold, satoshis, and “₿” reflect deep-rooted cultural resonance and long-term HODL conviction.",
+        "updateTime": 1783137270000
       }
     ]
   },
@@ -883,7 +883,14 @@
       "vsTokenId": "1",
       "symbol": "BTC",
       "name": "Bitcoin",
-      "price": "61797.245",
+      "price": "62609.685",
+      "denseArea": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "price": "63123.765",
       "denseArea": 1
     },
     {
@@ -891,33 +898,17 @@
       "symbol": "BTC",
       "name": "Bitcoin",
       "price": "62199.86",
-      "denseArea": 1
-    },
-    {
-      "vsTokenId": "1",
-      "symbol": "BTC",
-      "name": "Bitcoin",
-      "price": "61734.515",
       "denseArea": 2
     },
     {
       "vsTokenId": "1",
       "symbol": "BTC",
       "name": "Bitcoin",
-      "price": "61256.79",
+      "price": "61797.245",
       "denseArea": 2
     }
   ],
   "whaleCost": [
-    {
-      "vsTokenId": "1",
-      "symbol": "BTC",
-      "name": "Bitcoin",
-      "date": 1775318400000,
-      "price": "68979.02822099025",
-      "cost": "59331.277770751822663717",
-      "balance": "3705575.95977634"
-    },
     {
       "vsTokenId": "1",
       "symbol": "BTC",
@@ -1707,11 +1698,170 @@
       "name": "Bitcoin",
       "date": 1782921600000,
       "price": "61493.380803361775",
-      "cost": "58861.629957884422178396",
-      "balance": "3680226.29558724"
+      "cost": "60013.953888836644117551",
+      "balance": "3785019.91556467"
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "date": 1783008000000,
+      "price": "62555.392811132326",
+      "cost": "60123.577523734769703729",
+      "balance": "3794813.00211541"
     }
   ],
   "priceIndicators": [
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783118400000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783118100000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783117800000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783117500000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783117200000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783116900000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783116600000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783116300000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783116000000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783115700000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783115400000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783115100000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783114800000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783114500000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783114200000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783113900000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783113600000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783113300000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783113000000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783112700000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783112400000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783112100000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783111800000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783111500000,
+      "priceMarketType": 1
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "date": 1783111200000,
+      "priceMarketType": 1
+    },
     {
       "vsTokenId": "1",
       "symbol": "BTC",
@@ -27026,6 +27176,136 @@
       "vsTokenId": "1",
       "symbol": "BTC",
       "name": "Bitcoin",
+      "blockNumber": 956577,
+      "transIndex": 2124,
+      "coinKey": "BTC_BTC",
+      "transHash": "0bdd2727573c94b11219a9c7b83f017ca5219623cad980c5b15bbdd8032bb371",
+      "fromAddress": "",
+      "fromExchangeName": "",
+      "toAddress": "",
+      "toExchangeName": "Binance",
+      "amount": "699.99998702",
+      "blockTime": 1783131702000,
+      "coinInfo": {
+        "coinKey": "BTC_BTC",
+        "coinName": "Bitcoin",
+        "symbol": "BTC",
+        "protocol": "",
+        "contractAddress": "BTC",
+        "chainName": "BTC",
+        "icon": "https://static.valuescan.io/valuescan/icon/BTC.svg",
+        "price": "62417.228101858185"
+      },
+      "addressInfo": {
+        "address": "",
+        "label": "",
+        "balance": "",
+        "profit": ""
+      },
+      "exchangeInfo": {
+        "address": "",
+        "name": "Binance",
+        "icon": "",
+        "label": "",
+        "addresses": [
+          "bc1q42pw6fwjtgfx59y2vug96djdceuktj68y8at4a"
+        ],
+        "amount": "699.99998702",
+        "exchangeCount": 1
+      }
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "blockNumber": 956551,
+      "transIndex": 23,
+      "coinKey": "BTC_BTC",
+      "transHash": "582eb47927c85b0e1d39c915a923e6ebfd1e99d03d7208751c4aadbe2f0f86e7",
+      "fromAddress": "",
+      "fromExchangeName": "Gemini",
+      "toAddress": "",
+      "toExchangeName": "",
+      "amount": "527",
+      "blockTime": 1783113485000,
+      "coinInfo": {
+        "coinKey": "BTC_BTC",
+        "coinName": "Bitcoin",
+        "symbol": "BTC",
+        "protocol": "",
+        "contractAddress": "BTC",
+        "chainName": "BTC",
+        "icon": "https://static.valuescan.io/valuescan/icon/BTC.svg",
+        "price": "62698.725095349444"
+      },
+      "addressInfo": {
+        "address": "",
+        "label": "",
+        "balance": "",
+        "profit": ""
+      },
+      "exchangeInfo": {
+        "address": "",
+        "name": "Gemini",
+        "icon": "",
+        "label": "",
+        "addresses": [
+          "3FupZp77ySr7jwoLYEJ9mwzJpvoNBXsBnE",
+          "3FupZp77ySr7jwoLYEJ9mwzJpvoNBXsBnE",
+          "3FupZp77ySr7jwoLYEJ9mwzJpvoNBXsBnE",
+          "bc1qmtl499lclce4gvjcgn38gehmmkh2kekywkc273ghhmcfl2s93jzq3wt9w4"
+        ],
+        "amount": "500.01",
+        "exchangeCount": 1
+      }
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "blockNumber": 956495,
+      "transIndex": 496,
+      "coinKey": "BTC_BTC",
+      "transHash": "fc6a8751f1819230429268549b22a502be75b07c102bf8f2796f0a843ef2be61",
+      "fromAddress": "",
+      "fromExchangeName": "",
+      "toAddress": "",
+      "toExchangeName": "Binance",
+      "amount": "407.18925602",
+      "blockTime": 1783080832000,
+      "coinInfo": {
+        "coinKey": "BTC_BTC",
+        "coinName": "Bitcoin",
+        "symbol": "BTC",
+        "protocol": "",
+        "contractAddress": "BTC",
+        "chainName": "BTC",
+        "icon": "https://static.valuescan.io/valuescan/icon/BTC.svg",
+        "price": "62040.626932547944"
+      },
+      "addressInfo": {
+        "address": "",
+        "label": "",
+        "balance": "",
+        "profit": ""
+      },
+      "exchangeInfo": {
+        "address": "",
+        "name": "Binance",
+        "icon": "",
+        "label": "",
+        "addresses": [
+          "18WnyaasK4jQoMmou4v8V1HfhC8P6ngGx4",
+          "15L8MX3BLbGbYdj8qeUcumzwrY2jV1pqos"
+        ],
+        "amount": "400.010483",
+        "exchangeCount": 2
+      }
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "name": "Bitcoin",
       "blockNumber": 956438,
       "transIndex": 418,
       "coinKey": "BTC_BTC",
@@ -28480,48 +28760,6 @@
       "symbol": "BTC",
       "name": "Bitcoin",
       "blockNumber": 955505,
-      "transIndex": 269,
-      "coinKey": "BTC_BTC",
-      "transHash": "a4d54d660fbed2c543d242f8077f7aa2c6c853668a2a004bfbe54e71f0cc9dd0",
-      "fromAddress": "",
-      "fromExchangeName": "",
-      "toAddress": "",
-      "toExchangeName": "Coinbase",
-      "amount": "352.22648156",
-      "blockTime": 1782486117000,
-      "coinInfo": {
-        "coinKey": "BTC_BTC",
-        "coinName": "Bitcoin",
-        "symbol": "BTC",
-        "protocol": "",
-        "contractAddress": "BTC",
-        "chainName": "BTC",
-        "icon": "https://static.valuescan.io/valuescan/icon/BTC.svg",
-        "price": "59572.69273123649"
-      },
-      "addressInfo": {
-        "address": "",
-        "label": "",
-        "balance": "",
-        "profit": ""
-      },
-      "exchangeInfo": {
-        "address": "",
-        "name": "Coinbase",
-        "icon": "",
-        "label": "",
-        "addresses": [
-          "3LcyHmXovKHBXUxpTRT6MrirZ6YZsXLCQj"
-        ],
-        "amount": "352.22638301",
-        "exchangeCount": 1
-      }
-    },
-    {
-      "vsTokenId": "1",
-      "symbol": "BTC",
-      "name": "Bitcoin",
-      "blockNumber": 955505,
       "transIndex": 184,
       "coinKey": "BTC_BTC",
       "transHash": "480adbc5cecef75780f624a45e14e9981958a8d27bb081ba42c495d41cb8d32b",
@@ -28556,6 +28794,48 @@
           "3LcyHmXovKHBXUxpTRT6MrirZ6YZsXLCQj"
         ],
         "amount": "360.72729948",
+        "exchangeCount": 1
+      }
+    },
+    {
+      "vsTokenId": "1",
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "blockNumber": 955505,
+      "transIndex": 269,
+      "coinKey": "BTC_BTC",
+      "transHash": "a4d54d660fbed2c543d242f8077f7aa2c6c853668a2a004bfbe54e71f0cc9dd0",
+      "fromAddress": "",
+      "fromExchangeName": "",
+      "toAddress": "",
+      "toExchangeName": "Coinbase",
+      "amount": "352.22648156",
+      "blockTime": 1782486117000,
+      "coinInfo": {
+        "coinKey": "BTC_BTC",
+        "coinName": "Bitcoin",
+        "symbol": "BTC",
+        "protocol": "",
+        "contractAddress": "BTC",
+        "chainName": "BTC",
+        "icon": "https://static.valuescan.io/valuescan/icon/BTC.svg",
+        "price": "59572.69273123649"
+      },
+      "addressInfo": {
+        "address": "",
+        "label": "",
+        "balance": "",
+        "profit": ""
+      },
+      "exchangeInfo": {
+        "address": "",
+        "name": "Coinbase",
+        "icon": "",
+        "label": "",
+        "addresses": [
+          "3LcyHmXovKHBXUxpTRT6MrirZ6YZsXLCQj"
+        ],
+        "amount": "352.22638301",
         "exchangeCount": 1
       }
     },
@@ -28690,14 +28970,14 @@
       "symbol": "BTC",
       "name": "Bitcoin",
       "blockNumber": 955495,
-      "transIndex": 1424,
+      "transIndex": 1431,
       "coinKey": "BTC_BTC",
-      "transHash": "0870b171cbb29a923ed4018aab6db2ad8f2019a273bbe7a9a579d52b4b1de11a",
+      "transHash": "590821dcd7ba534990802b4642f0e232eddeafbaaca499af2921a94e6298b592",
       "fromAddress": "",
       "fromExchangeName": "",
       "toAddress": "",
       "toExchangeName": "Coinbase",
-      "amount": "679.9999462",
+      "amount": "683.33327521",
       "blockTime": 1782483059000,
       "coinInfo": {
         "coinKey": "BTC_BTC",
@@ -28732,14 +29012,14 @@
       "symbol": "BTC",
       "name": "Bitcoin",
       "blockNumber": 955495,
-      "transIndex": 1431,
+      "transIndex": 1424,
       "coinKey": "BTC_BTC",
-      "transHash": "590821dcd7ba534990802b4642f0e232eddeafbaaca499af2921a94e6298b592",
+      "transHash": "0870b171cbb29a923ed4018aab6db2ad8f2019a273bbe7a9a579d52b4b1de11a",
       "fromAddress": "",
       "fromExchangeName": "",
       "toAddress": "",
       "toExchangeName": "Coinbase",
-      "amount": "683.33327521",
+      "amount": "679.9999462",
       "blockTime": 1782483059000,
       "coinInfo": {
         "coinKey": "BTC_BTC",
@@ -29022,136 +29302,6 @@
         "amount": "445.98414818",
         "exchangeCount": 1
       }
-    },
-    {
-      "vsTokenId": "1",
-      "symbol": "BTC",
-      "name": "Bitcoin",
-      "blockNumber": 955359,
-      "transIndex": 869,
-      "coinKey": "BTC_BTC",
-      "transHash": "018896f62f00ea8226c7c5db8ef1e528e519d82027a68f04a5a540cbe45c2950",
-      "fromAddress": "",
-      "fromExchangeName": "Coinbase",
-      "toAddress": "",
-      "toExchangeName": "",
-      "amount": "568.88052877",
-      "blockTime": 1782404729000,
-      "coinInfo": {
-        "coinKey": "BTC_BTC",
-        "coinName": "Bitcoin",
-        "symbol": "BTC",
-        "protocol": "",
-        "contractAddress": "BTC",
-        "chainName": "BTC",
-        "icon": "https://static.valuescan.io/valuescan/icon/BTC.svg",
-        "price": "59680.83624990761"
-      },
-      "addressInfo": {
-        "address": "",
-        "label": "",
-        "balance": "",
-        "profit": ""
-      },
-      "exchangeInfo": {
-        "address": "",
-        "name": "Coinbase",
-        "icon": "",
-        "label": "",
-        "addresses": [
-          "3JPmeNkLaFEYW5pJsQqz9bzQjZKPkwdqyJ",
-          "141ayvoR7NAtCxe9j5TC3eTbpxnt5PAstJ",
-          "35ZeHvrdGhKFqYBXhU9LTurACCq6F2azws",
-          "3HXUcYmFnTihgYGm8E1p9o6uEjLxduCpr8"
-        ],
-        "amount": "550.29445232",
-        "exchangeCount": 1
-      }
-    },
-    {
-      "vsTokenId": "1",
-      "symbol": "BTC",
-      "name": "Bitcoin",
-      "blockNumber": 955357,
-      "transIndex": 665,
-      "coinKey": "BTC_BTC",
-      "transHash": "7707ce79dedc17e2b8c0b0e441c6a6996c42715ed0c2c8903cffb8612a735428",
-      "fromAddress": "",
-      "fromExchangeName": "Coinbase",
-      "toAddress": "",
-      "toExchangeName": "",
-      "amount": "384.4915158",
-      "blockTime": 1782401934000,
-      "coinInfo": {
-        "coinKey": "BTC_BTC",
-        "coinName": "Bitcoin",
-        "symbol": "BTC",
-        "protocol": "",
-        "contractAddress": "BTC",
-        "chainName": "BTC",
-        "icon": "https://static.valuescan.io/valuescan/icon/BTC.svg",
-        "price": "59150.08815095914"
-      },
-      "addressInfo": {
-        "address": "",
-        "label": "",
-        "balance": "",
-        "profit": ""
-      },
-      "exchangeInfo": {
-        "address": "",
-        "name": "Coinbase",
-        "icon": "",
-        "label": "",
-        "addresses": [
-          "35uR5adixViWWH1ZsZmK83A5zjgHjkFVw5"
-        ],
-        "amount": "370",
-        "exchangeCount": 1
-      }
-    },
-    {
-      "vsTokenId": "1",
-      "symbol": "BTC",
-      "name": "Bitcoin",
-      "blockNumber": 955353,
-      "transIndex": 1266,
-      "coinKey": "BTC_BTC",
-      "transHash": "0e763948703ab39796d423826ea0827e6e016cafef46eb4910527f238140128a",
-      "fromAddress": "",
-      "fromExchangeName": "",
-      "toAddress": "",
-      "toExchangeName": "Coinbase",
-      "amount": "410.41772352",
-      "blockTime": 1782400151000,
-      "coinInfo": {
-        "coinKey": "BTC_BTC",
-        "coinName": "Bitcoin",
-        "symbol": "BTC",
-        "protocol": "",
-        "contractAddress": "BTC",
-        "chainName": "BTC",
-        "icon": "https://static.valuescan.io/valuescan/icon/BTC.svg",
-        "price": "59467.21135597905"
-      },
-      "addressInfo": {
-        "address": "",
-        "label": "",
-        "balance": "",
-        "profit": ""
-      },
-      "exchangeInfo": {
-        "address": "",
-        "name": "Coinbase",
-        "icon": "",
-        "label": "",
-        "addresses": [
-          "3HadsNQnLmHPLq8FqxiN5a8uZhstvJz1uU",
-          "18bYvustaVxkxA5wbh9D9adM4vGDCsB3Hd"
-        ],
-        "amount": "406.349985",
-        "exchangeCount": 2
-      }
     }
   ],
   "holderList": [
@@ -29169,11 +29319,11 @@
         "labelType": "Exchange",
         "reliability": ""
       },
-      "balance": "248597.59056528",
-      "price": "61715.089939024176",
-      "profit": "5674843523.71508396283165039044",
-      "cost": "38828.442587236870837459",
-      "preCost": "38828.442587236870837459",
+      "balance": "248597.59057074",
+      "price": "62551.65748264157",
+      "profit": "5888083199.34690345915587736496",
+      "cost": "38828.442587757990794859",
+      "preCost": "38828.442587757990794859",
       "chainName": "BTC"
     },
     {
@@ -29191,8 +29341,8 @@
         "reliability": ""
       },
       "balance": "174934.29416806",
-      "price": "61715.089939024176",
-      "profit": "182183432.50078235056632863458",
+      "price": "62551.65748264157",
+      "profit": "338886792.09667505446661433934",
       "cost": "60614.434174144610657257",
       "preCost": "60614.434174144610657257",
       "chainName": "BTC"
@@ -29211,11 +29361,11 @@
         "labelType": "",
         "reliability": ""
       },
-      "balance": "140849.98536624",
-      "price": "61715.089939024176",
-      "profit": "4157111561.71824214418608691586",
-      "cost": "32141.411232100271815307",
-      "preCost": "32141.411232100271815307",
+      "balance": "140849.9853717",
+      "price": "62551.65748264157",
+      "profit": "4283282739.37247628309923123226",
+      "cost": "32141.411233279259083096",
+      "preCost": "32141.411233279259083096",
       "chainName": "BTC"
     },
     {
@@ -29232,9 +29382,9 @@
         "labelType": "Exchange",
         "reliability": ""
       },
-      "balance": "130010.07900252",
-      "price": "61715.089939024176",
-      "profit": "9147232081.22172608056617782212",
+      "balance": "130010.07900798",
+      "price": "62551.65748264157",
+      "profit": "9258750904.77764080492649559508",
       "cost": "-8701.995419983936907214",
       "preCost": "-8701.995419983936907214",
       "chainName": "BTC"
@@ -29253,9 +29403,9 @@
         "labelType": "",
         "reliability": ""
       },
-      "balance": "96936.40679644",
-      "price": "61715.089939024176",
-      "profit": "1800269637.5662678230252342902",
+      "balance": "96936.4068019",
+      "price": "62551.65748264157",
+      "profit": "1886091739.4092689469074185898",
       "cost": "43094.656734964061763214",
       "preCost": "43094.656734964061763214",
       "chainName": "BTC"
@@ -29274,9 +29424,9 @@
         "labelType": "Government",
         "reliability": ""
       },
-      "balance": "94643.48823473",
-      "price": "61715.089939024176",
-      "profit": "2168524838.73810918015071498194",
+      "balance": "94643.48824019",
+      "price": "62551.65748264157",
+      "profit": "2249707240.48584368467047783686",
       "cost": "38743.310886910542710815",
       "preCost": "38743.310886910542710815",
       "chainName": "BTC"
@@ -29295,11 +29445,11 @@
         "labelType": "Exchange",
         "reliability": ""
       },
-      "balance": "91850.1155278",
-      "price": "61715.089939024176",
-      "profit": "527539084.3712664323542501804",
-      "cost": "55922.835478214486547991",
-      "preCost": "55922.835478214486547991",
+      "balance": "91850.11553872",
+      "price": "62551.65748264157",
+      "profit": "605366522.39479860362730294532",
+      "cost": "55922.835479003026939638",
+      "preCost": "55922.835479003026939638",
       "chainName": "BTC"
     },
     {
@@ -29316,9 +29466,9 @@
         "labelType": "",
         "reliability": ""
       },
-      "balance": "79957.26863304",
-      "price": "61715.089939024176",
-      "profit": "4934767142.5194576074697950298",
+      "balance": "79957.2686385",
+      "price": "62551.65748264157",
+      "profit": "4995184279.5576986689156028298",
       "cost": "0.969349864839375618",
       "preCost": "0.969349864839375618",
       "chainName": "BTC"
@@ -29337,9 +29487,9 @@
         "labelType": "Exchange",
         "reliability": ""
       },
-      "balance": "78317.03653866",
-      "price": "61715.089939024176",
-      "profit": "-187638958.82880449464991524334",
+      "balance": "78317.03654412",
+      "price": "62551.65748264157",
+      "profit": "-121278516.78004140697894261286",
       "cost": "64062.202544289731765631",
       "preCost": "64062.202544289731765631",
       "chainName": "BTC"
@@ -29359,10 +29509,10 @@
         "reliability": ""
       },
       "balance": "73705.86968149",
-      "price": "61715.089939024176",
-      "profit": "1884140477.89996935117407782432",
-      "cost": "36088.382134417132794526",
-      "preCost": "36088.382134417132794526",
+      "price": "62551.65748264157",
+      "profit": "1946557191.19981716994104971878",
+      "cost": "36088.382136572931834621",
+      "preCost": "36088.382136572931834621",
       "chainName": "BTC"
     },
     {
@@ -29380,8 +29530,8 @@
         "reliability": ""
       },
       "balance": "69370.1845443",
-      "price": "61715.089939024176",
-      "profit": "3296620838.41319497737210431765",
+      "price": "62551.65748264157",
+      "profit": "3356124543.27662395077049037405",
       "cost": "14133.715841820067037711",
       "preCost": "14133.715841820067037711",
       "chainName": "BTC"
@@ -29401,8 +29551,8 @@
         "reliability": ""
       },
       "balance": "68200.00688924",
-      "price": "61715.089939024176",
-      "profit": "-679049471.8305402127665038232",
+      "price": "62551.65748264157",
+      "profit": "-620549510.95715358637792441568",
       "cost": "71612.609498501014304226",
       "preCost": "71612.609498501014304226",
       "chainName": "BTC"
@@ -29422,8 +29572,8 @@
         "reliability": ""
       },
       "balance": "62657.50674197",
-      "price": "61715.089939024176",
-      "profit": "-2526849231.06046624511496581738",
+      "price": "62551.65748264157",
+      "profit": "-2470585652.88615038169282739268",
       "cost": "101983.830276021397159491",
       "preCost": "101983.830276021397159491",
       "chainName": "BTC"
@@ -29443,8 +29593,8 @@
         "reliability": ""
       },
       "balance": "55904.67077415",
-      "price": "61715.089939024176",
-      "profit": "314933749.0536551587875579546",
+      "price": "62551.65748264157",
+      "profit": "364564372.3082053403999944707",
       "cost": "55971.627907259649222959",
       "preCost": "55971.627907259649222959",
       "chainName": "BTC"
@@ -29464,8 +29614,8 @@
         "reliability": ""
       },
       "balance": "53880.06662342",
-      "price": "61715.089939024176",
-      "profit": "3294305720.8817793592529029435",
+      "price": "62551.65748264157",
+      "profit": "3335018459.3790968577528335935",
       "cost": "577.068609466973239211",
       "preCost": "577.068609466973239211",
       "chainName": "BTC"
@@ -29485,8 +29635,8 @@
         "reliability": ""
       },
       "balance": "51830.4019123",
-      "price": "61715.089939024176",
-      "profit": "2344011846.144121448276970199",
+      "price": "62551.65748264157",
+      "profit": "2388470440.6952291464673127194",
       "cost": "16431.221780963313907681",
       "preCost": "16431.221780963313907681",
       "chainName": "BTC"
@@ -29506,8 +29656,8 @@
         "reliability": ""
       },
       "balance": "45300.54685689",
-      "price": "61715.089939024176",
-      "profit": "-693895199.97439062494012886134",
+      "price": "62551.65748264157",
+      "profit": "-652783230.4812756487097618354",
       "cost": "76947.326782758248737272",
       "preCost": "76947.326782758248737272",
       "chainName": "BTC"
@@ -29527,8 +29677,8 @@
         "reliability": ""
       },
       "balance": "44000.08809172",
-      "price": "61715.089939024176",
-      "profit": "2402754466.41685465283464353848",
+      "price": "62551.65748264157",
+      "profit": "2440496448.40772874109884051304",
       "cost": "7047.926655465918695564",
       "preCost": "7047.926655465918695564",
       "chainName": "BTC"
@@ -29547,11 +29697,11 @@
         "labelType": "Exchange",
         "reliability": ""
       },
-      "balance": "42535.37074989",
-      "price": "61715.089939024176",
-      "profit": "10998231.85262022437141246791",
-      "cost": "61407.707807256615108099",
-      "preCost": "61407.707807256615108099",
+      "balance": "42539.39722768",
+      "price": "62551.65748264157",
+      "profit": "48651051.28699090053346874799",
+      "cost": "61407.811253090360874721",
+      "preCost": "61407.811253090360874721",
       "chainName": "BTC"
     },
     {
@@ -29568,11 +29718,11 @@
         "labelType": "Exchange",
         "reliability": ""
       },
-      "balance": "41990.00015621",
-      "price": "61715.089939024176",
-      "profit": "-2163650202.5048117322267288567",
-      "cost": "113157.486193358047512657",
-      "preCost": "113157.486193358047512657",
+      "balance": "41790.00015621",
+      "price": "62551.65748264157",
+      "profit": "-2123689931.2161818362155239652",
+      "cost": "113399.659407969563819144",
+      "preCost": "113399.659407969563819144",
       "chainName": "BTC"
     },
     {
@@ -29590,8 +29740,8 @@
         "reliability": ""
       },
       "balance": "38194.36828479",
-      "price": "61715.089939024176",
-      "profit": "126597093.39284805022110934095",
+      "price": "62551.65748264157",
+      "profit": "161551943.8009922134403097021",
       "cost": "58316.118002092803940367",
       "preCost": "58316.118002092803940367",
       "chainName": "BTC"
@@ -29611,8 +29761,8 @@
         "reliability": ""
       },
       "balance": "37927.07833223",
-      "price": "61715.089939024176",
-      "profit": "26541897.14064936699609839805",
+      "price": "62551.65748264157",
+      "profit": "61252128.2311582805744313356",
       "cost": "60930.852778686815570655",
       "preCost": "60930.852778686815570655",
       "chainName": "BTC"
@@ -29632,8 +29782,8 @@
         "reliability": ""
       },
       "balance": "37484.18212745",
-      "price": "61715.089939024176",
-      "profit": "-1762795331.29077603239754627395",
+      "price": "62551.65748264157",
+      "profit": "-1728490431.4383435127158505707",
       "cost": "108658.378950177359716986",
       "preCost": "108658.378950177359716986",
       "chainName": "BTC"
@@ -29653,8 +29803,8 @@
         "reliability": ""
       },
       "balance": "36000.42408755",
-      "price": "61715.089939024176",
-      "profit": "778860707.40031713458197720121",
+      "price": "62551.65748264157",
+      "profit": "811807696.58016393905641877296",
       "cost": "39995.901904912898615126",
       "preCost": "39995.901904912898615126",
       "chainName": "BTC"
@@ -29673,11 +29823,11 @@
         "labelType": "",
         "reliability": ""
       },
-      "balance": "32537.68364991",
-      "price": "61715.089939024176",
-      "profit": "-1132580308.67540247022842032238",
-      "cost": "96615.801477086958911078",
-      "preCost": "96615.801477086958911078",
+      "balance": "32565.90607865",
+      "price": "62551.65748264157",
+      "profit": "-1102953267.14185622657392987339",
+      "cost": "96576.094910514232082312",
+      "preCost": "96576.094910514232082312",
       "chainName": "BTC"
     },
     {
@@ -29695,8 +29845,8 @@
         "reliability": ""
       },
       "balance": "31643.40209685",
-      "price": "61715.089939024176",
-      "profit": "704786206.55980342631106942581",
+      "price": "62551.65748264157",
+      "profit": "733745721.70226544519578496806",
       "cost": "39357.89702028063899448",
       "preCost": "39357.89702028063899448",
       "chainName": "BTC"
@@ -29716,8 +29866,8 @@
         "reliability": ""
       },
       "balance": "31275.35265807",
-      "price": "61715.089939024176",
-      "profit": "759776371.82818578343732207741",
+      "price": "62551.65748264157",
+      "profit": "788399054.24757643949674709536",
       "cost": "37337.531451991985851293",
       "preCost": "37337.531451991985851293",
       "chainName": "BTC"
@@ -29737,8 +29887,8 @@
         "reliability": ""
       },
       "balance": "31000.07642162",
-      "price": "61715.089939024176",
-      "profit": "1910553268.5676974239078995333",
+      "price": "62551.65748264157",
+      "profit": "1938924022.755305843629476183",
       "cost": "0.068026484061129523",
       "preCost": "0.068026484061129523",
       "chainName": "BTC"
@@ -29758,8 +29908,8 @@
         "reliability": ""
       },
       "balance": "30800.00010644",
-      "price": "61715.089939024176",
-      "profit": "-778430723.7485360650406350024",
+      "price": "62551.65748264157",
+      "profit": "-750243076.075877249900724011",
       "cost": "86904.391402543552887708",
       "preCost": "86904.391402543552887708",
       "chainName": "BTC"
@@ -29779,8 +29929,8 @@
         "reliability": ""
       },
       "balance": "30466.60299896",
-      "price": "61715.089939024176",
-      "profit": "-1223173658.63079321634135514578",
+      "price": "62551.65748264157",
+      "profit": "-1195816041.18525842805725431618",
       "cost": "101803.88918251352714635",
       "preCost": "101803.88918251352714635",
       "chainName": "BTC"
@@ -29799,11 +29949,11 @@
         "labelType": "",
         "reliability": ""
       },
-      "balance": "29696.23736295",
-      "price": "61715.089939024176",
-      "profit": "-1272493438.27138194839426041185",
-      "cost": "104480.992231368942991553",
-      "preCost": "104480.992231368942991553",
+      "balance": "29102.23736126",
+      "price": "62551.65748264157",
+      "profit": "-1245310267.50132962544709131116",
+      "cost": "105336.727335764249431376",
+      "preCost": "105336.727335764249431376",
       "chainName": "BTC"
     },
     {
@@ -29821,8 +29971,8 @@
         "reliability": ""
       },
       "balance": "28151.0601114",
-      "price": "61715.089939024176",
-      "profit": "1734966549.35246656471504402926",
+      "price": "62551.65748264157",
+      "profit": "1760729931.21252267673070513826",
       "cost": "0.072943034838041368",
       "preCost": "0.072943034838041368",
       "chainName": "BTC"
@@ -29842,8 +29992,8 @@
         "reliability": ""
       },
       "balance": "26983.53636524",
-      "price": "61715.089939024176",
-      "profit": "404047301.968982647540424198",
+      "price": "62551.65748264157",
+      "profit": "428742185.5208410366555940674",
       "cost": "46656.821289497576756514",
       "preCost": "46656.821289497576756514",
       "chainName": "BTC"
@@ -29863,8 +30013,8 @@
         "reliability": ""
       },
       "balance": "26916.22496497",
-      "price": "61715.089939024176",
-      "profit": "-773834733.56947757722165744785",
+      "price": "62551.65748264157",
+      "profit": "-749201452.2912752636075614034",
       "cost": "90380.416502740565306811",
       "preCost": "90380.416502740565306811",
       "chainName": "BTC"
@@ -29883,9 +30033,9 @@
         "labelType": "",
         "reliability": ""
       },
-      "balance": "26062.38477237",
-      "price": "61715.089939024176",
-      "profit": "-255226087.82012088464765425959",
+      "balance": "26062.38494937",
+      "price": "62551.65748264157",
+      "profit": "-231374226.88070394647553334614",
       "cost": "71423.557483520636270034",
       "preCost": "71423.557483520636270034",
       "chainName": "BTC"
@@ -29905,8 +30055,8 @@
         "reliability": ""
       },
       "balance": "26056.63060575",
-      "price": "61715.089939024176",
-      "profit": "-624409947.00731109013137094075",
+      "price": "62551.65748264157",
+      "profit": "-600563352.185451743143922002",
       "cost": "85594.238823686303743266",
       "preCost": "85594.238823686303743266",
       "chainName": "BTC"
@@ -29926,8 +30076,8 @@
         "reliability": ""
       },
       "balance": "24051.75833549",
-      "price": "61715.089939024176",
-      "profit": "-840919355.73148400721861310705",
+      "price": "62551.65748264157",
+      "profit": "-818907586.6559712067116456164",
       "cost": "96593.572273469272981891",
       "preCost": "96593.572273469272981891",
       "chainName": "BTC"
@@ -29947,8 +30097,8 @@
         "reliability": ""
       },
       "balance": "23599.50832823",
-      "price": "61715.089939024176",
-      "profit": "882142112.82736815933600740885",
+      "price": "62551.65748264157",
+      "profit": "903739990.2203956468375596064",
       "cost": "24250.98485549508063367",
       "preCost": "24250.98485549508063367",
       "chainName": "BTC"
@@ -29967,11 +30117,11 @@
         "labelType": "Exchange",
         "reliability": ""
       },
-      "balance": "23421.9512065",
-      "price": "61715.089939024176",
-      "profit": "250482407.43166245263202952777",
-      "cost": "50858.170183324738834414",
-      "preCost": "50858.170183324738834414",
+      "balance": "23395.30176896",
+      "price": "62551.65748264157",
+      "profit": "271757283.68453895279471500279",
+      "cost": "51115.6608793682193225",
+      "preCost": "51115.6608793682193225",
       "chainName": "BTC"
     },
     {
@@ -29989,8 +30139,8 @@
         "reliability": ""
       },
       "balance": "20755.01097254",
-      "price": "61715.089939024176",
-      "profit": "-115168138.2382503999323564991",
+      "price": "62551.65748264157",
+      "profit": "-96173497.5007719667412070292",
       "cost": "67179.598388946537924716",
       "preCost": "67179.598388946537924716",
       "chainName": "BTC"
@@ -30009,11 +30159,11 @@
         "labelType": "",
         "reliability": ""
       },
-      "balance": "20170.59422595",
-      "price": "61715.089939024176",
-      "profit": "539553246.179762587897648916",
-      "cost": "34683.243675098737758022",
-      "preCost": "34683.243675098737758022",
+      "balance": "20174.17943015",
+      "price": "62551.65748264157",
+      "profit": "557877484.05575165758469167273",
+      "cost": "34678.721446499523744726",
+      "preCost": "34678.721446499523744726",
       "chainName": "BTC"
     },
     {
@@ -30031,8 +30181,8 @@
         "reliability": ""
       },
       "balance": "20008.00352342",
-      "price": "61715.089939024176",
-      "profit": "1212155032.4770316750056277667",
+      "price": "62551.65748264157",
+      "profit": "1230466024.4251634007575667494",
       "cost": "1047.159145079849595015",
       "preCost": "1047.159145079849595015",
       "chainName": "BTC"
@@ -30052,8 +30202,8 @@
         "reliability": ""
       },
       "balance": "19414.43195091",
-      "price": "61715.089939024176",
-      "profit": "1196522600.34662063363280289435",
+      "price": "62551.65748264157",
+      "profit": "1214290365.4669407726612663877",
       "cost": "0.091903334432210662",
       "preCost": "0.091903334432210662",
       "chainName": "BTC"
@@ -30073,8 +30223,8 @@
         "reliability": ""
       },
       "balance": "18626.93815758",
-      "price": "61715.089939024176",
-      "profit": "-386880618.0780479106035928819",
+      "price": "62551.65748264157",
+      "profit": "-369833554.1757173884198883796",
       "cost": "82400.619049228485705378",
       "preCost": "82400.619049228485705378",
       "chainName": "BTC"
@@ -30093,11 +30243,11 @@
         "labelType": "Exchange",
         "reliability": ""
       },
-      "balance": "17512.67281473",
-      "price": "61715.089939024176",
-      "profit": "-226094523.70035424649857642497",
-      "cost": "74040.817595628234895167",
-      "preCost": "74040.817595628234895167",
+      "balance": "17677.22130319",
+      "price": "62551.65748264157",
+      "profit": "-209435140.82114144675469714283",
+      "cost": "73190.566336665192421582",
+      "preCost": "73190.566336665192421582",
       "chainName": "BTC"
     },
     {
@@ -30115,8 +30265,8 @@
         "reliability": ""
       },
       "balance": "16500.0050033",
-      "price": "61715.089939024176",
-      "profit": "-144774296.8382444749060103745",
+      "price": "62551.65748264157",
+      "profit": "-129673766.772568253145237514",
       "cost": "70404.863840631208056872",
       "preCost": "70404.863840631208056872",
       "chainName": "BTC"
@@ -30136,8 +30286,8 @@
         "reliability": ""
       },
       "balance": "16400.04538752",
-      "price": "61715.089939024176",
-      "profit": "-429889279.444244650279505226",
+      "price": "62551.65748264157",
+      "profit": "-414880230.7558854320437581348",
       "cost": "87843.355090131176289565",
       "preCost": "87843.355090131176289565",
       "chainName": "BTC"
@@ -30157,8 +30307,8 @@
         "reliability": ""
       },
       "balance": "16306.62957123",
-      "price": "61715.089939024176",
-      "profit": "3869209.44037422778182066565",
+      "price": "62551.65748264157",
+      "profit": "18792765.5278394035016003182",
       "cost": "61393.388386907753935211",
       "preCost": "61393.388386907753935211",
       "chainName": "BTC"
@@ -30178,8 +30328,8 @@
         "reliability": ""
       },
       "balance": "16116.31675157",
-      "price": "61715.089939024176",
-      "profit": "-500768364.57834863725721122185",
+      "price": "62551.65748264157",
+      "profit": "-486018979.6171700706645901564",
       "cost": "92702.801368389274965446",
       "preCost": "92702.801368389274965446",
       "chainName": "BTC"
@@ -30199,345 +30349,1571 @@
         "reliability": ""
       },
       "balance": "15745.55998436",
-      "price": "61715.089939024176",
-      "profit": "842959664.2017256810121691594",
+      "price": "62551.65748264157",
+      "profit": "857369738.737896024846065966",
       "cost": "8094.325969563439418538",
       "preCost": "8094.325969563439418538",
       "chainName": "BTC"
     }
   ],
   "fundSnapshot": {
-    "updateTime": 1783064400000,
+    "updateTime": 1783155300000,
     "vsTokenId": "1",
     "symbol": "BTC",
     "name": "Bitcoin",
-    "coinPrice": "61761.64",
+    "coinPrice": "62619.17",
     "hasSpotGoods": true,
-    "spotMaxInflow": "158048532.72809985",
+    "spotMaxInflow": "204515256.47611675",
     "spotGoodsList": [
       {
         "timeRange": "m5",
         "timeParticleEnum": 5,
-        "tradeInflow": "2385481.3755888985",
-        "tradeAmount": "13710146.098736905"
+        "tradeInflow": "40040.46648919975",
+        "tradeAmount": "1655180.4197254"
       },
       {
         "timeRange": "m15",
         "timeParticleEnum": 15,
-        "tradeInflow": "2405890.142897604",
-        "tradeAmount": "40411285.172149174"
+        "tradeInflow": "887989.0192557996",
+        "tradeAmount": "8033406.3960544"
       },
       {
         "timeRange": "m30",
         "timeParticleEnum": 30,
-        "tradeInflow": "1784128.0943522041",
-        "tradeAmount": "44509798.421310164"
+        "tradeInflow": "-170303.2434621019",
+        "tradeAmount": "15825514.235618299"
       },
       {
         "timeRange": "H1",
         "timeParticleEnum": 101,
-        "tradeInflow": "1448742.9338820048",
-        "tradeAmount": "54317582.001956165"
+        "tradeInflow": "496631.241462698",
+        "tradeAmount": "22543363.4583475"
       },
       {
         "timeRange": "H2",
         "timeParticleEnum": 102,
-        "tradeInflow": "-200363.90821647976",
-        "tradeAmount": "112825800.91654533"
+        "tradeInflow": "5158989.212820597",
+        "tradeAmount": "57569621.18997284"
       },
       {
         "timeRange": "H4",
         "timeParticleEnum": 104,
-        "tradeInflow": "-8796655.152050877",
-        "tradeAmount": "228135429.64841363"
+        "tradeInflow": "1928228.0465524015",
+        "tradeAmount": "113207377.51247202"
       },
       {
         "timeRange": "H8",
         "timeParticleEnum": 108,
-        "tradeInflow": "-18477841.154343784",
-        "tradeAmount": "398123285.6112859"
+        "tradeInflow": "-17522405.97052519",
+        "tradeAmount": "226370536.70634854"
       },
       {
         "timeRange": "H12",
         "timeParticleEnum": 112,
-        "tradeInflow": "-11692672.853347281",
-        "tradeAmount": "533062219.8844727"
+        "tradeInflow": "-16139584.774472205",
+        "tradeAmount": "390214860.8856714"
       },
       {
         "timeRange": "H24",
         "timeParticleEnum": 124,
-        "tradeInflow": "69008821.12822229",
-        "tradeAmount": "1649200705.6396585"
+        "tradeInflow": "55326322.70716956",
+        "tradeAmount": "943397356.1342721"
       },
       {
         "timeRange": "D2",
         "timeParticleEnum": 202,
-        "tradeInflow": "158048532.72809985",
-        "tradeAmount": "3556865866.278615"
+        "tradeInflow": "107392408.51917471",
+        "tradeAmount": "2578731453.043891"
       },
       {
         "timeRange": "D3",
         "timeParticleEnum": 203,
-        "tradeInflow": "7338375.957752572",
-        "tradeAmount": "5419458086.524506"
+        "tradeInflow": "204515256.47611675",
+        "tradeAmount": "4514430691.183102"
       },
       {
         "timeRange": "D5",
         "timeParticleEnum": 205,
-        "tradeInflow": "-29425427.56596023",
-        "tradeAmount": "8126398056.980242"
+        "tradeInflow": "48522433.5237072",
+        "tradeAmount": "8069162393.279145"
       },
       {
         "timeRange": "D7",
         "timeParticleEnum": 207,
-        "tradeInflow": "1418497.8135403066",
-        "tradeAmount": "10519165608.56869"
+        "tradeInflow": "11801495.473308412",
+        "tradeAmount": "9745965272.556805"
       },
       {
         "timeRange": "D10",
         "timeParticleEnum": 210,
-        "tradeInflow": "-294882751.40212655",
-        "tradeAmount": "17617992337.297207"
+        "tradeInflow": "-180900519.00767812",
+        "tradeAmount": "16988975420.708635"
       },
       {
         "timeRange": "D15",
         "timeParticleEnum": 215,
-        "tradeInflow": "-463764303.65325975",
-        "tradeAmount": "23159645913.3132"
+        "tradeInflow": "-362689165.27417755",
+        "tradeAmount": "22656651808.243366"
       },
       {
         "timeRange": "D30",
         "timeParticleEnum": 230,
-        "tradeInflow": "-1287914503.7653744",
-        "tradeAmount": "53525584525.702515"
+        "tradeInflow": "-887192230.6008687",
+        "tradeAmount": "50875611416.37666"
       },
       {
         "timeRange": "D40",
         "timeParticleEnum": 240,
-        "tradeInflow": "-1524163027.407024",
-        "tradeAmount": "70648788667.97777"
+        "tradeInflow": "-1532413863.689065",
+        "tradeAmount": "70513862866.09673"
       },
       {
         "timeRange": "D50",
         "timeParticleEnum": 250,
-        "tradeInflow": "-1800021049.6985621",
-        "tradeAmount": "85003912782.03288"
+        "tradeInflow": "-1890786193.389718",
+        "tradeAmount": "83508839144.76811"
       },
       {
         "timeRange": "D60",
         "timeParticleEnum": 260,
-        "tradeInflow": "-1839124526.0026436",
-        "tradeAmount": "101630008464.32861"
+        "tradeInflow": "-1776543828.6486723",
+        "tradeAmount": "99953600706.33162"
       },
       {
         "timeRange": "D90",
         "timeParticleEnum": 290,
-        "tradeInflow": "-1527965751.318645",
-        "tradeAmount": "148980171678.52072"
+        "tradeInflow": "-1478907227.0698988",
+        "tradeAmount": "149260884602.69745"
       },
       {
         "timeRange": "D120",
         "timeParticleEnum": 2120,
-        "tradeInflow": "-2233499752.499152",
-        "tradeAmount": "206838915403.1201"
+        "tradeInflow": "-2010005585.9555554",
+        "tradeAmount": "205263334861.05762"
       },
       {
         "timeRange": "D150",
         "timeParticleEnum": 2150,
-        "tradeInflow": "-5244718810.597916",
-        "tradeAmount": "290692774963.37823"
+        "tradeInflow": "-4719231060.135454",
+        "tradeAmount": "287315513049.59705"
       },
       {
         "timeRange": "D180",
         "timeParticleEnum": 2180,
-        "tradeInflow": "-6303582748.758199",
-        "tradeAmount": "391958025532.6266"
+        "tradeInflow": "-6313553598.655254",
+        "tradeAmount": "390041075056.49554"
       },
       {
         "timeRange": "Y1",
         "timeParticleEnum": 401,
-        "tradeInflow": "-24063046154.044033",
-        "tradeAmount": "1273601709257.4067"
+        "tradeInflow": "-24031283855.16629",
+        "tradeAmount": "1270176546307.9438"
       },
       {
         "timeRange": "Y2",
         "timeParticleEnum": 402,
-        "tradeInflow": "-43728860433.69294",
-        "tradeAmount": "3116601297327.3623"
+        "tradeInflow": "-43365680833.30449",
+        "tradeAmount": "3111324183777.927"
       },
       {
         "timeRange": "Y3",
         "timeParticleEnum": 403,
-        "tradeInflow": "-49031678844.37584",
-        "tradeAmount": "4670347778931.443"
+        "tradeInflow": "-48826879362.22609",
+        "tradeAmount": "4670294890313.313"
       }
     ],
     "hasContract": true,
-    "contractMaxInflow": "3212029346.2145977",
+    "contractMaxInflow": "3594660244.888098",
     "contractList": [
       {
         "timeRange": "m5",
         "timeParticleEnum": 5,
-        "tradeInflow": "-5508581.0589000005",
-        "tradeAmount": "29013173.359700006"
+        "tradeInflow": "-593842.7759999998",
+        "tradeAmount": "11681176.456000004"
       },
       {
         "timeRange": "m15",
         "timeParticleEnum": 15,
-        "tradeInflow": "-13679891.277800001",
-        "tradeAmount": "80369642.0042"
+        "tradeInflow": "4292132.650000001",
+        "tradeAmount": "42623726.29800001"
       },
       {
         "timeRange": "m30",
         "timeParticleEnum": 30,
-        "tradeInflow": "-10119333.313900001",
-        "tradeAmount": "109423795.99330002"
+        "tradeInflow": "15318118.947599972",
+        "tradeAmount": "139552805.9358"
       },
       {
         "timeRange": "H1",
         "timeParticleEnum": 101,
-        "tradeInflow": "-6379475.870599996",
-        "tradeAmount": "220127607.99539992"
+        "tradeInflow": "14318079.169699987",
+        "tradeAmount": "193944465.08170003"
       },
       {
         "timeRange": "H2",
         "timeParticleEnum": 102,
-        "tradeInflow": "-19918505.973899994",
-        "tradeAmount": "511796604.7221001"
+        "tradeInflow": "32662816.703999963",
+        "tradeAmount": "352844420.79579985"
       },
       {
         "timeRange": "H4",
         "timeParticleEnum": 104,
-        "tradeInflow": "30127118.18640001",
-        "tradeAmount": "1125260270.8754"
+        "tradeInflow": "-41831550.89409998",
+        "tradeAmount": "791292796.4005"
       },
       {
         "timeRange": "H8",
         "timeParticleEnum": 108,
-        "tradeInflow": "59368913.41520002",
-        "tradeAmount": "2268102684.2022004"
+        "tradeInflow": "-76684094.573",
+        "tradeAmount": "1685978651.4824004"
       },
       {
         "timeRange": "H12",
         "timeParticleEnum": 112,
-        "tradeInflow": "-75883637.35130005",
-        "tradeAmount": "3319555441.204899"
+        "tradeInflow": "-31223972.44259999",
+        "tradeAmount": "3026739794.9034023"
       },
       {
         "timeRange": "H24",
         "timeParticleEnum": 124,
-        "tradeInflow": "242588028.05729985",
-        "tradeAmount": "14577232203.366299"
+        "tradeInflow": "413382665.3163",
+        "tradeAmount": "9422801014.534897"
       },
       {
         "timeRange": "D2",
         "timeParticleEnum": 202,
-        "tradeInflow": "711195735.5776",
-        "tradeAmount": "32687211983.63562"
+        "tradeInflow": "575626415.6166997",
+        "tradeAmount": "23685243586.390697"
       },
       {
         "timeRange": "D3",
         "timeParticleEnum": 203,
-        "tradeInflow": "120477705.04170012",
-        "tradeAmount": "49363615574.00429"
+        "tradeInflow": "1113820631.8226995",
+        "tradeAmount": "42064130542.57573"
       },
       {
         "timeRange": "D5",
         "timeParticleEnum": 205,
-        "tradeInflow": "-276936541.5058002",
-        "tradeAmount": "75647196702.79897"
+        "tradeInflow": "347568083.9767999",
+        "tradeAmount": "74454702006.21803"
       },
       {
         "timeRange": "D7",
         "timeParticleEnum": 207,
-        "tradeInflow": "-485463414.1225005",
-        "tradeAmount": "96905321117.31873"
+        "tradeInflow": "210468126.50379947",
+        "tradeAmount": "90946878517.57935"
       },
       {
         "timeRange": "D10",
         "timeParticleEnum": 210,
-        "tradeInflow": "-1523181569.5803003",
-        "tradeAmount": "155505737845.2445"
+        "tradeInflow": "-993648037.7241004",
+        "tradeAmount": "154085472487.41895"
       },
       {
         "timeRange": "D15",
         "timeParticleEnum": 215,
-        "tradeInflow": "-1275428096.4214008",
-        "tradeAmount": "207820845369.96964"
+        "tradeInflow": "-538769138.5600008",
+        "tradeAmount": "202935410979.32654"
       },
       {
         "timeRange": "D30",
         "timeParticleEnum": 230,
-        "tradeInflow": "-1676051241.0269015",
-        "tradeAmount": "458748539136.58105"
+        "tradeInflow": "123771625.7805985",
+        "tradeAmount": "436666596600.49225"
       },
       {
         "timeRange": "D40",
         "timeParticleEnum": 240,
-        "tradeInflow": "-4231153460.7138014",
-        "tradeAmount": "603136636058.0393"
+        "tradeInflow": "-4227694130.1457",
+        "tradeAmount": "602590370436.0726"
       },
       {
         "timeRange": "D50",
         "timeParticleEnum": 250,
-        "tradeInflow": "-5198141451.780003",
-        "tradeAmount": "730097127802.0964"
+        "tradeInflow": "-5513800874.859303",
+        "tradeAmount": "719797525957.2571"
       },
       {
         "timeRange": "D60",
         "timeParticleEnum": 260,
-        "tradeInflow": "-4039542224.6993017",
-        "tradeAmount": "871362166238.8435"
+        "tradeInflow": "-3350379613.448601",
+        "tradeAmount": "856212682200.7896"
       },
       {
         "timeRange": "D90",
         "timeParticleEnum": 290,
-        "tradeInflow": "3212029346.2145977",
-        "tradeAmount": "1273927897514.8025"
+        "tradeInflow": "3594660244.888098",
+        "tradeAmount": "1278496171091.1692"
       },
       {
         "timeRange": "D120",
         "timeParticleEnum": 2120,
-        "tradeInflow": "4441332197.310997",
-        "tradeAmount": "1740257656841.4219"
+        "tradeInflow": "5036702809.362296",
+        "tradeAmount": "1730155550707.3818"
       },
       {
         "timeRange": "D150",
         "timeParticleEnum": 2150,
-        "tradeInflow": "4193983862.1409006",
-        "tradeAmount": "2317129601522.604"
+        "tradeInflow": "5165010515.3578",
+        "tradeAmount": "2298815845193.93"
       },
       {
         "timeRange": "D180",
         "timeParticleEnum": 2180,
-        "tradeInflow": "-1793599383.680298",
-        "tradeAmount": "2780060006402.611"
+        "tradeInflow": "-1543946385.777194",
+        "tradeAmount": "2777511658233.274"
       },
       {
         "timeRange": "Y1",
         "timeParticleEnum": 401,
-        "tradeInflow": "-47656969408.619896",
-        "tradeAmount": "6080216810378.908"
+        "tradeInflow": "-47486106815.50049",
+        "tradeAmount": "6071704411370.036"
       },
       {
         "timeRange": "Y2",
         "timeParticleEnum": 402,
-        "tradeInflow": "-80853355127.43195",
-        "tradeAmount": "13336808436256.297"
+        "tradeInflow": "-79151323182.1561",
+        "tradeAmount": "13318127378461.754"
       },
       {
         "timeRange": "Y3",
         "timeParticleEnum": 403,
-        "tradeInflow": "-115889981498.54977",
-        "tradeAmount": "18418766859790.195"
+        "tradeInflow": "-115267525026.28915",
+        "tradeAmount": "18419263021563.754"
       }
     ]
   },
+  "aiMessages": {
+    "funds": [
+      {
+        "updateTime": 1783154400000,
+        "vsTokenId": "1",
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "tradeType": 2,
+        "price": "62616.04",
+        "percentChange24h": 1.80582499,
+        "fundsMovementType": 2
+      },
+      {
+        "updateTime": 1783149300000,
+        "vsTokenId": "1",
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "tradeType": 2,
+        "price": "62515.94",
+        "percentChange24h": 1.80582499,
+        "fundsMovementType": 2
+      },
+      {
+        "updateTime": 1783143600000,
+        "vsTokenId": "1",
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "tradeType": 2,
+        "price": "62515.46",
+        "percentChange24h": 1.80582499,
+        "fundsMovementType": 8
+      },
+      {
+        "updateTime": 1783136100000,
+        "vsTokenId": "1",
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "tradeType": 2,
+        "price": "62684",
+        "percentChange24h": 1.80582499,
+        "fundsMovementType": 2
+      },
+      {
+        "updateTime": 1783133100000,
+        "vsTokenId": "1",
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "tradeType": 2,
+        "price": "62489.97",
+        "percentChange24h": 1.80582499,
+        "fundsMovementType": 2
+      },
+      {
+        "updateTime": 1783132200000,
+        "vsTokenId": "1",
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "tradeType": 2,
+        "price": "62472.23",
+        "percentChange24h": 1.80582499,
+        "fundsMovementType": 2
+      },
+      {
+        "updateTime": 1783131000000,
+        "vsTokenId": "1",
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "tradeType": 2,
+        "price": "62530",
+        "percentChange24h": 1.80582499,
+        "fundsMovementType": 8
+      },
+      {
+        "updateTime": 1783123500000,
+        "vsTokenId": "1",
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "tradeType": 2,
+        "price": "62598",
+        "percentChange24h": 1.80582499,
+        "fundsMovementType": 11
+      },
+      {
+        "updateTime": 1783123500000,
+        "vsTokenId": "1",
+        "symbol": "BTC",
+        "name": "Bitcoin",
+        "tradeType": 2,
+        "price": "62598",
+        "percentChange24h": 1.80582499,
+        "fundsMovementType": 10
+      }
+    ]
+  },
+  "topHolderAddressTrends": [
+    {
+      "address": "34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo",
+      "balanceTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "balance": "0.00000546",
+          "price": "60863.305182044154"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780761600000,
+          "balance": "0.00576502",
+          "price": "63303.82022098291"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781193600000,
+          "balance": "0.00580878",
+          "price": "63541.07414914376"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782230400000,
+          "balance": "0.00581423",
+          "price": "60979.87291053187"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783008000000,
+          "balance": "0.00581969",
+          "price": "62555.392811132326"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783094400000,
+          "balance": "248597.59057074",
+          "price": "62518.654243055185"
+        }
+      ],
+      "profitLossTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "total": "0",
+          "day": "0",
+          "price": "60863.305182044154"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780761600000,
+          "total": "0.01332521211260560776",
+          "day": "0.01332521211260560776",
+          "price": "63303.82022098291"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780848000000,
+          "total": "-1.30872325292665771454",
+          "day": "-1.3220484650392633223",
+          "price": "63074.497778903045"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780934400000,
+          "total": "-9.37770489840309939744",
+          "day": "-8.0689816454764416829",
+          "price": "61674.85273942765"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781020800000,
+          "total": "-10.65245525308220706404",
+          "day": "-1.2747503546791076666",
+          "price": "61453.73462454182"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781107200000,
+          "total": "1.44786942023823363256",
+          "day": "12.1003246733204406966",
+          "price": "63552.65616745415"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781193600000,
+          "total": "1.38109885303846907476",
+          "day": "-0.0667705671997645578",
+          "price": "63541.07414914376"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781280000000,
+          "total": "6.41032900200004565026",
+          "day": "5.0292301489615765755",
+          "price": "64406.872156463985"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781366400000,
+          "total": "14.00597487920423832976",
+          "day": "7.5956458772041926795",
+          "price": "65714.48681517101"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781452800000,
+          "total": "17.33116419012190198996",
+          "day": "3.3251893109176636602",
+          "price": "66286.9287583876"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781539200000,
+          "total": "13.39613953472896852996",
+          "day": "-3.93502465539293346",
+          "price": "65609.5017159806"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781625600000,
+          "total": "6.59045123422850210356",
+          "day": "-6.8056883005004664264",
+          "price": "64437.88077311472"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781712000000,
+          "total": "-2.44926228596900062724",
+          "day": "-9.0397135201975027308",
+          "price": "62881.66526483286"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781798400000,
+          "total": "1.08563228034071258296",
+          "day": "3.5348945663097132102",
+          "price": "63490.20863647195"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781884800000,
+          "total": "5.48265984590614478536",
+          "day": "4.3970275655654322024",
+          "price": "64247.17095309703"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781971200000,
+          "total": "-0.40534229095504401284",
+          "day": "-5.8880021368611887982",
+          "price": "63233.53260961334"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782057600000,
+          "total": "3.77525534235906455416",
+          "day": "4.180597633314108567",
+          "price": "63953.23582325099"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782144000000,
+          "total": "-3.73557338642240339624",
+          "day": "-7.5108287287814679504",
+          "price": "62660.22270710931"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782230400000,
+          "total": "-13.49635567778550531944",
+          "day": "-9.7607822913631019232",
+          "price": "60979.87291053187"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782316800000,
+          "total": "-20.92629285639249133119",
+          "day": "-7.42993717860698601175",
+          "price": "59701.984492184645"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782403200000,
+          "total": "-19.11102734604631569772",
+          "day": "1.81526551034617563347",
+          "price": "60014.195311217634"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782489600000,
+          "total": "-19.55026521792772324454",
+          "day": "-0.43923787188140754682",
+          "price": "59938.6499901895"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782576000000,
+          "total": "-22.12854453025069883279",
+          "day": "-2.57827931232297558825",
+          "price": "59495.207038616725"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782662400000,
+          "total": "-18.41141688327304757904",
+          "day": "3.71712764697765125375",
+          "price": "60134.52258804935"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782748800000,
+          "total": "-27.56968219267140214554",
+          "day": "-9.1582653093983545665",
+          "price": "58559.3758688108"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782835200000,
+          "total": "-19.40390715501865115724",
+          "day": "8.1657750376527509883",
+          "price": "59963.82237981101"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782921600000,
+          "total": "-10.51070268205708677129",
+          "day": "8.89320447296156438595",
+          "price": "61493.380803361775"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783008000000,
+          "total": "-4.33592060611731603056",
+          "day": "6.17478207593977074073",
+          "price": "62555.392811132326"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783094400000,
+          "total": "-4.54972768337017273685",
+          "day": "-0.21380707725285670629",
+          "price": "62518.654243055185"
+        }
+      ],
+      "holdTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "balance": "0.00000546",
+          "holding": "60863.305182044154",
+          "holdingPrice": "60863.305182044154",
+          "price": "60863.305182044154"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780761600000,
+          "balance": "0.00576502",
+          "holding": "63301.50883054322278161",
+          "holdingPrice": "63301.50883054322278161",
+          "price": "63303.82022098291"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781193600000,
+          "balance": "0.00580878",
+          "holding": "63303.313577554119993878",
+          "holdingPrice": "63303.313577554119993878",
+          "price": "63541.07414914376"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782230400000,
+          "balance": "0.00581423",
+          "holding": "63301.135687853287508327",
+          "holdingPrice": "63301.135687853287508327",
+          "price": "60979.87291053187"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783008000000,
+          "balance": "0.00581969",
+          "holding": "63300.436036135258463853",
+          "holdingPrice": "63300.436036135258463853",
+          "price": "62555.392811132326"
+        }
+      ],
+      "tradeCountTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "fromCount": "0",
+          "toCount": "1",
+          "fromAmount": "0",
+          "toAmount": "0.00000546",
+          "price": "60863.305182044154"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780761600000,
+          "fromCount": "0",
+          "toCount": "1",
+          "fromAmount": "0",
+          "toAmount": "0.00575956",
+          "price": "63303.82022098291"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781193600000,
+          "fromCount": "0",
+          "toCount": "1",
+          "fromAmount": "0",
+          "toAmount": "0.00004376",
+          "price": "63541.07414914376"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782230400000,
+          "fromCount": "0",
+          "toCount": "1",
+          "fromAmount": "0",
+          "toAmount": "0.00000545",
+          "price": "60979.87291053187"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783008000000,
+          "fromCount": "0",
+          "toCount": "1",
+          "fromAmount": "0",
+          "toAmount": "0.00000546",
+          "price": "62555.392811132326"
+        }
+      ]
+    },
+    {
+      "address": "3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6",
+      "balanceTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "balance": "0.00000546",
+          "price": "60863.305182044154"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783094400000,
+          "balance": "174934.29416806",
+          "price": "62518.654243055185"
+        }
+      ],
+      "profitLossTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "total": "0",
+          "day": "0",
+          "price": "60863.305182044154"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780761600000,
+          "total": "0.01332521211260560776",
+          "day": "0.01332521211260560776",
+          "price": "63303.82022098291"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780848000000,
+          "total": "0.01207311157884954486",
+          "day": "-0.0012521005337560629",
+          "price": "63074.497778903045"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780934400000,
+          "total": "0.00443104966331388816",
+          "day": "-0.0076420619155356567",
+          "price": "61674.85273942765"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781020800000,
+          "total": "0.00322374475603725636",
+          "day": "-0.0012073049072766318",
+          "price": "61453.73462454182"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781107200000,
+          "total": "0.01468385638033857816",
+          "day": "0.0114601116243013218",
+          "price": "63552.65616745415"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781193600000,
+          "total": "0.01462061856036384876",
+          "day": "-0.0000632378199747294",
+          "price": "63541.07414914376"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781280000000,
+          "total": "0.01934787568033227726",
+          "day": "0.0047272571199684285",
+          "price": "64406.872156463985"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781366400000,
+          "total": "0.02648745171687263376",
+          "day": "0.0071395760365403565",
+          "price": "65714.48681517101"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781452800000,
+          "total": "0.02961298472683521516",
+          "day": "0.0031255330099625814",
+          "price": "66286.9287583876"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781539200000,
+          "total": "0.02591423307529299516",
+          "day": "-0.00369875165154222",
+          "price": "65609.5017159806"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781625600000,
+          "total": "0.01951718272724529036",
+          "day": "-0.0063970503480477048",
+          "price": "64437.88077311472"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781712000000,
+          "total": "0.01102024605202633476",
+          "day": "-0.0084969366752189556",
+          "price": "62881.66526483286"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781798400000,
+          "total": "0.01434289286117576616",
+          "day": "0.0033226468091494314",
+          "price": "63490.20863647195"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781884800000,
+          "total": "0.01847590710994870296",
+          "day": "0.0041330142487729368",
+          "price": "64247.17095309703"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781971200000,
+          "total": "0.01294144175452775556",
+          "day": "-0.0055344653554209474",
+          "price": "63233.53260961334"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782057600000,
+          "total": "0.01687102130098932456",
+          "day": "0.003929579546461569",
+          "price": "63953.23582325099"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782144000000,
+          "total": "0.00981116968685575176",
+          "day": "-0.0070598516141335728",
+          "price": "62660.22270710931"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782230400000,
+          "total": "0.00063645979754292936",
+          "day": "-0.0091747098893128224",
+          "price": "60979.87291053187"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782316800000,
+          "total": "-0.00634081096663291914",
+          "day": "-0.0069772707641758485",
+          "price": "59701.984492184645"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782403200000,
+          "total": "-0.0046361398947127992",
+          "day": "0.00170467107192011994",
+          "price": "60014.195311217634"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782489600000,
+          "total": "-0.00504861734752641084",
+          "day": "-0.00041247745281361164",
+          "price": "59938.6499901895"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782576000000,
+          "total": "-0.00746981586311376234",
+          "day": "-0.0024211985155873515",
+          "price": "59495.207038616725"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782662400000,
+          "total": "-0.00397915296321162984",
+          "day": "0.0034906628999021325",
+          "price": "60134.52258804935"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782748800000,
+          "total": "-0.01257945405025411284",
+          "day": "-0.008600301087042483",
+          "price": "58559.3758688108"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782835200000,
+          "total": "-0.00491117610019296624",
+          "day": "0.0076682779500611466",
+          "price": "59963.82237981101"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782921600000,
+          "total": "0.00344021289239421066",
+          "day": "0.0083513889925871769",
+          "price": "61493.380803361775"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783008000000,
+          "total": "0.00923879845482141912",
+          "day": "0.00579858556242720846",
+          "price": "62555.392811132326"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783094400000,
+          "total": "0.00903820587312022926",
+          "day": "-0.00020059258170118986",
+          "price": "62518.654243055185"
+        }
+      ],
+      "holdTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "balance": "0.00000546",
+          "holding": "60863.305182044154",
+          "holdingPrice": "60863.305182044154",
+          "price": "60863.305182044154"
+        }
+      ],
+      "tradeCountTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "fromCount": "0",
+          "toCount": "1",
+          "fromAmount": "0",
+          "toAmount": "0.00000546",
+          "price": "60863.305182044154"
+        }
+      ]
+    },
+    {
+      "address": "bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2",
+      "balanceTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "balance": "0.00000637",
+          "price": "60863.305182044154"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781193600000,
+          "balance": "787.00003753",
+          "price": "63541.07414914376"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781884800000,
+          "balance": "787.00004705",
+          "price": "64247.17095309703"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783008000000,
+          "balance": "787.00005251",
+          "price": "62555.392811132326"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783094400000,
+          "balance": "140849.9853717",
+          "price": "62518.654243055185"
+        }
+      ],
+      "profitLossTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "total": "0",
+          "day": "0",
+          "price": "60863.305182044154"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780761600000,
+          "total": "0.01554608079803987572",
+          "day": "0.01554608079803987572",
+          "price": "63303.82022098291"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780848000000,
+          "total": "0.01408529684199113567",
+          "day": "-0.00146078395604874005",
+          "price": "63074.497778903045"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780934400000,
+          "total": "0.00516955794053286952",
+          "day": "-0.00891573890145826615",
+          "price": "61674.85273942765"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781020800000,
+          "total": "0.00376103554871013242",
+          "day": "-0.0014085223918227371",
+          "price": "61453.73462454182"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781107200000,
+          "total": "0.01713116577706167452",
+          "day": "0.0133701302283515421",
+          "price": "63552.65616745415"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781193600000,
+          "total": "0.01705738832042449022",
+          "day": "-0.0000737774566371843",
+          "price": "63541.07414914376"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781280000000,
+          "total": "681383.08131180461015253447",
+          "day": "681383.06425441628972804425",
+          "price": "64406.872156463985"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781366400000,
+          "total": "1710475.86678901142642718272",
+          "day": "1029092.78547720681627464825",
+          "price": "65714.48681517101"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781452800000,
+          "total": "2160987.69758421388534580542",
+          "day": "450511.8307952024589186227",
+          "price": "66286.9287583876"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781539200000,
+          "total": "1627852.58978606798381109542",
+          "day": "-533135.10779814590153471",
+          "price": "65609.5017159806"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781625600000,
+          "total": "705786.86377968643805461902",
+          "day": "-922065.7260063815457564764",
+          "price": "64437.88077311472"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781712000000,
+          "total": "-518954.79964290540776358678",
+          "day": "-1224741.6634225918458182058",
+          "price": "62881.66526483286"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781798400000,
+          "total": "-40031.14332430884014853908",
+          "day": "478923.6563185965676150477",
+          "price": "63490.20863647195"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781884800000,
+          "total": "555698.22826842486279071332",
+          "day": "595729.3715927337029392524",
+          "price": "64247.17095309703"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781971200000,
+          "total": "-242035.19574492322811690118",
+          "day": "-797733.4240133480909076145",
+          "price": "63233.53260961334"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782057600000,
+          "total": "324371.26724994352353453132",
+          "day": "566406.4629948667516514325",
+          "price": "63953.23582325099"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782144000000,
+          "total": "-693230.11598982575093151268",
+          "day": "-1017601.383239769274466044",
+          "price": "62660.22270710931"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782230400000,
+          "total": "-2015665.48495672895990006468",
+          "day": "-1322435.368966903208968552",
+          "price": "60979.87291053187"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782316800000,
+          "total": "-3021363.73032064511813700093",
+          "day": "-1005698.24536391615823693625",
+          "price": "59701.984492184645"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782403200000,
+          "total": "-2775653.80105216373963486848",
+          "day": "245709.92926848137850213245",
+          "price": "60014.195311217634"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782489600000,
+          "total": "-2835107.97225571255200857318",
+          "day": "-59454.1712035488123737047",
+          "price": "59938.6499901895"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782576000000,
+          "total": "-3184097.59600747734850763693",
+          "day": "-348989.62375176479649906375",
+          "price": "59495.207038616725"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782662400000,
+          "total": "-2680956.22852420487270263068",
+          "day": "503141.36748327247580500625",
+          "price": "60134.52258804935"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782748800000,
+          "total": "-3920596.77067559686287640818",
+          "day": "-1239640.5421513919901737775",
+          "price": "58559.3758688108"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782835200000,
+          "total": "-2815297.30043922325031652768",
+          "day": "1105299.4702363736125598805",
+          "price": "59963.82237981101"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1782921600000,
+          "total": "-1611534.74913904736725303443",
+          "day": "1203762.55130017588306349325",
+          "price": "61493.380803361775"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783008000000,
+          "total": "-775731.24905595876464860988",
+          "day": "835803.50008308860260442455",
+          "price": "62555.392811132326"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783094400000,
+          "total": "-804644.50406181094137928379",
+          "day": "-28913.25500585217673067391",
+          "price": "62518.654243055185"
+        }
+      ],
+      "holdTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "balance": "0.00000637",
+          "holding": "60863.305182044154",
+          "holdingPrice": "60863.305182044154",
+          "price": "60863.305182044154"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781193600000,
+          "balance": "787.00003753",
+          "holding": "63541.074127469824158829",
+          "holdingPrice": "63541.074127469824158829",
+          "price": "63541.07414914376"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781884800000,
+          "balance": "787.00004705",
+          "holding": "63541.074136011172796822",
+          "holdingPrice": "63541.074136011172796822",
+          "price": "64247.17095309703"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783008000000,
+          "balance": "787.00005251",
+          "holding": "63541.074129172774226613",
+          "holdingPrice": "63541.074129172774226613",
+          "price": "62555.392811132326"
+        }
+      ],
+      "tradeCountTrend": [
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1780675200000,
+          "fromCount": "0",
+          "toCount": "1",
+          "fromAmount": "0",
+          "toAmount": "0.00000637",
+          "price": "60863.305182044154"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781193600000,
+          "fromCount": "0",
+          "toCount": "1",
+          "fromAmount": "0",
+          "toAmount": "787.00003116",
+          "price": "63541.07414914376"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1781884800000,
+          "fromCount": "0",
+          "toCount": "1",
+          "fromAmount": "0",
+          "toAmount": "0.00000952",
+          "price": "64247.17095309703"
+        },
+        {
+          "vsTokenId": "1",
+          "symbol": "BTC",
+          "name": "Bitcoin",
+          "date": 1783008000000,
+          "fromCount": "0",
+          "toCount": "1",
+          "fromAmount": "0",
+          "toAmount": "0.00000546",
+          "price": "62555.392811132326"
+        }
+      ]
+    }
+  ],
   "snapshot": {
     "name": "valuescan_token_full__symbol=BTC",
-    "saved_at": "2026-07-03T07:42:11.163283+00:00",
+    "saved_at": "2026-07-04T08:58:12.431511+00:00",
     "origin": "live",
-    "history_id": "2026-07-03T07-42-11.163283+00-00",
-    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\valuescan_token_full__symbol=BTC\\2026-07-03T07-42-11.163283+00-00.json"
+    "history_id": "2026-07-04T08-58-12.431511+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\valuescan_token_full__symbol=BTC\\2026-07-04T08-58-12.431511+00-00.json"
   }
 }
