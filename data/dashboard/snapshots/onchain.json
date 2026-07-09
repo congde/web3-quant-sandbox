@@ -4,19 +4,19 @@
   "symbol": "BTC",
   "marketSentiment": {
     "fearGreed": {
-      "value": 20,
+      "value": 22,
       "label": "Extreme Fear",
-      "yesterday": 27,
-      "change": -7,
-      "timestamp": "1783468800"
+      "yesterday": 20,
+      "change": 2,
+      "timestamp": "1783555200"
     }
   },
   "valuescanChain": {},
   "snapshot": {
     "name": "onchain",
-    "saved_at": "2026-07-08T11:46:06.671540+00:00",
+    "saved_at": "2026-07-09T05:36:00.265480+00:00",
     "origin": "live",
-    "history_id": "2026-07-08T11-46-06.671540+00-00",
-    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\onchain\\2026-07-08T11-46-06.671540+00-00.json"
+    "history_id": "2026-07-09T05-36-00.265480+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\onchain\\2026-07-09T05-36-00.265480+00-00.json"
   }
 }

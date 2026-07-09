@@ -215,6 +215,61 @@ export interface Web3NewsPayload {
   message?: string;
 }
 
+export interface ResearchDraftGateDataset {
+  name: string;
+  active_layer?: "snapshot" | "fixture" | "none" | string;
+  active_source?: string | null;
+  snapshot_complete?: boolean;
+  fixture_complete?: boolean;
+  complete?: boolean;
+  saved_at?: string | null;
+  age_hours?: number | null;
+  stale?: boolean;
+  origin?: string | null;
+  history_count?: number;
+  snapshot_reason?: string;
+  fixture_reason?: string;
+}
+
+export interface ResearchDraftGatePayload {
+  ok: boolean;
+  draft_status: "draft_only" | string;
+  generated_at?: string;
+  stale_threshold_hours?: number;
+  complete?: number;
+  total?: number;
+  stale?: string[];
+  missing?: string[];
+  fallback?: string[];
+  datasets?: ResearchDraftGateDataset[];
+  decision?: "ready_for_human_review" | "downgrade_to_observation" | "stop_research" | string;
+  human_review_required?: boolean;
+  prohibited_actions?: string[];
+  source_note?: string;
+  message?: string;
+}
+
+export interface ResearchDraftSection {
+  id: string;
+  title: string;
+  items: string[];
+}
+
+export interface ResearchDraftPayload {
+  ok: boolean;
+  draft_status: "draft_only" | string;
+  generated_at?: string;
+  symbol?: string;
+  pair?: string;
+  kline_type?: string;
+  title?: string;
+  gate?: ResearchDraftGatePayload;
+  sections?: ResearchDraftSection[];
+  review_checklist?: string[];
+  human_review_required?: boolean;
+  prohibited_actions?: string[];
+  message?: string;
+}
 export interface RuntimeConfig {
   ok: boolean;
   upstream?: {

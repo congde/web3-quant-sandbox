@@ -96,3 +96,27 @@ def test_missing_asset_still_404(server: str) -> None:
     with pytest.raises(urllib.error.HTTPError) as exc:
         urllib.request.urlopen(f"{server}/assets/missing.js")
     assert exc.value.code == 404
+
+
+def test_research_draft_gate_api(server: str) -> None:
+    import json
+
+    with urllib.request.urlopen(f"{server}/api/dashboard/research-draft-gate?maxAgeHours=24") as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert payload.get("ok") is True
+    assert payload.get("draft_status") == "draft_only"
+    assert payload.get("human_review_required") is True
+    assert payload.get("datasets")
+
+def test_research_draft_api(server: str) -> None:
+    import json
+
+    with urllib.request.urlopen(f"{server}/api/dashboard/research-draft?symbol=BTC&type=1hour") as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert payload["ok"] is True
+    assert payload["draft_status"] == "draft_only"
+    assert payload["human_review_required"] is True
+    assert payload["sections"]
+    assert "place live orders" in payload["prohibited_actions"]

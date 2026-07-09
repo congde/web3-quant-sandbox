@@ -1,5 +1,16 @@
-import { ReloadOutlined, SafetyOutlined, SwapOutlined } from "@ant-design/icons";
-import { Alert, Button, Input, InputNumber, Segmented, Select, Table } from "antd";
+﻿import {
+  ApiOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  DashboardOutlined,
+  PlayCircleOutlined,
+  ReloadOutlined,
+  SafetyOutlined,
+  SwapOutlined,
+  ThunderboltOutlined,
+  WalletOutlined,
+} from "@ant-design/icons";
+import { Alert, Button, Input, InputNumber, Segmented, Select, Slider, Table, Tabs } from "antd";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +34,8 @@ const MAX_USD_DEFAULT = 2;
 
 type PickRow = DashboardPickItem & { group: "机会" | "资金" | "风险" };
 type EvidencePanel = "market" | "signal" | "risk" | "ledger" | "system";
+type ExecutionVenue = "cefi" | "defi";
+type OrderType = "market" | "limit";
 
 function baseFromPair(pair: string) {
   return pair.split(/[-/]/)[0]?.toUpperCase() || "BTC";
@@ -74,8 +87,13 @@ export default function LiveTradingPage() {
   const [symbol, setSymbol] = useState("BTC-USDT");
   const [klineType, setKlineType] = useState("1hour");
   const [side, setSide] = useState<"buy" | "sell">("buy");
+  const [venue, setVenue] = useState<ExecutionVenue>("defi");
+  const [orderType, setOrderType] = useState<OrderType>("market");
   const [usdAmount, setUsdAmount] = useState(1);
   const [maxUsd, setMaxUsd] = useState(MAX_USD_DEFAULT);
+  const [slippageTolerance, setSlippageTolerance] = useState(0.5);
+  const [latencyMs, setLatencyMs] = useState(220);
+  const [virtualCash, setVirtualCash] = useState(100000);
   const [confirmText, setConfirmText] = useState("");
   const [orderResult, setOrderResult] = useState<string>("");
   const [signal, setSignal] = useState<SignalAnalysisPayload | null>(null);
@@ -85,6 +103,10 @@ export default function LiveTradingPage() {
   const [pickRows, setPickRows] = useState<PickRow[]>([]);
   const [lastPrice, setLastPrice] = useState<number | null>(null);
   const [activePanel, setActivePanel] = useState<EvidencePanel>("market");
+  const [forkChain, setForkChain] = useState("Ethereum Mainnet");
+  const [gasGwei, setGasGwei] = useState(35);
+  const [replayTab, setReplayTab] = useState("orders");
+  const [zenMode, setZenMode] = useState(false);
 
   const riskRules = report?.fusion.risk_rules ?? report?.backtest.risk_rules ?? [];
   const riskChecks = report?.risk_checks ?? [];
@@ -93,14 +115,44 @@ export default function LiveTradingPage() {
   const assumptions = report?.backtest.assumptions ?? [];
   const metrics = report?.backtest.metrics;
   const fusion = report?.fusion;
+  const strategyReturn = metrics?.strategy_return_pct ?? 0;
+  const virtualEquity = virtualCash * (1 + strategyReturn / 100);
+  const poolLiquidity = 200000;
+  const cefiFee = usdAmount * 0.0005;
+  const gasFee = venue === "defi" ? Math.max(0.72, usdAmount * (gasGwei / 35000)) : 0;
+  const slippageImpact =
+    venue === "defi" ? Math.min(85, (usdAmount / poolLiquidity) * 100 * 1.7) : Math.min(5, (usdAmount / 1000000) * 100);
+  const mevPenalty = venue === "defi" && latencyMs > 400 ? usdAmount * 0.0009 : 0;
+  const benchmarkReturn = metrics?.buy_hold_return_pct ?? 0;
+  const alphaReturn = strategyReturn - benchmarkReturn;
+  const maxDrawdown = metrics?.maximum_drawdown_pct ?? 0;
+  const sharpeRatio = metrics?.sharpe_ratio ?? 0;
+  const estimatedCost = cefiFee + gasFee + mevPenalty + (usdAmount * slippageImpact) / 100;
+  const estimatedReceive = Math.max(0, usdAmount - estimatedCost);
+  const costWarnings = [
+    slippageImpact > slippageTolerance ? `滑点 ${slippageImpact.toFixed(2)}% 超过容忍度 ${slippageTolerance}%` : null,
+    usdAmount > poolLiquidity * 0.02 ? "订单额超过目标池 2%，建议拆单或改用限价模拟" : null,
+    latencyMs > 600 ? "模拟延迟较高，链上打包和 MEV 风险被放大" : null,
+  ].filter(Boolean);
   const sideMatchesSignal = signal?.signal && side === signal.signal.toLowerCase();
-  const hasHardBlock = rejections.length > 0 || riskChecks.some((check) => ["critical", "high"].includes(check.severity));
+  const hasHardBlock =
+    rejections.length > 0 ||
+    riskChecks.some((check) => ["critical", "high"].includes(check.severity)) ||
+    slippageImpact > slippageTolerance;
   const canSubmit =
     confirmText.trim().toUpperCase() === CONFIRM_TOKEN && usdAmount > 0 && usdAmount <= maxUsd && !hasHardBlock;
   const executionState = hasHardBlock ? "需要复核" : canSubmit ? "门禁就绪" : "等待确认";
   const klineFrames = Object.entries(signal?.kline ?? {});
   const klineMetrics = kline?.metrics;
   const chartPrice = lastPrice ?? signal?.market?.price ?? klineMetrics?.latestClose ?? null;
+  const replayRows = (report?.backtest.trades ?? []).slice(-6).map((trade, index) => ({
+    key: `${trade.date}-${trade.action}-${trade.price}-${index}`,
+    time: trade.date,
+    type: trade.action,
+    price: trade.price,
+    slippage: index % 4 === 0 ? slippageImpact : Math.max(0.01, slippageImpact / 2),
+    status: index % 4 === 0 && slippageImpact > slippageTolerance ? "深度不足阻断" : "sim filled",
+  }));
 
   const decisionSummary = useMemo(() => {
     if (!signal) {
@@ -174,11 +226,22 @@ export default function LiveTradingPage() {
         chartPrice ? `参考价 ${chartPrice}` : "无实时报价",
         `门禁: ${gate}`,
         plan?.stopLoss ? `计划止损 ${plan.stopLoss}` : "无 tradePlan 止损",
+        `${venue.toUpperCase()} / ${orderType}`,
+        `估算成本 ${formatUsd(estimatedCost)} / 到账 ${formatUsd(estimatedReceive)}`,
         `风险检查 ${riskChecks.length} 条 / 拒绝 ${rejections.length} 条`,
         "未连接交易所，订单未送出",
       ].join(" / "),
     );
   }
+
+
+  const sandboxModules = [
+    { icon: <WalletOutlined />, title: "本地账本", meta: `样本资金 ${formatUsd(virtualCash)}` },
+    { icon: <ApiOutlined />, title: "模拟撮合", meta: `${venue.toUpperCase()} ${orderType}` },
+    { icon: <ThunderboltOutlined />, title: "成本仿真", meta: `Gas ${formatUsd(gasFee)} / 滑点 ${slippageImpact.toFixed(2)}%` },
+    { icon: <SafetyOutlined />, title: "风控门禁", meta: hasHardBlock ? "阻断" : "可审查" },
+    { icon: <DashboardOutlined />, title: "绩效账本", meta: `权益 ${formatUsd(virtualEquity)}` },
+  ];
 
   const marketPanel = (
     <div className="live-panel-grid">
@@ -284,7 +347,7 @@ export default function LiveTradingPage() {
     <TradingPageShell
       eyebrow="Research Dry-Run Console"
       title="模拟交易工作台"
-      description="以 K 线主画布、信号情报、订单票据和证据面板组织模拟交易；这里只记录 dry-run，不连接真实账户。"
+      description="以 K 线主画布、信号情报、订单票据和证据面板组织单用户本地模拟交易；这里只记录 dry-run，不连接真实账户。"
       actions={
         <>
           <Button icon={<ReloadOutlined />} onClick={() => void loadContext()} loading={signalLoading}>
@@ -292,6 +355,9 @@ export default function LiveTradingPage() {
           </Button>
           <Button icon={<SafetyOutlined />} onClick={() => navigate("/risk")}>
             风控
+          </Button>
+          <Button icon={zenMode ? <EyeOutlined /> : <EyeInvisibleOutlined />} onClick={() => setZenMode((value) => !value)}>
+            Zen
           </Button>
         </>
       }
@@ -308,10 +374,20 @@ export default function LiveTradingPage() {
         type="warning"
         showIcon
         message="模拟交易保护"
-        description="教学沙箱不接交易所写接口。CONFIRM 只用于演练模拟研究流程；任何真实账户、钱包授权或订单提交都不属于本仓库能力范围。"
+        description="教学沙箱不接交易所写接口。CONFIRM 只用于演练单用户本地研究流程；任何真实账户、钱包授权、登录权限管理或订单提交都不属于本仓库能力范围。"
       />
 
-      <section className="live-trading-terminal">
+      <section className="live-sandbox-strip" aria-label="模拟交易模块">
+        {sandboxModules.map((item) => (
+          <div key={item.title}>
+            <span className="live-module-icon">{item.icon}</span>
+            <strong>{item.title}</strong>
+            <em>{item.meta}</em>
+          </div>
+        ))}
+      </section>
+
+      <section className={`live-trading-terminal${zenMode ? " is-zen" : ""}`}>
         <aside className="live-intel-rail">
           <div className="live-rail-header">
             <span>{symbol}</span>
@@ -319,10 +395,60 @@ export default function LiveTradingPage() {
           </div>
           <strong className="live-price">{formatUsd(chartPrice)}</strong>
           <p>{decisionSummary}</p>
+          <div className="live-sandbox-control">
+            <label className="live-trading-field">
+              <span>当前策略</span>
+              <Select
+                value="Uniswap_V3_Grid_v1.py"
+                options={[
+                  { value: "Uniswap_V3_Grid_v1.py", label: "Uniswap_V3_Grid_v1.py" },
+                  { value: "Momentum_Breakout.py", label: "Momentum_Breakout.py" },
+                ]}
+              />
+            </label>
+            <label className="live-trading-field">
+              <span>Fork 目标链</span>
+              <Select
+                value={forkChain}
+                onChange={setForkChain}
+                options={[
+                  { value: "Ethereum Mainnet", label: "Ethereum Mainnet" },
+                  { value: "Arbitrum", label: "Arbitrum" },
+                  { value: "BNB Chain", label: "BNB Chain" },
+                ]}
+              />
+            </label>
+            <label className="live-trading-field live-slider-field">
+              <span>网络延迟 {latencyMs}ms</span>
+              <Slider min={0} max={1200} step={50} value={latencyMs} onChange={setLatencyMs} />
+            </label>
+            <label className="live-trading-field live-slider-field">
+              <span>Gas Price {gasGwei} Gwei</span>
+              <Slider min={5} max={160} step={5} value={gasGwei} onChange={setGasGwei} />
+            </label>
+            <div className="live-sandbox-actions">
+              <Button type="primary" className="btn-gradient" icon={<PlayCircleOutlined />} onClick={submitDryRun}>
+                启动模拟
+              </Button>
+              <Button danger icon={<ReloadOutlined />} onClick={() => setVirtualCash(100000)}>
+                重置沙箱
+              </Button>
+            </div>
+          </div>
           <div className="live-rail-stats">
             <div><span>置信度</span><strong>{signal?.confidence != null ? `${signal.confidence}%` : "-"}</strong></div>
             <div><span>风险</span><strong>{hasHardBlock ? "阻断" : "可审查"}</strong></div>
             <div><span>机会雷达</span><strong>{pickSummary}</strong></div>
+          </div>
+          <div className="live-wallet-card">
+            <div>
+              <span>本地模拟账本</span>
+              <strong>{formatUsd(virtualEquity)}</strong>
+              <em>初始 {formatUsd(virtualCash)} / Gas 本单 {formatUsd(gasFee)}</em>
+            </div>
+            <Button size="small" icon={<ReloadOutlined />} onClick={() => setVirtualCash(100000)}>
+              回填样本资金
+            </Button>
           </div>
           <div className="live-pick-list">
             {pickRows.slice(0, 5).map((item, index) => (
@@ -338,9 +464,10 @@ export default function LiveTradingPage() {
         <main className="live-chart-stage">
           <div className="live-chart-toolbar">
             <div>
-              <span>Chart</span>
-              <strong>K 线与交易计划</strong>
+              <span>{symbol} / {forkChain}</span>
+              <strong>{formatUsd(chartPrice)} <em className={signal?.market?.changeRate24h && signal.market.changeRate24h >= 0 ? "live-up" : "live-down"}>{formatPct(signal?.market?.changeRate24h)}</em></strong>
             </div>
+            <div className="live-sync-status"><i /> Live Syncing</div>
             <Select
               size="small"
               value={klineType}
@@ -355,6 +482,10 @@ export default function LiveTradingPage() {
             />
           </div>
           <KlineAnalysisChart candles={kline?.candles ?? []} tradePlan={signal?.tradePlan ?? null} height={500} className="live-main-chart" />
+          <div className="live-execution-markers">
+            <span className="buy">B (Sim) {formatUsd(signal?.tradePlan?.entryLow ?? chartPrice)}</span>
+            <span className="sell">S (Sim) {formatUsd(signal?.tradePlan?.target1 ?? chartPrice)}</span>
+          </div>
           <div className="live-kline-metrics">
             <div><span>RSI</span><strong>{klineMetrics?.rsi ?? "-"}</strong></div>
             <div><span>支撑</span><strong>{formatUsd(klineMetrics?.support20)}</strong></div>
@@ -363,9 +494,53 @@ export default function LiveTradingPage() {
             <div><span>区间位置</span><strong>{formatPct(klineMetrics?.rangePositionPct)}</strong></div>
             <div><span>行情</span><strong>{klineMetrics?.regime ?? kline?.trend ?? "-"}</strong></div>
           </div>
+          <Tabs
+            className="live-replay-tabs"
+            activeKey={replayTab}
+            onChange={setReplayTab}
+            items={[
+              {
+                key: "orders",
+                label: `虚拟当前挂单 (${costWarnings.length ? 1 : 0})`,
+                children: <Table className="trading-ant-table live-replay-table" pagination={false} rowKey="key" dataSource={replayRows} columns={[
+                  { title: "时间/区块", dataIndex: "time" },
+                  { title: "类型", dataIndex: "type" },
+                  { title: "模拟成交价", dataIndex: "price", render: (value) => formatUsd(Number(value)) },
+                  { title: "模拟执行滑点", dataIndex: "slippage", render: (value) => `${Number(value).toFixed(2)}%` },
+                  { title: "状态", dataIndex: "status" },
+                ]} rowClassName={(row) => row.status.includes("阻断") ? "live-ghost-order" : ""} />,
+              },
+              { key: "fills", label: `模拟历史成交 (${report?.backtest.trades?.length ?? 0})`, children: ledgerPanel },
+              { key: "gas", label: "链上 Gas 账单", children: <div className="live-gas-bill">Gas {formatUsd(gasFee)} / MEV {formatUsd(mevPenalty)} / Latency {latencyMs}ms / Base {gasGwei} Gwei</div> },
+            ]}
+          />
         </main>
 
         <aside className="live-order-ticket">
+          <div className="live-ledger-card">
+            <div>
+              <span>本地模拟净值</span>
+              <strong>{formatUsd(virtualEquity)}</strong>
+              <em>含模拟 Gas 扣除 -{formatUsd(gasFee)}</em>
+            </div>
+            <Button size="small" icon={<ReloadOutlined />} onClick={() => setVirtualCash(100000)}>
+              回填样本资金
+            </Button>
+          </div>
+          <div className="live-kpi-matrix">
+            <div><span>收益率</span><strong className="live-up">{formatPct(strategyReturn)}</strong></div>
+            <div><span>MDD</span><strong className={Math.abs(maxDrawdown) <= 5 ? "live-up" : "live-down"}>{formatPct(maxDrawdown)}</strong></div>
+            <div><span>Sharpe</span><strong>{sharpeRatio.toFixed(2)}</strong></div>
+            <div><span>Alpha</span><strong className={alphaReturn >= 0 ? "live-up" : "live-down"}>{formatPct(alphaReturn)}</strong></div>
+          </div>
+          <div className="live-benchmark-card">
+            <span>Alpha Benchmark</span>
+            <svg viewBox="0 0 220 74" role="img" aria-label="策略与买入持有基准线">
+              <polyline className="bench-hold" points="0,56 44,52 88,46 132,38 176,31 220,26" />
+              <polyline className="bench-strategy" points="0,58 44,48 88,52 132,34 176,22 220,16" />
+            </svg>
+            <em>紫线策略 / 灰线 Buy & Hold</em>
+          </div>
           <div className="live-ticket-header">
             <span>Dry-run Ticket</span>
             <StatusPill tone={canSubmit ? "profit" : hasHardBlock ? "loss" : "neutral"}>{executionState}</StatusPill>
@@ -380,6 +555,28 @@ export default function LiveTradingPage() {
               <Select value={side} onChange={setSide} options={[{ value: "buy", label: "buy" }, { value: "sell", label: "sell" }]} />
             </label>
             <label className="live-trading-field">
+              <span>场景</span>
+              <Select
+                value={venue}
+                onChange={setVenue}
+                options={[
+                  { value: "defi", label: "DeFi / AMM" },
+                  { value: "cefi", label: "CeFi / Orderbook" },
+                ]}
+              />
+            </label>
+            <label className="live-trading-field">
+              <span>订单类型</span>
+              <Select
+                value={orderType}
+                onChange={setOrderType}
+                options={[
+                  { value: "market", label: "market" },
+                  { value: "limit", label: "limit" },
+                ]}
+              />
+            </label>
+            <label className="live-trading-field">
               <span>金额 USDT</span>
               <InputNumber min={0.1} step={0.1} value={usdAmount} onChange={(value) => setUsdAmount(Number(value) || 0)} />
             </label>
@@ -391,7 +588,27 @@ export default function LiveTradingPage() {
               <span>确认词</span>
               <Input placeholder={CONFIRM_TOKEN} value={confirmText} onChange={(event) => setConfirmText(event.target.value)} />
             </label>
+            <label className="live-trading-field">
+              <span>滑点容忍 %</span>
+              <InputNumber min={0.05} step={0.05} value={slippageTolerance} onChange={(value) => setSlippageTolerance(Number(value) || 0.05)} />
+            </label>
+            <label className="live-trading-field">
+              <span>延迟 ms</span>
+              <InputNumber min={0} step={50} value={latencyMs} onChange={(value) => setLatencyMs(Number(value) || 0)} />
+            </label>
           </div>
+          <div className="live-cost-simulator">
+            <div><span>手续费</span><strong>{formatUsd(cefiFee)}</strong></div>
+            <div><span>Gas</span><strong>{formatUsd(gasFee)}</strong></div>
+            <div><span>滑点</span><strong>{slippageImpact.toFixed(2)}%</strong></div>
+            <div><span>MEV</span><strong>{formatUsd(mevPenalty)}</strong></div>
+            <div className="live-cost-wide"><span>估算到账</span><strong>{formatUsd(estimatedReceive)}</strong></div>
+          </div>
+          {costWarnings.length > 0 && (
+            <div className="live-cost-warning">
+              {costWarnings.map((warning) => <span key={warning}>{warning}</span>)}
+            </div>
+          )}
           <div className="live-order-summary">
             <div><span>计划方向</span><strong>{signal?.tradePlan?.direction ?? signal?.signal ?? "-"}</strong></div>
             <div><span>入场</span><strong>{signal?.tradePlan?.entryLow ?? "-"} / {signal?.tradePlan?.entryHigh ?? "-"}</strong></div>
@@ -425,3 +642,11 @@ export default function LiveTradingPage() {
     </TradingPageShell>
   );
 }
+
+
+
+
+
+
+
+

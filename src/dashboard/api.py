@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from typing import Any, Callable
 
 from config.env import env_status, load_env
@@ -604,6 +605,245 @@ def snapshots_status() -> dict[str, Any]:
     }
 
 
+def _parse_snapshot_time(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def research_draft_gate(*, max_age_hours: float = 24.0) -> dict[str, Any]:
+    from dashboard.catalog import SNAPSHOT_NAMES, offline_status
+    from dashboard.snapshot import list_snapshots
+
+    status = offline_status()
+    snapshots = {row["name"]: row for row in list_snapshots()}
+    now = datetime.now(timezone.utc)
+    stale: list[str] = []
+    missing: list[str] = []
+    fallback: list[str] = []
+    datasets: list[dict[str, Any]] = []
+
+    for name in SNAPSHOT_NAMES:
+        item = status["datasets"][name]
+        row = snapshots.get(name, {})
+        active_layer = item.get("active_layer", "none")
+        snapshot_complete = bool((item.get("snapshot") or {}).get("complete"))
+        fixture_complete = bool((item.get("fixture") or {}).get("complete"))
+        if not snapshot_complete and not fixture_complete:
+            missing.append(name)
+        if active_layer != "snapshot":
+            fallback.append(name)
+
+        saved_at = row.get("saved_at")
+        saved_time = _parse_snapshot_time(saved_at)
+        age_hours = None
+        is_stale = False
+        if saved_time is None:
+            is_stale = True
+        else:
+            age_hours = round((now - saved_time).total_seconds() / 3600, 1)
+            is_stale = age_hours > max_age_hours
+        if is_stale:
+            stale.append(name)
+
+        datasets.append(
+            {
+                "name": name,
+                "active_layer": active_layer,
+                "active_source": item.get("active_source"),
+                "snapshot_complete": snapshot_complete,
+                "fixture_complete": fixture_complete,
+                "complete": snapshot_complete or fixture_complete,
+                "saved_at": saved_at,
+                "age_hours": age_hours,
+                "stale": is_stale,
+                "origin": row.get("origin"),
+                "history_count": row.get("history_count", 0),
+                "snapshot_reason": (item.get("snapshot") or {}).get("reason", ""),
+                "fixture_reason": (item.get("fixture") or {}).get("reason", ""),
+            }
+        )
+
+    if missing:
+        decision = "stop_research"
+    elif stale or fallback:
+        decision = "downgrade_to_observation"
+    else:
+        decision = "ready_for_human_review"
+
+    return {
+        "ok": True,
+        "draft_status": "draft_only",
+        "generated_at": now.replace(microsecond=0).isoformat(),
+        "stale_threshold_hours": max_age_hours,
+        "complete": status["complete_count"],
+        "total": status["total_count"],
+        "stale": stale,
+        "missing": missing,
+        "fallback": fallback,
+        "datasets": datasets,
+        "decision": decision,
+        "human_review_required": True,
+        "prohibited_actions": [
+            "publish as final conclusion",
+            "modify risk thresholds",
+            "place live orders",
+        ],
+        "source_note": "Read-only snapshot gate for chapter 29 research drafts; no snapshot refresh or trade action is triggered.",
+    }
+
+
+
+def _fmt_number(value: Any, *, digits: int = 2) -> str:
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return "-"
+    if abs(number) >= 1_000_000_000:
+        return f"{number / 1_000_000_000:.{digits}f}B"
+    if abs(number) >= 1_000_000:
+        return f"{number / 1_000_000:.{digits}f}M"
+    if abs(number) >= 1_000:
+        return f"{number / 1_000:.{digits}f}K"
+    return f"{number:.{digits}f}"
+
+
+def _fmt_pct(value: Any, *, scale: float = 1.0) -> str:
+    try:
+        number = float(value) * scale
+    except (TypeError, ValueError):
+        return "-"
+    return f"{number:+.2f}%"
+
+
+def _top_symbols(items: Any, *, key: str = "symbol", limit: int = 5) -> str:
+    if not isinstance(items, list):
+        return "暂无可用条目"
+    symbols: list[str] = []
+    for item in items[:limit]:
+        if not isinstance(item, dict):
+            continue
+        value = item.get(key) or item.get("baseTokenSymbol") or item.get("name")
+        if value not in (None, ""):
+            symbols.append(str(value).upper())
+    return "、".join(symbols) if symbols else "暂无可用条目"
+
+
+def research_draft(
+    symbol: str = "BTC",
+    *,
+    kline_type: str = "1hour",
+    max_age_hours: float = 24.0,
+) -> dict[str, Any]:
+    """Build a read-only chapter 29 market research draft from checked snapshots."""
+
+    base = symbol.strip().upper().replace("/", "-") or "BTC"
+    pair = base if "-" in base else f"{base}-USDT"
+    asset = pair.split("-")[0]
+    gate = research_draft_gate(max_age_hours=max_age_hours)
+
+    kline = kline_analysis(pair, kline_type=kline_type, limit=120)
+    tickers = market_tickers(limit=300)
+    news_payload = web3_news(limit=50)
+    opportunities = opportunity_scan(top_k=8, max_symbols=80)
+    picks = ai_picks()
+    dex_payload = dex_trending(limit=8)
+    onchain_payload = onchain(asset, limit=1)
+
+    ticker_row = next(
+        (
+            row
+            for row in tickers.get("tickers", [])
+            if isinstance(row, dict) and str(row.get("symbol", "")).upper() == pair
+        ),
+        {},
+    )
+    metrics = kline.get("metrics") or {}
+    news_metrics = news_payload.get("metrics") or {}
+    fear_greed = ((onchain_payload.get("marketSentiment") or {}).get("fearGreed") or {})
+    stale = gate.get("stale") or []
+    missing = gate.get("missing") or []
+    fallback = gate.get("fallback") or []
+
+    sections = [
+        {
+            "id": "draft_header",
+            "title": "草稿页眉",
+            "items": [
+                f"draft_status=draft_only；生成时间={gate.get('generated_at')}；时效线={gate.get('stale_threshold_hours')}h。",
+                f"证据门禁={gate.get('complete')}/{gate.get('total')} 可用；decision={gate.get('decision')}；human_review_required=true。",
+                "本草稿只用于人工复核，不发布为正式结论，不修改风控阈值，不触发真实下单。",
+            ],
+        },
+        {
+            "id": "market_state",
+            "title": "市场状态",
+            "items": [
+                f"{pair} 最新价约 {_fmt_number(ticker_row.get('last') or metrics.get('latestClose'))}；24h 涨跌 {_fmt_pct(ticker_row.get('changeRate'), scale=100)}。",
+                f"K 线状态={kline.get('trend') or metrics.get('regime') or '待复核'}；RSI={metrics.get('rsi', '-')}；波动率={_fmt_pct(metrics.get('volatilityPct'))}。",
+                "本段只描述价格、成交和波动状态，不推导买入、卖出或仓位动作。",
+            ],
+        },
+        {
+            "id": "funding_onchain",
+            "title": "资金与链上",
+            "items": [
+                f"恐贪指数={fear_greed.get('value', '-')}；标签={fear_greed.get('label') or '待复核'}。",
+                f"资金与链上相关快照需同时参考：token_fund、sector_fund、onchain；过期数据={', '.join(stale) if stale else '无'}。",
+                "资金和链上只作为观察材料，不写成收益判断或交易动作。",
+            ],
+        },
+        {
+            "id": "hotspots",
+            "title": "热点与机会",
+            "items": [
+                f"机会扫描候选：{_top_symbols(opportunities.get('opportunities'))}。",
+                f"DEX 热点：{_top_symbols(dex_payload.get('tokens'))}。",
+                f"AI 候选：{_top_symbols(picks.get('chance'))}。",
+                "候选列表只进入人工复核清单，不自动升级为交易建议。",
+            ],
+        },
+        {
+            "id": "news_risk",
+            "title": "消息面与风险",
+            "items": [
+                f"新闻条数={news_metrics.get('article_count', 0)}；风险事件={news_metrics.get('risk_event_count', 0)}；来源广度={news_metrics.get('source_breadth', 0)}。",
+                f"热门主题：{', '.join(topic for topic, _ in (news_metrics.get('top_topics') or [])[:5]) or '暂无'}。",
+                "消息面只能写事件类型、资产标签和复核事项，不能独立确认多空方向。",
+            ],
+        },
+        {
+            "id": "blocking_notes",
+            "title": "阻断与复核",
+            "items": [
+                f"过期数据：{', '.join(stale) if stale else '无'}。",
+                f"缺失数据：{', '.join(missing) if missing else '无'}。",
+                f"回退来源：{', '.join(fallback) if fallback else '无'}。",
+            ],
+        },
+    ]
+
+    return {
+        "ok": True,
+        "draft_status": "draft_only",
+        "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+        "symbol": asset,
+        "pair": pair,
+        "kline_type": kline_type,
+        "title": f"{asset} 市场快照研究草稿",
+        "gate": gate,
+        "sections": sections,
+        "review_checklist": [
+            "逐项复核 stale、missing、fallback 是否为空。",
+            "核对来源时间和 history_count 是否足够支撑正文。",
+            "人工复核前不得发布结论、修改风控或下单。",
+        ],
+        "human_review_required": True,
+        "prohibited_actions": gate.get("prohibited_actions", []),
+    }
 def sources_status() -> dict[str, Any]:
     load_env()
     cfg = runtime_config()

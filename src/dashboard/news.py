@@ -10,6 +10,7 @@ from urllib.parse import quote_plus
 from xml.etree import ElementTree
 
 from dashboard.http_client import http_get, http_get_text
+from dashboard.source_card import external_source_card
 
 WEB3_RSS_FEEDS: tuple[dict[str, str], ...] = (
     {"id": "cointelegraph", "name": "Cointelegraph", "url": "https://cointelegraph.com/rss", "category": "news"},
@@ -171,6 +172,10 @@ def _dedupe(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return unique
 
 
+def _items_by_source(items: list[dict[str, Any]], source_id: str) -> list[dict[str, Any]]:
+    return [item for item in items if str(item.get("source_id") or "") == source_id]
+
+
 def fetch_rss_news(*, per_source: int = 12) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     rows: list[dict[str, Any]] = []
     sources: list[dict[str, Any]] = []
@@ -284,11 +289,24 @@ def fetch_web3_news(
             sources.append(gdelt_source)
         except Exception as exc:
             sources.append({"id": "gdelt", "name": "GDELT", "ok": False, "error": str(exc)})
+    updated_at = _now_iso()
+    all_rows = [*rss_rows, *gdelt_rows]
     signal = build_web3_news_signal([*rss_rows, *gdelt_rows], watch_symbols=watch_symbols, limit=limit)
+    source_cards = [
+        external_source_card(
+            "web3_news",
+            source,
+            fetched_at=updated_at,
+            items=_items_by_source(all_rows, str(source.get("id") or "")),
+            required_fields=("source", "source_id", "title", "url", "published_at"),
+        ).to_dict()
+        for source in sources
+    ]
     return {
         "ok": True,
         "source": "live",
-        "updated_at": _now_iso(),
+        "updated_at": updated_at,
         "sources": sources,
+        "source_cards": source_cards,
         **signal,
     }

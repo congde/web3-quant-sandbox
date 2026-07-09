@@ -7,6 +7,8 @@ import type {
   MarketCandlesPayload,
   OpportunityScanPayload,
   ReportPayload,
+  ResearchDraftGatePayload,
+  ResearchDraftPayload,
   RuntimeConfig,
   SignalAnalysisPayload,
   StrategyValidationResult,
@@ -86,6 +88,18 @@ export function fetchMarketTickers(limit = 300, options?: { refresh?: boolean })
 export function fetchWeb3News(limit = 50, options?: { refresh?: boolean }) {
   return fetchDashboard<Web3NewsPayload>(
     withRefresh(`/api/dashboard/web3-news?limit=${limit}`, options?.refresh),
+  );
+}
+
+
+export function fetchResearchDraft(symbol = "BTC", klineType = "1hour", maxAgeHours = 24) {
+  return fetchDashboard<ResearchDraftPayload>(
+    `/api/dashboard/research-draft?symbol=${encodeURIComponent(symbol)}&type=${encodeURIComponent(klineType)}&maxAgeHours=${encodeURIComponent(String(maxAgeHours))}`,
+  );
+}
+export function fetchResearchDraftGate(maxAgeHours = 24) {
+  return fetchDashboard<ResearchDraftGatePayload>(
+    `/api/dashboard/research-draft-gate?maxAgeHours=${encodeURIComponent(String(maxAgeHours))}`,
   );
 }
 

@@ -3,10 +3,10 @@ import { Button, Input, Select, Switch } from "antd";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { fetchKlineAnalysis, fetchMarketTickers, fetchWeb3News, pollLlmSignalAnalysis, submitLlmSignalAnalysis } from "../../api";
+import { fetchKlineAnalysis, fetchMarketTickers, fetchResearchDraft, fetchResearchDraftGate, fetchWeb3News, pollLlmSignalAnalysis, submitLlmSignalAnalysis } from "../../api";
 import { KlineAnalysisChart } from "../../components/charts/KlineAnalysisChart";
 import { useReport } from "../../contexts/ReportContext";
-import type { KlineAnalysisPayload, SignalAnalysisPayload, Web3NewsPayload } from "../../types";
+import type { KlineAnalysisPayload, ResearchDraftGatePayload, ResearchDraftPayload, SignalAnalysisPayload, Web3NewsPayload } from "../../types";
 import { QuantGlowCard, SectionHeader, SignalRow, StatusPill, TradingPageShell } from "../trading/TradingPageShell";
 import "./research.css";
 
@@ -62,6 +62,115 @@ function trendTone(trendKey?: string) {
   return "neutral";
 }
 
+function draftDecisionLabel(decision?: string) {
+  if (decision === "ready_for_human_review") return "可进入人工复核";
+  if (decision === "downgrade_to_observation") return "降级为观察";
+  if (decision === "stop_research") return "停止相关研究";
+  return "等待门禁";
+}
+
+function draftDecisionTone(decision?: string) {
+  if (decision === "ready_for_human_review") return "profit" as const;
+  if (decision === "stop_research") return "loss" as const;
+  return "neutral" as const;
+}
+
+function formatAgeHours(value?: number | null) {
+  if (value == null || Number.isNaN(value)) return "-";
+  if (value < 1) return `${Math.round(value * 60)}m`;
+  return `${value.toFixed(1)}h`;
+}
+
+
+function layerLabel(layer?: string | null) {
+  if (layer === "snapshot") return "快照";
+  if (layer === "fixture") return "教学样本";
+  if (layer === "none") return "无可用层";
+  return layer || "未知来源";
+}
+
+function datasetStateLabel(item: {
+  complete?: boolean;
+  stale?: boolean;
+  active_layer?: string;
+  snapshot_complete?: boolean;
+  fixture_complete?: boolean;
+}) {
+  if (!item.snapshot_complete && item.fixture_complete) return "最新不完整";
+  if (!item.complete) return "缺失";
+  if (item.stale) return "已过期";
+  if (item.active_layer !== "snapshot") return "回退";
+  return "可用";
+}
+
+function datasetSourceNote(item: {
+  active_layer?: string | null;
+  active_source?: string | null;
+  fixture_complete?: boolean;
+  origin?: string | null;
+  snapshot_complete?: boolean;
+  snapshot_reason?: string | null;
+}) {
+  if (!item.snapshot_complete && item.fixture_complete) {
+    return `最新快照未通过 · ${item.snapshot_reason || "字段不足"}`;
+  }
+  return item.origin ?? item.active_source ?? "来源未知";
+}
+
+function listOrNone(items?: string[]) {
+  return items?.length ? items.join("、") : "无";
+}
+
+function prohibitedActionLabel(action: string) {
+  if (action === "publish as final conclusion") return "发布为正式结论";
+  if (action === "modify risk thresholds") return "修改风控阈值";
+  if (action === "place live orders") return "触发真实下单";
+  return action;
+}
+
+
+function datasetLabel(name: string) {
+  const labels: Record<string, string> = {
+    ai_picks: "AI 候选",
+    sector_fund: "板块资金",
+    token_fund: "币种资金",
+    onchain: "链上状态",
+    dex_trending: "DEX 热点",
+    market_tickers: "行情报价",
+    web3_news: "消息面",
+    opportunity_scan: "机会扫描",
+    market_candles: "K 线样本",
+  };
+  return labels[name] ?? name;
+}
+
+function affectedDraftSections(names: string[]) {
+  const sections = new Set<string>();
+  names.forEach((name) => {
+    if (["market_tickers", "market_candles"].includes(name)) sections.add("市场状态");
+    if (["sector_fund", "token_fund"].includes(name)) sections.add("资金面");
+    if (name === "onchain") sections.add("链上状态");
+    if (["dex_trending", "ai_picks", "opportunity_scan"].includes(name)) sections.add("热点与机会");
+    if (name === "web3_news") sections.add("消息面");
+  });
+  return sections.size ? Array.from(sections) : ["可进入正文复核"];
+}
+
+function draftReviewAction(gate?: ResearchDraftGatePayload | null) {
+  if (!gate) return "读取门禁状态";
+  if (gate.missing?.length) return `补齐 ${gate.missing.map(datasetLabel).join("、")} 后再生成正文`;
+  if (gate.stale?.length) return `先刷新 ${gate.stale.map(datasetLabel).join("、")}，相关段落只保留观察`;
+  if (gate.fallback?.length) return `最新快照不完整，先补齐 ${gate.fallback.map(datasetLabel).join("、")}；暂用教学样本进入观察`;
+  return "进入人工复核，不自动发布结论";
+}
+
+function draftSummaryText(gate?: ResearchDraftGatePayload | null) {
+  if (!gate) return "正在读取快照证据、来源层和历史记录。";
+  if (gate.missing?.length) return "存在缺失材料，相关正文段落必须停止生成，不能让模型补写。";
+  if (gate.stale?.length) return "存在过期材料，行情和资金判断只能降级为观察清单，不能写成今日结论。";
+  if (gate.fallback?.length) return "有最新抓取结果，但字段没有通过完整性检查；草稿只能标注为观察，不能伪装成实时结论。";
+  return "材料完整且未过期；仍需人工复核后才能形成正式研究结论。";
+}
 export default function ResearchPage() {
   const { report, loading } = useReport();
   const research = report?.research;
@@ -80,6 +189,10 @@ export default function ResearchPage() {
   const [kline, setKline] = useState<KlineAnalysisPayload | null>(null);
   const [signal, setSignal] = useState<SignalAnalysisPayload | null>(null);
   const [web3News, setWeb3News] = useState<Web3NewsPayload | null>(null);
+  const [draftGate, setDraftGate] = useState<ResearchDraftGatePayload | null>(null);
+  const [researchDraft, setResearchDraft] = useState<ResearchDraftPayload | null>(null);
+  const [draftBusy, setDraftBusy] = useState(false);
+  const [draftError, setDraftError] = useState<string | null>(null);
   const [newsSourceFilter, setNewsSourceFilter] = useState("all");
   const [newsTopicFilter, setNewsTopicFilter] = useState("all");
   const [newsRiskOnly, setNewsRiskOnly] = useState(false);
@@ -111,13 +224,15 @@ export default function ResearchPage() {
     setKlineBusy(true);
     setError(null);
     try {
-      const [klinePayload, tickersPayload, newsPayload] = await Promise.all([
+      const [klinePayload, tickersPayload, newsPayload, draftGatePayload] = await Promise.all([
         fetchKlineAnalysis(pair, klineType),
         fetchMarketTickers(300),
         fetchWeb3News(80, { refresh: refreshNews }),
+        fetchResearchDraftGate(24),
       ]);
       setKline(klinePayload);
       setWeb3News(newsPayload);
+      setDraftGate(draftGatePayload);
       const row = (tickersPayload.tickers || []).find(
         (item) => String((item as { symbol?: string }).symbol || "").toUpperCase() === pair,
       ) as { last?: number; changeRate?: number; high?: number; low?: number; volValue?: number } | undefined;
@@ -142,6 +257,21 @@ export default function ResearchPage() {
     }
   }, [pair, klineType]);
 
+  const generateResearchDraft = useCallback(async () => {
+    setDraftBusy(true);
+    setDraftError(null);
+    try {
+      const payload = await fetchResearchDraft(symbol, klineType, 24);
+      setResearchDraft(payload);
+      if (payload.gate) {
+        setDraftGate(payload.gate);
+      }
+    } catch (err) {
+      setDraftError(err instanceof Error ? err.message : "生成研究草稿失败");
+    } finally {
+      setDraftBusy(false);
+    }
+  }, [symbol, klineType]);
   const loadLlmSignal = useCallback(async () => {
     stopSignalPoll();
     setSignalBusy(true);
@@ -287,6 +417,15 @@ export default function ResearchPage() {
     };
   }, [web3News?.sources]);
 
+  const draftDatasets = useMemo(() => draftGate?.datasets ?? [], [draftGate?.datasets]);
+  const draftIssueCount = (draftGate?.stale?.length ?? 0) + (draftGate?.missing?.length ?? 0) + (draftGate?.fallback?.length ?? 0);
+  const draftCleanCount = draftDatasets.filter((item) => item.complete && !item.stale && item.active_layer === "snapshot").length;
+  const affectedSections = affectedDraftSections([
+    ...(draftGate?.stale ?? []),
+    ...(draftGate?.missing ?? []),
+    ...(draftGate?.fallback ?? []),
+  ]);
+
   return (
     <TradingPageShell
       eyebrow="Research / Analysis"
@@ -353,6 +492,116 @@ export default function ResearchPage() {
         </QuantGlowCard>
       )}
 
+      <section className="trading-grid research-draft-gate-section">
+        <QuantGlowCard
+          className="trading-span-4 research-draft-gate-card"
+          title={<SectionHeader title="研究草稿门禁" description="草稿生成前检查" />}
+          badge={<StatusPill tone={draftDecisionTone(draftGate?.decision)}>{draftDecisionLabel(draftGate?.decision)}</StatusPill>}
+        >
+          <div className="research-draft-gate-hero">
+            <span>门禁结论</span>
+            <strong>{draftDecisionLabel(draftGate?.decision)}</strong>
+            <p>{draftSummaryText(draftGate)}</p>
+          </div>
+          <div className="research-draft-review">
+            <div>
+              <span>受影响段落</span>
+              <strong>{affectedSections.join("、")}</strong>
+            </div>
+            <div>
+              <span>下一步</span>
+              <strong>{draftReviewAction(draftGate)}</strong>
+            </div>
+          </div>
+          <div className="research-draft-gate-metrics">
+            <div>
+              <span>可用/总数</span>
+              <strong>{draftGate ? `${draftGate.complete ?? 0}/${draftGate.total ?? 0}` : "-"}</strong>
+            </div>
+            <div>
+              <span>无问题快照</span>
+              <strong>{draftGate ? `${draftCleanCount}/${draftDatasets.length}` : "-"}</strong>
+            </div>
+            <div>
+              <span>需处理项</span>
+              <strong className={draftIssueCount ? "research-negative" : "research-positive"}>{draftGate ? draftIssueCount : "-"}</strong>
+            </div>
+            <div>
+              <span>时效线</span>
+              <strong>{draftGate?.stale_threshold_hours ?? 24}h</strong>
+            </div>
+          </div>
+          <div className="research-draft-blockers">
+            <span>过期数据：{listOrNone((draftGate?.stale ?? []).map(datasetLabel))}</span>
+            <span>缺失数据：{listOrNone((draftGate?.missing ?? []).map(datasetLabel))}</span>
+            <span>回退来源：{listOrNone((draftGate?.fallback ?? []).map(datasetLabel))}</span>
+          </div>
+          <Button className="research-draft-generate" type="primary" loading={draftBusy} onClick={generateResearchDraft}>
+            生成研究草稿
+          </Button>
+          {draftError ? <p className="research-draft-error">{draftError}</p> : null}
+        </QuantGlowCard>
+
+        <QuantGlowCard
+          className="trading-span-8 research-draft-datasets-card"
+          title={<SectionHeader title="快照证据合同" description="来源 / 新鲜度 / 历史追溯" />}
+          badge={<StatusPill tone="neutral">需要人工复核</StatusPill>}
+        >
+          <div className="research-draft-dataset-grid">
+            {draftDatasets.map((item) => (
+              <div key={item.name} className={`research-draft-dataset-row${item.stale ? " stale" : ""}${!item.complete ? " missing" : ""}`}>
+                <div>
+                  <strong>{datasetLabel(item.name)}</strong>
+                  <span>{datasetSourceNote(item)}</span>
+                </div>
+                <span>{layerLabel(item.active_layer)}</span>
+                <span>{formatAgeHours(item.age_hours)}</span>
+                <span>{item.history_count ?? 0}</span>
+                <StatusPill tone={!item.complete ? "loss" : item.stale || item.active_layer !== "snapshot" ? "neutral" : "profit"}>
+                  {datasetStateLabel(item)}
+                </StatusPill>
+              </div>
+            ))}
+            {!draftDatasets.length ? <div className="research-news-empty">正在读取快照门禁...</div> : null}
+          </div>
+          <div className="research-draft-prohibited">
+            {(draftGate?.prohibited_actions ?? ["publish as final conclusion", "modify risk thresholds", "place live orders"]).map((action) => (
+              <span key={action}>{prohibitedActionLabel(action)}</span>
+            ))}
+          </div>
+        </QuantGlowCard>
+      </section>
+      {researchDraft ? (
+        <section className="trading-grid research-generated-draft-section">
+          <QuantGlowCard
+            className="trading-span-12 research-generated-draft-card"
+            title={<SectionHeader title={researchDraft.title ?? "市场快照研究草稿"} description={`${researchDraft.pair ?? pair} · draft_only · ${researchDraft.generated_at ?? "待生成"}`} />}
+            badge={<StatusPill tone="neutral">只读草稿</StatusPill>}
+          >
+            <div className="research-generated-draft-banner">
+              <strong>人工复核前不得发布为正式结论</strong>
+              <span>这份草稿只汇总证据、状态和复核事项，不生成仓位、风控修改或下单动作。</span>
+            </div>
+            <div className="research-generated-draft-grid">
+              {(researchDraft.sections ?? []).map((section) => (
+                <div key={section.id} className="research-generated-draft-section-card">
+                  <h3>{section.title}</h3>
+                  <ul>
+                    {(section.items ?? []).map((item, index) => (
+                      <li key={`${section.id}-${index}`}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <div className="research-generated-review">
+              {(researchDraft.review_checklist ?? []).map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+            </div>
+          </QuantGlowCard>
+        </section>
+      ) : null}
       <section className="trading-grid research-primary-grid">
         <QuantGlowCard
           className="trading-span-12 research-kline-card"

@@ -206,6 +206,14 @@ class Handler(BaseHTTPRequestHandler):
             "/api/dashboard/config": lambda: dashboard_api.runtime_config(),
             "/api/dashboard/sources/status": lambda: dashboard_api.sources_status(),
             "/api/dashboard/snapshots": lambda: dashboard_api.snapshots_status(),
+            "/api/dashboard/research-draft-gate": lambda: dashboard_api.research_draft_gate(
+                max_age_hours=qf("maxAgeHours", 24.0),
+            ),
+            "/api/dashboard/research-draft": lambda: dashboard_api.research_draft(
+                q("symbol", "BTC"),
+                kline_type=q("type", "1hour"),
+                max_age_hours=qf("maxAgeHours", 24.0),
+            ),
             "/api/dashboard/vs/ai-picks": lambda: dashboard_api.ai_picks(refresh=qb("refresh")),
             "/api/dashboard/vs/sector-fund": lambda: dashboard_api.sector_fund(
                 qi("trade_type", 1),

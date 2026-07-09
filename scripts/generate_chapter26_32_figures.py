@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from pathlib import Path
+import subprocess
+import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -95,27 +97,19 @@ def save_skill_evidence_contract() -> None:
 
 
 def save_snapshot_draft_path() -> None:
-    sources = ["行情", "资金", "链上", "情绪", "新闻"]
-    rows = np.array([240, 96, 72, 38, 14])
-    stale_minutes = np.array([4, 12, 18, 46, 95])
-    x = np.arange(len(sources))
-
-    fig, ax1 = plt.subplots(figsize=(10.5, 5.8))
-    ax1.bar(x, rows, color="#2563EB", alpha=0.82, label="快照行数")
-    ax1.set_ylabel("快照行数")
-    ax1.set_xticks(x, sources)
-    ax1.grid(True, axis="y", linestyle="--", linewidth=0.8)
-
-    ax2 = ax1.twinx()
-    ax2.plot(x, stale_minutes, color="#F59E0B", marker="o", linewidth=2.4, label="滞后分钟")
-    ax2.axhline(60, color="#DC2626", linestyle="--", linewidth=1.6, label="草稿停止线")
-    ax2.set_ylabel("滞后分钟")
-    lines, labels = ax1.get_legend_handles_labels()
-    lines2, labels2 = ax2.get_legend_handles_labels()
-    ax1.legend(lines + lines2, labels + labels2, loc="upper left")
-    fig.tight_layout()
-    fig.savefig(OUT / "chapter-29-snapshot-draft-path.png", dpi=180)
-    plt.close(fig)
+    drawio = OUT / "chapter-29-snapshot-draft-path.drawio"
+    subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "export_drawio_png.py"),
+            str(drawio),
+            "-o",
+            str(OUT / "chapter-29-snapshot-draft-path.png"),
+            "--width",
+            "1600",
+        ],
+        check=True,
+    )
 
 
 def save_approval_stop_gate() -> None:
