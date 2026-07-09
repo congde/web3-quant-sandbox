@@ -2,16 +2,19 @@
 
 [中文](README.md) | [English](README.en.md)
 
-An offline Web3 quantitative research sandbox for market dashboards, opportunity radar, strategy backtests, risk audits, simulated trading, and research reports. By default, it runs on local samples and repository snapshots. It does not connect to real trading accounts, manage wallets, or place real orders, so it is suitable for learning, teaching, strategy prototyping, and Codex delivery-course demos.
+An offline-first Web3 quantitative research sandbox. It brings market dashboards, opportunity radar, data-source monitoring, strategy backtests, risk audits, a simulated trading workstation, strategy DSL checks, and research reports into one local application for learning, teaching, strategy prototyping, and Codex delivery-course demos.
+
+By default, the project runs from bundled samples and repository snapshots. It does not connect to real trading accounts, manage wallets, or place real orders.
 
 > If this project helps you learn Web3 quant research, backtesting engineering, or the Codex course workflow, please consider starring it. If you want to customize strategies, connect data sources, or build your own research panel, fork it and extend it freely.
 
 ## Highlights
 
-- **Runs locally by default**: bundled `data/dashboard/*.json` samples let the core pages work without network access.
-- **Complete research path**: from `/trading` market dashboard to `/radar` opportunity scan, `/backtests`, `/risk`, and `/research` reports.
-- **Extensible strategies and indicators**: examples include MA, MACD, BOLL, RSI, funding-rate strategies, and factor mining.
-- **Clear safety boundary**: `/live-trading` is a simulated trading UI, not a live trading terminal.
+- **Offline-first**: bundled `data/dashboard/*.json` samples let the core pages run without network access.
+- **Complete research loop**: market overview, opportunity scanning, data-source status, strategy backtests, risk review, simulated execution, and research reports.
+- **Simulated trading workstation**: `/live-trading` includes a K-line canvas, timeframe switching, trade-plan overlays, dry-run tickets, and evidence panels.
+- **Clear safety boundary**: dry-run only records research actions; the project does not submit real exchange orders by default.
+- **Extensible strategies and indicators**: examples include MA, MACD, BOLL, RSI, funding-rate strategies, factor mining, and rolling backtests.
 - **Course-aligned workspace**: chapters in `docs/v2/` are expected to match runnable commands and code.
 - **Full-stack app**: Python local service + React / Ant Design / lightweight-charts frontend.
 
@@ -57,7 +60,7 @@ Common pages:
 | Opportunity radar | `http://127.0.0.1:8765/radar` |
 | Data source monitor | `http://127.0.0.1:8765/data-sources` |
 | Strategy backtests | `http://127.0.0.1:8765/backtests` |
-| Simulated trading | `http://127.0.0.1:8765/live-trading` |
+| Simulated trading workstation | `http://127.0.0.1:8765/live-trading` |
 | Risk center | `http://127.0.0.1:8765/risk` |
 | Strategy DSL | `http://127.0.0.1:8765/strategy` |
 | Market research | `http://127.0.0.1:8765/research` |
@@ -74,37 +77,25 @@ python app.py
 | Feature | Web route | Main code paths | Notes |
 | --- | --- | --- | --- |
 | Market dashboard | `/trading` | `src/dashboard/`, `src/web/src/pages/trading/DashboardPage.tsx` | Multi-asset quotes, K-line charts, trading signals, risk summaries, and execution entry points |
-| Opportunity radar | `/radar` | `src/dashboard/opportunity.py` | Scans opportunities with fund flow, trend, on-chain, and risk signals |
-| Data source monitor | `/data-sources` | `src/dashboard/snapshot.py`, `src/dashboard/catalog.py` | Shows samples, snapshots, and online API status |
+| Opportunity radar | `/radar` | `src/dashboard/opportunity.py`, `src/web/src/pages/trading/RadarPage.tsx` | Scans opportunities with fund flow, trend, on-chain, and risk signals; labels hot paths, cold paths, and blocked paths |
+| Data source monitor | `/data-sources` | `src/dashboard/snapshot.py`, `src/dashboard/catalog.py` | Shows offline samples, online snapshots, API status, and research-draft gates |
 | Strategy backtests | `/backtests` | `src/backtest/`, `src/backtest/rolling/` | Single strategy tests, window comparison, walk-forward, portfolio, and robustness checks |
-| Simulated trading | `/live-trading` | `src/strategy_engine/`, `src/risk/` | Sample-data-based simulated execution, not live trading |
-| Risk center | `/risk` | `src/risk/`, `src/backtest/audit/` | Drawdown, stop loss, CPCV, PBO, DSR, and other risk views |
+| Simulated trading workstation | `/live-trading` | `src/web/src/pages/trading/LiveTradingPage.tsx`, `src/risk/`, `src/strategy_engine/` | Sample-data-driven dry-run execution UI, not a live trading terminal |
+| Risk center | `/risk` | `src/risk/`, `src/backtest/audit/` | Drawdown, stop loss, rejection logs, CPCV, PBO, DSR, and other risk views |
 | Strategy DSL | `/strategy` | `src/strategy_engine/dsl/` | AST allowlist, import restrictions, look-ahead checks, and compile validation |
 | Market research | `/research` | `src/research/`, `src/dashboard/llm_signal.py` | Research summaries, source cards, and optional LLM signal analysis |
 | CLI report | None | `report_cli.py`, `src/research/report.py` | Outputs summary or JSON research reports |
 
-## Who It Is For
+## Simulated Trading Workstation
 
-- Beginners who want to learn Web3 quant trading with zero capital risk.
-- Developers who need local backtesting, risk-audit, and strategy-validation examples.
-- Course learners who want to use Codex across research, implementation, verification, and documentation.
-- Engineers building private simulated-trading panels, opportunity radar, or research-report pipelines.
+`/live-trading` is the simulated execution entry point for the research workflow. It is not a live trading terminal. The page is organized like a trading workstation:
 
-## Extension Points
-
-After forking this repository, these are good places to start:
-
-| Goal | Recommended entry point |
-| --- | --- |
-| Add market data or snapshot sources | `src/dashboard/`, `dashboard_snapshot.py`, `scripts/build_dashboard_fixtures.py` |
-| Add backtest strategies | `src/backtest/rolling/strategies/` |
-| Add technical indicators | `src/ta/`, `src/backtest/rolling/indicators.py` |
-| Extend factor mining | `src/factor_mining/` |
-| Adjust simulated trading or risk controls | `src/strategy_engine/`, `src/risk/` |
-| Modify web pages | `src/web/src/pages/trading/`, `src/web/src/components/` |
-| Update course chapters | `docs/v2/` |
-
-PRs are welcome for generally useful strategies, indicators, data-source adapters, and course fixes.
+- **Left intelligence rail**: current pair, reference price, signal conclusion, confidence, risk status, and AI Picks queue.
+- **Central K-line canvas**: lightweight-charts candlesticks, volume, MA20, MA60, plus signal-derived entry, stop, and target lines.
+- **Timeframe switching**: supports `15m / 1h / 4h / 1D` K-line intervals.
+- **Right dry-run ticket**: pair, side, venue, amount, slippage tolerance, latency, and confirmation text; it only creates simulated audit records.
+- **Evidence panels**: segmented views for market, signal, risk, ledger, and system assumptions.
+- **Light and dark themes**: light mode favors research dashboards; dark mode keeps the trading-terminal feel.
 
 ## Data Modes
 
@@ -159,6 +150,12 @@ During edits, run:
 py scripts/course.py verify
 ```
 
+If the `py` launcher is unavailable in the current Windows environment, use the repository virtual environment:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\course.py verify
+```
+
 Before finishing repository-wide changes, run:
 
 ```powershell
@@ -175,29 +172,50 @@ py scripts/course.py teaching-plots
 
 ```text
 .
-├── app.py                     # Local HTTP server, default 127.0.0.1:8765
-├── report_cli.py              # CLI research report
-├── verify.py                  # Product verification entry point
-├── scripts/
-│   └── course.py              # setup / verify / check / snapshot tasks
-├── src/
-│   ├── backtest/              # Backtests, rolling windows, audit metrics
-│   ├── config/                # Environment variables and upstream configuration
-│   ├── dashboard/             # Market data, snapshots, opportunity scan, API adapters
-│   ├── data/                  # Point-in-time data utilities
-│   ├── factor_mining/         # Factor mining and factor backtests
-│   ├── research/              # Research report assembly
-│   ├── risk/                  # Risk rules and simulation boundaries
-│   ├── strategy_engine/       # Event-driven strategy engine and DSL
-│   ├── ta/                    # Technical indicator utilities
-│   └── web/                   # React + Ant Design frontend
-├── data/                      # Offline samples and dashboard snapshots
-├── docs/v2/                   # Course chapters
-├── skills/                    # Codex skills developed in the course
-├── tests/                     # pytest tests
-├── outputs/                   # Generated outputs
-└── reports/                   # Report artifacts
+|-- app.py                     # Local HTTP server, default 127.0.0.1:8765
+|-- report_cli.py              # CLI research report
+|-- verify.py                  # Product verification entry point
+|-- scripts/
+|   `-- course.py              # setup / verify / check / snapshot tasks
+|-- src/
+|   |-- backtest/              # Backtests, rolling windows, audit metrics
+|   |-- config/                # Environment variables and upstream configuration
+|   |-- dashboard/             # Market data, snapshots, opportunity scan, API adapters
+|   |-- data/                  # Point-in-time data utilities
+|   |-- factor_mining/         # Factor mining and factor backtests
+|   |-- research/              # Research report assembly
+|   |-- risk/                  # Risk rules and simulation boundaries
+|   |-- strategy_engine/       # Event-driven strategy engine and DSL
+|   |-- ta/                    # Technical indicator utilities
+|   `-- web/                   # React + Ant Design frontend
+|-- data/                      # Offline samples and dashboard snapshots
+|-- docs/v2/                   # Course chapters
+|-- skills/                    # Codex skills developed in the course
+|-- tests/                     # pytest tests
+|-- outputs/                   # Generated outputs
+`-- reports/                   # Report artifacts
 ```
+
+## Who It Is For
+
+- Beginners who want to learn Web3 quant trading with zero capital risk.
+- Developers who need local backtesting, risk-audit, and strategy-validation examples.
+- Course learners who want to use Codex across research, implementation, verification, and documentation.
+- Engineers building private simulated-trading panels, opportunity radar, or research-report pipelines.
+
+## Extension Points
+
+| Goal | Recommended entry point |
+| --- | --- |
+| Add market data or snapshot sources | `src/dashboard/`, `dashboard_snapshot.py`, `scripts/build_dashboard_fixtures.py` |
+| Add backtest strategies | `src/backtest/rolling/strategies/` |
+| Add technical indicators | `src/ta/`, `src/backtest/rolling/indicators.py` |
+| Extend factor mining | `src/factor_mining/` |
+| Adjust simulated trading or risk controls | `src/web/src/pages/trading/LiveTradingPage.tsx`, `src/risk/`, `src/strategy_engine/` |
+| Modify web pages | `src/web/src/pages/trading/`, `src/web/src/components/` |
+| Update course chapters | `docs/v2/` |
+
+PRs are welcome for generally useful strategies, indicators, data-source adapters, and course fixes.
 
 ## GitHub Profile Suggestions
 
@@ -218,7 +236,8 @@ web3, quant, crypto-trading, backtest, trading-sandbox, algorithmic-trading, pyt
 ## Safety Boundaries
 
 - The project does not connect to real exchange accounts or wallets by default.
-- `/live-trading` is a simulated trading UI, not a live trading terminal.
+- `/live-trading` is a simulated trading workstation, not a live trading terminal.
+- dry-run only records research actions and does not submit real orders.
 - The strategy DSL performs AST allowlist checks, import restrictions, and look-ahead bias checks.
 - Online data is for research demos and backtest inputs only. It is not investment advice.
 - API keys should be loaded from local `.env` files and must not be committed.
