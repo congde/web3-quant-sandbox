@@ -89,6 +89,11 @@ ASSET_USAGE: dict[str, tuple[str, str, str]] = {
         "验收复盘与下一轮迭代",
         "最终验收、复盘和下一轮可执行任务之间的闭环",
     ),
+    "chapter-35-risk-backlog-priority.png": (
+        "35-",
+        "下一轮风险待办优先级",
+        "按照结论可信度影响与修复成本排列下一轮证据和边界待办",
+    ),
     # --- 开篇词：课程总览 + 产品界面实拍 ---
     "chapter-00-delivery-chain.png": (
         "00-",

@@ -1,4 +1,4 @@
-"""End-to-end research path for chapter 34."""
+"""End-to-end research path for chapter 33."""
 
 from __future__ import annotations
 
@@ -7,8 +7,8 @@ from typing import Any
 from backtest.bridge import compare_engines
 from backtest.metrics_explain import explain_metrics
 from backtest.rolling.service import (
+    TEACHING_SYMBOL,
     execute_backtest,
-    get_trial_audit,
     run_robustness_audit,
     run_walk_forward,
 )
@@ -32,11 +32,24 @@ def run_research_path(
     """Signal → event-driven backtest → rolling backtest → risk review."""
     report = build_report(short=short, long=long)
     event_trace = run_ma_crossover_trace(short=short, long=long)
-    rolling = execute_backtest(strategy_name=strategy, cost_preset="teaching")
-    rolling_realistic = execute_backtest(strategy_name=strategy, cost_preset="realistic")
+    rolling = execute_backtest(
+        strategy_name=strategy,
+        symbol=TEACHING_SYMBOL,
+        cost_preset="teaching",
+        record_trial=False,
+    )
+    rolling_realistic = execute_backtest(
+        strategy_name=strategy,
+        symbol=TEACHING_SYMBOL,
+        cost_preset="realistic",
+        record_trial=False,
+    )
     legacy_bt = run_legacy_backtest(load_prices(DATA_DIR / "prices.csv"), short=short, long=long)
     unified = compare_engines(legacy_bt, rolling)
-    metrics_view = explain_metrics()
+    metrics_view = explain_metrics(
+        symbol=TEACHING_SYMBOL,
+        record_trials=False,
+    )
     risk_findings = evaluate_backtest_risk(report["backtest"])
 
     path: list[dict[str, Any]] = [
@@ -55,9 +68,19 @@ def run_research_path(
 
     audit_summary: dict[str, Any] | None = None
     if include_audit:
-        wfo = run_walk_forward(strategy_name=strategy, num_windows=2, limit=120)
-        robustness = run_robustness_audit(strategy_name=strategy, limit=120)
-        trials = get_trial_audit(strategy_key=strategy)
+        wfo = run_walk_forward(
+            strategy_name=strategy,
+            symbol=TEACHING_SYMBOL,
+            num_windows=2,
+            limit=120,
+            use_trial_ledger=False,
+        )
+        robustness = run_robustness_audit(
+            strategy_name=strategy,
+            symbol=TEACHING_SYMBOL,
+            limit=120,
+        )
+        trials = {"num_trials": wfo.get("num_trials"), "scope": "current_run_only"}
         pit = pit_teaching_summary()
         path.extend(
             [
@@ -73,7 +96,12 @@ def run_research_path(
                     "pbo": robustness.get("pbo", {}).get("pbo"),
                     "stability_score": robustness.get("parameter_sensitivity", {}).get("stability_score"),
                 },
-                {"step": 9, "name": "trial_ledger", "num_trials": trials.get("num_trials")},
+                {
+                    "step": 9,
+                    "name": "trial_ledger",
+                    "num_trials": trials.get("num_trials"),
+                    "scope": trials["scope"],
+                },
                 {"step": 10, "name": "pit_teaching", "validation_errors": len(pit.get("validation_errors", []))},
             ]
         )
@@ -123,6 +151,11 @@ def run_research_path(
 
     payload: dict[str, Any] = {
         "ok": True,
+        "input_contract": {
+            "symbol": TEACHING_SYMBOL,
+            "source": "data/prices.csv",
+            "trial_scope": "current_run_only",
+        },
         "path": path,
         "report_summary": {
             "company": report["research"]["company"],

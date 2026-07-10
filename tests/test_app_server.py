@@ -92,6 +92,54 @@ def test_llm_signal_submit_returns_task(server: str) -> None:
     assert payload.get("taskId") or payload.get("signal")
 
 
+def test_backtest_api_exposes_simulation_result(server: str) -> None:
+    import json
+
+    with urllib.request.urlopen(
+        f"{server}/api/dashboard/backtest?strategy=ma_crossover&limit=120&costPreset=realistic"
+    ) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert payload.get("ok") is True
+    assert payload.get("engine") == "web3-trading/rolling-window"
+    assert payload.get("cost_preset") == "realistic"
+    assert payload.get("strategy")
+    assert "total_return_pct" in payload
+    assert "max_drawdown_pct" in payload
+    assert "total_trades" in payload
+    assert "trades" in payload
+
+
+def test_backtest_robustness_api_exposes_audit_fields(server: str) -> None:
+    import json
+
+    with urllib.request.urlopen(
+        f"{server}/api/dashboard/backtest/robustness?strategy=ma_crossover&symbol=WEB3-DEMO%2FUSDT&limit=120"
+    ) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert payload.get("ok") is True
+    assert payload.get("symbol") == "WEB3-DEMO/USDT"
+    assert "pbo" in payload
+    assert "parameter_sensitivity" in payload
+    assert "verdict" in payload
+
+
+def test_backtest_cpcv_api_exposes_audit_fields(server: str) -> None:
+    import json
+
+    with urllib.request.urlopen(
+        f"{server}/api/dashboard/backtest/cpcv?strategy=ma_crossover&symbol=WEB3-DEMO%2FUSDT&limit=120"
+    ) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert payload.get("ok") is True
+    assert payload.get("symbol") == "WEB3-DEMO/USDT"
+    assert "sharpe_p50" in payload["cpcv"]
+    assert "profitable_paths_pct" in payload["cpcv"]
+    assert "verdict" in payload["cpcv"]
+
+
 def test_missing_asset_still_404(server: str) -> None:
     with pytest.raises(urllib.error.HTTPError) as exc:
         urllib.request.urlopen(f"{server}/assets/missing.js")

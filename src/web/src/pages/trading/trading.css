@@ -1572,7 +1572,7 @@
   }
 }
 
-/* 鈹€鈹€ Research panel 鈥?tool grid 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
+/* 鈹€鈹€ Research panel �?tool grid 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ */
 .research-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2524,7 +2524,9 @@
 
 .risk-log-stream > div {
   align-items: start;
-  background: rgba(4, 8, 18, 0.42);
+  background:
+    linear-gradient(90deg, rgba(34, 211, 238, 0.08), transparent 38%),
+    rgba(255, 255, 255, 0.045);
   border: 1px solid var(--qa-line-subtle);
   border-radius: 7px;
   display: grid;
@@ -2533,10 +2535,20 @@
   grid-template-columns: 116px 48px minmax(0, 1fr);
   min-height: 34px;
   padding: 8px 10px;
+  position: relative;
   /* tweak compositing to avoid duplicated/ghosted text rendering in some Chromium builds */
   transform: translateZ(0);
   backface-visibility: hidden;
   will-change: transform;
+}
+
+.risk-log-stream > div::before {
+  background: var(--qa-neutral);
+  border-radius: 999px;
+  content: "";
+  inset: 8px auto 8px 0;
+  position: absolute;
+  width: 3px;
 }
 
 .risk-log-stream time {
@@ -2547,6 +2559,66 @@
 .risk-log-stream span {
   color: var(--qa-neutral);
   font-size: 11px;
+}
+
+.risk-log-stream .risk-log-warning {
+  background:
+    linear-gradient(90deg, rgba(245, 158, 11, 0.13), transparent 40%),
+    rgba(255, 255, 255, 0.045);
+  border-color: rgba(245, 158, 11, 0.26);
+}
+
+.risk-log-stream .risk-log-warning::before {
+  background: #f59e0b;
+}
+
+.risk-log-stream .risk-log-critical {
+  background:
+    linear-gradient(90deg, rgba(239, 68, 68, 0.13), transparent 40%),
+    rgba(255, 255, 255, 0.045);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.risk-log-stream .risk-log-critical::before {
+  background: var(--qa-loss);
+}
+
+.risk-log-stream .risk-log-normal {
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.risk-log-stream .risk-log-normal::before {
+  background: var(--qa-profit);
+}
+
+[data-theme="light"] .risk-log-stream > div {
+  background:
+    linear-gradient(90deg, rgba(20, 184, 166, 0.08), transparent 42%),
+    rgba(255, 255, 255, 0.78);
+  border-color: rgba(23, 33, 24, 0.09);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.045);
+}
+
+[data-theme="light"] .risk-log-stream .risk-log-warning {
+  background:
+    linear-gradient(90deg, rgba(245, 158, 11, 0.12), transparent 42%),
+    rgba(255, 255, 255, 0.84);
+  border-color: rgba(180, 83, 9, 0.2);
+}
+
+[data-theme="light"] .risk-log-stream .risk-log-critical {
+  background:
+    linear-gradient(90deg, rgba(239, 68, 68, 0.12), transparent 42%),
+    rgba(255, 255, 255, 0.84);
+  border-color: rgba(185, 28, 28, 0.22);
+}
+
+[data-theme="light"] .risk-log-stream time {
+  color: rgba(71, 85, 105, 0.86);
+}
+
+[data-theme="light"] .risk-log-stream strong {
+  color: #1f2b22;
 }
 
 

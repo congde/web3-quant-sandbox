@@ -43,12 +43,12 @@ def setup_matplotlib() -> None:
 
 def save_approval_stop_gate() -> None:
     steps = [
-        ("研究输出", "signal / draft\nsource card"),
-        ("执行边界", "classify()\n先分类"),
-        ("人工确认", "dry-run only\n显式确认"),
-        ("风险规则", "RiskManager\n五条规则"),
-        ("阈值补丁", "patch_threshold\n白名单字段"),
-        ("停止线", "real_order / halt\n直接阻断"),
+        ("研究输出", "信号 / 草稿\n来源卡"),
+        ("执行边界", "分类函数\n先分类"),
+        ("人工确认", "仅限模拟演练\n显式确认"),
+        ("风险规则", "风控管理器\n五条规则"),
+        ("阈值补丁", "补丁函数\n白名单字段"),
+        ("停止线", "真实订单 / 停止\n直接阻断"),
     ]
     colors = [BLUE, TEAL, ORANGE, PURPLE, "#0891B2", RED]
     fig, ax = plt.subplots(figsize=(13.8, 4.9), dpi=160)
@@ -110,7 +110,7 @@ def save_boundary_outcomes() -> None:
     ax.tick_params(axis="x", labelsize=8.2)
     for i, row in enumerate(rows):
         ax.text(i, scores[i] + 0.08, str(row["outcome"]), ha="center", fontsize=8.5, color=INK)
-    ax.text(0.0, -0.24, "数据来自 classify_execution_request()：未确认 dry-run 会降级；real_order 无论是否确认都 blocked。", transform=ax.transAxes, fontsize=10, color=MUTED)
+    ax.text(0.0, -0.24, "数据来自 classify_execution_request()：未确认模拟演练会降级；real_order 无论是否确认都进入阻断。", transform=ax.transAxes, fontsize=10, color=MUTED)
     fig.tight_layout()
     fig.savefig(OUT / "chapter-30-boundary-outcomes.png", bbox_inches="tight")
     plt.close(fig)
@@ -215,10 +215,10 @@ def save_stopline_trigger_matrix() -> None:
 
 def save_verification_ladder() -> None:
     tests = [
-        ("execution boundary", 4, "real_order blocked"),
-        ("risk manager", 12, "5 rules + rejection"),
-        ("approval contract", 4, "chapter gate"),
-        ("course verify", 124, "repo-wide"),
+        ("执行边界", 4, "real_order 被阻断"),
+        ("风控管理器", 12, "五条规则 + 拒绝路径"),
+        ("审批契约", 4, "章节安全门"),
+        ("课程验证", 124, "全仓库"),
     ]
     labels = [item[0] for item in tests]
     counts = [item[1] for item in tests]

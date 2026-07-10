@@ -13,6 +13,7 @@ def explain_metrics(
     limit: int = 120,
     stop_loss_pct: float = 3.0,
     take_profit_pct: float = 5.0,
+    record_trials: bool = True,
 ) -> dict[str, Any]:
     """Contrast return vs drawdown profiles instead of ranking by return alone."""
     payload = compare_strategies(
@@ -20,6 +21,7 @@ def explain_metrics(
         limit=limit,
         stop_loss_pct=stop_loss_pct,
         take_profit_pct=take_profit_pct,
+        record_trials=record_trials,
     )
     rows = payload["strategies"]
     by_return = sorted(rows, key=lambda item: item["total_return_pct"], reverse=True)

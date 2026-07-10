@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from backtest.research_path import run_research_path
-from backtest.rolling.service import run_cpcv_service, run_robustness_audit
+from backtest.rolling.service import TEACHING_SYMBOL, run_cpcv_service, run_robustness_audit
 
 
 def test_research_path_integrates_audit_and_cost_layers() -> None:
@@ -19,10 +19,20 @@ def test_research_path_integrates_audit_and_cost_layers() -> None:
 
 
 def test_research_path_exposes_stopline_audit_metrics() -> None:
-    robustness = run_robustness_audit(strategy_name="ma_crossover", limit=120)
-    cpcv = run_cpcv_service(strategy_name="ma_crossover", limit=120)
+    robustness = run_robustness_audit(
+        strategy_name="ma_crossover",
+        symbol=TEACHING_SYMBOL,
+        limit=120,
+    )
+    cpcv = run_cpcv_service(
+        strategy_name="ma_crossover",
+        symbol=TEACHING_SYMBOL,
+        limit=120,
+    )
     assert robustness["ok"] is True
     assert "pbo" in robustness
     assert "parameter_sensitivity" in robustness
     assert cpcv["ok"] is True
     assert "sharpe_p50" in cpcv["cpcv"]
+    assert robustness["symbol"] == TEACHING_SYMBOL
+    assert cpcv["symbol"] == TEACHING_SYMBOL

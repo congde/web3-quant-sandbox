@@ -190,6 +190,7 @@ def execute_backtest(
     dynamic_slippage: bool | None = None,
     funding_rate_pct: float | None = None,
     commission_pct: float | None = None,
+    record_trial: bool = True,
 ) -> dict[str, Any]:
     pair, resolved_kline, candles, meta = load_candles(
         symbol=symbol,
@@ -269,14 +270,15 @@ def execute_backtest(
     payload["candle_signals"] = _thin_series(payload.get("candle_signals") or [])
     payload["assumptions"] = _base_assumptions(cost)
 
-    get_ledger().record(
-        source="execute_backtest",
-        strategy_key=strategy.name,
-        sharpe_ratio=float(payload.get("sharpe_ratio", 0.0)),
-        total_return_pct=float(payload.get("total_return_pct", 0.0)),
-        params=params,
-        total_trades=int(payload.get("total_trades", 0)),
-    )
+    if record_trial:
+        get_ledger().record(
+            source="execute_backtest",
+            strategy_key=strategy.name,
+            sharpe_ratio=float(payload.get("sharpe_ratio", 0.0)),
+            total_return_pct=float(payload.get("total_return_pct", 0.0)),
+            params=params,
+            total_trades=int(payload.get("total_trades", 0)),
+        )
     return payload
 
 
@@ -303,6 +305,7 @@ def compare_strategies(
     slippage_bps: float | None = None,
     dynamic_slippage: bool | None = None,
     funding_rate_pct: float | None = None,
+    record_trials: bool = True,
 ) -> dict[str, Any]:
     """Run a fixed teaching set of strategies on the same candle window."""
     pair, kline_type, candles, _meta = load_candles(symbol=symbol, limit=max(60, min(1500, limit)))
@@ -324,6 +327,7 @@ def compare_strategies(
             slippage_bps=slippage_bps,
             dynamic_slippage=dynamic_slippage,
             funding_rate_pct=funding_rate_pct,
+            record_trial=record_trials,
         )
         rows.append(
             {
@@ -468,6 +472,7 @@ def run_walk_forward(
     slippage_bps: float | None = None,
     dynamic_slippage: bool | None = None,
     funding_rate_pct: float | None = None,
+    use_trial_ledger: bool = True,
 ) -> dict[str, Any]:
     """Walk-forward param search: fit on train, score on OOS per window."""
     from backtest.rolling.optimization.walk_forward import walk_forward_optimize
@@ -499,11 +504,15 @@ def run_walk_forward(
         funding_rate_pct=float(cost.get("funding_rate_pct", 0.0)),
         kline_type=kline_type,
         min_context=MIN_CONTEXT,
+        record_trials=use_trial_ledger,
     )
 
-    ledger = get_ledger()
-    trial_summary = ledger.summary(strategy_key=strategy_name)
-    num_trials = max(result.num_trials, trial_summary["num_trials"])
+    trial_summary = (
+        get_ledger().summary(strategy_key=strategy_name)
+        if use_trial_ledger
+        else {"num_trials": result.num_trials, "sharpe_variance": 1.0}
+    )
+    num_trials = max(result.num_trials, int(trial_summary["num_trials"]))
     dsr_payload = audit_sharpe(
         [],
         result.out_of_sample_sharpe,
@@ -538,7 +547,11 @@ def run_walk_forward(
             "Params chosen by max in-sample Sharpe per window; OOS uses start_from train_end.",
             "Grid search capped at 500 combos with early-stop on weak half-train Sharpe.",
             *cost_assumptions(cost),
-            "DSR corrects OOS Sharpe for number of trials recorded in the ledger.",
+            (
+                "DSR corrects OOS Sharpe using the persistent trial ledger."
+                if use_trial_ledger
+                else "DSR uses only trials produced by this deterministic teaching run."
+            ),
         ],
     }
 

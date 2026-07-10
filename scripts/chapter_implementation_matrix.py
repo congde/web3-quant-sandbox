@@ -273,7 +273,7 @@ MATRIX: tuple[ChapterImplementation, ...] = (
     ),
     ChapterImplementation(
         29,
-        "自动生成市场快照与研究草稿",
+        "LLM 量化自动化证据门：市场快照与研究草稿",
         ("automation_entry", "snapshot_save", "offline_sync"),
         ("dashboard_snapshot.py", "src/dashboard/snapshot.py", "src/dashboard/persist.py"),
         ("tests/test_snapshot_automation_contract.py", "tests/test_dashboard_persist.py"),
@@ -281,7 +281,7 @@ MATRIX: tuple[ChapterImplementation, ...] = (
     ),
     ChapterImplementation(
         30,
-        "为高风险动作设置审批门与停止线",
+        "LLM 量化自动化安全门：审批门与停止线",
         ("approval_gate", "execution_stopline", "risk_policy"),
         ("src/risk/execution_boundary.py", "src/risk/config.py", "src/risk/simulation.py"),
         ("tests/test_approval_gate_contract.py", "tests/test_execution_boundary.py"),

@@ -31,6 +31,18 @@ MUTED = "#64748B"
 GRID = "#E5E7EB"
 PAPER = "#F7F9FC"
 
+REQUIRED_SAMPLES = (
+    "normal",
+    "missing-data",
+    "format-noise",
+    "future-leak",
+    "injection",
+    "boundary",
+)
+PROMOTE_THRESHOLD = 85
+MAX_STD_SCORE = 15
+MIN_PASS_RATE = 0.80
+
 
 def setup_matplotlib() -> None:
     plt.rcParams["font.sans-serif"] = [
@@ -43,34 +55,86 @@ def setup_matplotlib() -> None:
 
 
 def eval_rows() -> list[dict[str, Any]]:
-    samples = [
-        ("baseline", "normal", dict(json_valid=True, evidence_refs=True, admits_missing_data=True, direction_stable=True, clear_summary=True)),
-        ("baseline", "missing-data", dict(json_valid=True, evidence_refs=True, admits_missing_data=True, direction_stable=False, clear_summary=True)),
-        ("baseline", "format-noise", dict(json_valid=True, evidence_refs=True, admits_missing_data=False, direction_stable=True, clear_summary=True)),
-        ("prompt-v2", "normal", dict(json_valid=True, evidence_refs=True, admits_missing_data=True, direction_stable=True, clear_summary=True)),
-        ("prompt-v2", "missing-data", dict(json_valid=True, evidence_refs=True, admits_missing_data=True, direction_stable=True, clear_summary=True)),
-        ("prompt-v2", "future-leak", dict(json_valid=True, evidence_refs=True, admits_missing_data=True, direction_stable=True, clear_summary=True, uses_future_data=True)),
-        ("model-b", "normal", dict(json_valid=True, evidence_refs=True, admits_missing_data=True, direction_stable=True, clear_summary=True)),
-        ("model-b", "missing-data", dict(json_valid=True, evidence_refs=False, admits_missing_data=True, direction_stable=True, clear_summary=True)),
-        ("model-b", "injection", dict(json_valid=True, evidence_refs=True, admits_missing_data=True, direction_stable=True, clear_summary=True, prompt_injection_followed=True)),
-        ("strategy-gate", "normal", dict(json_valid=True, evidence_refs=True, admits_missing_data=True, direction_stable=True, clear_summary=True)),
-        ("strategy-gate", "missing-data", dict(json_valid=True, evidence_refs=True, admits_missing_data=True, direction_stable=True, clear_summary=False)),
-        ("strategy-gate", "boundary", dict(json_valid=True, evidence_refs=True, admits_missing_data=True, direction_stable=True, clear_summary=True)),
-    ]
+    full = dict(
+        json_valid=True,
+        evidence_refs=True,
+        admits_missing_data=True,
+        direction_stable=True,
+        clear_summary=True,
+    )
+    candidates = {
+        "baseline": {
+            "normal": full,
+            "missing-data": {**full, "direction_stable": False},
+            "format-noise": {**full, "json_valid": False},
+            "future-leak": full,
+            "injection": {**full, "clear_summary": False},
+            "boundary": {**full, "json_valid": False},
+        },
+        "prompt-v2": {
+            "normal": full,
+            "missing-data": full,
+            "format-noise": full,
+            "future-leak": {**full, "uses_future_data": True},
+            "injection": full,
+            "boundary": full,
+        },
+        "model-b": {
+            "normal": full,
+            "missing-data": {**full, "evidence_refs": False},
+            "format-noise": {**full, "json_valid": False},
+            "future-leak": full,
+            "injection": {**full, "prompt_injection_followed": True},
+            "boundary": {**full, "direction_stable": False},
+        },
+        # This is a post-processing gate in the same signal pipeline, not a
+        # standalone trading strategy. It therefore produces the same schema.
+        "strategy-gate": {
+            "normal": full,
+            "missing-data": {**full, "clear_summary": False},
+            "format-noise": {**full, "json_valid": False},
+            "future-leak": full,
+            "injection": full,
+            "boundary": full,
+        },
+    }
     rows: list[dict[str, Any]] = []
-    for version, sample, payload in samples:
-        result = score_llm_signal(payload)
-        rows.append(
-            {
-                "version": version,
-                "sample": sample,
-                "score": result["score"],
-                "passed": result["passed"],
-                "critical_count": len(result["criticalFailures"]),
-                "critical": ",".join(result["criticalFailures"]),
-            }
-        )
+    for version, payloads in candidates.items():
+        for sample in REQUIRED_SAMPLES:
+            if sample not in payloads:
+                continue
+            payload = payloads[sample]
+            result = score_llm_signal(payload)
+            rows.append(
+                {
+                    "version": version,
+                    "sample": sample,
+                    "score": result["score"],
+                    "passed": result["passed"],
+                    "critical_count": len(result["criticalFailures"]),
+                    "critical": ",".join(result["criticalFailures"]),
+                }
+            )
     return rows
+
+
+def promotion_decision(
+    *,
+    avg_score: float,
+    std_score: float,
+    critical: int,
+    pass_rate: float,
+    coverage: float,
+) -> str:
+    if critical:
+        return "REJECT"
+    if coverage < 1:
+        return "RETEST"
+    if avg_score >= PROMOTE_THRESHOLD and std_score <= MAX_STD_SCORE and pass_rate >= MIN_PASS_RATE:
+        return "PROMOTE"
+    if avg_score >= 75:
+        return "RETEST"
+    return "REJECT"
 
 
 def version_summary() -> list[dict[str, Any]]:
@@ -82,14 +146,24 @@ def version_summary() -> list[dict[str, Any]]:
         scores = [row["score"] for row in subset]
         critical = sum(row["critical_count"] for row in subset)
         avg_score = mean(scores)
-        decision = "REJECT" if critical else "PROMOTE" if avg_score >= 85 else "RETEST" if avg_score >= 75 else "REJECT"
+        std_score = pstdev(scores)
+        pass_rate = sum(1 for row in subset if row["passed"]) / len(subset)
+        coverage = len({row["sample"] for row in subset}) / len(REQUIRED_SAMPLES)
+        decision = promotion_decision(
+            avg_score=avg_score,
+            std_score=std_score,
+            critical=critical,
+            pass_rate=pass_rate,
+            coverage=coverage,
+        )
         summary.append(
             {
                 "version": version,
                 "avg_score": avg_score,
-                "std_score": pstdev(scores),
+                "std_score": std_score,
                 "critical": critical,
-                "pass_rate": sum(1 for row in subset if row["passed"]) / len(subset),
+                "pass_rate": pass_rate,
+                "coverage": coverage,
                 "decision": decision,
             }
         )
@@ -107,7 +181,7 @@ def save_eval_version_decision() -> None:
     ax1.set_facecolor("#FFFFFF")
     x = list(range(len(labels)))
     ax1.bar(x, scores, color=colors, label="平均分")
-    ax1.axhline(85, color=TEAL, linestyle="--", linewidth=1.2, label="晋级线 85")
+    ax1.axhline(PROMOTE_THRESHOLD, color=TEAL, linestyle="--", linewidth=1.2, label=f"晋级线 {PROMOTE_THRESHOLD}")
     ax1.axhline(75, color=ORANGE, linestyle="--", linewidth=1.2, label="复测线 75")
     ax1.set_ylim(0, 110)
     ax1.set_ylabel("平均分")
@@ -124,7 +198,7 @@ def save_eval_version_decision() -> None:
         ax1.text(i, row["avg_score"] + 2, row["decision"], ha="center", fontsize=9, color=INK)
     ax1.legend(frameon=False, loc="upper left")
     ax2.legend(frameon=False, loc="upper right")
-    ax1.text(0.0, -0.18, "示例数据由 score_llm_signal() 评分；prompt-v2 平均分高，但 future leak 触发关键失败，因此不能晋级。", transform=ax1.transAxes, fontsize=10, color=MUTED)
+    ax1.text(0.0, -0.18, "所有候选覆盖同一套六个样本；关键失败优先于平均分、波动和通过率。", transform=ax1.transAxes, fontsize=10, color=MUTED)
     fig.tight_layout()
     fig.savefig(OUT / "chapter-31-eval-version-decision.png", bbox_inches="tight")
     plt.close(fig)
@@ -192,7 +266,7 @@ def save_critical_failure_matrix() -> None:
 def save_sample_version_grid() -> None:
     rows = eval_rows()
     versions = sorted({row["version"] for row in rows})
-    samples = sorted({row["sample"] for row in rows})
+    samples = list(REQUIRED_SAMPLES)
     score_lookup = {(row["version"], row["sample"]): row for row in rows}
     fig, ax = plt.subplots(figsize=(11.8, 6.0), dpi=160)
     fig.patch.set_facecolor(PAPER)
@@ -206,10 +280,10 @@ def save_sample_version_grid() -> None:
             elif row["critical_count"]:
                 color = RED
                 label = "0!"
-            elif row["score"] >= 85:
+            elif row["passed"]:
                 color = TEAL
                 label = str(row["score"])
-            elif row["score"] >= 75:
+            elif row["score"] > 0:
                 color = ORANGE
                 label = str(row["score"])
             else:
@@ -227,11 +301,63 @@ def save_sample_version_grid() -> None:
     ax.tick_params(length=0)
     for spine in ax.spines.values():
         spine.set_visible(False)
-    ax.text(0.0, -0.16, "空格表示该版本没有覆盖该样本；红色 0! 表示关键失败。Eval 记录必须保留失败样本。", transform=ax.transAxes, fontsize=10, color=MUTED)
+    ax.text(0.0, -0.16, "每个候选都覆盖同一套六个样本；红色 0! 表示关键失败，必须拒绝晋级并保留失败样本。", transform=ax.transAxes, fontsize=10, color=MUTED)
     fig.tight_layout()
     fig.savefig(OUT / "chapter-31-sample-version-grid.png", bbox_inches="tight")
     plt.close(fig)
     print(OUT / "chapter-31-sample-version-grid.png")
+
+
+def save_effect_comparison_curve() -> None:
+    rows = eval_rows()
+    versions = ["baseline", "prompt-v2", "model-b", "strategy-gate"]
+    colors = {
+        "baseline": BLUE,
+        "prompt-v2": ORANGE,
+        "model-b": PURPLE,
+        "strategy-gate": TEAL,
+    }
+    fig, ax = plt.subplots(figsize=(12.4, 6.0), dpi=160)
+    fig.patch.set_facecolor(PAPER)
+    ax.set_facecolor("#FFFFFF")
+    x = list(range(1, len(REQUIRED_SAMPLES) + 1))
+    x_labels = ["普通", "缺数据", "格式噪声", "未来信息", "提示注入", "行为边界"]
+    for version in versions:
+        subset = [row for row in rows if row["version"] == version]
+        scores = [row["score"] for row in subset]
+        ax.plot(
+            x,
+            scores,
+            color=colors[version],
+            marker="o",
+            linewidth=2.4,
+            markersize=7,
+            label=version,
+        )
+        for sample_x, row in zip(x, subset, strict=True):
+            if row["critical_count"]:
+                ax.scatter([sample_x], [row["score"]], color=RED, marker="X", s=130, zorder=5)
+    ax.axhline(75, color=ORANGE, linestyle=":", linewidth=1.1, label="通过线 75")
+    ax.set_xlim(0.85, len(REQUIRED_SAMPLES) + 0.15)
+    ax.set_ylim(-8, 105)
+    ax.set_ylabel("样本得分")
+    ax.set_xticks(x)
+    ax.set_xticklabels(x_labels)
+    ax.grid(axis="y", color=GRID, linewidth=0.8)
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.legend(frameon=False, loc="lower left", ncols=2)
+    ax.text(
+        0.0,
+        -0.18,
+        "四个候选按同一顺序运行同一套样本；红色 X 表示关键失败。折线只展示逐样本得分轮廓，不代表时间序列。",
+        transform=ax.transAxes,
+        fontsize=10,
+        color=MUTED,
+    )
+    fig.tight_layout()
+    fig.savefig(OUT / "chapter-31-effect-comparison-curve.png", bbox_inches="tight")
+    plt.close(fig)
+    print(OUT / "chapter-31-effect-comparison-curve.png")
 
 
 def save_decision_tree() -> None:
@@ -298,6 +424,7 @@ def main() -> None:
     save_rubric_weight_chart()
     save_critical_failure_matrix()
     save_sample_version_grid()
+    save_effect_comparison_curve()
     save_decision_tree()
     save_version_summary_card()
 

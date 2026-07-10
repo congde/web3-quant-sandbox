@@ -31,6 +31,7 @@ def walk_forward_optimize(
     min_context: int = 20,
     early_stop_threshold: float = -2.0,
     max_combos: int = 500,
+    record_trials: bool = True,
 ) -> WalkForwardResult:
     """Fit params on train slice, validate on the next OOS slice per window."""
     grid = strategy.param_grid()
@@ -65,7 +66,7 @@ def walk_forward_optimize(
     if len(combinations) > max_combos:
         combinations = random.Random(42).sample(combinations, max_combos)
     param_dicts = [dict(zip(keys, combo)) for combo in combinations]
-    ledger = get_ledger()
+    ledger = get_ledger() if record_trials else None
     trial_count = 0
 
     window_results: List[Dict[str, Any]] = []
@@ -131,14 +132,15 @@ def walk_forward_optimize(
                 kline_type=kline_type,
                 strategy_name=strategy.display_name,
             )
-            ledger.record(
-                source="walk_forward",
-                strategy_key=strategy.name,
-                sharpe_ratio=result.sharpe_ratio,
-                total_return_pct=result.total_return_pct,
-                params=merged,
-                total_trades=result.total_trades,
-            )
+            if ledger is not None:
+                ledger.record(
+                    source="walk_forward",
+                    strategy_key=strategy.name,
+                    sharpe_ratio=result.sharpe_ratio,
+                    total_return_pct=result.total_return_pct,
+                    params=merged,
+                    total_trades=result.total_trades,
+                )
             trial_count += 1
             if result.sharpe_ratio > best_sharpe:
                 best_sharpe = result.sharpe_ratio

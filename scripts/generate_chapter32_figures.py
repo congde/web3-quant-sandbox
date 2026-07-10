@@ -9,7 +9,7 @@ from textwrap import fill
 from typing import Any
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyArrowPatch, Rectangle
+from matplotlib.patches import FancyArrowPatch, Polygon, Rectangle
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -79,29 +79,74 @@ def snapshot_health_rows() -> list[dict[str, Any]]:
 
 
 def save_failure_audit_loop() -> None:
-    steps = [
-        ("发现", "task failed\nlive_error"),
-        ("分类", "data / LLM\nrisk / page"),
-        ("降级", "snapshot\nfixture / baseline"),
-        ("复测", "pytest\ncourse verify"),
-        ("恢复", "done / cached\nrecovered"),
-        ("审计", "原因 / 命令\n剩余风险"),
-    ]
-    colors = [RED, ORANGE, BLUE, TEAL, PURPLE, "#0891B2"]
-    fig, ax = plt.subplots(figsize=(13.6, 4.9), dpi=160)
+    fig, ax = plt.subplots(figsize=(13.6, 6.2), dpi=160)
     fig.patch.set_facecolor(PAPER)
     ax.axis("off")
-    ax.text(0.04, 0.9, "运行期失败要形成闭环：发现、分类、降级、复测、恢复、审计", transform=ax.transAxes, fontsize=15, color=INK, weight="bold")
-    width = 0.13
-    gap = 0.026
-    for i, ((title, body), color) in enumerate(zip(steps, colors, strict=True)):
-        x = 0.04 + i * (width + gap)
-        ax.add_patch(Rectangle((x, 0.34), width, 0.38, transform=ax.transAxes, facecolor="#FFFFFF", edgecolor=color, linewidth=2))
-        ax.text(x + 0.012, 0.64, title, transform=ax.transAxes, fontsize=10.8, color=color, weight="bold")
-        ax.text(x + 0.012, 0.54, body, transform=ax.transAxes, fontsize=8.7, color=INK, va="top")
-        if i < len(steps) - 1:
-            ax.add_patch(FancyArrowPatch((x + width + 0.005, 0.53), (x + width + gap - 0.006, 0.53), transform=ax.transAxes, arrowstyle="-|>", mutation_scale=13, linewidth=1.6, color=MUTED))
-    ax.text(0.04, 0.15, "对应代码：dashboard.signal_tasks、dashboard.snapshot、dashboard.persist、dashboard.signal_eval、risk.simulation。", transform=ax.transAxes, fontsize=10, color=MUTED)
+    ax.text(0.04, 0.92, "失败恢复不是单向成功流程：先分流，再复测，最后过关闭门禁", transform=ax.transAxes, fontsize=15, color=INK, weight="bold")
+
+    def box(x: float, y: float, w: float, h: float, title: str, body: str, color: str) -> None:
+        ax.add_patch(Rectangle((x, y), w, h, transform=ax.transAxes, facecolor="#FFFFFF", edgecolor=color, linewidth=2))
+        ax.text(x + 0.012, y + h - 0.045, title, transform=ax.transAxes, fontsize=10.5, color=color, weight="bold", va="top")
+        ax.text(x + 0.012, y + h - 0.105, body, transform=ax.transAxes, fontsize=8.6, color=INK, va="top", linespacing=1.35)
+
+    def arrow(
+        start: tuple[float, float],
+        end: tuple[float, float],
+        *,
+        connectionstyle: str = "arc3",
+        color: str = MUTED,
+    ) -> None:
+        ax.add_patch(
+            FancyArrowPatch(
+                start,
+                end,
+                transform=ax.transAxes,
+                arrowstyle="-|>",
+                mutation_scale=13,
+                linewidth=1.6,
+                color=color,
+                connectionstyle=connectionstyle,
+            )
+        )
+
+    box(0.04, 0.58, 0.15, 0.20, "发现并建事件", "保留失败时间、输入\n状态和原始错误", RED)
+    box(0.24, 0.58, 0.15, 0.20, "分类与定级", "data / LLM / Eval\nrisk / page", ORANGE)
+    decision = Polygon(
+        [(0.49, 0.80), (0.57, 0.68), (0.49, 0.56), (0.41, 0.68)],
+        closed=True,
+        transform=ax.transAxes,
+        facecolor="#FFFFFF",
+        edgecolor=BLUE,
+        linewidth=2,
+    )
+    ax.add_patch(decision)
+    ax.text(0.49, 0.68, "允许\n降级？", transform=ax.transAxes, ha="center", va="center", fontsize=10, color=BLUE, weight="bold")
+    box(0.63, 0.69, 0.15, 0.18, "降级观察", "显示来源和时间\n不能冒充 live", TEAL)
+    box(0.63, 0.43, 0.15, 0.18, "阻断交付", "critical / blocked\n进入人工复核", RED)
+    box(0.83, 0.56, 0.14, 0.22, "针对性复测", "绑定失败样本、\n命令和实际结果", PURPLE)
+    box(0.63, 0.12, 0.15, 0.20, "关闭门禁", "人工决定完整？\n剩余风险已记录？", "#0891B2")
+    box(0.40, 0.12, 0.14, 0.20, "关闭并回归", "写 closed_at\n保留回归样本", TEAL)
+    box(0.40, 0.38, 0.14, 0.16, "修复并补证", "复测失败 / 字段不全\n修复后重新分类", RED)
+
+    arrow((0.19, 0.68), (0.24, 0.68))
+    arrow((0.39, 0.68), (0.41, 0.68))
+    arrow((0.57, 0.72), (0.63, 0.77))
+    arrow((0.57, 0.64), (0.63, 0.52))
+    ax.text(0.585, 0.76, "是", transform=ax.transAxes, fontsize=8.5, color=TEAL)
+    ax.text(0.585, 0.56, "否", transform=ax.transAxes, fontsize=8.5, color=RED)
+    arrow((0.78, 0.78), (0.83, 0.70))
+    arrow((0.78, 0.52), (0.83, 0.63))
+    arrow((0.86, 0.56), (0.76, 0.32), connectionstyle="arc3,rad=-0.18")
+    ax.text(0.80, 0.43, "通过", transform=ax.transAxes, fontsize=8.5, color=TEAL)
+    ax.plot([0.94, 0.94, 0.58], [0.56, 0.36, 0.36], transform=ax.transAxes, color=RED, linewidth=1.6)
+    arrow((0.58, 0.36), (0.54, 0.45), connectionstyle="arc3,rad=0.08", color=RED)
+    ax.text(0.83, 0.335, "失败", transform=ax.transAxes, fontsize=8.5, color=RED)
+    arrow((0.63, 0.22), (0.54, 0.22))
+    ax.text(0.55, 0.245, "字段完整", transform=ax.transAxes, fontsize=8.5, color=TEAL)
+    arrow((0.63, 0.18), (0.53, 0.38), connectionstyle="arc3,rad=-0.18")
+    arrow((0.40, 0.47), (0.31, 0.58), connectionstyle="arc3,rad=-0.08")
+    ax.text(0.55, 0.33, "不完整", transform=ax.transAxes, fontsize=8.5, color=RED)
+    ax.text(0.04, 0.04, "cached 仍属于降级状态；recovered 只有通过关闭门禁后才能进入 closed。", transform=ax.transAxes, fontsize=10, color=MUTED)
     fig.savefig(OUT / "chapter-32-failure-audit-loop.png", bbox_inches="tight")
     plt.close(fig)
     print(OUT / "chapter-32-failure-audit-loop.png")
@@ -224,7 +269,7 @@ def save_incident_severity_card() -> None:
 
 def save_recovery_sla_timeline() -> None:
     minutes = [0, 3, 8, 15, 24, 37, 45]
-    states = ["failed", "classified", "fallback", "retest", "recovered", "audit", "closed"]
+    states = ["失败", "已分类", "已降级", "复测", "已恢复", "审计", "已关闭"]
     score = [3, 3, 2, 2, 1, 1, 0]
     colors = [RED, RED, ORANGE, ORANGE, TEAL, BLUE, MUTED]
     fig, ax = plt.subplots(figsize=(12.2, 5.5), dpi=160)
@@ -235,7 +280,7 @@ def save_recovery_sla_timeline() -> None:
         ax.scatter([x], [y], s=130, color=color, zorder=3)
         ax.text(x, y + 0.17, state, ha="center", fontsize=9, color=INK)
     ax.set_yticks([0, 1, 2, 3])
-    ax.set_yticklabels(["closed", "recovered", "degraded", "failed"])
+    ax.set_yticklabels(["已关闭", "已恢复", "降级中", "失败"])
     ax.set_xlabel("分钟")
     ax.grid(color=GRID, linewidth=0.8)
     ax.spines[["top", "right"]].set_visible(False)
@@ -246,49 +291,13 @@ def save_recovery_sla_timeline() -> None:
     print(OUT / "chapter-32-recovery-sla-timeline.png")
 
 
-def save_audit_record_completeness() -> None:
-    fields = ["time", "input", "version", "reason", "fallback", "command", "owner", "residual"]
-    cases = [
-        ("good", [1, 1, 1, 1, 1, 1, 1, 1]),
-        ("no command", [1, 1, 1, 1, 1, 0, 1, 1]),
-        ("no reason", [1, 1, 1, 0, 1, 1, 1, 1]),
-        ("silent fallback", [1, 1, 1, 1, 0, 1, 1, 0]),
-        ("covered failure", [0, 0, 1, 0, 1, 1, 1, 0]),
-    ]
-    fig, ax = plt.subplots(figsize=(12.0, 5.8), dpi=160)
-    fig.patch.set_facecolor(PAPER)
-    ax.set_facecolor("#FFFFFF")
-    for y, (_, values) in enumerate(cases):
-        for x, value in enumerate(values):
-            color = TEAL if value else RED
-            ax.add_patch(Rectangle((x, y), 1, 1, facecolor=color, edgecolor="#FFFFFF", linewidth=2))
-            ax.text(x + 0.5, y + 0.5, "ok" if value else "miss", ha="center", va="center", fontsize=8, color="#FFFFFF")
-    ax.set_xlim(0, len(fields))
-    ax.set_ylim(0, len(cases))
-    ax.set_xticks([i + 0.5 for i in range(len(fields))])
-    ax.set_xticklabels(fields, rotation=18, ha="right")
-    ax.set_yticks([i + 0.5 for i in range(len(cases))])
-    ax.set_yticklabels([case[0] for case in cases])
-    ax.invert_yaxis()
-    ax.tick_params(length=0)
-    for spine in ax.spines.values():
-        spine.set_visible(False)
-    ax.text(0.0, -0.18, "最小记录字段：时间、输入、版本、原因、降级路径、复测命令、处理人、剩余风险。", transform=ax.transAxes, fontsize=10, color=MUTED)
-    fig.tight_layout()
-    fig.savefig(OUT / "chapter-32-audit-record-completeness.png", bbox_inches="tight")
-    plt.close(fig)
-    print(OUT / "chapter-32-audit-record-completeness.png")
-
-
 def main() -> None:
     setup_matplotlib()
     OUT.mkdir(parents=True, exist_ok=True)
     save_failure_audit_loop()
     save_snapshot_recovery_health()
-    save_degradation_path_matrix()
     save_incident_severity_card()
     save_recovery_sla_timeline()
-    save_audit_record_completeness()
 
 
 if __name__ == "__main__":

@@ -2,12 +2,21 @@ from __future__ import annotations
 
 from backtest.research_path import run_research_path
 from backtest.trace import run_teaching_scenario
+from backtest.trials import get_ledger
 from risk import ExecutionBoundaryRequest, classify_execution_request
 
 
 def test_end_to_end_research_path_exposes_required_sections() -> None:
+    before = get_ledger().count()
     payload = run_research_path(include_audit=True)
+    after = get_ledger().count()
     assert payload["ok"] is True
+    assert payload["input_contract"] == {
+        "symbol": "WEB3-DEMO/USDT",
+        "source": "data/prices.csv",
+        "trial_scope": "current_run_only",
+    }
+    assert after == before
     assert len(payload["path"]) >= 10
     assert payload["report_summary"]["trade_count"] > 0
     assert payload["rolling_summary"]["total_trades"] >= 0

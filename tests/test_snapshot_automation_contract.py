@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from dashboard.catalog import SNAPSHOT_NAMES, offline_status
 from dashboard.refresh import refresh_all
@@ -74,6 +74,7 @@ def test_snapshot_refresh_dry_run_covers_registered_web3_news(monkeypatch) -> No
     monkeypatch.setattr(refresh, "fetch_full_dex_trending", lambda chain="solana": {"ok": True, "source": "live", "tokens": [{"symbol": "SOL"}]})
     monkeypatch.setattr(refresh, "fetch_full_market_tickers", lambda: {"ok": True, "source": "live", "tickers": [{"symbol": "BTC-USDT"}]})
     monkeypatch.setattr(refresh, "fetch_full_kucoin_markets", lambda: {"ok": True, "source": "live", "markets": [{"symbol": "BTC-USDT"}]})
+    monkeypatch.setattr(refresh, "fetch_full_exchange_markets", lambda: {"ok": True, "source": "live", "markets": [{"symbol": "BTC-USDT"}]})
     monkeypatch.setattr(
         refresh,
         "fetch_full_opportunity_scan",
@@ -170,3 +171,4 @@ def test_research_draft_generates_draft_only_material(monkeypatch) -> None:
     assert draft["human_review_required"] is True
     assert any(section["id"] == "market_state" for section in draft["sections"])
     assert "place live orders" in draft["prohibited_actions"]
+
