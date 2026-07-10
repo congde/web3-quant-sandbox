@@ -180,6 +180,24 @@
   margin: 0;
 }
 
+
+.ds-source-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.ds-source-meta span {
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  border-radius: 999px;
+  color: var(--qa-neutral, var(--primary));
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 3px 8px;
+}
 .ds-picks-grid {
   display: grid;
   gap: 12px;
@@ -407,3 +425,4 @@
     grid-template-columns: 1fr;
   }
 }
+

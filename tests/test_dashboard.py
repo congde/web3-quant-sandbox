@@ -63,9 +63,18 @@ def test_market_tickers_fixture_shape() -> None:
     assert isinstance(payload.get("tickers"), list)
 
 
+
+
+def test_sources_status_exposes_market_provider() -> None:
+    payload = dashboard_api.sources_status()
+    assert payload["ok"] is True
+    assert payload["env"].get("market_provider") in {"binance", "kucoin"}
+    exchange = next(item for item in payload.get("probes", []) if item["id"] == "web3_exchange")
+    assert exchange.get("provider") in {"binance", "kucoin"}
 def test_web3_news_fixture_shape() -> None:
     payload = dashboard_api.web3_news(limit=5)
     assert payload["ok"] is True
     assert isinstance(payload.get("items"), list)
     assert payload["metrics"]["article_count"] >= 1
     assert "news_heat_24h" in payload["factor_signals"]
+

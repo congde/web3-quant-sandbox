@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import os
 from typing import Any, Callable
 
 from config.env import env_status, load_env
@@ -851,6 +852,8 @@ def sources_status() -> dict[str, Any]:
         "valuescan": valuescan.configured(),
         "dexscan": dexscan.configured(),
         "web3_exchange_public": True,
+        "market_provider": market.market_provider(),
+        "binance": bool(os.environ.get("BINANCE_API_KEY")),
         "web3_news_public": True,
         "fear_greed_public": True,
         "data_mode": dashboard_data_mode(),
@@ -869,14 +872,22 @@ def sources_status() -> dict[str, Any]:
         try:
             data = fn()
             ok = bool(data.get("ok", True))
-            probes.append(
-                {
-                    "id": source_id,
-                    "name": name,
-                    "ok": ok,
-                    "source": data.get("source") or ("live" if ok else "offline"),
-                }
-            )
+            probe = {
+                "id": source_id,
+                "name": name,
+                "ok": ok,
+                "source": data.get("source") or ("live" if ok else "offline"),
+            }
+            if source_id == "web3_exchange":
+                probe["provider"] = data.get("provider") or market.market_provider()
+                probe["active_layer"] = data.get("source")
+                if (data.get("snapshot") or {}).get("origin"):
+                    probe["snapshot_origin"] = (data.get("snapshot") or {}).get("origin")
+            probes.append(probe)
         except Exception as exc:
             probes.append({"id": source_id, "name": name, "ok": False, "error": str(exc)})
     return {"ok": True, "env": env, "probes": probes, "dashboard_url": get_dashboard_url()}
+
+
+
+

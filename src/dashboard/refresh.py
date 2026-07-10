@@ -8,6 +8,7 @@ from dashboard import api as dashboard_api
 from dashboard.catalog import completeness_detail, offline_status
 from dashboard.full_datasets import (
     fetch_full_dex_trending,
+    fetch_full_exchange_markets,
     fetch_full_kucoin_markets,
     fetch_full_market_candles,
     fetch_full_market_tickers,
@@ -18,7 +19,7 @@ from dashboard.full_datasets import (
 from dashboard.normalize import normalize_ai_picks
 from dashboard.snapshot import list_snapshots, load_offline, save_snapshot
 from dashboard.upstream import upstream_available
-from dashboard import valuescan
+from dashboard import market, valuescan
 
 
 Fetcher = Callable[[], dict[str, Any]]
@@ -94,7 +95,13 @@ def refresh_all(*, save: bool = True, data_mode: str = "auto") -> dict[str, Any]
         ("onchain", _fetcher("onchain", lambda: dashboard_api.onchain("BTC"))),
         ("dex_trending", _fetcher("dex_trending", lambda: fetch_full_dex_trending(chain="solana"))),
         ("market_tickers", _fetcher("market_tickers", lambda: fetch_full_market_tickers())),
-        ("kucoin_markets", _fetcher("kucoin_markets", fetch_full_kucoin_markets)),
+        (
+            "binance_markets" if market.market_provider() == "binance" else "kucoin_markets",
+            _fetcher(
+                "binance_markets" if market.market_provider() == "binance" else "kucoin_markets",
+                fetch_full_exchange_markets,
+            ),
+        ),
         ("web3_news", _fetcher("web3_news", lambda: dashboard_api.web3_news(limit=50, refresh=True))),
         ("opportunity_scan", _fetcher("opportunity_scan", fetch_full_opportunity_scan)),
         ("market_candles", _fetcher("market_candles", lambda: fetch_full_market_candles())),
@@ -152,3 +159,5 @@ def refresh_all(*, save: bool = True, data_mode: str = "auto") -> dict[str, Any]
         "snapshots": list_snapshots(),
         "offline": status,
     }
+
+

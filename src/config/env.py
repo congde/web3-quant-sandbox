@@ -71,8 +71,12 @@ def env_status() -> dict:
         "llm": bool(os.environ.get("OPENAI_API_KEY")),
         "llm_model": os.environ.get("OPENAI_MODEL", "deepseek-v4-pro"),
         "web3_exchange_public": True,
+        "market_provider": os.environ.get("DASHBOARD_MARKET_PROVIDER", "kucoin").strip().lower() or "kucoin",
+        "binance": bool(os.environ.get("BINANCE_API_KEY")),
         "fear_greed_public": True,
         "upstream_base_url": get_upstream_base_url(),
         "dashboard_url": get_dashboard_url(),
         "config_sources": config_sources(),
     }
+
+

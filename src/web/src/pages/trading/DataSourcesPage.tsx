@@ -38,9 +38,64 @@ interface SourceCard {
 
   detail: string;
 
+  provider?: string;
+
+  activeLayer?: string;
+
+  snapshotOrigin?: string;
+
 }
 
 
+
+
+function marketProviderLabel(provider?: string) {
+
+  const normalized = String(provider || "").toLowerCase();
+
+  if (normalized === "binance") return "Binance";
+
+  if (normalized === "kucoin") return "KuCoin";
+
+  return provider || "web3 exchange";
+
+}
+
+
+function sourceLayerLabel(source?: string) {
+
+  if (source === "live") return "实时 API";
+
+  if (source === "snapshot") return "快照优先";
+
+  if (source === "fixture") return "内置样本";
+
+  if (source === "web3-trading-upstream") return "上游代理";
+
+  return source || "待检测";
+
+}
+
+
+function sourceProbeDetail(probe: NonNullable<DashboardSourcesStatus["probes"]>[number]) {
+
+  if (probe.error) return probe.error;
+
+  if (probe.id === "web3_exchange") {
+
+    const provider = marketProviderLabel(probe.provider);
+
+    const layer = sourceLayerLabel(probe.source);
+
+    const origin = probe.snapshot_origin ? ` · origin=${probe.snapshot_origin}` : "";
+
+    return `${provider} · ${layer}${origin}`;
+
+  }
+
+  return probe.source || (probe.ok ? "已连接" : "不可用");
+
+}
 
 function sectorInflow(sector: NonNullable<DashboardSectorFund["sectors"]>[number], range = "h1") {
 
@@ -218,6 +273,10 @@ export default function DataSourcesPage() {
 
   const [tickerCount, setTickerCount] = useState("-");
 
+  const [marketSource, setMarketSource] = useState("-");
+
+  const [marketProvider, setMarketProvider] = useState("-");
+
   const [sectorLead, setSectorLead] = useState("-");
 
   const [sectors, setSectors] = useState<DashboardSectorFund["sectors"]>([]);
@@ -240,6 +299,8 @@ export default function DataSourcesPage() {
 
         setEnv(status.env || {});
 
+        setMarketProvider(marketProviderLabel(status.env?.market_provider));
+
         setSources(
 
           (status.probes || []).map((probe) => ({
@@ -250,7 +311,13 @@ export default function DataSourcesPage() {
 
             ok: probe.ok,
 
-            detail: probe.error || probe.source || (probe.ok ? "已连接" : "不可用"),
+            detail: sourceProbeDetail(probe),
+
+            provider: probe.provider,
+
+            activeLayer: probe.active_layer || probe.source,
+
+            snapshotOrigin: probe.snapshot_origin,
 
           })),
 
@@ -285,6 +352,14 @@ export default function DataSourcesPage() {
       setFearGreed(onchain.marketSentiment || {});
 
       setTickerCount(String(tickers.count ?? (tickers.tickers || []).length));
+
+      setMarketSource(sourceLayerLabel((tickers as { source?: string }).source));
+
+      setMarketProvider((current) =>
+
+        marketProviderLabel((tickers as { provider?: string }).provider || env?.market_provider || current),
+
+      );
 
       setSectorLead(leadingSector(sector.sectors));
 
@@ -458,7 +533,7 @@ export default function DataSourcesPage() {
 
           <span className="ds-stat-value">{tickerCount}</span>
 
-          <span className="ds-stat-meta">web3交易所 公网</span>
+          <span className="ds-stat-meta">{marketProvider} · {marketSource}</span>
 
         </div>
 
@@ -492,7 +567,7 @@ export default function DataSourcesPage() {
 
           <span className={`ds-badge ${env?.valuescan ? "ds-badge-live" : "ds-badge-fixture"}`}>
 
-            {env?.valuescan ? "Live" : "Fixture"}
+            {marketProviderLabel(env?.market_provider)}
 
           </span>
 
@@ -513,6 +588,18 @@ export default function DataSourcesPage() {
               </div>
 
               <p className="ds-source-detail">{item.detail}</p>
+
+              {item.provider || item.activeLayer ? (
+
+                <div className="ds-source-meta">
+
+                  {item.provider ? <span>{marketProviderLabel(item.provider)}</span> : null}
+
+                  {item.activeLayer ? <span>{sourceLayerLabel(item.activeLayer)}</span> : null}
+
+                </div>
+
+              ) : null}
 
             </article>
 
@@ -751,5 +838,8 @@ export default function DataSourcesPage() {
   );
 
 }
+
+
+
 
 

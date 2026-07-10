@@ -32,6 +32,10 @@ def fetch_full_kucoin_markets() -> dict[str, Any]:
     return market.fetch_kucoin_markets()
 
 
+def fetch_full_exchange_markets() -> dict[str, Any]:
+    return market.fetch_exchange_markets()
+
+
 def fetch_full_valuescan_global() -> dict[str, Any]:
     return fetch_global_valuescan_data()
 

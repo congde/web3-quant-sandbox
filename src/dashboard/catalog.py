@@ -75,6 +75,7 @@ DATASET_CHECKS: dict[str, DatasetCheck] = {
     ),
     "valuescan_global": lambda payload: _has_items(payload, "chance", minimum=1),
     "kucoin_markets": lambda payload: _has_items(payload, "markets", minimum=1),
+    "binance_markets": lambda payload: _has_items(payload, "markets", minimum=1),
 }
 
 
@@ -206,3 +207,4 @@ def offline_status() -> dict[str, Any]:
         "complete_count": complete_count,
         "total_count": len(SNAPSHOT_NAMES),
     }
+

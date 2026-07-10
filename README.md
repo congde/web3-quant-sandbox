@@ -105,6 +105,11 @@ Dashboard 数据主要来自三类来源：
 2. `data/dashboard/snapshots/`：在线抓取后落盘的快照。
 3. 在线 API：仅在配置密钥并启用 `DASHBOARD_DATA_MODE=auto` 或 `DASHBOARD_DATA_MODE=live` 时使用。
 
+Binance 行情接入说明：
+- 运行时数据源通过 `.env` 中的 `DASHBOARD_MARKET_PROVIDER=binance`、`BINANCE_PUBLIC_API_BASE` 和可选 `BINANCE_API_KEY` 配置，项目代码调用 Binance 官方 REST API。
+- Binance Skills Hub / Codex Binance skills 用于开发期查询、字段核对和示例验证；它们属于 Codex 会话工具，不能作为应用运行时依赖。
+- `auto` 模式会先返回完整 snapshot/fixture，再在后台刷新；需要立即验证 Binance 实时数据时，可调用接口时传 `refresh=True` 或临时使用 `DASHBOARD_DATA_MODE=live`。
+
 常用数据命令：
 
 | 命令 | 作用 |

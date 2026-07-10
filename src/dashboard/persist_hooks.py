@@ -41,11 +41,20 @@ def persist_kucoin_markets() -> None:
         logger.warning("persist kucoin_markets failed: %s", exc)
 
 
+def persist_exchange_markets() -> None:
+    try:
+        payload = market.fetch_exchange_markets()
+        name = "binance_markets" if payload.get("provider") == "binance" else "kucoin_markets"
+        maybe_persist(name, payload)
+    except Exception as exc:
+        logger.warning("persist exchange markets failed: %s", exc)
+
+
 def persist_kucoin_bundle(quote: str = "USDT") -> None:
-    """全量 tickers + markets 元数据。"""
+    """Persist full ticker data plus provider market metadata."""
     try:
         tickers = market.fetch_market_tickers(quote=quote, limit=None)
         maybe_persist("market_tickers", tickers)
     except Exception as exc:
         logger.warning("persist market_tickers failed: %s", exc)
-    persist_kucoin_markets()
+    persist_exchange_markets()

@@ -163,6 +163,8 @@ export interface DashboardSourcesStatus {
     valuescan?: boolean;
     dexscan?: boolean;
     web3_exchange_public?: boolean;
+    market_provider?: string;
+    binance?: boolean;
     fear_greed_public?: boolean;
     data_mode?: string;
     upstream?: {
@@ -172,7 +174,16 @@ export interface DashboardSourcesStatus {
     };
   };
   dashboard_url?: string | null;
-  probes?: Array<{ id: string; name: string; ok: boolean; source?: string; error?: string }>;
+  probes?: Array<{
+    id: string;
+    name: string;
+    ok: boolean;
+    source?: string;
+    provider?: string;
+    active_layer?: string;
+    snapshot_origin?: string;
+    error?: string;
+  }>;
 }
 
 export interface Web3NewsItem {
@@ -829,3 +840,4 @@ export interface MinedFactorBacktestPayload extends RollingBacktestPayload {
   factor_label?: string;
   backtest_spec?: FactorBacktestSpec;
 }
+
