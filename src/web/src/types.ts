@@ -115,6 +115,27 @@ export interface StrategyValidationResult {
   error?: string;
 }
 
+export interface DslBacktestPayload {
+  ok: boolean;
+  engine?: string;
+  symbol?: string;
+  timeframe?: string;
+  data_source?: string;
+  total_candles?: number;
+  metrics?: {
+    total_return_pct: number;
+    max_drawdown_pct: number;
+    sharpe_ratio: number;
+    sortino_ratio: number;
+    win_rate: number;
+    total_trades: number;
+    final_equity: number;
+  };
+  equity_curve?: Array<{ ts: number; equity: number }>;
+  trades?: Array<{ ts: number; side: string; qty: number; price: number; fee: number; realized_pnl: number }>;
+  message?: string;
+}
+
 export interface DashboardPickItem {
   symbol?: string;
   score?: number;
@@ -840,4 +861,3 @@ export interface MinedFactorBacktestPayload extends RollingBacktestPayload {
   factor_label?: string;
   backtest_spec?: FactorBacktestSpec;
 }
-

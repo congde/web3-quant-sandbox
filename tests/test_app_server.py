@@ -110,6 +110,34 @@ def test_backtest_api_exposes_simulation_result(server: str) -> None:
     assert "trades" in payload
 
 
+def test_dsl_strategy_backtest_executes_validated_code(server: str) -> None:
+    import json
+
+    code = """from ai_trading.api import market_buy, market_sell
+
+def on_tick(ctx, candle):
+    position = ctx.position()
+    if len(ctx.history) == 2 and position.qty == 0:
+        return market_buy(ctx.symbol, 0.1)
+    if len(ctx.history) == 8 and position.qty > 0:
+        return market_sell(ctx.symbol, position.qty)
+    return None
+"""
+    request = urllib.request.Request(
+        f"{server}/api/strategy/backtest",
+        data=json.dumps({"code": code, "limit": 60}).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+    with urllib.request.urlopen(request) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert payload["ok"] is True
+    assert payload["engine"] == "strategy_engine/dsl"
+    assert payload["metrics"]["total_trades"] == 2
+    assert len(payload["equity_curve"]) == 60
+
+
 def test_backtest_robustness_api_exposes_audit_fields(server: str) -> None:
     import json
 

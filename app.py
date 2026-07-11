@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 import mimetypes
 import socket
+from datetime import datetime, timezone
+from decimal import Decimal
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -25,6 +27,7 @@ from backtest.rolling.service import (  # noqa: E402
     run_cpcv_service,
     run_robustness_audit,
     run_walk_forward,
+    load_candles,
 )
 from data.pit import pit_teaching_summary  # noqa: E402
 from backtest.rolling.portfolio import compare_portfolio  # noqa: E402
@@ -38,8 +41,16 @@ from strategy_engine.dsl import (  # noqa: E402
     validate_strategy_code,
 )
 from strategy_engine.dsl.loader import StrategyCompileError, compile_strategy  # noqa: E402
+from strategy_engine.backtest.candles import Candle  # noqa: E402
+from strategy_engine.backtest.engine import BacktestEngine  # noqa: E402
+from strategy_engine.backtest.models import ConstantBpsFee, ConstantBpsSlippage  # noqa: E402
+from strategy_lab import StrategyLabRepository  # noqa: E402
+from strategy_lab.llm import diagnose_experiment, explain_strategy, propose_strategy, repair_strategy  # noqa: E402
+from strategy_lab.experiments import ExperimentRunner  # noqa: E402
 
 load_env()
+STRATEGY_LAB = StrategyLabRepository(ROOT / "data" / "strategy_lab.db")
+STRATEGY_EXPERIMENTS = ExperimentRunner(STRATEGY_LAB)
 
 STATIC_ASSET_SUFFIXES = frozenset(
     {
@@ -99,6 +110,32 @@ class Handler(BaseHTTPRequestHandler):
             if parsed.path == "/api/report":
                 self.send_report(parsed.query)
                 return
+            if parsed.path == "/api/strategy-lab/strategies":
+                self.send_json({"ok": True, "strategies": STRATEGY_LAB.list_strategies()}, status=200)
+                return
+            if parsed.path.startswith("/api/strategy-lab/strategies/"):
+                strategy_id = parsed.path.removeprefix("/api/strategy-lab/strategies/").split("/")[0]
+                try:
+                    self.send_json({"ok": True, "strategy": STRATEGY_LAB.get_strategy(strategy_id)}, status=200)
+                except KeyError as error:
+                    self.send_json({"ok": False, "message": str(error)}, status=404)
+                return
+            if parsed.path == "/api/strategy-lab/experiments":
+                params = parse_qs(parsed.query)
+                version_id = params.get("versionId", [None])[0]
+                self.send_json({"ok": True, "experiments": STRATEGY_LAB.list_experiments(version_id)}, status=200)
+                return
+            if parsed.path.startswith("/api/strategy-lab/experiments/"):
+                experiment_id = parsed.path.removeprefix("/api/strategy-lab/experiments/").split("/")[0]
+                try:
+                    self.send_json({"ok": True, "experiment": STRATEGY_LAB.get_experiment(experiment_id)}, status=200)
+                except KeyError as error:
+                    self.send_json({"ok": False, "message": str(error)}, status=404)
+                return
+            if parsed.path == "/api/strategy-lab/paper-runs":
+                params = parse_qs(parsed.query)
+                self.send_json({"ok": True, "paper_runs": STRATEGY_LAB.list_paper_runs(params.get("versionId", [None])[0])}, status=200)
+                return
             if parsed.path.startswith("/api/"):
                 if self.send_dashboard_api(parsed.path, parsed.query):
                     return
@@ -139,12 +176,72 @@ class Handler(BaseHTTPRequestHandler):
             if parsed.path == "/api/validate-strategy":
                 self.validate_strategy()
                 return
+            if parsed.path == "/api/strategy/backtest":
+                self.backtest_strategy()
+                return
+            if parsed.path == "/api/strategy-lab/strategies":
+                self.create_strategy_asset()
+                return
+            if parsed.path == "/api/strategy-lab/ai/propose":
+                self.propose_strategy_asset()
+                return
+            if parsed.path == "/api/strategy-lab/ai/explain":
+                self.explain_strategy_asset()
+                return
+            if parsed.path == "/api/strategy-lab/ai/repair":
+                self.repair_strategy_asset()
+                return
+            if parsed.path == "/api/strategy-lab/ai/diagnose":
+                self.diagnose_strategy_experiment()
+                return
+            if parsed.path == "/api/strategy-lab/experiments":
+                self.create_strategy_experiment()
+                return
+            if parsed.path.startswith("/api/strategy-lab/experiments/") and parsed.path.endswith("/cancel"):
+                experiment_id = parsed.path.removeprefix("/api/strategy-lab/experiments/").removesuffix("/cancel").strip("/")
+                self.cancel_strategy_experiment(experiment_id)
+                return
+            if parsed.path.startswith("/api/strategy-lab/versions/") and parsed.path.endswith("/promote"):
+                version_id = parsed.path.removeprefix("/api/strategy-lab/versions/").removesuffix("/promote").strip("/")
+                self.promote_strategy_version(version_id)
+                return
+            if parsed.path.startswith("/api/strategy-lab/versions/") and parsed.path.endswith("/paper-run"):
+                version_id = parsed.path.removeprefix("/api/strategy-lab/versions/").removesuffix("/paper-run").strip("/")
+                self.start_strategy_paper_run(version_id)
+                return
+            if parsed.path.startswith("/api/strategy-lab/paper-runs/") and parsed.path.endswith("/stop"):
+                run_id = parsed.path.removeprefix("/api/strategy-lab/paper-runs/").removesuffix("/stop").strip("/")
+                self.stop_strategy_paper_run(run_id)
+                return
+            if parsed.path.startswith("/api/strategy-lab/strategies/") and parsed.path.endswith("/versions"):
+                strategy_id = parsed.path.removeprefix("/api/strategy-lab/strategies/").removesuffix("/versions").strip("/")
+                self.create_strategy_version(strategy_id)
+                return
             if parsed.path == "/api/dashboard/factor-mine/backtest":
                 self.factor_mine_backtest()
                 return
             self.send_error(404)
         except Exception as error:  # pragma: no cover
             self.send_json({"error": str(error)}, status=500)
+
+    def do_DELETE(self) -> None:
+        try:
+            parsed = urlparse(self.path)
+            if parsed.path.startswith("/api/strategy-lab/versions/"):
+                version_id = parsed.path.removeprefix("/api/strategy-lab/versions/").strip("/")
+                STRATEGY_LAB.delete_version(version_id)
+                self.send_json({"ok": True}, status=200)
+                return
+            if parsed.path.startswith("/api/strategy-lab/strategies/"):
+                strategy_id = parsed.path.removeprefix("/api/strategy-lab/strategies/").strip("/")
+                STRATEGY_LAB.delete_strategy(strategy_id)
+                self.send_json({"ok": True}, status=200)
+                return
+            self.send_error(404)
+        except KeyError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=404)
+        except ValueError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=409)
 
     def send_report(self, query: str) -> None:
         params = parse_qs(query)
@@ -446,6 +543,174 @@ class Handler(BaseHTTPRequestHandler):
             },
             status=200,
         )
+
+    def backtest_strategy(self) -> None:
+        length = int(self.headers.get("Content-Length", "0"))
+        body = self.rfile.read(length) if length else b"{}"
+        try:
+            payload = json.loads(body.decode("utf-8"))
+            code = str(payload.get("code") or "")
+            limit = max(30, min(500, int(payload.get("limit") or 120)))
+            symbol = str(payload.get("symbol") or "") or None
+            strategy_fn = compile_strategy(code)
+            lookahead = check_lookahead_bias(code)
+            if not lookahead.clean:
+                self.send_json({"ok": False, "message": "策略存在前视偏差，禁止执行"}, status=422)
+                return
+            pair, timeframe, rows, meta = load_candles(symbol=symbol, limit=limit)
+            candles = [
+                Candle(
+                    exchange="sandbox",
+                    symbol=pair,
+                    timeframe=timeframe,
+                    ts=datetime.fromtimestamp(int(row["tsSec"]), tz=timezone.utc),
+                    open=Decimal(str(row["open"])),
+                    high=Decimal(str(row["high"])),
+                    low=Decimal(str(row["low"])),
+                    close=Decimal(str(row["close"])),
+                    volume=Decimal(str(row["volume"])),
+                )
+                for row in rows
+            ]
+            result = BacktestEngine(
+                strategy_fn=strategy_fn,
+                fee_model=ConstantBpsFee(maker_bps=10, taker_bps=10),
+                slippage_model=ConstantBpsSlippage(bps=5),
+            ).run(candles, symbol=pair, timeframe=timeframe)
+            metrics = result.metrics
+            self.send_json({
+                "ok": True,
+                "engine": "strategy_engine/dsl",
+                "symbol": pair,
+                "timeframe": timeframe,
+                "data_source": meta.get("source"),
+                "total_candles": len(candles),
+                "metrics": {
+                    "total_return_pct": round(metrics.pnl_pct, 4),
+                    "max_drawdown_pct": round(metrics.max_drawdown_pct, 4),
+                    "sharpe_ratio": round(metrics.sharpe, 4),
+                    "sortino_ratio": round(metrics.sortino, 4),
+                    "win_rate": round(metrics.win_rate * 100, 2),
+                    "total_trades": metrics.total_trades,
+                    "final_equity": float(metrics.final_equity),
+                },
+                "equity_curve": [{"ts": int(ts.timestamp()), "equity": float(value)} for ts, value in result.equity_curve],
+                "trades": [{"ts": int(item.ts.timestamp()), "side": item.side, "qty": float(item.qty), "price": float(item.price), "fee": float(item.fee), "realized_pnl": float(item.realized_pnl)} for item in result.trades],
+            }, status=200)
+        except (ValueError, TypeError, StrategyCompileError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def read_json_body(self) -> dict:
+        length = int(self.headers.get("Content-Length", "0"))
+        body = self.rfile.read(length) if length else b"{}"
+        payload = json.loads(body.decode("utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("请求体必须是 JSON 对象")
+        return payload
+
+    def create_strategy_asset(self) -> None:
+        try:
+            strategy = STRATEGY_LAB.create_strategy(self.read_json_body())
+            self.send_json({"ok": True, "strategy": strategy}, status=201)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def create_strategy_version(self, strategy_id: str) -> None:
+        try:
+            version = STRATEGY_LAB.create_version(strategy_id, self.read_json_body())
+            self.send_json({"ok": True, "version": version}, status=201)
+        except KeyError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=404)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def propose_strategy_asset(self) -> None:
+        try:
+            payload = self.read_json_body()
+            proposal = propose_strategy(
+                objective=str(payload.get("objective") or "").strip(),
+                symbol=str(payload.get("symbol") or "BTC-USDT"),
+                risk_profile=str(payload.get("risk_profile") or payload.get("riskProfile") or "balanced"),
+                model=str(payload.get("model") or "") or None,
+            )
+            self.send_json({"ok": True, "proposal": proposal}, status=200)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def explain_strategy_asset(self) -> None:
+        try:
+            payload = self.read_json_body()
+            result = explain_strategy(payload.get("spec") or {}, model=payload.get("model"))
+            trace = STRATEGY_LAB.record_llm_trace(task="explain", input_payload=payload, output_payload=result, version_id=payload.get("strategy_version_id"), model=result.get("model"))
+            self.send_json({"ok": True, "explanation": result, "trace": trace}, status=200)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def repair_strategy_asset(self) -> None:
+        try:
+            payload = self.read_json_body()
+            result = repair_strategy(str(payload.get("code") or ""), error_context=str(payload.get("error_context") or ""), model=payload.get("model"), max_attempts=int(payload.get("max_attempts") or 3))
+            trace = STRATEGY_LAB.record_llm_trace(task="repair", input_payload={key: value for key, value in payload.items() if key != "code"}, output_payload=result, version_id=payload.get("strategy_version_id"), model=payload.get("model"))
+            self.send_json({"ok": bool(result.get("ok")), "repair": result, "trace": trace}, status=200 if result.get("ok") else 422)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def diagnose_strategy_experiment(self) -> None:
+        try:
+            payload = self.read_json_body()
+            experiment = STRATEGY_LAB.get_experiment(str(payload.get("experiment_id") or ""))
+            result = diagnose_experiment(experiment.get("result") or {}, model=payload.get("model"))
+            trace = STRATEGY_LAB.record_llm_trace(task="diagnose", input_payload={"experiment_id": experiment["id"]}, output_payload=result, version_id=experiment.get("strategy_version_id"), model=result.get("model"))
+            self.send_json({"ok": True, "diagnosis": result, "trace": trace}, status=200)
+        except KeyError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=404)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def create_strategy_experiment(self) -> None:
+        try:
+            payload = self.read_json_body()
+            version_id = str(payload.get("strategy_version_id") or payload.get("strategyVersionId") or "")
+            experiment = STRATEGY_EXPERIMENTS.submit(version_id, payload)
+            self.send_json({"ok": True, "experiment": experiment}, status=202)
+        except KeyError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=404)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def cancel_strategy_experiment(self, experiment_id: str) -> None:
+        try:
+            self.send_json({"ok": True, "experiment": STRATEGY_LAB.request_cancel(experiment_id)}, status=200)
+        except KeyError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=404)
+
+    def promote_strategy_version(self, version_id: str) -> None:
+        try:
+            payload = self.read_json_body()
+            version = STRATEGY_LAB.promote_version(version_id, to_status=str(payload.get("to_status") or payload.get("toStatus") or ""), reason=str(payload.get("reason") or ""), actor=str(payload.get("actor") or "human"))
+            self.send_json({"ok": True, "version": version, "audit": STRATEGY_LAB.list_audit(version_id)}, status=200)
+        except KeyError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=404)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def start_strategy_paper_run(self, version_id: str) -> None:
+        try:
+            payload = self.read_json_body()
+            self.send_json({"ok": True, "paper_run": STRATEGY_LAB.start_paper_run(version_id, str(payload.get("notes") or ""))}, status=201)
+        except KeyError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=404)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def stop_strategy_paper_run(self, run_id: str) -> None:
+        try:
+            payload = self.read_json_body()
+            self.send_json({"ok": True, "paper_run": STRATEGY_LAB.stop_paper_run(run_id, str(payload.get("notes") or ""))}, status=200)
+        except KeyError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=404)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
 
     def factor_mine_backtest(self) -> None:
         length = int(self.headers.get("Content-Length", "0"))

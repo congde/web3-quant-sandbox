@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 import sys
@@ -53,7 +54,21 @@ def build_chapter33_payload() -> dict:
 
 
 def main() -> None:
-    print(json.dumps(build_chapter33_payload(), ensure_ascii=False, indent=2))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--section",
+        choices=("all", "scenario", "boundary"),
+        default="all",
+        help="print the full payload or one independently runnable example",
+    )
+    args = parser.parse_args()
+    payload = build_chapter33_payload()
+    selected = {
+        "all": payload,
+        "scenario": payload["teaching_scenario"],
+        "boundary": payload["execution_boundary"],
+    }[args.section]
+    print(json.dumps(selected, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

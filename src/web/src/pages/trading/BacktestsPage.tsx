@@ -418,6 +418,7 @@ export default function BacktestsPage() {
   const runFactorMine = useCallback(async () => {
     setFactorLoading(true);
     setFactorError(null);
+    setRunFeedback({ type: "info", message: "因子挖掘运行中：正在生成候选并执行训练/测试切分。" });
     try {
       const payload = await fetchFactorMine({
         mode: mineMode,
@@ -432,12 +433,14 @@ export default function BacktestsPage() {
       });
       setFactorMine(payload);
       const metric = payload.metric_name ?? "IC";
+      setRunFeedback({ type: "success", message: `因子挖掘完成：测试 ${metric} ${(payload.leader?.test_ic ?? 0).toFixed(3)}` });
       message.success(
         `${mineTarget === "risk" ? "风险" : "收益"}因子挖掘完成 · 测试 ${metric} ${(payload.leader?.test_ic ?? 0).toFixed(3)}`,
       );
     } catch (err) {
       const detail = err instanceof Error ? err.message : "因子挖掘失败";
       setFactorError(detail);
+      setRunFeedback({ type: "error", message: `因子挖掘失败：${detail}` });
       message.error(detail);
     } finally {
       setFactorLoading(false);
@@ -890,7 +893,7 @@ export default function BacktestsPage() {
           style={{ marginBottom: 16 }}
           title={
             <SectionHeader
-              title="04 · 因子挖掘"
+              title="06 · 因子挖掘"
               description="收益因子（IC→方向回测）· 风险因子（RIC→仓位缩放预览）· 训练/测试切分与过拟合提示"
             />
           }
@@ -944,7 +947,7 @@ export default function BacktestsPage() {
               <InputNumber min={1} max={10} value={mineHorizon} onChange={(v) => setMineHorizon(Number(v ?? 1))} />
             </Space>
             <Button loading={factorLoading} onClick={() => void runFactorMine()}>
-              运行挖掘
+              {factorLoading ? "挖掘中" : "运行挖掘"}
             </Button>
             <div className="factor-backtest-action">
               <Button
@@ -967,10 +970,11 @@ export default function BacktestsPage() {
               </span>
             </div>
           </Space>
+          {factorLoading && <Alert type="info" showIcon message="因子挖掘正在运行" description="完成后本区域会自动刷新。" style={{ marginBottom: 12 }} />}
           {factorError && <Alert type="error" message={factorError} showIcon style={{ marginBottom: 12 }} />}
           {factorMine ? (
             <>
-              <div className="trading-metric-grid" style={{ marginBottom: 12 }}>
+              <div className="trading-metric-grid factor-metric-grid" style={{ marginBottom: 12 }}>
                 <MetricTile
                   label="领先因子"
                   value={factorMine.leader?.label?.slice(0, 24) ?? "—"}
@@ -1134,7 +1138,7 @@ export default function BacktestsPage() {
           className="trading-span-12"
           title={
             <SectionHeader
-              title="05A · 窗口稳定性"
+              title="05 · 窗口稳定性"
               description={`${windows?.strategy ?? "—"} · ${windows?.positive_windows ?? 0}/${windows?.num_windows ?? 0} 窗口为正 · ${windows?.stable ? "相对稳定" : "不稳定"}`}
             />
           }

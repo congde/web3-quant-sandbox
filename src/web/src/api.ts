@@ -12,6 +12,7 @@ import type {
   RuntimeConfig,
   SignalAnalysisPayload,
   StrategyValidationResult,
+  DslBacktestPayload,
   Web3NewsPayload,
   RollingBacktestPayload,
   RollingBacktestStrategy,
@@ -215,6 +216,57 @@ export async function validateStrategy(code: string): Promise<StrategyValidation
   }
   return payload;
 }
+
+export async function runDslBacktest(code: string, options: { symbol?: string; limit?: number } = {}): Promise<DslBacktestPayload> {
+  const response = await fetch("/api/strategy/backtest", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, symbol: options.symbol, limit: options.limit ?? 120 }),
+  });
+  const payload = (await response.json()) as DslBacktestPayload;
+  if (!response.ok || !payload.ok) throw new Error(payload.message ?? "DSL 回测失败");
+  return payload;
+}
+
+export async function createStrategyAsset(input: { name: string; description?: string }): Promise<{ id: string }> {
+  const response = await fetch("/api/strategy-lab/strategies", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(input) });
+  const payload = (await response.json()) as { ok?: boolean; strategy?: { id: string }; message?: string };
+  if (!response.ok || !payload.ok || !payload.strategy) throw new Error(payload.message ?? "创建策略资产失败");
+  return payload.strategy;
+}
+
+export async function createStrategyAssetVersion(strategyId: string, input: { spec: Record<string, unknown>; dslCode: string; changeReason?: string; status?: string }): Promise<{ id: string; version: number }> {
+  const response = await fetch(`/api/strategy-lab/strategies/${strategyId}/versions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ spec: input.spec, dsl_code: input.dslCode, change_reason: input.changeReason, status: input.status }) });
+  const payload = (await response.json()) as { ok?: boolean; version?: { id: string; version: number }; message?: string };
+  if (!response.ok || !payload.ok || !payload.version) throw new Error(payload.message ?? "保存策略版本失败");
+  return payload.version;
+}
+
+export interface StrategyAiProposal {
+  name: string; hypothesis: string; applicable_regime: string; failure_conditions: string[]; source: string; model?: string; llm_error?: string;
+  spec: { universe: string[]; timeframe: string; signal: { model: string; params: Record<string, number> }; position: { value: number }; risk: { stop_loss_pct: number; take_profit_pct: number; max_drawdown_pct: number }; execution: { order_type: string; cost_preset: string } };
+  parameter_space: Record<string, number[]>;
+}
+
+export async function proposeAiStrategy(input: { objective: string; symbol: string; riskProfile: string }): Promise<StrategyAiProposal> {
+  const response = await fetch("/api/strategy-lab/ai/propose", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ objective: input.objective, symbol: input.symbol, risk_profile: input.riskProfile }) });
+  const payload = (await response.json()) as { ok?: boolean; proposal?: StrategyAiProposal; message?: string };
+  if (!response.ok || !payload.ok || !payload.proposal) throw new Error(payload.message ?? "AI 策略提案失败");
+  return payload.proposal;
+}
+
+export interface StrategyExperimentPayload { id: string; strategy_version_id: string; status: string; progress: number; error?: string | null; cancel_requested: boolean; result?: { promotion_ready?: boolean; gates?: Array<{ gate: string; value: number; threshold: number; operator: string; passed: boolean }>; baseline?: RollingBacktestPayload; walk_forward?: BacktestWalkForwardPayload; robustness?: BacktestRobustnessPayload; cpcv?: BacktestCpcvPayload } | null; events: Array<{ phase: string; message: string; progress: number; created_at: string }> }
+export async function createStrategyExperiment(versionId: string, options: { symbol?: string; limit?: number; windows?: number } = {}): Promise<StrategyExperimentPayload> { const response = await fetch("/api/strategy-lab/experiments", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ strategy_version_id: versionId, experiment_type: "full_audit", ...options }) }); const payload = await response.json() as { ok?: boolean; experiment?: StrategyExperimentPayload; message?: string }; if (!response.ok || !payload.experiment) throw new Error(payload.message ?? "创建实验失败"); return payload.experiment; }
+export async function fetchStrategyExperiment(id: string): Promise<StrategyExperimentPayload> { const response = await fetch(`/api/strategy-lab/experiments/${id}`); const payload = await response.json() as { ok?: boolean; experiment?: StrategyExperimentPayload; message?: string }; if (!response.ok || !payload.experiment) throw new Error(payload.message ?? "加载实验失败"); return payload.experiment; }
+export async function cancelStrategyExperiment(id: string): Promise<StrategyExperimentPayload> { const response = await fetch(`/api/strategy-lab/experiments/${id}/cancel`, { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }); const payload = await response.json() as { ok?: boolean; experiment?: StrategyExperimentPayload; message?: string }; if (!response.ok || !payload.experiment) throw new Error(payload.message ?? "取消实验失败"); return payload.experiment; }
+
+export interface StrategyAssetSummary { id: string; name: string; description: string; status: string; version_count: number; latest_version?: number; updated_at: string }
+export interface StrategyAssetVersion { id: string; strategy_id: string; version: number; status: string; spec: Record<string, unknown>; dsl_code: string; change_reason: string; created_at: string }
+export interface StrategyAssetDetail extends StrategyAssetSummary { versions: StrategyAssetVersion[] }
+export async function fetchStrategyAssets(): Promise<StrategyAssetSummary[]> { const response = await fetch("/api/strategy-lab/strategies"); const payload = await response.json() as { ok?: boolean; strategies?: StrategyAssetSummary[]; message?: string }; if (!response.ok || !payload.ok) throw new Error(payload.message ?? "加载策略资产失败"); return payload.strategies ?? []; }
+export async function fetchStrategyAsset(id: string): Promise<StrategyAssetDetail> { const response = await fetch(`/api/strategy-lab/strategies/${id}`); const payload = await response.json() as { ok?: boolean; strategy?: StrategyAssetDetail; message?: string }; if (!response.ok || !payload.strategy) throw new Error(payload.message ?? "加载策略详情失败"); return payload.strategy; }
+export async function deleteStrategyAssetVersion(id: string): Promise<void> { const response = await fetch(`/api/strategy-lab/versions/${id}`, { method: "DELETE" }); const payload = await response.json() as { ok?: boolean; message?: string }; if (!response.ok || !payload.ok) throw new Error(payload.message ?? "删除版本失败"); }
+export async function deleteStrategyAsset(id: string): Promise<void> { const response = await fetch(`/api/strategy-lab/strategies/${id}`, { method: "DELETE" }); const payload = await response.json() as { ok?: boolean; message?: string }; if (!response.ok || !payload.ok) throw new Error(payload.message ?? "删除策略失败"); }
 
 export async function fetchBacktestStrategies(): Promise<RollingBacktestStrategy[]> {
   const response = await fetch("/api/dashboard/backtest/strategies");
