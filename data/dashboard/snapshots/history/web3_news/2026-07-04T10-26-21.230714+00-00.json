@@ -1,0 +1,196 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "updated_at": "2026-07-04T10:26:21+00:00",
+  "sources": [
+    {
+      "id": "cointelegraph",
+      "name": "Cointelegraph",
+      "url": "https://cointelegraph.com/rss",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "theblock",
+      "name": "The Block",
+      "url": "https://www.theblock.co/rss.xml",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "decrypt",
+      "name": "Decrypt",
+      "url": "https://decrypt.co/feed",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "cryptoslate",
+      "name": "CryptoSlate",
+      "url": "https://cryptoslate.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 10
+    },
+    {
+      "id": "cryptopolitan",
+      "name": "Cryptopolitan",
+      "url": "https://www.cryptopolitan.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "bitcoinmagazine",
+      "name": "Bitcoin Magazine",
+      "url": "https://bitcoinmagazine.com/feed",
+      "category": "news",
+      "ok": true,
+      "count": 10
+    },
+    {
+      "id": "beincrypto",
+      "name": "BeInCrypto",
+      "url": "https://beincrypto.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "ethereum-foundation",
+      "name": "Ethereum Foundation",
+      "url": "https://blog.ethereum.org/feed.xml",
+      "category": "protocol",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "gdelt",
+      "name": "GDELT",
+      "url": "https://api.gdeltproject.org/api/v2/doc/doc?query=%28bitcoin+OR+ethereum+OR+solana+OR+defi+OR+web3+OR+stablecoin+OR+crypto+hack%29&mode=artlist&format=json&maxrecords=20&sort=hybridrel",
+      "ok": true,
+      "count": 20
+    }
+  ],
+  "items": [
+    {
+      "source": "GDELT",
+      "source_id": "gdelt",
+      "title": "The Trump Administration Wants the Clarity Act Passed By the End of Summer . 3 Cryptocurrencies to Buy Now .",
+      "url": "https://www.fool.com/investing/2026/06/21/the-trump-administration-wants-the-clarity-act-pas/",
+      "published_at": "20260621T161500Z",
+      "summary": "fool.com",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "GDELT",
+      "source_id": "gdelt",
+      "title": "The Trump Administration Wants the Clarity Act Passed By the End of Summer . 3 Cryptocurrencies to Buy Now .",
+      "url": "https://www.fool.com/investing/2026/06/21/the-trump-administration-wants-the-clarity-act-pas/?source=iedfolrf0000001",
+      "published_at": "20260621T130000Z",
+      "summary": "fool.com",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "GDELT",
+      "source_id": "gdelt",
+      "title": "Prediction : Solana Will Replace Ethereum as the No . 1 Altcoin",
+      "url": "https://finance.yahoo.com/markets/crypto/articles/prediction-solana-replace-ethereum-no-023100249.html",
+      "published_at": "20260621T033000Z",
+      "summary": "finance.yahoo.com",
+      "assets": [
+        "ETH",
+        "SOL"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "GDELT",
+      "source_id": "gdelt",
+      "title": "Over 200 Crypto Firms Now Back the Clarity Act . If It Passes , This 1 Cryptocurrency Could Soar in Price",
+      "url": "https://finance.yahoo.com/markets/crypto/articles/over-200-crypto-firms-now-173955258.html",
+      "published_at": "20260615T181500Z",
+      "summary": "finance.yahoo.com",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "GDELT",
+      "source_id": "gdelt",
+      "title": "Institutions Are Choosing Sides - What the ETF Data Says About Ethereum Vs . Solana - Grayscale Bitcoin Mi",
+      "url": "https://www.benzinga.com/Opinion/26/06/53095282/institutions-are-choosing-sides-what-the-etf-data-says-about-ethereum-vs-solana",
+      "published_at": "20260609T171500Z",
+      "summary": "benzinga.com",
+      "assets": [
+        "BTC",
+        "ETH",
+        "SOL"
+      ],
+      "topics": [
+        "ETF"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    }
+  ],
+  "metrics": {
+    "article_count": 5,
+    "positive_count": 0,
+    "negative_count": 0,
+    "risk_event_count": 0,
+    "positive_ratio": 0.0,
+    "sentiment_score": 0.0,
+    "top_topics": [
+      [
+        "ETF",
+        1
+      ]
+    ],
+    "top_assets": [
+      [
+        "ETH",
+        2
+      ],
+      [
+        "SOL",
+        2
+      ],
+      [
+        "BTC",
+        1
+      ]
+    ],
+    "source_breadth": 1
+  },
+  "factor_signals": {
+    "news_heat_24h": 5,
+    "risk_event_count_24h": 0,
+    "positive_news_ratio_24h": 0.0,
+    "asset_mention_count_24h": {
+      "ETH": 2,
+      "SOL": 2,
+      "BTC": 1
+    },
+    "source_breadth_24h": 1
+  },
+  "snapshot": {
+    "name": "web3_news",
+    "saved_at": "2026-07-04T10:26:21.230714+00:00",
+    "origin": "live",
+    "history_id": "2026-07-04T10-26-21.230714+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\web3_news\\2026-07-04T10-26-21.230714+00-00.json"
+  }
+}

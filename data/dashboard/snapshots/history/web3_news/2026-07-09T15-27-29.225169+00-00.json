@@ -1,0 +1,1063 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "updated_at": "2026-07-09T15:27:29+00:00",
+  "sources": [
+    {
+      "id": "cointelegraph",
+      "name": "Cointelegraph",
+      "url": "https://cointelegraph.com/rss",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "theblock",
+      "name": "The Block",
+      "url": "https://www.theblock.co/rss.xml",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "decrypt",
+      "name": "Decrypt",
+      "url": "https://decrypt.co/feed",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "cryptoslate",
+      "name": "CryptoSlate",
+      "url": "https://cryptoslate.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 10
+    },
+    {
+      "id": "cryptopolitan",
+      "name": "Cryptopolitan",
+      "url": "https://www.cryptopolitan.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "bitcoinmagazine",
+      "name": "Bitcoin Magazine",
+      "url": "https://bitcoinmagazine.com/feed",
+      "category": "news",
+      "ok": true,
+      "count": 10
+    },
+    {
+      "id": "beincrypto",
+      "name": "BeInCrypto",
+      "url": "https://beincrypto.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "ethereum-foundation",
+      "name": "Ethereum Foundation",
+      "url": "https://blog.ethereum.org/feed.xml",
+      "category": "protocol",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "gdelt",
+      "name": "GDELT",
+      "ok": false,
+      "error": "HTTP 429: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet"
+    }
+  ],
+  "source_cards": [
+    {
+      "dataset": "web3_news",
+      "source_name": "Cointelegraph",
+      "url_or_endpoint": "https://cointelegraph.com/rss",
+      "fetched_at": "2026-07-09T15:27:29+00:00",
+      "payload_time": "2026-07-09T13:30:00+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "The Block",
+      "url_or_endpoint": "https://www.theblock.co/rss.xml",
+      "fetched_at": "2026-07-09T15:27:29+00:00",
+      "payload_time": "2026-07-09T15:03:40+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Decrypt",
+      "url_or_endpoint": "https://decrypt.co/feed",
+      "fetched_at": "2026-07-09T15:27:29+00:00",
+      "payload_time": "2026-07-09T13:01:05+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "CryptoSlate",
+      "url_or_endpoint": "https://cryptoslate.com/feed/",
+      "fetched_at": "2026-07-09T15:27:29+00:00",
+      "payload_time": "2026-07-09T14:40:07+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Cryptopolitan",
+      "url_or_endpoint": "https://www.cryptopolitan.com/feed/",
+      "fetched_at": "2026-07-09T15:27:29+00:00",
+      "payload_time": "2026-07-09T15:01:34+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Bitcoin Magazine",
+      "url_or_endpoint": "https://bitcoinmagazine.com/feed",
+      "fetched_at": "2026-07-09T15:27:29+00:00",
+      "payload_time": "2026-07-09T14:50:41+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "BeInCrypto",
+      "url_or_endpoint": "https://beincrypto.com/feed/",
+      "fetched_at": "2026-07-09T15:27:29+00:00",
+      "payload_time": "2026-07-09T15:21:14+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Ethereum Foundation",
+      "url_or_endpoint": "https://blog.ethereum.org/feed.xml",
+      "fetched_at": "2026-07-09T15:27:29+00:00",
+      "payload_time": "2026-07-01T00:00:00+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "GDELT",
+      "url_or_endpoint": "",
+      "fetched_at": "2026-07-09T15:27:29+00:00",
+      "payload_time": "",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [
+        "items"
+      ],
+      "rate_limit_or_error": "HTTP 429: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
+      "active_layer": "error",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    }
+  ],
+  "items": [
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Hyperliquid Wants CFTC to Exempt DeFi From Legacy Crypto Rules",
+      "url": "https://beincrypto.com/hyperliquid-cftc-defi-crypto-rules/",
+      "published_at": "2026-07-09T15:21:14+00:00",
+      "summary": "The Hyperliquid Policy Center (HPC) and non-custodial wallet provider Phantom have jointly urged the US Commodity Futures Trading Commission (CFTC) to modernize its regulatory approach to decentralized finance (DeFi). In a response to the agency’s Request for Information on evolving financial technology, the organizati",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "DeFi",
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Why this Wall Street veteran is betting on Avalanche",
+      "url": "https://www.theblock.co/post/407752/why-this-wall-street-veteran-is-betting-on-avalanche?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T15:03:40+00:00",
+      "summary": "Avalanche Treasury Company CEO Bart Smith explains his beliefs on the functions of treasury companies and his bull thesis for Avalanche.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Binance coin price prediction 2026-2032: How high will BNB go?",
+      "url": "https://www.cryptopolitan.com/binance-coin-price-prediction/",
+      "published_at": "2026-07-09T15:01:34+00:00",
+      "summary": "Key takeaways: After notable changes in its executive team, Binance has shown resilience and prospects for recovery. The departure of Changpeng Zhao, Binance’s CEO, who was also embroiled in legal challenges, initially caused a decline in the value of Binance coin (BNB). Despite this initial setback, the cryptocurrency",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Supreme Court ruling expanding Trump’s authority over federal agencies raises questions for SEC, CFTC as crypto rulemaking advances",
+      "url": "https://www.theblock.co/post/407750/supreme-court-ruling-expanding-trumps-authority-over-federal-agencies-raises-questions-for-sec-cftc-as-crypto-rulemaking-advances?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T14:56:38+00:00",
+      "summary": "A recent Supreme Court ruling expanding President Trump's authority to remove leaders of many agencies could have broader implications.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "BitGo Adds Quantum-Risk Controls to Bitcoin Custody",
+      "url": "https://bitcoinmagazine.com/news/bitgo-adds-quantum-risk-controls-bitcoin",
+      "published_at": "2026-07-09T14:50:41+00:00",
+      "summary": "Bitcoin Magazine BitGo Adds Quantum-Risk Controls to Bitcoin Custody BitGo launched new quantum-risk tools that help institutional Bitcoin holders identify and reduce potential future quantum-computing exposure in their custody wallets. This post BitGo Adds Quantum-Risk Controls to Bitcoin Custody first appeared on Bit",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "EU Parliament fails to block Chat Control, extending message scanning to 2028",
+      "url": "https://www.cryptopolitan.com/eu-criticism-chat-control-surveillance/",
+      "published_at": "2026-07-09T14:44:33+00:00",
+      "summary": "The European Parliament has failed to stop platforms from scanning private messages for child abuse material until 2028 after a motion to reject the rules fell short of the 361 votes required. The EU’s Chat Control message-scanning regime will continue despite the fact that most lawmakers who cast a ballot want the rul",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Cardano’s wallet hack exposed the user layer holding its on-chain government together",
+      "url": "https://cryptoslate.com/cardanos-wallet-hack-exposed-the-user-layer-holding-its-on-chain-government-together/",
+      "published_at": "2026-07-09T14:40:07+00:00",
+      "summary": "EMURGO said it is stepping down from its role in Pentad, the five-member group coordinating Cardano's infrastructure funding, to focus resources on recovering funds lost in the SecondFi exploit. The attack exploited a flaw in SecondFi's wallet address-generation system, draining roughly $2.4 million in ADA from 374 wal",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [
+        "Security",
+        "Regulation"
+      ],
+      "sentiment": -2,
+      "risk_event": true
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "MARA gains 14% after unveiling 2 GW Texas AI and bitcoin mining campus plan",
+      "url": "https://www.theblock.co/post/407730/mara-stock-gains-unveiling-2-gw-texas-ai-bitcoin-mining-campus-plan?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T14:38:29+00:00",
+      "summary": "The deal isn't an upfront purchase, but is structured instead as up to $600 million in milestone-based payments",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "Layer2"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Circle Refused to Recover a Scam Victim’s USDC, Wisconsin’s Criminal Complaint Says",
+      "url": "https://beincrypto.com/criminal-complaint-circle-usdc-scam/",
+      "published_at": "2026-07-09T14:22:10+00:00",
+      "summary": "Wisconsin filed a criminal complaint against Circle for refusing to recover a scam victim's USDC while Tether returns billions. The post Circle Refused to Recover a Scam Victim’s USDC, Wisconsin’s Criminal Complaint Says appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Alibaba Stock Jumped 11%, Yet Wall Street Cut Its Price Targets",
+      "url": "https://beincrypto.com/alibaba-stock-baba-price-analysis/",
+      "published_at": "2026-07-09T14:20:51+00:00",
+      "summary": "Alibaba stock (NYSE: BABA) jumped about 11% on July 8 to nearly $109, its best single day in 10 months. The pop followed a pre-earnings update showing its cash-losing delivery business improving and profits holding steady. Yet even as buyers rushed in, several big banks quietly trimmed their price targets. Why Alibaba ",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Meta eyes September AI chip production date in broader AI push",
+      "url": "https://www.cryptopolitan.com/meta-september-iris-ai-chip-production/",
+      "published_at": "2026-07-09T14:18:11+00:00",
+      "summary": "Meta appears set to start the assembly line for its own in-house chip production by September of this year. News of the AI chip code-named Iris first broke after Reuters reported having reviewed an internal company memo on Thursday. The same report claimed that it only took six weeks to declare the design bug-free as..",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "3 Crypto to Watch on Robinhood Chain as Meme Coin Frenzy Takes Off",
+      "url": "https://beincrypto.com/3-crypto-to-watch-on-robinhood-chain-as-meme-coin-frenzy-takes-off/",
+      "published_at": "2026-07-09T14:08:40+00:00",
+      "summary": "ARROW, TENDIES, and DIH lead the Robinhood Chain crypto to watch as meme coin volume breaks records and rug pulls multiply. The post 3 Crypto to Watch on Robinhood Chain as Meme Coin Frenzy Takes Off appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": 1,
+      "risk_event": true
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Hong Kong SFC orders crypto platforms, online brokers to phase out OTP logins",
+      "url": "https://www.theblock.co/post/407732/hong-kong-sfc-orders-crypto-platforms-online-brokers-to-phase-out-otp-logins?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T14:01:43+00:00",
+      "summary": "Hong Kong SFC orders internet brokers, crypto platforms to replace OTP logins with passkeys within 12 months following 57% spoofing surge.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "INTERPOL disrupts $293M fraud ring in Operation First Light 2026 campaign",
+      "url": "https://www.cryptopolitan.com/interpol-global-scam-crackdown/",
+      "published_at": "2026-07-09T13:57:41+00:00",
+      "summary": "INTERPOL revealed in a statement that was shared on Thursday, July 9, that a four-month operation spanning 97 countries and territories arrested 5,811 people and froze $293 million in illicit money. This sweep also reached some crypto holders as the investigators traced romance-scam profits laundered through cross-chai",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Bitcoin Mining Giant Buys Texas Land Once Promised for Green Fuel in $600M Bet",
+      "url": "https://beincrypto.com/mara-texas-site-bitcoin-ai-deal/",
+      "published_at": "2026-07-09T13:55:48+00:00",
+      "summary": "MARA's Texas site deal turns a flagship green fuel project into flexible Bitcoin and AI power. The post Bitcoin Mining Giant Buys Texas Land Once Promised for Green Fuel in $600M Bet appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "PayPal seeks to increase use of PYUSD stablecoin with native issuance on Polygon",
+      "url": "https://www.theblock.co/post/407719/paypal-seeks-increase-pyusd-stablecoin-native-issuance-on-polygon?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T13:54:53+00:00",
+      "summary": "The company said its stablecoin will now be issued natively on Polygon, in addition to becoming available through Polygon's Open Money Stack.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Swift says blockchain ledger is live as 17 banks line up to pilot tokenized deposits",
+      "url": "https://www.cryptopolitan.com/swift-blockchain-ledger-ready/",
+      "published_at": "2026-07-09T13:50:11+00:00",
+      "summary": "Swift announced in a July 9 statement that its blockchain-based ledger is open for business, with 17 lenders already lined up to start using it to send cross-border payments across six continents using tokenized deposits. Swift is big news from a network that already processes the equivalent of global GDP every 2 to 3 ",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Layer2"
+      ],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Bitcoin’s Bear Market May End in 91 Days. How Low Will BTC Drop?",
+      "url": "https://beincrypto.com/bitcoin-bear-market-enters-final-91-days/",
+      "published_at": "2026-07-09T13:44:12+00:00",
+      "summary": "Bitcoin enters the brutal 91-day window that ends bear markets, and two models point to a bottom near $47,000. The post Bitcoin’s Bear Market May End in 91 Days. How Low Will BTC Drop? appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Tarun Chitra’s Gauntlet raises $125 million Series C from sole investor SBI Holdings",
+      "url": "https://www.theblock.co/post/407723/tarun-chitra-gauntlet-125-million-series-c-funding-sbi-holdings?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T13:42:54+00:00",
+      "summary": "Chitra said he expects tokenization and vaults to grow the DeFi market faster than overall stablecoin growth over the next few years.",
+      "source_category": "news",
+      "assets": [
+        "SOL"
+      ],
+      "topics": [
+        "DeFi",
+        "Stablecoin"
+      ],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "Russia’s Largest Private Bank Alfa-Bank To Test Bitcoin and Crypto Trading",
+      "url": "https://bitcoinmagazine.com/news/russias-largest-private-bank-alfa-bank",
+      "published_at": "2026-07-09T13:40:50+00:00",
+      "summary": "Bitcoin Magazine Russia’s Largest Private Bank Alfa-Bank To Test Bitcoin and Crypto Trading Russia's largest private lender, Alfa-Bank, plans to launch Bitcoin and crypto trading, custody, and a digital depository once new regulations take effect, joining a broader push by major Russian banks to enter the country's eme",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "CLARITY Act misses July target making August 7 a critical date for the bill",
+      "url": "https://cryptoslate.com/clarity-act-misses-july-target-and-runs-into-an-august-7-senate-clock/",
+      "published_at": "2026-07-09T13:35:49+00:00",
+      "summary": "The bill's next test is whether Senate leaders can turn committee momentum into floor time before the August work period. The post CLARITY Act misses July target making August 7 a critical date for the bill appeared first on CryptoSlate .",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "‘Bottom building in progress’: Analysts say bitcoin holder capitulation signals late-stage bear market",
+      "url": "https://www.theblock.co/post/407713/bottom-building-in-progress-analysts-say-bitcoin-holder-capitulation-signals-late-stage-bear-market?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T13:33:53+00:00",
+      "summary": "Bitcoin long-term holder capitulation hit $280M/day, the highest since Dec 2022, a sign Glassnode says may flag a bottom forming.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Bitcoin’s quantum dilemma: Bigger blocks or STARK proofs?",
+      "url": "https://cointelegraph.com/features/bigger-blocks-or-stark-proofs-bitcoins-quantum-dilemma?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-09T13:30:00+00:00",
+      "summary": "Dealing with large post quantum signatures slowing down Bitcoin can be solved with bigger blocks, or aggregating signatures using STARK proofs.",
+      "source_category": "news",
+      "assets": [
+        "BTC",
+        "SOL"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Temasek Shuns Crypto, Targets 15% AI Portfolio by 2031",
+      "url": "https://beincrypto.com/temasek-crypto-ai-portfolio-2031/",
+      "published_at": "2026-07-09T13:27:24+00:00",
+      "summary": "Temasek Holdings will avoid new crypto bets and lift AI holdings to 15% of its portfolio by 2031, its president says. The post Temasek Shuns Crypto, Targets 15% AI Portfolio by 2031 appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "MoonPay Brings Its AI Crypto Agents to Telegram",
+      "url": "https://decrypt.co/373059/moonpay-ai-crypto-agents-telegram",
+      "published_at": "2026-07-09T13:01:05+00:00",
+      "summary": "MoonAgents lets users analyze markets and prepare crypto transactions through Telegram while keeping keys on their own devices.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "SWIFT’s Blockchain Ledger Goes Live, but Old Bottlenecks Persist",
+      "url": "https://beincrypto.com/swift-blockchain-ledger-tokenized-deposits/",
+      "published_at": "2026-07-09T13:00:15+00:00",
+      "summary": "SWIFT's blockchain ledger goes live with 17 banks, though final settlement still runs on its older rails. The post SWIFT’s Blockchain Ledger Goes Live, but Old Bottlenecks Persist appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Crypto hack losses fall below $1 billion in H1 2026 despite record attack volume: Immunefi",
+      "url": "https://www.theblock.co/post/407707/crypto-hack-losses-fall-below-1-billion-in-h1-2026-even-as-attack-volume-hits-record-immunefi?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T13:00:00+00:00",
+      "summary": "Crypto hacks hit a record 207 incidents in H1 2026, but losses fell to $972M as DeFi exploit damage dropped 74% from 2022, per Immunefi.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "DeFi",
+        "Security"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Aave Labs rolls out Stable Vaults, offering predictable stablecoin yield aimed at mainstream users",
+      "url": "https://www.theblock.co/post/407645/aave-labs-rolls-out-stable-vaults-offering-predictable-stablecoin-yield-aimed-at-mainstream-users?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T13:00:00+00:00",
+      "summary": "Stable Vaults will continuously “optimize capital allocation” across DeFi yield strategies, like Aave V3 and V4 markets.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "DeFi",
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Hong Kong regulator orders new anti-phishing measures for crypto platforms",
+      "url": "https://cointelegraph.com/news/hong-kong-regulator-anti-phishing-measures-crypto-platforms?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-09T12:53:44+00:00",
+      "summary": "Hong Kong’s regulator has ordered crypto platforms and online brokers to meet newly issued phishing-resistant login requirements within the next 12 months.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "A $1 billion HYPE treasury trade is hitting public markets before liquidity has been tested",
+      "url": "https://cryptoslate.com/a-1-billion-hype-treasury-trade-is-hitting-public-markets-before-its-liquidity-has-been-tested/",
+      "published_at": "2026-07-09T12:40:17+00:00",
+      "summary": "Hyperliquid Strategies has built its treasury around HYPE, but its first SEC filings show the strategy already faces a fundamental challenge. The company wants to accumulate more tokens for shareholders while warning investors it may need to sell HYPE into future capital raises, placing long-term accumulation goals alo",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "3 US Stocks to Watch in July 2026: A Bank, an Oil Major and an EV Maker",
+      "url": "https://beincrypto.com/us-stocks-to-watch-july-2026/",
+      "published_at": "2026-07-09T12:39:05+00:00",
+      "summary": "Our three US stocks to watch in July 2026 come from banking, energy, and EVs. Each faces a major catalyst this month. And in each, the options market and money-flow signals have already started to move. One bank opens earnings season whereas one oil giant is riding a fresh crude shock. There is also a The post 3 US Sto",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Stripe-owned Privy and Jito co-develop Solana transaction inclusion tool FullSend",
+      "url": "https://www.theblock.co/post/407628/stripe-privy-jito-develop-solana-transaction-inclusion-tool-fullsend?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T12:30:02+00:00",
+      "summary": "FullSend works by automatically routing every transaction signed in a Privy wallet directly to the current Solana block-building leader.",
+      "source_category": "news",
+      "assets": [
+        "SOL"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "KPMG survey finds 29% of executives can't track their own AI costs",
+      "url": "https://www.cryptopolitan.com/kpmg-business-leaders-struggle-ai-costs/",
+      "published_at": "2026-07-09T12:25:24+00:00",
+      "summary": "KPMG’s Global AI Pulse for the second quarter of 2026 found that nearly a third of corporate leaders cannot understand or control what their AI systems cost to run. Companies that laid off employees and restructured their budget in favor of what they expected to be cheaper AI technology are now being charged by the...",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "Morning Minute: Paradigm Raises $1.2B Fund as Crypto’s Top VC Pushes Into AI",
+      "url": "https://decrypt.co/373112/morning-minute-paradigm-raises-1-2b-fund-as-cryptos-top-vc-pushes-into-ai",
+      "published_at": "2026-07-09T12:23:22+00:00",
+      "summary": "BNB Chain rebuilds itself for a world run by AI agents. BTC ETFs flows flip negative. And prediction markets face a new hurdle.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "ETF"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Bitget Reduces Trading Friction With Smarter CFD Copy Trading and Dynamic Margin System",
+      "url": "https://beincrypto.com/bitget-reduces-trading-friction-with-smarter-cfd-copy-trading-and-dynamic-margin-system/",
+      "published_at": "2026-07-09T12:22:25+00:00",
+      "summary": "Bitget, the world’s largest Universal Exchange (UEX), has rolled out two major upgrades to its CFD trading platform, introducing an integrated copy trading experience alongside a new tiered margin system. The launch simplifies how users discover experienced traders, manage copied positions and allocate capital across l",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 2,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "EU Set to Revise MiCA in 2027 to Cover Foreign Stablecoin Issuers",
+      "url": "https://decrypt.co/373113/eu-set-to-revise-mica-in-2027-to-cover-foreign-stablecoin-issuers",
+      "published_at": "2026-07-09T12:18:24+00:00",
+      "summary": "Trump's embrace of stablecoins is pushing Brussels to expand its crypto law to non-EU issuers and tokenized payments, EU diplomats say.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "TAC blames a liquidation cascade for its crash. On-chain analysts aren't buying it",
+      "url": "https://www.cryptopolitan.com/community-rejects-tac-protocol-defense/",
+      "published_at": "2026-07-09T12:12:34+00:00",
+      "summary": "TAC Protocol’s attempt to explain away a trading session where its TAC token lost around 90% of its value has stirred skepticism from holders after the project’s July 8 statement on X ruled out any exploit and also denied any foul play in the form of insider selling too, pinning the collapse on forced selling...",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": -2,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "WebX 2026 Returns to Tokyo on July 13–14 to Explore Japan’s Evolving Web3 Landscape",
+      "url": "https://beincrypto.com/webx-2026-returns-to-tokyo/",
+      "published_at": "2026-07-09T12:11:27+00:00",
+      "summary": "WebX 2026, a major Web3 conference held annually in Tokyo,, will return to Tokyo on July 13–14, 2026 at The Prince Park Tower Tokyo, convening global decision-makers to explore the next phase of digital and financial innovation. Last year, WebX welcomed more than 14,000 attendees and hosted over 170 side events across ",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Asia’s prediction-market bans are handing crypto betting volume to the West",
+      "url": "https://www.cryptopolitan.com/asia-gambling-laws-crypto-prediction-markets/",
+      "published_at": "2026-07-09T11:59:05+00:00",
+      "summary": "Asia’s ongoing repression of cryptocurrency prediction markets is channeling investment, liquidity, and innovation to Western nations that opted for regulation. In a report dated July 8, the Web3 research firm Tiger Research suggested that the characterization of prediction markets as unlawful gambling is hindering Asi",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Tether Gold Outflows Hit 16x Their Daily Average as Whales Accumulate",
+      "url": "https://beincrypto.com/tokenized-gold-whale-demand-xaut-outflows/",
+      "published_at": "2026-07-09T11:58:00+00:00",
+      "summary": "Crypto whales are accumulating gold again just as spot prices slide. Asset manager Abraxas Capital pulled millions in Tether Gold (XAUT) off exchanges this week, and on-chain data suggests it is not acting alone. The whale activity comes as gold posts mixed results in July. Prices climbed early in the month, then slipp",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Token listings slow to multi-year lows as liquidity continues to flow out of exchanges",
+      "url": "https://www.cryptopolitan.com/exchange-listings-drop-to-lows-in-june/",
+      "published_at": "2026-07-09T11:50:54+00:00",
+      "summary": "Token exchange listings fell to a two-year low in June, reflecting the loss of appetite for risk. Most listings in Q2 were in the red, as projects faced bear market headwinds.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Bitcoin price shows resilience above $60,000 amid renewed US-Iran hostilities",
+      "url": "https://cryptoslate.com/bitcoin-price-shows-resilience-above-60000-amid-renewed-us-iran-hostilities/",
+      "published_at": "2026-07-09T11:45:49+00:00",
+      "summary": "Bitcoin price held above $62,000 after renewed fighting between the United States and Iran slowed traffic through the Strait of Hormuz and sent oil prices higher, reviving inflation concerns across global markets. Data from CryptoSlate shows that the largest digital asset traded near $63,000 on Thursday, holding above ",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "CFTC Chair Selig warns regulators will end up ‘writing all the rules’ for crypto if Clarity Act stalls",
+      "url": "https://www.theblock.co/post/407703/cftc-chair-selig-warns-regulators-will-end-up-writing-all-the-rules-for-crypto-if-clarity-act-stalls?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T11:42:34+00:00",
+      "summary": "CFTC Chair Michael Selig warned regulators may end up writing crypto rules if Congress fails to pass the Clarity Act.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Sony Bank gets US regulator nod to issue stablecoins",
+      "url": "https://cointelegraph.com/news/sony-bank-preliminary-approval-us-stablecoin-business?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-09T11:18:41+00:00",
+      "summary": "Sony Bank received preliminary approval from the Office of the Comptroller of the Currency to establish a US stablecoin issuance business, with $40 million in starting capital.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin",
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Interpol operation exposes $122M crypto wallet tied to romance scam laundering",
+      "url": "https://cointelegraph.com/news/interpol-122m-crypto-flows-romance-scam-laundering?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-09T11:18:21+00:00",
+      "summary": "Interpol said a suspect's crypto wallet processed over $122.5 million in 10 months as authorities uncovered the scheme during a global anti-fraud operation that led to 5,811 arrests.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "BitGo introduces quantum protection for institutional Bitcoin wallets",
+      "url": "https://www.theblock.co/post/407661/bitgo-quantum-protection-institutional-bitcoin-wallets?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-09T11:05:02+00:00",
+      "summary": "Some experts have argued the greater risks posed by quantum computing revolve around a failure to implement new technology.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "Sony Bank Clears OCC Hurdle for Dollar Stablecoin",
+      "url": "https://decrypt.co/373109/sony-bank-clears-occ-hurdle-for-dollar-stablecoin",
+      "published_at": "2026-07-09T11:03:08+00:00",
+      "summary": "The lender's new US subsidiary, Connectia Trust, would issue a dollar-pegged stablecoin once it clears the regulator's final conditions.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin",
+        "Regulation"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Bitcoin’s bottom needs long-term holders to stop losing $280M a day",
+      "url": "https://cryptoslate.com/bitcoins-bottom-needs-long-term-holders-to-stop-losing-280m-a-day/",
+      "published_at": "2026-07-09T10:51:44+00:00",
+      "summary": "Bitcoin's climb from $58,300 to $64,400, then back to $62,700, over the past week is a bounce that still leaves the price below two important levels tracked by Glassnode: the True Market Mean near $76,600 and the short-term holder cost basis near $72,200. The firm places Bitcoin in the later stages of a bottoming proce",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "CryptoRank Research: How the CEX Listings Landscape Shifted in 2026",
+      "url": "https://www.cryptopolitan.com/cryptorank-research-how-the-cex-listings-landscape-shifted-in-2026/",
+      "published_at": "2026-07-09T10:47:36+00:00",
+      "summary": "Centralized exchanges are moving away from speculative narratives and toward tokens with demonstrated utility. An analysis of over 10,000 listings across the 10 major exchanges, Binance, Bybit, OKX, Bitget, Gate, MEXC, KuCoin, HTX, Kraken, and Crypto.com, shows blockchain infrastructure, DeFi, and tokenized real-world ",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "DeFi"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Revolut says USDT delisting is limited to EEA, Switzerland",
+      "url": "https://cointelegraph.com/news/revolut-usdt-delisting-limited-eea-switzerland?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-09T10:23:24+00:00",
+      "summary": "Revolut said USDT support remains unchanged outside EEA and Switzerland as it winds down the stablecoin offering in selected European markets.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": -1,
+      "risk_event": false
+    }
+  ],
+  "metrics": {
+    "article_count": 50,
+    "positive_count": 5,
+    "negative_count": 11,
+    "risk_event_count": 14,
+    "positive_ratio": 0.1,
+    "sentiment_score": -0.14,
+    "top_topics": [
+      [
+        "Regulation",
+        11
+      ],
+      [
+        "Stablecoin",
+        9
+      ],
+      [
+        "DeFi",
+        5
+      ],
+      [
+        "Security",
+        4
+      ],
+      [
+        "Layer2",
+        2
+      ],
+      [
+        "ETF",
+        1
+      ]
+    ],
+    "top_assets": [
+      [
+        "BTC",
+        11
+      ],
+      [
+        "ETH",
+        4
+      ],
+      [
+        "SOL",
+        3
+      ]
+    ],
+    "source_breadth": 7
+  },
+  "factor_signals": {
+    "news_heat_24h": 50,
+    "risk_event_count_24h": 14,
+    "positive_news_ratio_24h": 0.1,
+    "asset_mention_count_24h": {
+      "BTC": 11,
+      "ETH": 4,
+      "SOL": 3
+    },
+    "source_breadth_24h": 7
+  },
+  "snapshot": {
+    "name": "web3_news",
+    "saved_at": "2026-07-09T15:27:29.225169+00:00",
+    "origin": "live",
+    "history_id": "2026-07-09T15-27-29.225169+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\web3_news\\2026-07-09T15-27-29.225169+00-00.json"
+  }
+}

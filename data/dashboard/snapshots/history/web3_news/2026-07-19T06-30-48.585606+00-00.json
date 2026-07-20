@@ -1,0 +1,1052 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "updated_at": "2026-07-19T06:30:48+00:00",
+  "sources": [
+    {
+      "id": "cointelegraph",
+      "name": "Cointelegraph",
+      "url": "https://cointelegraph.com/rss",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "theblock",
+      "name": "The Block",
+      "url": "https://www.theblock.co/rss.xml",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "decrypt",
+      "name": "Decrypt",
+      "url": "https://decrypt.co/feed",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "cryptoslate",
+      "name": "CryptoSlate",
+      "url": "https://cryptoslate.com/feed/",
+      "category": "news",
+      "ok": false,
+      "error": "HTTP 403: <!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal"
+    },
+    {
+      "id": "cryptopolitan",
+      "name": "Cryptopolitan",
+      "url": "https://www.cryptopolitan.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "bitcoinmagazine",
+      "name": "Bitcoin Magazine",
+      "url": "https://bitcoinmagazine.com/feed",
+      "category": "news",
+      "ok": true,
+      "count": 10
+    },
+    {
+      "id": "beincrypto",
+      "name": "BeInCrypto",
+      "url": "https://beincrypto.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "ethereum-foundation",
+      "name": "Ethereum Foundation",
+      "url": "https://blog.ethereum.org/feed.xml",
+      "category": "protocol",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "gdelt",
+      "name": "GDELT",
+      "ok": false,
+      "error": "_ssl.c:989: The handshake operation timed out"
+    }
+  ],
+  "source_cards": [
+    {
+      "dataset": "web3_news",
+      "source_name": "Cointelegraph",
+      "url_or_endpoint": "https://cointelegraph.com/rss",
+      "fetched_at": "2026-07-19T06:30:48+00:00",
+      "payload_time": "2026-07-18T11:42:51+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "The Block",
+      "url_or_endpoint": "https://www.theblock.co/rss.xml",
+      "fetched_at": "2026-07-19T06:30:48+00:00",
+      "payload_time": "2026-07-18T22:04:40+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Decrypt",
+      "url_or_endpoint": "https://decrypt.co/feed",
+      "fetched_at": "2026-07-19T06:30:48+00:00",
+      "payload_time": "2026-07-18T15:21:03+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "CryptoSlate",
+      "url_or_endpoint": "https://cryptoslate.com/feed/",
+      "fetched_at": "2026-07-19T06:30:48+00:00",
+      "payload_time": "",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [
+        "items"
+      ],
+      "rate_limit_or_error": "HTTP 403: <!DOCTYPE html><html lang=\"en-US\"><head><title>Just a moment...</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"><meta name=\"robots\" content=\"noindex,nofollow\"><meta name=\"viewport\" content=\"width=device-width,initial-scal",
+      "active_layer": "error",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Cryptopolitan",
+      "url_or_endpoint": "https://www.cryptopolitan.com/feed/",
+      "fetched_at": "2026-07-19T06:30:48+00:00",
+      "payload_time": "2026-07-19T01:36:29+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Bitcoin Magazine",
+      "url_or_endpoint": "https://bitcoinmagazine.com/feed",
+      "fetched_at": "2026-07-19T06:30:48+00:00",
+      "payload_time": "2026-07-17T19:07:30+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "BeInCrypto",
+      "url_or_endpoint": "https://beincrypto.com/feed/",
+      "fetched_at": "2026-07-19T06:30:48+00:00",
+      "payload_time": "2026-07-19T03:00:00+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Ethereum Foundation",
+      "url_or_endpoint": "https://blog.ethereum.org/feed.xml",
+      "fetched_at": "2026-07-19T06:30:48+00:00",
+      "payload_time": "2026-07-14T00:00:00+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "GDELT",
+      "url_or_endpoint": "",
+      "fetched_at": "2026-07-19T06:30:48+00:00",
+      "payload_time": "",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [
+        "items"
+      ],
+      "rate_limit_or_error": "_ssl.c:989: The handshake operation timed out",
+      "active_layer": "error",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    }
+  ],
+  "items": [
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Michael Saylor Calls Corporate Bitcoin Adoption Necessary and Inevitable",
+      "url": "https://beincrypto.com/saylor-corporate-bitcoin-adoption-inevitable/",
+      "published_at": "2026-07-19T03:00:00+00:00",
+      "summary": "Michael Saylor says corporations are essential for Bitcoin to succeed as global money, citing efficiency, scale, and trust. The post Michael Saylor Calls Corporate Bitcoin Adoption Necessary and Inevitable appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Jimothy The Raccoon Solana Token Climbs 186% After Viral Meme Fame",
+      "url": "https://beincrypto.com/jimothy-raccoon-meme-coin-rally-solana/",
+      "published_at": "2026-07-19T02:00:00+00:00",
+      "summary": "Jimothy The Raccoon (JIMOTHY) jumps 186% as a viral Seattle raccoon meme fuels a fast-moving Solana token launch. The post Jimothy The Raccoon Solana Token Climbs 186% After Viral Meme Fame appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [
+        "SOL"
+      ],
+      "topics": [
+        "Airdrop"
+      ],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Floki Inu price prediction 2026-2032: Can FLOKI surpass previous ATH?",
+      "url": "https://www.cryptopolitan.com/floki-inu-price-prediction/",
+      "published_at": "2026-07-19T01:36:29+00:00",
+      "summary": "Key takeaways: Floki Inu is a meme coin driven by its community, the Floki Vikings. Inspired by Shiba Inu, Floki Inu aims to democratize power in the crypto space, pivoting the crypto market away from traditional financial entities. The Floki project ecosystem is diverse. It includes Valhalla, a blockchain combat game ",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Coinbase CEO Changed His Profile Picture and This Meme Coin Soared 37x",
+      "url": "https://beincrypto.com/brian-armstrong-brian-meme-coin-crash/",
+      "published_at": "2026-07-19T01:21:55+00:00",
+      "summary": "Brian Armstrong's profile picture swap sent Base memecoin $BRIAN from $1M to $37M, then crashed it 90%. The post Coinbase CEO Changed His Profile Picture and This Meme Coin Soared 37x appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Layer2"
+      ],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Amazon AWS Apologizes After Quadrillion-Dollar Glitch Terrifies Cloud Users",
+      "url": "https://beincrypto.com/amazon-aws-billing-glitch-apology/",
+      "published_at": "2026-07-19T01:04:34+00:00",
+      "summary": "Amazon's AWS apologized after a billing glitch showed quadrillion-dollar estimates to cloud customers. The post Amazon AWS Apologizes After Quadrillion-Dollar Glitch Terrifies Cloud Users appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "US regulators miss GENIUS Act’s one-year deadline for final stablecoin rules",
+      "url": "https://www.theblock.co/post/408843/us-regulators-miss-genius-acts-one-year-deadline-for-final-stablecoin-rules?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-18T22:04:40+00:00",
+      "summary": "The delay does not postpone the law’s Jan. 18, 2027 effective date, leaving regulators and stablecoin issuers with a compressed implementation window.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin",
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Billionaire Investor Just Revealed the AI Bet That Could Pay Off Big in 5 Years",
+      "url": "https://beincrypto.com/billionaire-investor-ai-bet-pay-off-2031/",
+      "published_at": "2026-07-18T20:38:12+00:00",
+      "summary": "Zerodha co-founder Nikhil Kamath and Coinbase CEO Brian Armstrong warned that the sky-high valuations of premium AI companies like OpenAI and Anthropic face a massive structural threat. The alarm arrives amid growing investor skepticism, as both leaders compared today’s AI frenzy to the dot-com crash and past crypto bu",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Layer2"
+      ],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "LIVE: Bitcoin reclaims $65,000 as Iran escalates tension by killing two U.S. troops in Jordan",
+      "url": "https://www.cryptopolitan.com/live-bitcoin-takes-65k-iran-kills-us-troops/",
+      "published_at": "2026-07-18T19:16:06+00:00",
+      "summary": "Two U.S. service members were killed, one remains missing, and several others were wounded during an Iranian missile and drone attack on a Jordanian air base. The deaths are the first caused by direct Iranian fire since the war began, while four evacuated troops have already left the hospital. Bitcoin climbed back abov",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "Layer2"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Bitcoin Japan, which holds no bitcoin, taps EVO Fund in planned $60 million raise to finally buy some",
+      "url": "https://www.theblock.co/post/408838/bitcoin-japan-which-holds-no-bitcoin-taps-evo-fund-in-planned-60-million-raise-to-finally-buy-some?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-18T18:47:49+00:00",
+      "summary": "A prior December raise instead funded stakes tied to SpaceX and Figure AI, which the company says are its two AI infrastructure investments to date.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "China’s Xpeng brings budget Tesla rival to Europe with robots and flying cars",
+      "url": "https://www.cryptopolitan.com/chinas-xpeng-budget-tesla-rival-europe/",
+      "published_at": "2026-07-18T17:38:06+00:00",
+      "summary": "Chinese electric vehicle maker Xpeng flew into Munich this week with more than just a new car. The company used the European launch of its L03 SUV to tell the world it is building robots and flying cars too. The launch event was branded a “Physical AI” event, a term Xpeng uses to describe its...",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "BubbleMaps: 63% of top Robinhood memecoin traders are losing money",
+      "url": "https://www.cryptopolitan.com/robinhood-trenches-cashcat-wrecks-traders/",
+      "published_at": "2026-07-18T16:47:54+00:00",
+      "summary": "The on-chain analytics firm BubbleMaps reports that most people trading the biggest memecoins on Robinhood Chain are underwater. Reportedly, only 37% of the 164,538 traders active across the network’s top 50 tokens have made a profit, while the remaining 63% have lost money. Are traders making money on Robinhood Chain?",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "David Sacks warns on US AI lead as China's Kimi K3 tops coding arena",
+      "url": "https://www.cryptopolitan.com/ai-czar-david-sacks-chinese-ai-overtake-us/",
+      "published_at": "2026-07-18T16:36:49+00:00",
+      "summary": "Kimi-K3 has claimed top spot on a closely watched coding leaderboard. Kimi-K3 is a Chinese-built AI model, and this has prompted David Sacks, President Trump’s former AI czar, to believe that American AI labs are being hindered by US rules. Moonshot AI built Kimi-K3, and the AI model became number one on July 16. It...",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Bitcoin price prediction 2026-2032: Will BTC hit $150k soon?",
+      "url": "https://www.cryptopolitan.com/bitcoin-price-prediction/",
+      "published_at": "2026-07-18T15:36:26+00:00",
+      "summary": "Can Bitcoin hit $150,000 in post-halving rally? Our Bitcoin price prediction aims to answer with in-depth analysis of market sentiment.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "GPT-5.6 vs Fable 5 Review: Which One You Pick Depends on These Factors",
+      "url": "https://decrypt.co/373770/openai-gpt-5-6-vs-anthropic-fable-5-review",
+      "published_at": "2026-07-18T15:21:03+00:00",
+      "summary": "OpenAI's GPT-5.6 Sol or Anthropic's Claude Fable 5: Which one is right for you? The answer depends on your needs. Here's our review.",
+      "source_category": "news",
+      "assets": [
+        "SOL"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "France Blocks Polymarket Ahead of World Cup 3rd Place Match",
+      "url": "https://beincrypto.com/france-blocks-polymarket-world-cup-third-place-match/",
+      "published_at": "2026-07-18T15:11:14+00:00",
+      "summary": "France orders ISPs to block Polymarket over illegal gambling claims, days before the France-England World Cup bronze match. The post France Blocks Polymarket Ahead of World Cup 3rd Place Match appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Meta Reportedly In Talks With Anthropic Over a $10 Billion AI Deal",
+      "url": "https://beincrypto.com/meta-anthropic-ai-compute-lease-deal/",
+      "published_at": "2026-07-18T15:05:06+00:00",
+      "summary": "Meta is reportedly in talks to lease computing power to Anthropic in a deal worth as much as $10 billion over two years, according to the New York Times. The arrangement would open a new business line for Meta while easing Anthropic’s desperate hunt for compute. Inside the Reported Meta and Anthropic Compute Deal Compu",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Chamath Palihapitiya asks who's really cashing in on the AI boom?",
+      "url": "https://www.cryptopolitan.com/chamath-palihapitiya-questions-ai-boom/",
+      "published_at": "2026-07-18T14:40:07+00:00",
+      "summary": "Chamath Palihapitiya is asking if the money being poured into artificial intelligence is paying off for anyone beyond the small group of companies already collecting it. The Social Capital founder, in two posts made on X on July 17 and 18, called out AI labs over how they trained their own models versus how they...",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Cheaper Chinese AI models overtake US rivals in developer usage",
+      "url": "https://www.cryptopolitan.com/chinese-ai-models-popularity-us-lose-ground/",
+      "published_at": "2026-07-18T14:19:58+00:00",
+      "summary": "OpenRouter, the aggregation platform that routes developers’ API calls across dozens of AI systems, reports that open-weight models built by Chinese labs now run more than three times the weekly token volume of American models. The reason is because Chinese models that are nearly equivalent to their U.S. counterparts c",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "UNI burn poised to grow as Uniswap governance votes on v4 fees and Robinhood Chain expansion",
+      "url": "https://www.theblock.co/post/408836/uni-burn-poised-to-grow-as-uniswap-governance-votes-on-v4-fees-and-robinhood-chain-expansion?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-18T14:04:54+00:00",
+      "summary": "Both proposals route new fees into the UNI burn system created under December's \"UNIfication\" overhaul, with voting open from July 19 through July 26.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "SpaceX Stock Sinks Below IPO Price: The Hype Is Over?",
+      "url": "https://beincrypto.com/spacex-stock-sinks-below-ipo-price/",
+      "published_at": "2026-07-18T13:13:25+00:00",
+      "summary": "SpaceX stock fell below its IPO price as short sellers pile in, but Musk insists the firm will outvalue Earth. The post SpaceX Stock Sinks Below IPO Price: The Hype Is Over? appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Adam Back Talks About Bitcoin BIP-110 Controversy. “Satoshi Was Not Retarded”",
+      "url": "https://beincrypto.com/adam-back-bip-110-proposal-controversy/",
+      "published_at": "2026-07-18T13:01:55+00:00",
+      "summary": "Adam Back mocks BIP-110 backers and predicts the Bitcoin fork stalls within three weeks of mandatory signaling. The post Adam Back Talks About Bitcoin BIP-110 Controversy. “Satoshi Was Not Retarded” appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "The coal-powered Asian AI engine driving Wall Street’s record run",
+      "url": "https://www.cryptopolitan.com/wall-street-ai-record-mask-asia-coal-reality/",
+      "published_at": "2026-07-18T11:50:16+00:00",
+      "summary": "For a while, stock trading in Asia appeared to be unstoppable and has grown to be one of the largest sources of income for American banks. Then, practically overnight, the atmosphere was altered by a Chinese artificial intelligence business. Asian equity markets have been bringing in large sums of money for Wall Street",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Here’s what happened in crypto today",
+      "url": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-18T11:42:51+00:00",
+      "summary": "Need to know what happened in crypto today? Here is the latest news on daily trends and events impacting Bitcoin price, blockchain, DeFi, Web3 and crypto regulation.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "DeFi",
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Kaspersky identifies malware framework targeting crypto investors",
+      "url": "https://cointelegraph.com/news/kaspersky-malware-framework-crypto-investors?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-18T11:40:48+00:00",
+      "summary": "Cybersecurity company Kaspersky said a newly identified malware framework is targeting cryptocurrency investors through social engineering tactics and trojanized GitHub apps.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Grayscale files to convert Solana Staking ETF to pay shareholders regularly",
+      "url": "https://www.cryptopolitan.com/grayscales-solana-etf-restructures/",
+      "published_at": "2026-07-18T11:32:26+00:00",
+      "summary": "Grayscale filed a prospectus supplement with the SEC on July 17, outlining a Third Amended and Restated Trust Agreement for its Solana Staking ETF (ticker: GSOL).",
+      "source_category": "news",
+      "assets": [
+        "ETH",
+        "SOL"
+      ],
+      "topics": [
+        "ETF",
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "TrustedVolumes attacker returns 1,122 ETH, keeps $2M in bounty deal",
+      "url": "https://www.cryptopolitan.com/trustedvolumes-hacker-returns-2m-in-eth/",
+      "published_at": "2026-07-18T10:55:20+00:00",
+      "summary": "A negotiated settlement has once again outpaced a long asset recovery process as one of the attackers of TrustedVolumes, a liquidity resolver linked to 1inch Fusion, has returned 1,122.12 ETH in an Ethereum transfer, more than two months after the incident. The hacker has allegedly retained a similar amount as part of ",
+      "source_category": "news",
+      "assets": [
+        "ETH",
+        "SOL"
+      ],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "AI’s IPO boom is creating venture capital’s biggest winners",
+      "url": "https://www.cryptopolitan.com/ais-ipo-boom-venture-capital-big-winners/",
+      "published_at": "2026-07-18T10:45:30+00:00",
+      "summary": "Venture capital’s biggest winners are changing the rules of the exit game, and 2026’s IPO boom is allowing them to cash in. US IPOs have reportedly already raised more than $141.2 billion this year. This puts the market within striking distance of the $142.4 billion record set in 2021. The biggest artificial intelligen",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Ripple Payments Joins MiCA With 14 Firms, Does It Mean Anything For XRP?",
+      "url": "https://beincrypto.com/ripple-payments-mica-register-xrp-impact/",
+      "published_at": "2026-07-18T10:34:06+00:00",
+      "summary": "Ripple Payments Europe joined 14 firms added to the European MiCA register, lifting the total of authorized crypto providers across the bloc to 294. The update confirms Ripple’s regulated foothold in Europe, though licensing momentum is clearly cooling. Ripple Payments Secures Its Regulated Foothold in Europe MiCA is t",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "ESPN Tests AI That Can Detect When Someone Is Bluffing",
+      "url": "https://beincrypto.com/espn-ai-lie-detector-body-language/",
+      "published_at": "2026-07-18T10:04:04+00:00",
+      "summary": "Luke Geel's AI poker tells detector debuted on ESPN's WSOP broadcast, flagging bluffs from blink rate and posture. The post ESPN Tests AI That Can Detect When Someone Is Bluffing appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "French gambling regulator orders ISPs to block Polymarket",
+      "url": "https://cointelegraph.com/news/french-gambling-authority-blocks-polymarket?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-18T09:58:55+00:00",
+      "summary": "France’s gambling authority has ordered the country’s internet service providers to geoblock Polymarket, citing illegal gambling and market manipulation concerns.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "3 Altcoins That Could Reach New All-Time High This Weekend",
+      "url": "https://beincrypto.com/altcoins-all-time-high-third-weekend-of-july-2026/",
+      "published_at": "2026-07-18T09:05:19+00:00",
+      "summary": "LEO Token, WhiteBIT Coin, and Rain trade near record highs. See which altcoin could reach a new ATH this weekend. The post 3 Altcoins That Could Reach New All-Time High This Weekend appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "FTX to distribute $900M to creditors in fifth payment round",
+      "url": "https://cointelegraph.com/news/ftx-distribute-millions-creditors-fifth-payment-round?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-17T21:40:18+00:00",
+      "summary": "The FTX Recovery Trust and company have distributed about $10 billion since the exchange filed for bankruptcy in November 2022, leaving users cut off from their funds.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Bank of America taps new leaders to bridge crypto, AI and traditional finance",
+      "url": "https://www.theblock.co/post/408830/bank-america-taps-new-leaders-bridge-crypto-ai-traditional-finance?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-17T21:08:02+00:00",
+      "summary": "Sonali Theisen was named head of BofA's global digital assets platform, while Kevin Milsom was tapped to serve as head of AI transformation",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "ECB Warns Stablecoins May Drain Bank Deposits—Here's What That Means",
+      "url": "https://decrypt.co/373767/ecb-warns-stablecoins-drain-bank-deposits",
+      "published_at": "2026-07-17T20:17:44+00:00",
+      "summary": "ECB board member Piero Cipollone laid out the three-layer threat banks face from digital payments, and pitched the digital euro as the only structural answer.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Galaxy lands 15-year Texas Tech stadium naming rights deal",
+      "url": "https://cointelegraph.com/news/galaxy-lands-15-year-texas-tech-stadium-naming-rights-deal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-17T20:03:32+00:00",
+      "summary": "Galaxy Digital will rename Texas Tech’s football stadium under a 15-year agreement, expanding its West Texas presence as the state attracts growing crypto investment.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "CryptoQuant says Strategy still needs disciplined bitcoin buying and selling framework",
+      "url": "https://www.theblock.co/post/408825/cryptoquant-strategy-bitcoin-buying-selling-framework-mstr?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-17T20:01:43+00:00",
+      "summary": "CryptoQuant said Michael Saylor's Strategy still needs still needs clearer rules for when to buy and sell bitcoin.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Consensys unknowingly outsourced developer work to North Korean",
+      "url": "https://cointelegraph.com/news/consensys-north-korean-hacker-software-developer?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-17T19:33:58+00:00",
+      "summary": "Through an introduction with a “reputable third-party service provider,“ the company took on a developer who, as part of an investigation, was revealed to be tied to North Korea.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Crypto Biz: When dollars disappear, stablecoins step in",
+      "url": "https://cointelegraph.com/news/crypto-biz-when-dollars-disappear-stablecoins-step-in?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-17T19:23:53+00:00",
+      "summary": "Bolivia moves to recognize USDT amid a dollar shortage, while Bitcoin miners’ AI ambitions face fresh investor scrutiny.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "Cardano Pumps as Network Moves to Further Decentralize Development",
+      "url": "https://decrypt.co/373749/caradno-ada-price-spikes-iohk-decentralizing-development",
+      "published_at": "2026-07-17T19:12:41+00:00",
+      "summary": "Input Output is handing its core infrastructure to outside teams as ADA gets a lift from an imminent protocol upgrade.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "Bitcoin Sentiment Is Turning Bullish — But It’s Too Early to Celebrate: Report",
+      "url": "https://bitcoinmagazine.com/markets/bitcoin-sentiment-is-bullish-coinshares",
+      "published_at": "2026-07-17T19:07:30+00:00",
+      "summary": "Bitcoin Magazine Bitcoin Sentiment Is Turning Bullish — But It’s Too Early to Celebrate: Report CoinShares has said that while investors have put money in crypto funds again, the Bitcoin price may still struggle. This post Bitcoin Sentiment Is Turning Bullish — But It’s Too Early to Celebrate: Report first appeared on ",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "FTX to distribute roughly $900 million to creditors in fifth wave of payouts",
+      "url": "https://www.theblock.co/post/408803/ftx-to-distribute-roughly-900-million-to-creditors-in-fifth-wave-of-payouts?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-17T18:27:59+00:00",
+      "summary": "So far the company's bankruptcy estate has distributed nearly $10 billion to creditors and other claimants since repayments began in 2025.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Trezor exec pushes back on ZachXBT claim that hardware wallets are ‘complete garbage’",
+      "url": "https://www.theblock.co/post/408794/trezor-exec-pushes-back-zachxbt-claim-hardware-wallets-complete-garbage?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-17T18:13:25+00:00",
+      "summary": "\"I do not advise using them for important tasks like signing transactions or storing funds,\" ZachXBT wrote this week.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "Kimi K3 Just Triggered DeepSeek Flashbacks for the Stock Market",
+      "url": "https://decrypt.co/373736/kimi-k3-triggered-deepseek-flashbacks-stock-market",
+      "published_at": "2026-07-17T17:55:32+00:00",
+      "summary": "Moonshot AI's 2.8-trillion-parameter open-weight model sent chip stocks tumbling and gave Wall Street a Friday it would rather forget.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "Ocean Mining VP Jason Hughes: BIP-110 on Track to Fail as Miner Signaling Stays Below 1%",
+      "url": "https://bitcoinmagazine.com/bitcoin-mining/ocean-mining-vp-jason-hughes-bip-110-on-track-to-fail-as-miner-signaling-stays-below-1",
+      "published_at": "2026-07-17T17:45:13+00:00",
+      "summary": "Bitcoin Magazine Ocean Mining VP Jason Hughes: BIP-110 on Track to Fail as Miner Signaling Stays Below 1% Ocean Mining’s VP of Development and Engineering Jason Hughes argues BIP-110 lacks measurable consensus, with node signaling at 7-15% and hashrate support under 1% ahead of the critical block 961632 window. This po",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "SBI Holdings Takes Majority Stake in Singapore’s Coinhako After MAS Approval",
+      "url": "https://bitcoinmagazine.com/news/sbi-holdings-takes-majority-stake-coinhako",
+      "published_at": "2026-07-17T17:38:02+00:00",
+      "summary": "Bitcoin Magazine SBI Holdings Takes Majority Stake in Singapore’s Coinhako After MAS Approval SBI Holdings has acquired a majority stake in Singapore's Coinhako after MAS approval, strengthening its push to build a cross-border digital asset network across Japan and Southeast Asia. This post SBI Holdings Takes Majority",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "China’s Kimi K3 Is Out—And Beats Claude Fable and GPT 5.6 Sol on Key Benchmarks",
+      "url": "https://decrypt.co/373716/china-kimi-k3-largest-open-source-ai-model-ever-beats-claude-fable-gpt-5-6-sol",
+      "published_at": "2026-07-17T17:36:42+00:00",
+      "summary": "Moonshot AI's 2.8-trillion-parameter model tops Fable 5 on a creative writing benchmark and leads Arena AI's frontend code leaderboard—at Claude Sonnet pricing.",
+      "source_category": "news",
+      "assets": [
+        "SOL"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "Galaxy Puts Its Name on Texas Tech's Stadium in a 15-Year, Crypto-Native Deal",
+      "url": "https://decrypt.co/373710/galaxy-texas-tech-stadium-15-year-crypto-native-deal",
+      "published_at": "2026-07-17T17:09:33+00:00",
+      "summary": "The Nasdaq-listed digital-asset firm will rebrand the Red Raiders' home as \"Galaxy Stadium.\" The bigger bet is on the cheap power and open land of West Texas.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "OKX Europe lets users convert USDT to MiCA-compliant USDC",
+      "url": "https://cointelegraph.com/news/okx-europe-lets-users-convert-usdt-to-mica-compliant-usdc?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-17T16:54:37+00:00",
+      "summary": "The feature offers European customers a voluntary path away from Tether’s USDT as MiCA rules reshape the region’s stablecoin market.",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Senator Warren requests 2026 reporting for Trump’s crypto earnings after $1.4B disclosure",
+      "url": "https://cointelegraph.com/news/senator-warren-2026-reporting-donald-trump-crypto-earnings?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-17T16:48:22+00:00",
+      "summary": "With the Senate likely voting on a crypto bill within days, Elizabeth Warren asked for information on Donald Trump’s earnings between January and July ahead of a 2027 deadline.",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Bitcoin slides toward $63,000 as Coinbase premium stays negative for a record 60 days",
+      "url": "https://www.theblock.co/post/408793/bitcoin-slides-63000-coinbase-premium-stays-negative-record-60-days?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-17T16:38:50+00:00",
+      "summary": "Bitcoin fell near $63,000 as chip stocks sold off, the Coinbase premium stayed negative a record 60 days, and ETF flows remain thin.",
+      "source_category": "news",
+      "assets": [
+        "BTC",
+        "SOL"
+      ],
+      "topics": [
+        "ETF",
+        "Layer2"
+      ],
+      "sentiment": 1,
+      "risk_event": false
+    }
+  ],
+  "metrics": {
+    "article_count": 50,
+    "positive_count": 9,
+    "negative_count": 7,
+    "risk_event_count": 7,
+    "positive_ratio": 0.18,
+    "sentiment_score": 0.04,
+    "top_topics": [
+      [
+        "Regulation",
+        6
+      ],
+      [
+        "Layer2",
+        4
+      ],
+      [
+        "Stablecoin",
+        4
+      ],
+      [
+        "ETF",
+        2
+      ],
+      [
+        "Airdrop",
+        1
+      ],
+      [
+        "DeFi",
+        1
+      ],
+      [
+        "Security",
+        1
+      ]
+    ],
+    "top_assets": [
+      [
+        "BTC",
+        12
+      ],
+      [
+        "SOL",
+        6
+      ],
+      [
+        "ETH",
+        4
+      ]
+    ],
+    "source_breadth": 6
+  },
+  "factor_signals": {
+    "news_heat_24h": 50,
+    "risk_event_count_24h": 7,
+    "positive_news_ratio_24h": 0.18,
+    "asset_mention_count_24h": {
+      "BTC": 12,
+      "SOL": 6,
+      "ETH": 4
+    },
+    "source_breadth_24h": 6
+  },
+  "snapshot": {
+    "name": "web3_news",
+    "saved_at": "2026-07-19T06:30:48.585606+00:00",
+    "origin": "live",
+    "history_id": "2026-07-19T06-30-48.585606+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\web3_news\\2026-07-19T06-30-48.585606+00-00.json"
+  }
+}

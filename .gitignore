@@ -4,9 +4,10 @@
 outputs/
 vendor/
 scripts/*_figures.py
-data/dashboard/snapshots/
-data/backtest_trials.jsonl
-data/dashboard/manifest.json
+
+# Runtime state. Curated offline fixtures under data/dashboard/ and the latest
+# snapshot JSON files are committed so a fresh clone works without network access.
+data/runtime/
 data/llm_signal_tasks/
 data/_*.txt
 data/_pdf*.txt

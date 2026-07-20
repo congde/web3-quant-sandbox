@@ -1,0 +1,1095 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "updated_at": "2026-07-12T14:42:52+00:00",
+  "sources": [
+    {
+      "id": "cointelegraph",
+      "name": "Cointelegraph",
+      "url": "https://cointelegraph.com/rss",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "theblock",
+      "name": "The Block",
+      "url": "https://www.theblock.co/rss.xml",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "decrypt",
+      "name": "Decrypt",
+      "url": "https://decrypt.co/feed",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "cryptoslate",
+      "name": "CryptoSlate",
+      "url": "https://cryptoslate.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 10
+    },
+    {
+      "id": "cryptopolitan",
+      "name": "Cryptopolitan",
+      "url": "https://www.cryptopolitan.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "bitcoinmagazine",
+      "name": "Bitcoin Magazine",
+      "url": "https://bitcoinmagazine.com/feed",
+      "category": "news",
+      "ok": true,
+      "count": 10
+    },
+    {
+      "id": "beincrypto",
+      "name": "BeInCrypto",
+      "url": "https://beincrypto.com/feed/",
+      "category": "news",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "ethereum-foundation",
+      "name": "Ethereum Foundation",
+      "url": "https://blog.ethereum.org/feed.xml",
+      "category": "protocol",
+      "ok": true,
+      "count": 12
+    },
+    {
+      "id": "gdelt",
+      "name": "GDELT",
+      "ok": false,
+      "error": "HTTP 429: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet"
+    }
+  ],
+  "source_cards": [
+    {
+      "dataset": "web3_news",
+      "source_name": "Cointelegraph",
+      "url_or_endpoint": "https://cointelegraph.com/rss",
+      "fetched_at": "2026-07-12T14:42:52+00:00",
+      "payload_time": "2026-07-12T12:26:09+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "The Block",
+      "url_or_endpoint": "https://www.theblock.co/rss.xml",
+      "fetched_at": "2026-07-12T14:42:52+00:00",
+      "payload_time": "2026-07-11T19:19:32+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Decrypt",
+      "url_or_endpoint": "https://decrypt.co/feed",
+      "fetched_at": "2026-07-12T14:42:52+00:00",
+      "payload_time": "2026-07-12T14:01:03+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "CryptoSlate",
+      "url_or_endpoint": "https://cryptoslate.com/feed/",
+      "fetched_at": "2026-07-12T14:42:52+00:00",
+      "payload_time": "2026-07-12T14:35:44+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Cryptopolitan",
+      "url_or_endpoint": "https://www.cryptopolitan.com/feed/",
+      "fetched_at": "2026-07-12T14:42:52+00:00",
+      "payload_time": "2026-07-12T11:00:46+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Bitcoin Magazine",
+      "url_or_endpoint": "https://bitcoinmagazine.com/feed",
+      "fetched_at": "2026-07-12T14:42:52+00:00",
+      "payload_time": "2026-07-10T20:23:50+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "BeInCrypto",
+      "url_or_endpoint": "https://beincrypto.com/feed/",
+      "fetched_at": "2026-07-12T14:42:52+00:00",
+      "payload_time": "2026-07-12T13:14:18+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "Ethereum Foundation",
+      "url_or_endpoint": "https://blog.ethereum.org/feed.xml",
+      "fetched_at": "2026-07-12T14:42:52+00:00",
+      "payload_time": "2026-07-09T00:00:00+00:00",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [],
+      "rate_limit_or_error": "",
+      "active_layer": "live",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    },
+    {
+      "dataset": "web3_news",
+      "source_name": "GDELT",
+      "url_or_endpoint": "",
+      "fetched_at": "2026-07-12T14:42:52+00:00",
+      "payload_time": "",
+      "required_fields": [
+        "source",
+        "source_id",
+        "title",
+        "url",
+        "published_at"
+      ],
+      "missing_fields": [
+        "items"
+      ],
+      "rate_limit_or_error": "HTTP 429: Please limit requests to one every 5 seconds or contact kalev.leetaru5@gmail.com for larger queries. All high-traffic users should switch to our ngrams dataset: https://blog.gdeltproject.org/using-the-new-web-ngrams-dataset-to-find-relevant-coverage/. For trend analysis, please see our daily newslet",
+      "active_layer": "error",
+      "stale_threshold": "24h",
+      "allowed_draft_use": "只能作为草稿证据和人工复核入口，不能单独生成研究结论或交易动作"
+    }
+  ],
+  "items": [
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Bitcoin’s $64,000 rebound is outrunning ETF demand despite a $197 million inflow",
+      "url": "https://cryptoslate.com/bitcoins-64000-rebound-is-outrunning-etf-demand-despite-a-197-million-inflow/",
+      "published_at": "2026-07-12T14:35:44+00:00",
+      "summary": "US spot Bitcoin exchange-traded funds (ETFs) recorded their first weekly net inflow in more than two months, attracting $197 million across 13 products. The inflow ended an eight-week run of net redemptions that pulled more than $8 billion from the Bitcoin ETF sector. Following the renewed inflows, Bitcoin prices appre",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "ETF",
+        "Regulation"
+      ],
+      "sentiment": 2,
+      "risk_event": true
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "How to Make Product Ads With AI for TikTok and YouTube—For (Almost) Free",
+      "url": "https://decrypt.co/373290/how-to-make-ai-ads-tiktok-youtube-free",
+      "published_at": "2026-07-12T14:01:03+00:00",
+      "summary": "One product photo, three AI tools, and about 20 minutes: Here's the full workflow for generating a sales video without a camera, a model, or a studio.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Adam Back’s 30,021 BTC Bitcoin treasury deal just lost the funding structure holding it together",
+      "url": "https://cryptoslate.com/adam-backs-30021-btc-bitcoin-treasury-deal-just-lost-the-funding-structure-holding-it-together/",
+      "published_at": "2026-07-12T13:45:43+00:00",
+      "summary": "Cantor and BSTR are negotiating new terms after the old financing package stopped being binding, turning a Bitcoin treasury launch into a test of investor demand. The post Adam Back’s 30,021 BTC Bitcoin treasury deal just lost the funding structure holding it together appeared first on CryptoSlate .",
+      "source_category": "news",
+      "assets": [
+        "BTC",
+        "ETH"
+      ],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Thailand Wants to Audit USDT Transactions in New Crackdown",
+      "url": "https://beincrypto.com/thailand-usdt-audit-grey-money-crackdown/",
+      "published_at": "2026-07-12T13:14:18+00:00",
+      "summary": "Thailand’s central bank is considering measures requiring anyone depositing 5 million baht ($150,000) or more in cash to prove the origin of the funds. This is part of a fourth-quarter push that also puts Tether (USDT) transactions under a joint audit with securities regulators. Why Thailand Is Watching USDT Bank of Th",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [
+        "Stablecoin",
+        "Regulation"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Pakistan crypto chief seeks dialogue after scholar rules against crypto payments",
+      "url": "https://cointelegraph.com/news/pakistan-crypto-chief-dialogue-islamic-ruling?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-12T12:26:09+00:00",
+      "summary": "Pakistan’s virtual-assets regulator called for continued dialogue on the treatment of digital assets after meeting an Islamic scholar who backed a ruling against purchases made with crypto.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Crypto Markets Prove Resilient as Iran Closes Strait of Hormuz Again",
+      "url": "https://beincrypto.com/crypto-markets-resilient-strait-of-hormuz-closure/",
+      "published_at": "2026-07-12T12:16:39+00:00",
+      "summary": "Crypto markets held firm on Sunday, with Bitcoin (BTC) near $64,000, as digital assets absorbed fresh US strikes on Iran and the closure of the Strait of Hormuz once more. The muted move breaks from earlier in the war. Bitcoin fell about 2% and slid toward $61,000 after June’s escalation, a far steeper reaction than Th",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "A $407 million Treasury fund reveals how Wall Street is building crypto’s missing collateral layer",
+      "url": "https://cryptoslate.com/a-407-million-treasury-fund-reveals-how-wall-street-is-building-cryptos-missing-collateral-layer/",
+      "published_at": "2026-07-12T12:15:03+00:00",
+      "summary": "Tokenized sovereign debt spent years sounding like a conference phrase in search of a market. But now, the category has enough working components to deserve serious attention: tokenized government money funds, onchain ownership records, programmable transfer rails, and a growing effort to turn government paper into col",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Eric Trump’s American Bitcoin forces 1:15 reverse split to avoid Nasdaq delisting amid 8k BTC holding",
+      "url": "https://cryptoslate.com/eric-trumps-american-bitcoin-forces-1-for-15-reverse-split-to-avoid-nasdaq-delisting-amid-8k-btc-holding/",
+      "published_at": "2026-07-12T11:17:02+00:00",
+      "summary": "American Bitcoin is becoming a public-market test of whether BTC-per-share growth can still command a premium when weak liquidity forces the stock structure into view. The post Eric Trump’s American Bitcoin forces 1:15 reverse split to avoid Nasdaq delisting amid 8k BTC holding appeared first on CryptoSlate .",
+      "source_category": "news",
+      "assets": [
+        "BTC",
+        "ETH"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Solana Mobile Seeker Price Prediction 2026–2032: Can SKR Token Sustain the Bullish Surge?",
+      "url": "https://www.cryptopolitan.com/solana-mobile-seeker-price-prediction/",
+      "published_at": "2026-07-12T11:00:46+00:00",
+      "summary": "Explore our Solana mobile seeker price prediction for an in-depth review of the SKR token and its future market sentiment.",
+      "source_category": "news",
+      "assets": [
+        "SOL"
+      ],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Ripple Considered Shutting Down After the XRP Lawsuit, CEO Reveals",
+      "url": "https://beincrypto.com/ripple-considered-shutting-down-after-sec-xrp-lawsuit/",
+      "published_at": "2026-07-12T11:00:00+00:00",
+      "summary": "Ripple came close to shutting down rather than fighting the SEC, CEO Brad Garlinghouse revealed. He described the decision he and co-founder Chris Larsen faced after the agency sued the company in 2020. Why Ripple Nearly Shut Down After the SEC Lawsuit The SEC sued Ripple in 2020, claiming it had sold XRP as an The pos",
+      "source_category": "news",
+      "assets": [
+        "SOL"
+      ],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Bitcoin Has Two Ticking Time Bombs, Ex-Meta and Google Engineer Warns",
+      "url": "https://beincrypto.com/bitcoin-risks-former-meta-google-engineer-warns/",
+      "published_at": "2026-07-12T10:30:00+00:00",
+      "summary": "Patrick Shyu, a former Meta and Google engineer, warns that Bitcoin faces two ticking time bombs. He points to quantum computing and decaying miner incentives as undefused threats. Shyu also revealed he sold all his Bitcoin after suffering massive financial losses. The First Time Bomb Quietly Draining Bitcoin’s Securit",
+      "source_category": "news",
+      "assets": [
+        "BTC",
+        "SOL"
+      ],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Bitcoin price prediction 2026-2032: Will BTC hit $150k soon?",
+      "url": "https://www.cryptopolitan.com/bitcoin-price-prediction/",
+      "published_at": "2026-07-12T09:35:49+00:00",
+      "summary": "Can Bitcoin hit $150,000 in post-halving rally? Our Bitcoin price prediction aims to answer with in-depth analysis of market sentiment.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Are Crypto Exchanges Abandoning Meme Coins for Tokenized Assets?",
+      "url": "https://beincrypto.com/tokenized-assets-top-cex-listings-2026/",
+      "published_at": "2026-07-12T09:29:50+00:00",
+      "summary": "Tokenized assets became the most-listed category across major centralized exchanges in the first half of 2026. Nearly 1 in 5 new listings fell into the group. CryptoRank noted that 2026 marked the first year tokenized real-world assets became the fastest-growing listing category, a break from the meme coins or GameFi t",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Cambridge study puts Ethereum near the lower end of PoS energy intensity",
+      "url": "https://cointelegraph.com/news/ethereum-pos-energy-intensity-cambridge-study?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-12T09:18:17+00:00",
+      "summary": "Cambridge estimated that Ethereum consumes 7.87 GWh annually and has the second-lowest market-value-adjusted energy intensity among the PoS networks studied.",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "ZachXBT Explains Why LAB Token Crashed Nearly 100%",
+      "url": "https://beincrypto.com/lab-token-crash-investigation-zachxbt/",
+      "published_at": "2026-07-12T08:52:20+00:00",
+      "summary": "Onchain investigator ZachXBT has linked an entity initially funded by the LAB (LAB) team to the token’s 97% price crash. The findings deepen scrutiny of LAB Trade, whose token has lost substantial value through the latest crash. The team rejects any project-level cause. The On-Chain Trail Behind LAB ZachXBT published h",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "DeXe Token Hits All-Time High as On-Chain Activity Climbs",
+      "url": "https://beincrypto.com/dexe-record-high-onchain-whale-signals/",
+      "published_at": "2026-07-12T07:58:40+00:00",
+      "summary": "DeXe (DEXE) climbed to a record $39.78 on Sunday, extending a rally that has lifted the governance token roughly 18 times over the past five months. The altcoin traded near $38.76 at press time, up 8.33% over 24 hours. The move stands out because on-chain activity, not social hype, is driving it. Fresh wallet creation ",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "DeFi"
+      ],
+      "sentiment": 2,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "LAB crashes 56% as insider dumps $18.3 million worth of tokens",
+      "url": "https://www.cryptopolitan.com/lab-crashes-56-as-insider-dumps-18-3-million/",
+      "published_at": "2026-07-12T07:04:27+00:00",
+      "summary": "LAB fell about 56% after a wallet first funded by the LAB team sold 18.4 million tokens worth roughly $18.3 million through Aster. On-chain investigator ZachXBT said the sales happened over 48 hours and dragged LAB from about $1.20 to $0.55. The crash occurred just before token drops were supposed to begin, and althoug",
+      "source_category": "news",
+      "assets": [
+        "SOL"
+      ],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Ripple XRP CEO Brad Garlinghouse says SEC nearly forced company to shut down",
+      "url": "https://www.cryptopolitan.com/ripple-sec-nearly-forced-company-shut-down/",
+      "published_at": "2026-07-12T06:42:43+00:00",
+      "summary": "During an interview with Ripple CEO Brad Garlinghouse said the company discussed closing after the U.S. Securities and Exchange Commission sued it in 2020. Brad said Ripple could have divided its XRP supply among shareholders, declared that it held no tokens, and ended the dispute, but they decided not to because hundr",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Bali Crypto Nightmare: Russian Man Kidnapped and Tortured For 30 Hours",
+      "url": "https://beincrypto.com/bali-crypto-kidnapping-russian-30-hours/",
+      "published_at": "2026-07-12T06:01:39+00:00",
+      "summary": "A Russian national was reportedly kidnapped in Bali and held for nearly 30 hours until he surrendered access to his cryptocurrency account, according to local police. Bali police are now investigating the case and hunting the perpetrators, who fled after dumping the victim outside a hospital. How the Bali Crypto Kidnap",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Here’s what happened in crypto today",
+      "url": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-12T04:24:58+00:00",
+      "summary": "Need to know what happened in crypto today? Here is the latest news on daily trends and events impacting Bitcoin price, blockchain, DeFi, Web3 and crypto regulation.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "DeFi",
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Bitcoin bulls Michael Saylor, Adam Back slam BIP-110 Ordinals proposal",
+      "url": "https://cointelegraph.com/news/bitcoin-leaders-michael-saylor-and-adam-back-rebuff-bip-110-proposal?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-12T04:24:36+00:00",
+      "summary": "The ongoing debate comes despite a broad downturn in Ordinals transaction activity over the last two years.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "NFT"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Elon Musk sides with Apple in OpenAI suit, trades new insults with Sam Altman on X",
+      "url": "https://www.cryptopolitan.com/elon-musk-sides-with-apple-in-openai-suit/",
+      "published_at": "2026-07-12T02:55:40+00:00",
+      "summary": "Elon Musk woke up very happy three days ago when Apple (NASDAQ: AAPL) sued OpenAI over claims that the AI giant took private hardware knowledge for new consumer devices. Since then, Elon has been publicly displaying his support for Apple in the case, on X, as one does. As Cryptopolitan reported previously, Apple says m",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Empery Digital shares rise after selling Bitcoin to fund AI data center project",
+      "url": "https://cointelegraph.com/news/empery-digital-shares-rise-after-selling-bitcoin-treasury-to-fund-ai-data-center-project?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-12T01:00:54+00:00",
+      "summary": "The sales come months after a major Empery shareholder demanded the firm ditch its Bitcoin treasury strategy and force the resignation of its CEO and board.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Kevin Warsh faces Congress for the first time as Federal Reserve chair",
+      "url": "https://www.cryptopolitan.com/congress-prepares-to-challenge-chair-kevin-warsh-as-uncertainty-over-fed-policy-grows/",
+      "published_at": "2026-07-11T21:45:07+00:00",
+      "summary": "Kevin Warsh will face Congress for the first time as Federal Reserve chair while lawmakers press him on rates, prices, and central bank independence. His first month in the job has been quiet. Kevin has said little about the economy. The House Financial Services Committee will question Kevin at 10 a.m. in Washington on",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Polymarket launches parlay-style trading in major prediction market overhaul",
+      "url": "https://www.cryptopolitan.com/polymarket-launches-parlay-style-trading/",
+      "published_at": "2026-07-11T21:16:26+00:00",
+      "summary": "Polymarket has added a sports feature that lets traders place several predictions inside one combined position. The product is called combo trading, and it became available around June 10. Each selection inside the package has to finish in the trader’s favor. One wrong result wipes out the whole ticket. That setup give",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Nigeria’s stock market has returned 67% in dollar terms this year",
+      "url": "https://www.cryptopolitan.com/nigerian-stocks-best-performers-globally/",
+      "published_at": "2026-07-11T20:40:15+00:00",
+      "summary": "Nigeria now leads this year’s global stock table after its main equity index delivered a 67% return in dollar terms. That puts it just ahead of South Korea’s Kospi, which gained 66%. Bloomberg compared 92 exchanges, making Nigeria the strongest performer. South Korea had led as investors chased artificial intelligence ",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "DeFi"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Hedera lending protocol Bonzo Lend hit for $9 million after Supra verifier accepts manipulated price update",
+      "url": "https://www.theblock.co/post/407960/hedera-lending-protocol-bonzo-lend-hit-for-9-million-after-supra-verifier-accepts-manipulated-price-update?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-11T19:19:32+00:00",
+      "summary": "A second wallet borrowed another roughly $1 million but identified itself as a white hat hacker and said the funds would be returned.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "DeFi",
+        "Security",
+        "Regulation"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Bitcoin Policy Institute joins fight to block claim on Satoshi's coins",
+      "url": "https://www.cryptopolitan.com/bitcoin-policy-institute-dormant-btc/",
+      "published_at": "2026-07-11T19:05:58+00:00",
+      "summary": "The Bitcoin Policy Institute (BPI), a nonprofit research group, has officially stepped in to fight a lawsuit that seeks to claim ownership of about 3.7 million Bitcoin. The case, filed in New York County Supreme Court, argues that Bitcoin left untouched for years should be treated as “abandoned property” under state la",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": -2,
+      "risk_event": true
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Crypto won the ETF fight but now the SEC is questioning if things have gone too far",
+      "url": "https://cryptoslate.com/crypto-won-the-etf-fight-but-now-the-sec-is-questioning-if-things-have-gone-too-far/",
+      "published_at": "2026-07-11T19:05:51+00:00",
+      "summary": "The ETF became one of Wall Street’s most powerful distribution tools because it turned market exposure into an easy-to-use and easy-to-understand retail product. Investors could buy an index, a basket of bonds, a commodity thesis, or a tightly packaged theme from the same account they use for blue-chip stocks. This was",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "ETF",
+        "DeFi",
+        "Regulation"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "3 Trump Moves That Shook Markets This Week",
+      "url": "https://beincrypto.com/trump-market-moves-this-week/",
+      "published_at": "2026-07-11T18:51:22+00:00",
+      "summary": "Donald Trump delivered three major policy shocks between July 6 and July 11. He declared the Iran ceasefire over, sending Brent crude oil up 5.2%. The POTUS also ordered a halt to trade with Spain, pushing Spain’s stock market index IBEX 35 down 2.6%. Lastly, he backed tougher Russia sanctions and allowed Ukraine to ma",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "DeFi"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Trump’s crypto disclosure exposes an institutional problem that markets price in real time",
+      "url": "https://cryptoslate.com/trumps-crypto-disclosure-exposes-an-institutional-problem-that-markets-price-in-real-time/",
+      "published_at": "2026-07-11T17:10:13+00:00",
+      "summary": "Donald Trump’s latest financial disclosure showed how closely digital-asset policy, personal financial interests, branded tokens, and presidential power now sit together. His highly scrutinized recent filing points to a governance problem that extends well beyond any one politician, because crypto can convert access, s",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "IMF Paper Warns Dollar Stablecoins Can Trigger Currency Crisis",
+      "url": "https://beincrypto.com/imf-stablecoins-fragile-currency-pegs/",
+      "published_at": "2026-07-11T16:25:29+00:00",
+      "summary": "A new International Monetary Fund (IMF) working paper finds dollar stablecoins can amplify currency runs in economies defending an overvalued fixed exchange rate, turning fragmented parallel-market prices into a single signal that lets households exit at once. IMF researcher Brandon Joel Tan describes a state-dependent",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "What Is Robinhood Chain? The Ethereum Layer-2 Network for Tokenized Stocks",
+      "url": "https://decrypt.co/resources/what-robinhood-chain-ethereum-layer-2-network-tokenized-stocks",
+      "published_at": "2026-07-11T16:21:34+00:00",
+      "summary": "Robinhood Chain is an Ethereum layer-2 network built with Arbitrum technology for tokenized assets, crypto apps, and on-chain financial products.",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [
+        "Layer2"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Bitcoin Hits Record Oversold Level Against Gold, Echoing a 660% Rally",
+      "url": "https://beincrypto.com/bitcoin-most-oversold-level-against-gold-history/",
+      "published_at": "2026-07-11T15:30:00+00:00",
+      "summary": "Bitcoin has reached its most oversold level against gold on record, according to on-chain data. The last time this exact setup appeared, a powerful 660% macro rally in Bitcoin followed. Here is what the signal means and how history frames the current setup. What the Bitcoin vs Gold Signal Actually Means The BTC/Gold ra",
+      "source_category": "news",
+      "assets": [
+        "BTC",
+        "SOL"
+      ],
+      "topics": [],
+      "sentiment": 2,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Bitcoin, ether ETFs snap eight-week outflow streaks with $282 million combined inflow",
+      "url": "https://www.theblock.co/post/407957/bitcoin-ether-etfs-snap-eight-week-outflow-streaks-with-282-million-combined-inflow?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-11T15:19:15+00:00",
+      "summary": "The preceding eight weeks drained a combined $9.46 billion from the two groups, meaning this week’s rebound recovered only about 3% of those outflows.",
+      "source_category": "news",
+      "assets": [
+        "BTC",
+        "ETH"
+      ],
+      "topics": [
+        "ETF"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Vitalik: Humanity stuck between 'naive and naive squared' choice in the ASI transition",
+      "url": "https://www.cryptopolitan.com/buterin-ai-jobs-fight-by-superintelligence/",
+      "published_at": "2026-07-11T15:15:16+00:00",
+      "summary": "Ethereum co-founder Vitalik Buterin argues that a lot of the public argument over advanced AI comes from both sides holding assumptions they never actually share. Buterin’s kill switch proposal for all AI applications has been met with criticism as the tech community engages in yet another debate regarding how fast AI ",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Hong Kong builds a gold and yuan network that sidesteps dollar stablecoins",
+      "url": "https://cryptoslate.com/hong-kong-builds-a-gold-and-yuan-network-that-sidesteps-dollar-stablecoins/",
+      "published_at": "2026-07-11T15:05:31+00:00",
+      "summary": "Stablecoins won over users by making money easier to move, long before the financial world agreed on what they meant. That helps explain the scale of USDT and USDC: they never had to replace the global reserve system to become powerful. They simply made dollars easier to move online, and crypto markets made the network",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Losses exceed $5M in ongoing Hedera exploit",
+      "url": "https://www.cryptopolitan.com/hedera-exploit-funds-move-to-ethereum/",
+      "published_at": "2026-07-11T14:56:09+00:00",
+      "summary": "An attacker has drained more than $5 million from the Hedera network in an exploit that occurred on July 11, with the stolen funds already routed onto Ethereum. Onchain investigator Specter initially flagged on X what he stated to be an active hack of Hedera. Specter put the early tally above $3.7 million and, within..",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": -3,
+      "risk_event": true
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "Bitcoin and Ethereum ETFs Flip Positive After 8 Weeks: Will Price React?",
+      "url": "https://beincrypto.com/bitcoin-ethereum-etfs-flip-positive-after-8-weeks/",
+      "published_at": "2026-07-11T14:39:50+00:00",
+      "summary": "Spot Bitcoin (BTC) and Ethereum (ETH) exchange-traded funds (ETFs) both turned positive in the week ending July 10, ending eight straight weeks of net outflows. According to SoSoValue data, Bitcoin funds pulled $197.40 million, and Ethereum funds added $84.42 million. The twin reversal followed a stretch that had drain",
+      "source_category": "news",
+      "assets": [
+        "BTC",
+        "ETH"
+      ],
+      "topics": [
+        "ETF"
+      ],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Apple accuses OpenAI leadership of stealing trade secrets in Northern California",
+      "url": "https://www.cryptopolitan.com/apple-sues-openai/",
+      "published_at": "2026-07-11T13:34:44+00:00",
+      "summary": "Apple filed a lawsuit against OpenAI on Friday in a federal court in Northern California, accusing the artificial intelligence company of stealing its trade secrets to build its own line of consumer devices. The filing lands just days before OpenAI is set to show off a new piece of hardware of its own on July...",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Regulation"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Bitcoin nearing late stages of bear market: Jamie Coutts, Real Vision",
+      "url": "https://cointelegraph.com/features/bitcoin-is-approaching-the-second-half-of-the-bear-market-jamie-coutts?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-11T13:30:00+00:00",
+      "summary": "Real Vision chief crypto analyst Jamie Coutts said it's far too early to call $1 million by 2030, but he's confident Bitcoin could climb up to $250,000 over the next couple of years.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "CoreWeave’s $20 billion funding haul shows why Bitcoin is losing the competition for liquidity",
+      "url": "https://cryptoslate.com/coreweaves-20-billion-funding-haul-shows-why-bitcoin-is-losing-the-competition-for-liquidity/",
+      "published_at": "2026-07-11T13:10:25+00:00",
+      "summary": "CoreWeave's latest financing gives hard evidence for the idea that AI infrastructure is competing with Bitcoin for speculative capital, credit appetite, and macro liquidity. The post CoreWeave’s $20 billion funding haul shows why Bitcoin is losing the competition for liquidity appeared first on CryptoSlate .",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "Nano Banana 2 Lite vs. Nano Banana 2: When to Save Your Money and When to Upgrade",
+      "url": "https://decrypt.co/373002/google-nano-banana-2-lite-vs-nano-banana-2-comparison-review",
+      "published_at": "2026-07-11T13:01:02+00:00",
+      "summary": "Google's cheapest, fastest image model is a genuinely capable tool—until you need it to be great.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Ethereum climbs 3% on tokenization boom: Can bulls push ETH price past $1,800?",
+      "url": "https://cointelegraph.com/markets/ethereum-climbs-3-on-tokenization-boom-can-bulls-push-eth-price-past-1800?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-11T12:55:18+00:00",
+      "summary": "Despite strong tokenization gains and institutional accumulation, weak onchain and derivatives data leaves ETH vulnerable to a $1,700 retest.",
+      "source_category": "news",
+      "assets": [
+        "ETH"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Bonzo Lend loses $9M in oracle exploit on Hedera",
+      "url": "https://cointelegraph.com/news/bonzo-lend-9m-oracle-exploit-hedera?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-11T11:58:00+00:00",
+      "summary": "An attacker inflated the value of SAUCE collateral and borrowed $9 million from Bonzo Lend through a flaw in Supra’s onchain oracle verifier.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Bitcoin price gains nearly 10% in July, but traders still see BTC copying 2022 bear market",
+      "url": "https://cointelegraph.com/markets/bitcoin-price-gains-nearly-10-in-july-but-traders-still-see-btc-copying-2022-bear-market?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-11T11:21:07+00:00",
+      "summary": "Bitcoin price gains approached 10% for the first two weeks of the month, but analysis warned of the bear market returning from August onward.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Circle gets permission to open a US bank but cannot take ordinary deposits or make loans",
+      "url": "https://cryptoslate.com/circle-can-open-a-us-trust-bank-that-cannot-take-ordinary-deposits-or-make-loans/",
+      "published_at": "2026-07-11T11:15:11+00:00",
+      "summary": "Circle National Trust starts with custody for Circle and affiliates, while outside institutional custody and USDC reserve management remain future possibilities. The post Circle gets permission to open a US bank but cannot take ordinary deposits or make loans appeared first on CryptoSlate .",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Dollar stablecoins could improve FX access but amplify currency runs: IMF",
+      "url": "https://cointelegraph.com/news/imf-stablecoins-fx-access-currency-runs?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-11T09:20:00+00:00",
+      "summary": "An IMF working paper says US dollar stablecoins can improve access to foreign currency but may also help coordinate exits from local currencies during periods of severe exchange-rate stress.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "CryptoSlate",
+      "source_id": "cryptoslate",
+      "title": "Bitcoin’s $64K rebound has 3 days before its next big challenge threatens to derail momentum",
+      "url": "https://cryptoslate.com/bitcoins-64k-rebound-has-three-days-before-its-next-big-challenge-threatens-to-derail-momentum/",
+      "published_at": "2026-07-11T09:13:45+00:00",
+      "summary": "July 14 will show whether one day of ETF inflows can outlast firm yields and restrained leverage. The post Bitcoin’s $64K rebound has 3 days before its next big challenge threatens to derail momentum appeared first on CryptoSlate .",
+      "source_category": "news",
+      "assets": [
+        "BTC",
+        "ETH"
+      ],
+      "topics": [
+        "ETF"
+      ],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Robinhood says its AI agent feature will ‘soon’ be assisting crypto traders",
+      "url": "https://cointelegraph.com/news/robinhood-says-ai-agents-will-be-trading-for-crypto-users-soon?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-11T04:12:30+00:00",
+      "summary": "More than 70,000 agentic accounts have already been created by Robinhood equities and options traders since late May, when Robinhood launched a beta version of the product.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    }
+  ],
+  "metrics": {
+    "article_count": 50,
+    "positive_count": 10,
+    "negative_count": 13,
+    "risk_event_count": 14,
+    "positive_ratio": 0.2,
+    "sentiment_score": -0.06,
+    "top_topics": [
+      [
+        "Regulation",
+        12
+      ],
+      [
+        "DeFi",
+        6
+      ],
+      [
+        "ETF",
+        5
+      ],
+      [
+        "Stablecoin",
+        5
+      ],
+      [
+        "Security",
+        3
+      ],
+      [
+        "NFT",
+        1
+      ],
+      [
+        "Layer2",
+        1
+      ]
+    ],
+    "top_assets": [
+      [
+        "BTC",
+        17
+      ],
+      [
+        "ETH",
+        12
+      ],
+      [
+        "SOL",
+        5
+      ]
+    ],
+    "source_breadth": 6
+  },
+  "factor_signals": {
+    "news_heat_24h": 50,
+    "risk_event_count_24h": 14,
+    "positive_news_ratio_24h": 0.2,
+    "asset_mention_count_24h": {
+      "BTC": 17,
+      "ETH": 12,
+      "SOL": 5
+    },
+    "source_breadth_24h": 6
+  },
+  "snapshot": {
+    "name": "web3_news",
+    "saved_at": "2026-07-12T14:42:52.019415+00:00",
+    "origin": "live",
+    "history_id": "2026-07-12T14-42-52.019415+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\web3_news\\2026-07-12T14-42-52.019415+00-00.json"
+  }
+}

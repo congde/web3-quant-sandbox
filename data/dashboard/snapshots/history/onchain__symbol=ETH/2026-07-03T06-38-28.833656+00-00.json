@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "source": "snapshot",
+  "symbol": "ETH",
+  "marketSentiment": {
+    "fearGreed": {
+      "value": 21,
+      "label": "Extreme Fear",
+      "yesterday": 19,
+      "change": 2,
+      "timestamp": "1783036800"
+    }
+  },
+  "valuescanChain": {},
+  "snapshot": {
+    "name": "onchain__symbol=ETH",
+    "saved_at": "2026-07-03T06:38:28.833656+00:00",
+    "origin": "live",
+    "history_id": "2026-07-03T06-38-28.833656+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\onchain__symbol=ETH\\2026-07-03T06-38-28.833656+00-00.json"
+  }
+}
