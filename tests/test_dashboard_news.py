@@ -1,5 +1,5 @@
 import dashboard.news as news
-from dashboard.news import build_web3_news_signal, fetch_web3_news, parse_rss_feed
+from dashboard.news import build_web3_news_signal, fetch_web3_news, is_web3_news_item, parse_rss_feed
 
 
 def test_parse_rss_feed_extracts_items() -> None:
@@ -85,3 +85,9 @@ def test_fetch_web3_news_adds_source_cards(monkeypatch) -> None:
     assert payload["source_cards"][0]["dataset"] == "web3_news"
     assert payload["source_cards"][0]["missing_fields"] == []
     assert "不能单独生成研究结论" in payload["source_cards"][0]["allowed_draft_use"]
+
+
+def test_web3_filter_rejects_unrelated_market_news() -> None:
+    assert is_web3_news_item({"title": "Bitcoin ETF inflows accelerate", "summary": "Crypto demand rises"})
+    assert not is_web3_news_item({"title": "Oil rises after inventory report", "summary": "Energy equities gain"})
+    assert not is_web3_news_item({"title": "SOLutions provider reports earnings", "summary": "Industrial demand"})

@@ -247,6 +247,87 @@ export interface Web3NewsPayload {
   message?: string;
 }
 
+export interface Web3ThemeEvidence {
+  title: string;
+  url?: string;
+  source?: string;
+  published_at?: string | null;
+}
+
+export interface Web3Theme {
+  slug: string;
+  title: string;
+  date: string;
+  category: string;
+  summary: string;
+  status: string;
+  catalysts: string[];
+  assets: string[];
+  evidence: Web3ThemeEvidence[];
+  article_count: number;
+  sentiment: number;
+  risk_count: number;
+}
+
+export interface Web3ThemesPayload {
+  ok: boolean;
+  scope: "web3-only";
+  source?: string;
+  updated_at?: string;
+  themes: Web3Theme[];
+  categories: string[];
+  article_count: number;
+}
+
+export interface Web3MacroCard {
+  id: string;
+  name: string;
+  symbol: string;
+  category: string;
+  value: number;
+  change_24h: number;
+  change_period: number;
+  values: number[];
+  series_origin?: string;
+}
+
+export interface Web3MacroPayload {
+  ok: boolean;
+  scope: "web3-only";
+  source?: string;
+  updated_at?: string;
+  regime: string;
+  labels: string[];
+  thesis: string;
+  categories: string[];
+  cards: Web3MacroCard[];
+  events: Array<{ date: string; title: string; source?: string; url?: string; risk?: boolean }>;
+  data_note?: string;
+}
+
+export interface Web3GraphNode {
+  id: string;
+  label: string;
+  stage: string;
+  domain: string;
+  risk: "normal" | "medium" | "high" | "critical";
+  entities: string[];
+  mentions: number;
+  evidence: Array<{ title: string; url?: string; source?: string }>;
+}
+
+export interface Web3GraphPayload {
+  ok: boolean;
+  scope: "web3-only";
+  source?: string;
+  updated_at?: string;
+  stages: string[];
+  domains: Array<{ name: string; count: number }>;
+  nodes: Web3GraphNode[];
+  edges: Array<{ from: string; to: string; relation: string }>;
+  stats: { nodes: number; edges: number; risks: number; entities: number };
+}
+
 export interface ResearchDraftGateDataset {
   name: string;
   active_layer?: "snapshot" | "fixture" | "none" | string;

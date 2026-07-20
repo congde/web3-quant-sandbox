@@ -8,7 +8,12 @@ import { KlineAnalysisChart } from "../../components/charts/KlineAnalysisChart";
 import { useReport } from "../../contexts/ReportContext";
 import type { KlineAnalysisPayload, ResearchDraftGatePayload, ResearchDraftPayload, SignalAnalysisPayload, Web3NewsPayload } from "../../types";
 import { QuantGlowCard, SectionHeader, SignalRow, StatusPill, TradingPageShell } from "../trading/TradingPageShell";
+import KnowledgeGraphView from "./KnowledgeGraphView";
+import MacroObservationView from "./MacroObservationView";
+import { ResearchWorkspaceNav, type ResearchWorkspaceView } from "./ResearchWorkspaceNav";
+import ThemeResearchView from "./ThemeResearchView";
 import "./research.css";
+import "./research-workspace.css";
 
 const KLINE_TYPES = [
   { value: "15min", label: "15 分钟" },
@@ -175,6 +180,10 @@ export default function ResearchPage() {
   const { report, loading } = useReport();
   const research = report?.research;
   const [searchParams, setSearchParams] = useSearchParams();
+  const requestedWorkspace = searchParams.get("view");
+  const workspaceView: ResearchWorkspaceView = ["themes", "macro", "graph"].includes(String(requestedWorkspace))
+    ? requestedWorkspace as ResearchWorkspaceView
+    : "overview";
 
   const [symbolInput, setSymbolInput] = useState(searchParams.get("symbol") || "BTC");
   const [symbol, setSymbol] = useState(baseSymbol(searchParams.get("symbol") || "BTC"));
@@ -339,21 +348,26 @@ export default function ResearchPage() {
   }, [symbolInput, klineType, llmModel, searchParams, setSearchParams]);
 
   useEffect(() => {
+    if (workspaceView !== "overview") return;
     void loadKline();
-  }, [loadKline]);
+  }, [loadKline, workspaceView]);
 
   useEffect(() => {
+    if (workspaceView !== "overview") {
+      stopSignalPoll();
+      return undefined;
+    }
     void loadLlmSignal();
     return () => stopSignalPoll();
-  }, [loadLlmSignal, stopSignalPoll]);
+  }, [loadLlmSignal, stopSignalPoll, workspaceView]);
 
   useEffect(() => {
-    if (!autoRefresh) return undefined;
+    if (!autoRefresh || workspaceView !== "overview") return undefined;
     const timer = window.setInterval(() => {
       void loadLlmSignal();
     }, 120_000);
     return () => window.clearInterval(timer);
-  }, [autoRefresh, loadLlmSignal]);
+  }, [autoRefresh, loadLlmSignal, workspaceView]);
 
   const metrics = kline?.metrics;
   const verdict = kline?.verdict;
@@ -426,8 +440,28 @@ export default function ResearchPage() {
     ...(draftGate?.fallback ?? []),
   ]);
 
+  const selectWorkspace = (nextView: ResearchWorkspaceView) => {
+    const params = new URLSearchParams(searchParams);
+    if (nextView === "overview") params.delete("view");
+    else params.set("view", nextView);
+    setSearchParams(params, { replace: true });
+  };
+
+  if (workspaceView !== "overview") {
+    return (
+      <div className="research-workspace-shell">
+        <ResearchWorkspaceNav value={workspaceView} onChange={selectWorkspace} />
+        {workspaceView === "themes" ? <ThemeResearchView /> : null}
+        {workspaceView === "macro" ? <MacroObservationView /> : null}
+        {workspaceView === "graph" ? <KnowledgeGraphView /> : null}
+      </div>
+    );
+  }
+
   return (
-    <TradingPageShell
+    <div className="research-workspace-shell">
+      <ResearchWorkspaceNav value={workspaceView} onChange={selectWorkspace} />
+      <TradingPageShell
       eyebrow="Research / Analysis"
       title="市场情报"
       description="币种 K 线分析 + 规则信号引擎（教学沙箱）。离线模式下使用快照数据，不代表真实交易建议。"
@@ -1025,6 +1059,7 @@ export default function ResearchPage() {
           </div>
         </QuantGlowCard>
       </section>
-    </TradingPageShell>
+      </TradingPageShell>
+    </div>
   );
 }

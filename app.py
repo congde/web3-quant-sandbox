@@ -353,6 +353,16 @@ class Handler(BaseHTTPRequestHandler):
                 limit=qi("limit", 50),
                 refresh=qb("refresh"),
             ),
+            "/api/dashboard/web3/themes": lambda: dashboard_api.web3_theme_research(
+                limit=qi("limit", 100),
+                refresh=qb("refresh"),
+            ),
+            "/api/dashboard/web3/macro": lambda: dashboard_api.web3_macro_observation(
+                refresh=qb("refresh"),
+            ),
+            "/api/dashboard/web3/knowledge-graph": lambda: dashboard_api.web3_knowledge_graph(
+                refresh=qb("refresh"),
+            ),
             "/api/market/ticker": lambda: dashboard_api.ticker_stats(
                 q("symbol", "BTC-USDT"),
                 refresh=qb("refresh"),

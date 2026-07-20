@@ -75,6 +75,23 @@ NEGATIVE_TERMS = (
     "breach",
 )
 
+WEB3_CONTEXT_TERMS = (
+    "bitcoin", "btc", "ethereum", "ether", "solana", "blockchain", "crypto", "web3",
+    "defi", "stablecoin", "usdt", "usdc", "tether", "layer 2", "rollup", "staking",
+    "restaking", "smart contract", "on-chain", "onchain", "wallet", "airdrop", "tokenized",
+    "nft", "dao", "decentralized exchange", "cross-chain", "chainlink", "arbitrum", "optimism",
+)
+
+
+def _contains_term(text: str, term: str) -> bool:
+    return re.search(rf"(?<![a-z0-9]){re.escape(term)}(?![a-z0-9])", text) is not None
+
+
+def is_web3_news_item(item: dict[str, Any]) -> bool:
+    """Return True only when title/summary contains an explicit Web3 marker."""
+    text = f"{item.get('title', '')} {item.get('summary', '')}".lower()
+    return any(_contains_term(text, term) for term in WEB3_CONTEXT_TERMS)
+
 
 def refresh_bases() -> None:
     global GDELT_DOC_API
@@ -147,9 +164,9 @@ def _score_item(item: dict[str, Any], watch_symbols: list[str]) -> dict[str, Any
     assets = [
         symbol
         for symbol, terms in ASSET_KEYWORDS.items()
-        if (not watch_symbols or symbol in watch_symbols) and any(term in text for term in terms)
+        if (not watch_symbols or symbol in watch_symbols) and any(_contains_term(text, term) for term in terms)
     ]
-    topics = [topic for topic, terms in TOPIC_KEYWORDS.items() if any(term in text for term in terms)]
+    topics = [topic for topic, terms in TOPIC_KEYWORDS.items() if any(_contains_term(text, term) for term in terms)]
     positive = sum(1 for term in POSITIVE_TERMS if term in text)
     negative = sum(1 for term in NEGATIVE_TERMS if term in text)
     enriched = dict(item)
@@ -290,8 +307,8 @@ def fetch_web3_news(
         except Exception as exc:
             sources.append({"id": "gdelt", "name": "GDELT", "ok": False, "error": str(exc)})
     updated_at = _now_iso()
-    all_rows = [*rss_rows, *gdelt_rows]
-    signal = build_web3_news_signal([*rss_rows, *gdelt_rows], watch_symbols=watch_symbols, limit=limit)
+    all_rows = [row for row in [*rss_rows, *gdelt_rows] if is_web3_news_item(row)]
+    signal = build_web3_news_signal(all_rows, watch_symbols=watch_symbols, limit=limit)
     source_cards = [
         external_source_card(
             "web3_news",

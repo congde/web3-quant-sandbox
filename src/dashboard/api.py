@@ -12,7 +12,7 @@ from config.web3_trading import (
     get_watch_symbols,
     primary_market_symbol,
 )
-from dashboard import dexscan, market, news, opportunity, valuescan
+from dashboard import dexscan, market, news, opportunity, valuescan, web3_intelligence
 from dashboard.fixtures import load_offline
 from dashboard.mode import dashboard_data_mode, prefer_offline, serve_offline_first, try_live_public
 from dashboard.resolve import try_cached_first
@@ -359,6 +359,33 @@ def web3_news(*, limit: int = 50, refresh: bool = False) -> dict[str, Any]:
     payload = load_offline("web3_news")
     payload["items"] = (payload.get("items") or [])[:clipped_limit]
     return payload
+
+
+def web3_theme_research(*, limit: int = 100, refresh: bool = False) -> dict[str, Any]:
+    news_payload = web3_news(limit=limit, refresh=True) if refresh else load_offline("web3_news")
+    news_payload["items"] = (news_payload.get("items") or [])[: max(1, min(100, limit))]
+    return web3_intelligence.build_theme_research(news_payload)
+
+
+def web3_macro_observation(*, refresh: bool = False) -> dict[str, Any]:
+    if not refresh:
+        return web3_intelligence.build_macro_observation(
+            load_offline("web3_news"),
+            load_offline("market_tickers"),
+            load_offline("market_candles"),
+            load_offline("onchain"),
+        )
+    return web3_intelligence.build_macro_observation(
+        web3_news(limit=100, refresh=True),
+        market_tickers(limit=300, refresh=True),
+        market_candles(symbol="BTC-USDT", kline_type="1day", limit=30, refresh=True),
+        onchain("BTC", limit=1, refresh=True),
+    )
+
+
+def web3_knowledge_graph(*, refresh: bool = False) -> dict[str, Any]:
+    news_payload = web3_news(limit=100, refresh=True) if refresh else load_offline("web3_news")
+    return web3_intelligence.build_knowledge_graph(news_payload)
 
 
 def _offline_ticker_stats(symbol: str) -> dict[str, Any] | None:
@@ -887,7 +914,5 @@ def sources_status() -> dict[str, Any]:
         except Exception as exc:
             probes.append({"id": source_id, "name": name, "ok": False, "error": str(exc)})
     return {"ok": True, "env": env, "probes": probes, "dashboard_url": get_dashboard_url()}
-
-
 
 

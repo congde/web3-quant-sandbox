@@ -196,3 +196,22 @@ def test_research_draft_api(server: str) -> None:
     assert payload["human_review_required"] is True
     assert payload["sections"]
     assert "place live orders" in payload["prohibited_actions"]
+
+
+@pytest.mark.parametrize(
+    ("path", "collection"),
+    [
+        ("/api/dashboard/web3/themes", "themes"),
+        ("/api/dashboard/web3/macro", "cards"),
+        ("/api/dashboard/web3/knowledge-graph", "nodes"),
+    ],
+)
+def test_web3_intelligence_api_is_strictly_scoped(server: str, path: str, collection: str) -> None:
+    import json
+
+    with urllib.request.urlopen(f"{server}{path}") as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert payload["ok"] is True
+    assert payload["scope"] == "web3-only"
+    assert payload[collection]

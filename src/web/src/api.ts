@@ -14,6 +14,9 @@ import type {
   StrategyValidationResult,
   DslBacktestPayload,
   Web3NewsPayload,
+  Web3ThemesPayload,
+  Web3MacroPayload,
+  Web3GraphPayload,
   RollingBacktestPayload,
   RollingBacktestStrategy,
   BacktestComparePayload,
@@ -89,6 +92,22 @@ export function fetchMarketTickers(limit = 300, options?: { refresh?: boolean })
 export function fetchWeb3News(limit = 50, options?: { refresh?: boolean }) {
   return fetchDashboard<Web3NewsPayload>(
     withRefresh(`/api/dashboard/web3-news?limit=${limit}`, options?.refresh),
+  );
+}
+
+export function fetchWeb3Themes(limit = 100, options?: { refresh?: boolean }) {
+  return fetchDashboard<Web3ThemesPayload>(
+    withRefresh(`/api/dashboard/web3/themes?limit=${limit}`, options?.refresh),
+  );
+}
+
+export function fetchWeb3Macro(options?: { refresh?: boolean }) {
+  return fetchDashboard<Web3MacroPayload>(withRefresh("/api/dashboard/web3/macro", options?.refresh));
+}
+
+export function fetchWeb3KnowledgeGraph(options?: { refresh?: boolean }) {
+  return fetchDashboard<Web3GraphPayload>(
+    withRefresh("/api/dashboard/web3/knowledge-graph", options?.refresh),
   );
 }
 
