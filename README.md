@@ -26,6 +26,74 @@
 
 ![回测详情](image/回测详情.png)
 
+## 代码架构
+
+项目采用前后端一体的本地应用架构：`app.py` 同时托管构建后的 React 页面和 JSON API，并把请求分发到行情研究、回测审计、因子挖掘、策略实验室等领域模块。默认数据流优先读取仓库内的离线样本或快照；只有显式启用 `auto` / `live` 模式时才访问在线数据源。
+
+```mermaid
+flowchart TB
+    user["浏览器 / CLI"]
+
+    subgraph presentation["表现层"]
+        web["React Web UI<br/>src/web"]
+        cli["研究报告 CLI<br/>report_cli.py"]
+    end
+
+    subgraph gateway["本地服务入口"]
+        app["Python HTTP Server<br/>app.py<br/>静态资源 + JSON API"]
+    end
+
+    subgraph domain["研究与策略领域层"]
+        dashboard["行情与机会扫描<br/>dashboard"]
+        research["研究报告<br/>research"]
+        backtest["回测与稳健性审计<br/>backtest / backtest.audit"]
+        factors["因子挖掘<br/>factor_mining"]
+        lab["策略实验室<br/>strategy_lab"]
+        engine["策略引擎与 DSL<br/>strategy_engine"]
+        risk["风控与 dry-run 边界<br/>risk"]
+        ta["技术指标<br/>ta"]
+    end
+
+    subgraph storage["数据与外部依赖"]
+        fixtures["离线样本<br/>data/dashboard/*.json"]
+        snapshots["本地快照<br/>data/dashboard/snapshots"]
+        sqlite["策略资产<br/>data/strategy_lab.db"]
+        online["可选在线 API<br/>Binance / Web3 数据源 / LLM"]
+    end
+
+    user --> app
+    user --> cli
+    app -->|"静态资源"| web
+    web -->|"/api/*"| app
+    app --> dashboard
+    app --> research
+    app --> backtest
+    app --> factors
+    app --> lab
+    app --> engine
+    cli --> research
+
+    dashboard --> fixtures
+    dashboard --> snapshots
+    dashboard -. "auto / live" .-> online
+    dashboard --> ta
+    research --> backtest
+    research --> risk
+    backtest --> engine
+    backtest --> risk
+    backtest --> fixtures
+    backtest --> ta
+    factors --> backtest
+    factors --> ta
+    lab --> backtest
+    lab --> engine
+    lab --> sqlite
+    lab -. "可选 LLM" .-> online
+    factors -. "可选 LLM" .-> online
+```
+
+图中的在线依赖均为可选项；策略执行保持模拟和只读研究边界，不会向交易所提交真实订单。
+
 ## 快速开始
 
 ### 环境要求

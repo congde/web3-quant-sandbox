@@ -24,6 +24,74 @@ By default, the project runs from bundled samples and repository snapshots. It d
 
 ![Backtest details](image/回测详情.png)
 
+## Code Architecture
+
+The project uses an integrated local full-stack architecture. `app.py` serves both the built React application and the JSON API, routing requests to the market-research, backtest-audit, factor-mining, and strategy-lab domain modules. By default, data flows read bundled offline samples or local snapshots first; online sources are accessed only when `auto` or `live` mode is explicitly enabled.
+
+```mermaid
+flowchart TB
+    user["Browser / CLI"]
+
+    subgraph presentation["Presentation"]
+        web["React Web UI<br/>src/web"]
+        cli["Research Report CLI<br/>report_cli.py"]
+    end
+
+    subgraph gateway["Local Service Entry Point"]
+        app["Python HTTP Server<br/>app.py<br/>Static Assets + JSON API"]
+    end
+
+    subgraph domain["Research and Strategy Domain"]
+        dashboard["Market Data and Opportunity Scanning<br/>dashboard"]
+        research["Research Reports<br/>research"]
+        backtest["Backtesting and Robustness Audits<br/>backtest / backtest.audit"]
+        factors["Factor Mining<br/>factor_mining"]
+        lab["Strategy Lab<br/>strategy_lab"]
+        engine["Strategy Engine and DSL<br/>strategy_engine"]
+        risk["Risk Controls and dry-run Boundary<br/>risk"]
+        ta["Technical Indicators<br/>ta"]
+    end
+
+    subgraph storage["Data and External Dependencies"]
+        fixtures["Offline Samples<br/>data/dashboard/*.json"]
+        snapshots["Local Snapshots<br/>data/dashboard/snapshots"]
+        sqlite["Strategy Assets<br/>data/strategy_lab.db"]
+        online["Optional Online APIs<br/>Binance / Web3 Sources / LLM"]
+    end
+
+    user --> app
+    user --> cli
+    app -->|"Static assets"| web
+    web -->|"/api/*"| app
+    app --> dashboard
+    app --> research
+    app --> backtest
+    app --> factors
+    app --> lab
+    app --> engine
+    cli --> research
+
+    dashboard --> fixtures
+    dashboard --> snapshots
+    dashboard -. "auto / live" .-> online
+    dashboard --> ta
+    research --> backtest
+    research --> risk
+    backtest --> engine
+    backtest --> risk
+    backtest --> fixtures
+    backtest --> ta
+    factors --> backtest
+    factors --> ta
+    lab --> backtest
+    lab --> engine
+    lab --> sqlite
+    lab -. "Optional LLM" .-> online
+    factors -. "Optional LLM" .-> online
+```
+
+All online dependencies in the diagram are optional. Strategy execution remains within the simulated, read-only research boundary and never submits real exchange orders.
+
 ## Quick Start
 
 ### Requirements
