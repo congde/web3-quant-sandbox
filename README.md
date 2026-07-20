@@ -17,6 +17,8 @@
 - **策略与指标可扩展**：包含 MA、MACD、BOLL、RSI、资金费率、因子挖掘和滚动回测示例。
 - **课程文档配套**：`docs/v2/` 中的章节、命令和代码需要与实际仓库保持一致。
 - **前后端一体**：Python 本地服务 + React / Ant Design / lightweight-charts 前端。
+  
+配套课程：http://gk.link/a/12KKG
 
 ## 界面预览
 
