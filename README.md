@@ -324,3 +324,6 @@ web3, quant, crypto-trading, backtest, trading-sandbox, algorithmic-trading, pyt
 作者：袁从德
 
 联系方式：congdeyuan@gmail.com
+交流群： 
+![交流群二维码](image/交流群二维码.png)
+
