@@ -2,7 +2,7 @@
 
 [中文](README.md) | [English](README.en.md)
 
-An offline-first Web3 quantitative research sandbox. It brings market dashboards, opportunity radar, data-source monitoring, strategy backtests, risk audits, a simulated trading workstation, strategy DSL checks, and research reports into one local application for learning, teaching, strategy prototyping, and Codex delivery-course demos.
+An offline-first Web3 quantitative research sandbox. It brings market dashboards, opportunity radar, factor mining, data-source monitoring, strategy backtests, risk audits, a simulated trading workstation, strategy DSL checks, and research reports into one local application for learning, teaching, strategy prototyping, and Codex delivery-course demos.
 
 By default, the project runs from bundled samples and repository snapshots. It does not connect to real trading accounts, manage wallets, or place real orders.
 
@@ -11,7 +11,7 @@ By default, the project runs from bundled samples and repository snapshots. It d
 ## Highlights
 
 - **Offline-first**: bundled `data/dashboard/*.json` samples let the core pages run without network access.
-- **Complete research loop**: market overview, opportunity scanning, data-source status, strategy backtests, risk review, simulated execution, and research reports.
+- **Complete research loop**: market overview, opportunity scanning, factor mining, data-source status, strategy backtests, risk review, simulated execution, and research reports.
 - **Simulated trading workstation**: `/live-trading` includes a K-line canvas, timeframe switching, trade-plan overlays, dry-run tickets, and evidence panels.
 - **Clear safety boundary**: dry-run only records research actions; the project does not submit real exchange orders by default.
 - **Extensible strategies and indicators**: examples include MA, MACD, BOLL, RSI, funding-rate strategies, factor mining, and rolling backtests.
@@ -126,6 +126,7 @@ Common pages:
 | --- | --- |
 | Market dashboard | `http://127.0.0.1:8765/trading` |
 | Opportunity radar | `http://127.0.0.1:8765/radar` |
+| Factor mining | `http://127.0.0.1:8765/factor-mining` |
 | Data source monitor | `http://127.0.0.1:8765/data-sources` |
 | Strategy backtests | `http://127.0.0.1:8765/backtests` |
 | Simulated trading workstation | `http://127.0.0.1:8765/live-trading` |
@@ -146,8 +147,9 @@ python app.py
 | --- | --- | --- | --- |
 | Market dashboard | `/trading` | `src/dashboard/`, `src/web/src/pages/trading/DashboardPage.tsx` | Multi-asset quotes, K-line charts, trading signals, risk summaries, and execution entry points |
 | Opportunity radar | `/radar` | `src/dashboard/opportunity.py`, `src/web/src/pages/trading/RadarPage.tsx` | Scans opportunities with fund flow, trend, on-chain, and risk signals; labels hot paths, cold paths, and blocked paths |
+| Factor mining | `/factor-mining` | `src/factor_mining/`, `src/web/src/pages/trading/FactorMiningPage.tsx` | GP/ML/template/LLM candidate generation and IC/RIC validation; hands off via `backtest_spec` to strategy backtests |
 | Data source monitor | `/data-sources` | `src/dashboard/snapshot.py`, `src/dashboard/catalog.py` | Shows offline samples, online snapshots, API status, and research-draft gates |
-| Strategy backtests | `/backtests` | `src/backtest/`, `src/backtest/rolling/` | Single strategy tests, window comparison, walk-forward, portfolio, and robustness checks |
+| Strategy backtests | `/backtests` | `src/backtest/`, `src/backtest/rolling/` | Single strategy tests, window comparison, walk-forward, portfolio, and robustness checks; consumes handed-off mined factors |
 | Simulated trading workstation | `/live-trading` | `src/web/src/pages/trading/LiveTradingPage.tsx`, `src/risk/`, `src/strategy_engine/` | Sample-data-driven dry-run execution UI, not a live trading terminal |
 | Risk center | `/risk` | `src/risk/`, `src/backtest/audit/` | Drawdown, stop loss, rejection logs, CPCV, PBO, DSR, and other risk views |
 | Strategy DSL | `/strategy` | `src/strategy_engine/dsl/` | AST allowlist, import restrictions, look-ahead checks, and compile validation |

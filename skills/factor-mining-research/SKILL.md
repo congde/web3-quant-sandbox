@@ -1,6 +1,6 @@
 ---
 name: factor-mining-research
-description: Run, extend, and review the Web3 research sandbox factor-mining workflow. Use when working on /backtests factor mining, GP/ML/template/LLM alpha proposal generation, factor feature libraries, mined-factor backtests, IC/RIC validation, overfit warnings, or Codex course exercises that need reproducible factor discovery under src/factor_mining/.
+description: Run, extend, and review the Web3 research sandbox factor-mining workflow. Use when working on /factor-mining, GP/ML/template/LLM alpha proposal generation, factor feature libraries, mined-factor backtests, IC/RIC validation, overfit warnings, handoff into /backtests, or Codex course exercises that need reproducible factor discovery under src/factor_mining/.
 ---
 
 # Factor Mining Research
@@ -15,7 +15,9 @@ Use this skill to treat factor mining as an auditable research workflow, not as 
    - `src/factor_mining/templates.py`
    - `src/factor_mining/llm.py`
    - `src/backtest/rolling/strategies/mined_factor.py`
-   - `src/web/src/pages/trading/BacktestsPage.tsx`
+   - `src/web/src/pages/trading/FactorMiningPage.tsx`
+   - `src/web/src/factorHandoff.ts`
+   - `src/web/src/pages/trading/BacktestsPage.tsx` (consumes handoff only)
 2. Classify the request:
    - feature-library expansion;
    - GP/ML/template search behavior;

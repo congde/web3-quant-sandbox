@@ -6,24 +6,6 @@
   "type": "1day",
   "candles": [
     {
-      "tsSec": 1774137600,
-      "date": "2026-03-22",
-      "open": 68918.12,
-      "high": 69588.79,
-      "low": 67360.66,
-      "close": 67859.0,
-      "volume": 14843.78682
-    },
-    {
-      "tsSec": 1774224000,
-      "date": "2026-03-23",
-      "open": 67859.0,
-      "high": 71817.09,
-      "low": 67445.18,
-      "close": 70906.45,
-      "volume": 28335.09119
-    },
-    {
       "tsSec": 1774310400,
       "date": "2026-03-24",
       "open": 70906.45,
@@ -1081,38 +1063,42 @@
       "date": "2026-07-19",
       "open": 64834.21,
       "high": 64967.25,
-      "low": 64610.89,
-      "close": 64732.97,
-      "volume": 2213.47193
+      "low": 64280.0,
+      "close": 64722.54,
+      "volume": 8379.91474
+    },
+    {
+      "tsSec": 1784505600,
+      "date": "2026-07-20",
+      "open": 64722.55,
+      "high": 65799.0,
+      "low": 63100.0,
+      "close": 65255.51,
+      "volume": 21323.48702
+    },
+    {
+      "tsSec": 1784592000,
+      "date": "2026-07-21",
+      "open": 65255.51,
+      "high": 65658.78,
+      "low": 65148.75,
+      "close": 65530.16,
+      "volume": 2193.718
     }
   ],
   "curve": [
     {
-      "date": "2026-03-22",
-      "close": 67859.0,
-      "equity": 67859.0,
-      "short_ma": null,
-      "long_ma": null
-    },
-    {
-      "date": "2026-03-23",
-      "close": 70906.45,
-      "equity": 70906.45,
-      "short_ma": null,
-      "long_ma": null
-    },
-    {
       "date": "2026-03-24",
       "close": 70556.74,
       "equity": 70556.74,
-      "short_ma": 69774.06333333334,
+      "short_ma": null,
       "long_ma": null
     },
     {
       "date": "2026-03-25",
       "close": 71336.53,
       "equity": 71336.53,
-      "short_ma": 70933.24,
+      "short_ma": null,
       "long_ma": null
     },
     {
@@ -1134,14 +1120,14 @@
       "close": 66377.03,
       "equity": 66377.03,
       "short_ma": 67201.54,
-      "long_ma": 68894.76285714285
+      "long_ma": null
     },
     {
       "date": "2026-03-29",
       "close": 66010.93,
       "equity": 66010.93,
       "short_ma": 66265.08,
-      "long_ma": 68630.75285714287
+      "long_ma": null
     },
     {
       "date": "2026-03-30",
@@ -1922,17 +1908,31 @@
     },
     {
       "date": "2026-07-19",
-      "close": 64732.97,
-      "equity": 64732.97,
-      "short_ma": 64499.619999999995,
-      "long_ma": 64209.119999999995
+      "close": 64722.54,
+      "equity": 64722.54,
+      "short_ma": 64496.14333333333,
+      "long_ma": 64207.63
+    },
+    {
+      "date": "2026-07-20",
+      "close": 65255.51,
+      "equity": 65255.51,
+      "short_ma": 64937.42333333334,
+      "long_ma": 64624.91428571428
+    },
+    {
+      "date": "2026-07-21",
+      "close": 65530.16,
+      "equity": 65530.16,
+      "short_ma": 65169.40333333334,
+      "long_ma": 64694.36857142857
     }
   ],
   "snapshot": {
     "name": "market_candles",
-    "saved_at": "2026-07-19T06:30:36.250604+00:00",
+    "saved_at": "2026-07-21T03:54:26.713704+00:00",
     "origin": "live",
-    "history_id": "2026-07-19T06-30-36.250604+00-00",
-    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\market_candles\\2026-07-19T06-30-36.250604+00-00.json"
+    "history_id": "2026-07-21T03-54-26.713704+00-00",
+    "history_path": "D:\\work\\gitee\\ashare-research-sandbox\\data\\dashboard\\snapshots\\history\\market_candles\\2026-07-21T03-54-26.713704+00-00.json"
   }
 }

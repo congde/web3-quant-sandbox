@@ -14,6 +14,8 @@ import DashboardPage from "./pages/trading/DashboardPage";
 
 import DataSourcesPage from "./pages/trading/DataSourcesPage";
 
+import FactorMiningPage from "./pages/trading/FactorMiningPage";
+
 import LiveTradingPage from "./pages/trading/LiveTradingPage";
 import RiskPage from "./pages/trading/RiskPage";
 
@@ -50,6 +52,8 @@ export default function App() {
                 <Route path="/radar" element={<RadarPage />} />
 
                 <Route path="/data-sources" element={<DataSourcesPage />} />
+
+                <Route path="/factor-mining" element={<FactorMiningPage />} />
 
                 <Route path="/backtests" element={<BacktestsPage />} />
 

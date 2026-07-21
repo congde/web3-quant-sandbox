@@ -2,7 +2,7 @@
 
 [中文](README.md) | [English](README.en.md)
 
-离线优先的 Web3 量化研究沙箱。它把市场总览、机会雷达、数据源监控、策略回测、风险审计、模拟交易工作站、策略 DSL 和研究报告放在同一个本地应用里，方便学习、教学、策略原型验证和 Codex 交付课程演示。
+离线优先的 Web3 量化研究沙箱。它把市场总览、机会雷达、因子挖掘、数据源监控、策略回测、风险审计、模拟交易工作站、策略 DSL 和研究报告放在同一个本地应用里，方便学习、教学、策略原型验证和 Codex 交付课程演示。
 
 默认情况下，本项目使用仓库内置样本和快照运行；不会连接真实交易账户，不管理钱包，也不会提交真实订单。
 
@@ -11,7 +11,7 @@
 ## 项目亮点
 
 - **离线优先**：内置 `data/dashboard/*.json` 样本，断网也能打开核心页面。
-- **研究闭环完整**：覆盖行情总览、机会扫描、数据源状态、策略回测、风险复核、模拟执行和研究报告。
+- **研究闭环完整**：覆盖行情总览、机会扫描、因子挖掘、数据源状态、策略回测、风险复核、模拟执行和研究报告。
 - **模拟交易工作站**：`/live-trading` 提供 K 线主画布、周期切换、交易计划线、dry-run 票据和证据面板。
 - **风险边界明确**：dry-run 只记录研究动作；项目默认不接交易所写接口、不提交真实订单。
 - **策略与指标可扩展**：包含 MA、MACD、BOLL、RSI、资金费率、因子挖掘和滚动回测示例。
@@ -128,6 +128,7 @@ http://127.0.0.1:8765
 | --- | --- |
 | 市场总览 | `http://127.0.0.1:8765/trading` |
 | 机会雷达 | `http://127.0.0.1:8765/radar` |
+| 因子挖掘 | `http://127.0.0.1:8765/factor-mining` |
 | 数据源监控 | `http://127.0.0.1:8765/data-sources` |
 | 策略回测 | `http://127.0.0.1:8765/backtests` |
 | 模拟交易工作站 | `http://127.0.0.1:8765/live-trading` |
@@ -148,8 +149,9 @@ python app.py
 | --- | --- | --- | --- |
 | 市场总览 | `/trading` | `src/dashboard/`, `src/web/src/pages/trading/DashboardPage.tsx` | 多资产行情、K 线、交易信号、风险摘要和执行入口 |
 | 机会雷达 | `/radar` | `src/dashboard/opportunity.py`, `src/web/src/pages/trading/RadarPage.tsx` | 基于资金、趋势、链上和风险信号扫描机会，区分热路径、冷路径和风控阻断 |
+| 因子挖掘 | `/factor-mining` | `src/factor_mining/`, `src/web/src/pages/trading/FactorMiningPage.tsx` | GP/ML/模板/LLM 候选生成、IC/RIC 验证；通过 `backtest_spec` 交接到策略回测 |
 | 数据源监控 | `/data-sources` | `src/dashboard/snapshot.py`, `src/dashboard/catalog.py` | 查看离线样本、在线快照、API 状态和研究草稿门禁 |
-| 策略回测 | `/backtests` | `src/backtest/`, `src/backtest/rolling/` | 单策略、窗口对比、walk-forward、组合和稳健性检查 |
+| 策略回测 | `/backtests` | `src/backtest/`, `src/backtest/rolling/` | 单策略、窗口对比、walk-forward、组合和稳健性检查；消费已交接的挖掘因子 |
 | 模拟交易工作站 | `/live-trading` | `src/web/src/pages/trading/LiveTradingPage.tsx`, `src/risk/`, `src/strategy_engine/` | 样本数据驱动的 dry-run 执行界面，不是实盘终端 |
 | 风控中心 | `/risk` | `src/risk/`, `src/backtest/audit/` | 回撤、止损、拒单、CPCV、PBO、DSR 等风险视角 |
 | 策略 DSL | `/strategy` | `src/strategy_engine/dsl/` | AST 白名单、import 限制、前视偏差检查和编译验证 |

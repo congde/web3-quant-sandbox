@@ -1,6 +1,7 @@
 import {
   BarChartOutlined,
   ExperimentOutlined,
+  FundOutlined,
   RadarChartOutlined,
   ReloadOutlined,
   SwapOutlined,
@@ -165,6 +166,7 @@ export default function DashboardPage() {
 
   const workflow = [
     { icon: <RadarChartOutlined />, label: "机会雷达", path: "/radar" },
+    { icon: <FundOutlined />, label: "因子挖掘", path: "/factor-mining" },
     { icon: <BarChartOutlined />, label: "策略回测", path: "/backtests" },
     { icon: <SwapOutlined />, label: "模拟交易", path: "/live-trading" },
     { icon: <ExperimentOutlined />, label: "策略 DSL", path: "/strategy" },

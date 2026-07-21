@@ -22,6 +22,7 @@ type AssistantPosition = {
 const PAGE_LABELS: Record<string, string> = {
   "/trading": "市场总览",
   "/radar": "机会雷达",
+  "/factor-mining": "因子挖掘",
   "/backtests": "策略回测",
   "/live-trading": "模拟交易",
   "/data-sources": "数据源",
