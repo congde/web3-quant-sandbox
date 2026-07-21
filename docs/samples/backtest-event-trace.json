@@ -1,0 +1,104 @@
+﻿{
+  "ok": true,
+  "engine": "ai-trading/event-driven",
+  "parameters": {
+    "short_window": 3,
+    "long_window": 7
+  },
+  "metrics": {
+    "strategy_return_pct": 1.56,
+    "buy_hold_return_pct": 30.0,
+    "maximum_drawdown_pct": -7.21,
+    "calmar_ratio": 0.22,
+    "sharpe_ratio": 0.7,
+    "trade_count": 4,
+    "final_equity": 10156.05
+  },
+  "trail": [
+    {
+      "step": 1,
+      "date": "2026-01-13",
+      "event": "trade_filled",
+      "action": "BUY",
+      "price": 10.9,
+      "equity_after": 10000.0,
+      "note": "事件驱动引擎在对应 K 线收盘时成交"
+    },
+    {
+      "step": 2,
+      "date": "2026-01-19",
+      "event": "trade_filled",
+      "action": "SELL",
+      "price": 10.3,
+      "equity_after": 9449.54,
+      "note": "事件驱动引擎在对应 K 线收盘时成交"
+    },
+    {
+      "step": 3,
+      "date": "2026-01-27",
+      "event": "trade_filled",
+      "action": "BUY",
+      "price": 10.7,
+      "equity_after": 9449.54,
+      "note": "事件驱动引擎在对应 K 线收盘时成交"
+    },
+    {
+      "step": 4,
+      "date": "2026-02-11",
+      "event": "trade_filled",
+      "action": "SELL",
+      "price": 11.5,
+      "equity_after": 10156.05,
+      "note": "事件驱动引擎在对应 K 线收盘时成交"
+    }
+  ],
+  "risk_rejections": [
+    {
+      "date": "2026-02-16",
+      "rule_id": "MAX_POSITION_PCT",
+      "reason": "post-fill notional $10156.04904398525250793106405 would exceed max $10000 (0E-25 + 819.0362132246171377363761331 = 819.0362132246171377363761331 × 12.4)",
+      "side": "BUY"
+    },
+    {
+      "date": "2026-02-17",
+      "rule_id": "MAX_POSITION_PCT",
+      "reason": "post-fill notional $10156.04904398525250793106405 would exceed max $10000 (0E-25 + 806.0356384115279768199257183 = 806.0356384115279768199257183 × 12.6)",
+      "side": "BUY"
+    },
+    {
+      "date": "2026-02-18",
+      "rule_id": "MAX_POSITION_PCT",
+      "reason": "post-fill notional $10156.04904398525250793106405 would exceed max $10000 (0E-25 + 825.6950442264432933277287846 = 825.6950442264432933277287846 × 12.3)",
+      "side": "BUY"
+    },
+    {
+      "date": "2026-02-19",
+      "rule_id": "MAX_POSITION_PCT",
+      "reason": "post-fill notional $10156.04904398525250793106405 would exceed max $10000 (0E-25 + 799.6889011012009848764617362 = 799.6889011012009848764617362 × 12.7)",
+      "side": "BUY"
+    },
+    {
+      "date": "2026-02-20",
+      "rule_id": "MAX_POSITION_PCT",
+      "reason": "post-fill notional $10156.04904398525250793106405 would exceed max $10000 (0E-25 + 781.2345418450194236870049269 = 781.2345418450194236870049269 × 13.0)",
+      "side": "BUY"
+    }
+  ],
+  "assumptions": [
+    "Uses ai-trading event-driven BacktestEngine (ADR-0009).",
+    "Pre-trade RiskManager gates every order intent (5 MVP rules).",
+    "Uses fixed fictional Web3 daily close prices.",
+    "Teaching run uses zero fee and zero slippage models.",
+    "Historical sample performance cannot predict future returns."
+  ],
+  "what_it_proves": [
+    "策略在每根 K 线只看到当时及之前的 history",
+    "每笔成交可在 trades 与 equity 曲线中逐笔核对",
+    "RiskManager 拒绝会写入 risk_rejections 而不是静默丢弃"
+  ],
+  "what_it_does_not_prove": [
+    "未来收益",
+    "真实交易所成交价格",
+    "LLM 信号本身正确"
+  ]
+}

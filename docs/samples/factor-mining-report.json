@@ -1,0 +1,226 @@
+{
+  "ok": true,
+  "engine": "factor-mining/teaching-sandbox",
+  "mode": "both",
+  "symbol": "WEB3-DEMO/USDT",
+  "kline_type": "1day",
+  "horizon_bars": 1,
+  "sample_bars": 35,
+  "train_bars": 24,
+  "test_bars": 11,
+  "feature_count": 12,
+  "features": [
+    "atr_pct",
+    "bb_pct_b",
+    "close_sma20",
+    "close_sma60",
+    "log_volume",
+    "macd_hist",
+    "range_pos",
+    "ret_1",
+    "ret_10",
+    "ret_5",
+    "rsi",
+    "vol_ratio"
+  ],
+  "baseline_univariate": [
+    {
+      "feature": "rsi",
+      "ic_mean": -0.681459,
+      "ir": -2.827102,
+      "hit_rate": 0.7,
+      "sample_count": 20
+    },
+    {
+      "feature": "atr_pct",
+      "ic_mean": 0.620534,
+      "ir": 3.592278,
+      "hit_rate": 0.7,
+      "sample_count": 20
+    },
+    {
+      "feature": "ret_1",
+      "ic_mean": 0.345427,
+      "ir": 1.549028,
+      "hit_rate": 0.575758,
+      "sample_count": 33
+    },
+    {
+      "feature": "ret_10",
+      "ic_mean": -0.278756,
+      "ir": -1.273818,
+      "hit_rate": 0.458333,
+      "sample_count": 24
+    },
+    {
+      "feature": "ret_5",
+      "ic_mean": 0.129819,
+      "ir": 0.435644,
+      "hit_rate": 0.551724,
+      "sample_count": 29
+    },
+    {
+      "feature": "range_pos",
+      "ic_mean": -0.123481,
+      "ir": -0.38362,
+      "hit_rate": 0.617647,
+      "sample_count": 34
+    }
+  ],
+  "data_source": "teaching_sample",
+  "data_from": "2026-01-05",
+  "data_through": "2026-02-20",
+  "data_saved_at": null,
+  "data_note": "Fixed course CSV — not live market data.",
+  "gp": {
+    "method": "gp",
+    "expression": "ret_5",
+    "fitness": 0.158421,
+    "complexity": 1,
+    "history": [
+      {
+        "generation": 6,
+        "best_fitness": -0.01,
+        "best_ic": 0.0,
+        "expression": "vol_ratio"
+      },
+      {
+        "generation": 7,
+        "best_fitness": -0.01,
+        "best_ic": 0.0,
+        "expression": "vol_ratio"
+      },
+      {
+        "generation": 8,
+        "best_fitness": 0.158421,
+        "best_ic": 0.168421,
+        "expression": "ret_5"
+      }
+    ],
+    "train": {
+      "ic_mean": 0.0,
+      "ic_std": 0.0,
+      "ir": 0.0,
+      "hit_rate": 0.0,
+      "sample_count": 0
+    },
+    "test": {
+      "ic_mean": -0.345455,
+      "ic_std": 0.231661,
+      "ir": -1.491209,
+      "hit_rate": 0.4,
+      "sample_count": 10
+    },
+    "overfit_gap": -0.345455,
+    "backtest_spec": {
+      "factor_source": "gp",
+      "expr": {
+        "op": "terminal",
+        "terminal": "ret_5"
+      },
+      "label": "ret_5",
+      "horizon": 1
+    }
+  },
+  "ml": {
+    "method": "ml",
+    "selected_features": [
+      "ret_1",
+      "range_pos",
+      "log_volume"
+    ],
+    "weights": {
+      "ret_1": 0.009185,
+      "range_pos": -0.002751,
+      "log_volume": 0.0
+    },
+    "formula": "0.0092*ret_1",
+    "univariate_screen": [
+      {
+        "feature": "ret_1",
+        "ic_mean": 0.450544,
+        "ir": 2.959703,
+        "hit_rate": 0.565217,
+        "abs_ic": 0.450544
+      },
+      {
+        "feature": "range_pos",
+        "ic_mean": -0.041757,
+        "ir": -0.127096,
+        "hit_rate": 0.5,
+        "abs_ic": 0.041757
+      },
+      {
+        "feature": "log_volume",
+        "ic_mean": 0.0,
+        "ir": 0.0,
+        "hit_rate": 0.0,
+        "abs_ic": 0.0
+      },
+      {
+        "feature": "vol_ratio",
+        "ic_mean": 0.0,
+        "ir": 0.0,
+        "hit_rate": 0.625,
+        "abs_ic": 0.0
+      }
+    ],
+    "train": {
+      "ic_mean": 0.496303,
+      "ic_std": 0.189387,
+      "ir": 2.620569,
+      "hit_rate": 0.583333,
+      "sample_count": 24
+    },
+    "test": {
+      "ic_mean": 0.127273,
+      "ic_std": 0.320936,
+      "ir": 0.396567,
+      "hit_rate": 0.6,
+      "sample_count": 10
+    },
+    "overfit_gap": 0.36903,
+    "backtest_spec": {
+      "factor_source": "ml",
+      "weights": {
+        "ret_1": 0.009185,
+        "range_pos": -0.002751,
+        "log_volume": 0.0
+      },
+      "label": "0.0092*ret_1",
+      "horizon": 1
+    }
+  },
+  "leader": {
+    "method": "gp",
+    "label": "ret_5",
+    "train_ic": 0.0,
+    "test_ic": -0.345455,
+    "backtest_spec": {
+      "factor_source": "gp",
+      "expr": {
+        "op": "terminal",
+        "terminal": "ret_5"
+      },
+      "label": "ret_5",
+      "horizon": 1
+    }
+  },
+  "warnings": [
+    "教学沙箱：单标的时序 IC，不是截面多股票因子检验。",
+    "高训练 IC + 低测试 IC 通常意味着过拟合，不应直接上线。",
+    "ML 训练/测试 IC 差距 0.369，疑似过拟合。",
+    "测试集上 GP 表现更好，但仍需滚动窗口复核。"
+  ],
+  "what_it_proves": [
+    "GP 在算子空间里搜索符号表达式，ML 在特征子集上做贪婪线性组合。",
+    "IC / IR 用 Spearman 秩相关衡量因子对未来收益的排序能力。",
+    "训练 / 测试按时间切分，用于演示样本内挖掘与过拟合风险。"
+  ],
+  "assumptions": [
+    "Fixed teaching CSV (WEB3-DEMO/USDT) — rerun mine locally if candle count changes.",
+    "Leader picked by |test_ic| between GP and ML, not train fitness alone.",
+    "High train IC with low test IC (overfit_gap) must not be extrapolated.",
+    "Time-series IC on one symbol is not cross-sectional multi-stock validation."
+  ]
+}

@@ -1,0 +1,137 @@
+﻿
+d:\work\gitee\ashare-research-sandbox\.venv\Scripts\python.exe : Traceback (most recent call last):
+所在位置 C:\Users\54461\AppData\Local\Temp\ps-script-6209748d-eb35-40c9-94b4-f77d7c3cc4bb.ps1:108 字符: 1
++ d:\work\gitee\ashare-research-sandbox\.venv\Scripts\python.exe d:\wor ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "d:\work\gitee\ashare-research-sandbox\scripts\scan_qbot_notebooks.py", line 96, in <module>
+========================================================================
+docs\notebook\Kurtosis Portfolio.ipynb  (score=46)
+  MD: Kurtosis Portfolio Optimization | <font color='red'> Warning: Don't use this model for n >= 30 without Mosek and I don't recommend to  | 1. Kurtosis Minimization
+  tags: portfolio:26, matplotlib:12, indicators:8
+  fns: subplots
+  > fig, ax = plt.subplots(2, 1, figsize=(12,10))
+  > cax0 = ax[0].scatter(c_var, c_mean, c=c_mean/c_var, cmap='Spectral')
+  > ax[0].scatter((w.to_numpy().T @ M_2 @ w.to_numpy()) ** (0.5),
+  > ax[0].scatter((w2.to_numpy().T @ M_2 @ w2.to_numpy()) ** (0.5),
+  > cax1 = ax[1].scatter(c_kurt, c_mean, c=c_mean/c_kurt**2, cmap='Spectral')
+  > ax[1].scatter((np.kron(w.to_numpy(), w.to_numpy()).T @ Sigma_4 @ np.kron(w.to_numpy(), w.to_numpy())) ** (0.25),
+  > ax[1].scatter((np.kron(w2.to_numpy(), w2.to_numpy()).T @ Sigma_4 @ np.kron(w2.to_numpy(), w2.to_numpy())) ** (0.25),
+  > fig.colorbar(cax0, ax=ax[0], label='Expected Return / Standard Deviation')
+
+========================================================================
+docs\notebook\Pairs_Trading.ipynb  (score=40)
+  MD: Y = 1.5575*X + 6.1175
+  tags: pairs:16, matplotlib:14, portfolio:3, indicators:3, seaborn:2, rolling_perf:1, tushare:1
+  fns: heatmap, legend, plot, subplots
+  > sns.heatmap(1-pvalues, xticklabels=instruments_code, yticklabels=instruments_code, cmap='RdYlGn_r', mask = (pvalues == 1
+  > fig, ax = plt.subplots(figsize=(8,6))
+  > ax.plot(x, y, 'o', label="data")
+  > ax.plot(x, result.fittedvalues, 'r', label="OLS")
+  > def plot_scatter(fig, y, x=None, name=None, title=None, show=True):
+  > fig.add_trace(go.Scatter(y=y, x=x, name=name))
+  > plot_scatter(fig, y=price_dict[bank_choose[0]][::-1], x=date_series, name=bank_choose[0], show=False)
+  > plot_scatter(fig, y=price_dict[bank_choose[1]][::-1], x=date_series, name=bank_choose[1], show=True)
+
+========================================================================
+docs\notebook\workflow_by_code.ipynb  (score=33)
+  MD: train model | prediction, backtest & analysis | analyze graphs | analysis position
+  tags: qlib:29, portfolio:4
+  > from qlib.contrib.report import analysis_model, analysis_position
+  > report_normal_df = recorder.load_object("portfolio_analysis/report_normal_1day.pkl")
+  > analysis_position.report_graph(report_normal_df)
+  > analysis_position.risk_analysis_graph(analysis_df, report_normal_df)
+
+========================================================================
+pytrader\strategies\workflow_by_code.ipynb  (score=33)
+  MD: train model | prediction, backtest & analysis | analyze graphs | analysis position
+  tags: qlib:29, portfolio:4
+  > from qlib.contrib.report import analysis_model, analysis_position
+  > report_normal_df = recorder.load_object("portfolio_analysis/report_normal_1day.pkl")
+  > analysis_position.report_graph(report_normal_df)
+  > analysis_position.risk_analysis_graph(analysis_df, report_normal_df)
+
+========================================================================
+docs\notebook\choose_stock.ipynb  (score=30)
+  tags: matplotlib:10, indicators:9, rolling_perf:8, backtrader_plot:1, portfolio:1, tushare:1
+  > def plot(self, iplot=False):
+  > self.cerebro.plot(iplot=iplot)
+  > strategy_runner.plot()
+  > strategy_runner.plot()
+
+========================================================================
+docs\notebook\01-strategy.ipynb  (score=29)
+  tags: matplotlib:12, indicators:9, three_panel:6, equity_curve:2
+  fns: subplots
+  > fig, ax = plt.subplots(nrows=3, ncols=1, figsize=(12, 15), sharex=True)
+  > ax[0].plot(df.index, df["close"])
+  > ax[0].plot(df.index, df["fast_sma"])
+  > ax[0].plot(df.index, df["slow_sma"])
+  > ax[1].plot(df.index, df["signal"])
+  > df[["returns", "strategy"]].cumsum().plot(ax=ax[2], title="回测收益")
+  > df[['close','n1_high','n2_low']].plot()
+  > fig, ax = plt.subplots(nrows=3, ncols=1, figsize=(12, 15), sharex=True)
+
+========================================================================
+docs\notebook\average.ipynb  (score=21)
+    raise SystemExit(main())
+  tags: indicators:9, matplotlib:8, backtrader_plot:1, rolling_perf:1, portfolio:1, tushare:1
+  > def plot(self, iplot=False):
+  > self.cerebro.plot(iplot=iplot)
+  > strategy_runner.plot()
+  > strategy_runner.plot()
+
+========================================================================
+pyfunds\backtest\doc\samples\changyingcorr.ipynb  (score=18)
+  tags: matplotlib:11, seaborn:7
+  fns: heatmap, lineplot, set, show, subplots, suptitle
+  > fig, axes = plt.subplots(2, 1, figsize=(12, 15))
+  > corr_g = sns.heatmap(
+  File "d:\work\gitee\ashare-research-sandbox\scripts\scan_qbot_notebooks.py", line 85, in main
+    print("  MD:", " | ".join(r["titles"]))
+UnicodeEncodeError: 'gbk' codec can't encode character '\xa0' in position 74: illegal multibyte sequence
+  > trend_g = sns.lineplot(data=data_trend, ax=axes[1], dashes=dash_styles)
+
+========================================================================
+docs\notebook\pandas.ipynb  (score=17)
+  tags: equity_curve:11, indicators:4, three_panel:2
+  > df[['low','high']].plot()
+  > df['rate'].plot()
+  > df[['equity','max_equity','max_rolling']].plot()
+  > df_all.plot()
+
+========================================================================
+docs\notebook\quantstats-rolling.ipynb  (score=11)
+  tags: quantstats:7, rolling_perf:4
+  > qs.reports.html(stock_returns, output="performance.html", download_filename="my_quant_stats.html")
+  > adj_result = qs.stats.adjusted_sortino(stock_returns)
+  > stats_rolling_sharpe = qs.stats.rolling_sharpe(stock_returns, rolling_period=20)
+  > stats_monthly_returns = qs.stats.monthly_returns(stock_returns)
+  > print("可计算的全部指标：", [f for f in dir(qs.stats) if f[0] != '_'])
+  > print("可用于绘图的全部指标：", [f for f in dir(qs.stats) if f[0] != '_'])
+
+========================================================================
+pytrader\strategies\notebook\quantstats-rolling.ipynb  (score=11)
+  tags: quantstats:7, rolling_perf:4
+  > qs.reports.html(stock_returns, output="performance.html", download_filename="my_quant_stats.html")
+  > adj_result = qs.stats.adjusted_sortino(stock_returns)
+  > stats_rolling_sharpe = qs.stats.rolling_sharpe(stock_returns, rolling_period=20)
+  > stats_monthly_returns = qs.stats.monthly_returns(stock_returns)
+  > print("可计算的全部指标：", [f for f in dir(qs.stats) if f[0] != '_'])
+  > print("可用于绘图的全部指标：", [f for f in dir(qs.stats) if f[0] != '_'])
+
+========================================================================
+pyfunds\backtest\doc\samples\netvalueestimation.ipynb  (score=10)
+  MD: 南方原油净值预估 | 国泰商品净值预估 | 华宝油气净值预估情况 | DAX30
+  tags: seaborn:5, matplotlib:2, indicators:2, three_panel:1
+  fns: distplot
+  > sns.distplot(nfyydf["diff_real_fund_est"])
+  > sns.distplot(gtspdf["diff_real_fund_est"])  # 看误差分布展宽也明显比南方原油窄
+  > sns.distplot(hbyqdf["diff_real_fund_est"], bins=40)  # 误差分布涨的有点丑, 好像确实也没有国泰商品的正态
+  > sns.distplot(daxdf["diff_real_fund_est"], bins=30)
+
+========================================================================
+docs\notebook\Stock_NeurIPS2018_SB3.ipynb  (score=6)
+  MD: 

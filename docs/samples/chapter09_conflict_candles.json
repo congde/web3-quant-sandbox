@@ -1,0 +1,29 @@
+{
+  "ok": true,
+  "source": "teaching_conflict_fixture",
+  "symbol": "BTC-USDT-CONFLICT",
+  "type": "1day",
+  "note": "Synthetic teaching sample for indicator-conflict practice only.",
+  "candles": [
+    {"tsSec": 1769904000, "date": "2026-02-01", "open": 100.0, "close": 101.2, "high": 103.0, "low": 98.9, "volume": 940.0},
+    {"tsSec": 1769990400, "date": "2026-02-02", "open": 101.2, "close": 100.6, "high": 102.4, "low": 99.0, "volume": 910.0},
+    {"tsSec": 1770076800, "date": "2026-02-03", "open": 100.6, "close": 102.8, "high": 104.5, "low": 100.1, "volume": 980.0},
+    {"tsSec": 1770163200, "date": "2026-02-04", "open": 102.8, "close": 104.1, "high": 105.8, "low": 101.9, "volume": 1030.0},
+    {"tsSec": 1770249600, "date": "2026-02-05", "open": 104.1, "close": 103.5, "high": 105.0, "low": 102.2, "volume": 990.0},
+    {"tsSec": 1770336000, "date": "2026-02-06", "open": 103.5, "close": 105.7, "high": 107.8, "low": 103.0, "volume": 1110.0},
+    {"tsSec": 1770422400, "date": "2026-02-07", "open": 105.7, "close": 108.9, "high": 110.4, "low": 105.1, "volume": 1240.0},
+    {"tsSec": 1770508800, "date": "2026-02-08", "open": 108.9, "close": 107.6, "high": 110.1, "low": 106.2, "volume": 1180.0},
+    {"tsSec": 1770595200, "date": "2026-02-09", "open": 107.6, "close": 110.8, "high": 112.6, "low": 106.9, "volume": 1320.0},
+    {"tsSec": 1770681600, "date": "2026-02-10", "open": 110.8, "close": 113.4, "high": 115.7, "low": 109.8, "volume": 1450.0},
+    {"tsSec": 1770768000, "date": "2026-02-11", "open": 113.4, "close": 112.2, "high": 114.9, "low": 111.0, "volume": 1390.0},
+    {"tsSec": 1770854400, "date": "2026-02-12", "open": 112.2, "close": 115.9, "high": 118.5, "low": 111.6, "volume": 1530.0},
+    {"tsSec": 1770940800, "date": "2026-02-13", "open": 115.9, "close": 118.7, "high": 121.2, "low": 114.8, "volume": 1660.0},
+    {"tsSec": 1771027200, "date": "2026-02-14", "open": 118.7, "close": 117.8, "high": 120.4, "low": 116.5, "volume": 1580.0},
+    {"tsSec": 1771113600, "date": "2026-02-15", "open": 117.8, "close": 120.9, "high": 123.8, "low": 116.9, "volume": 1720.0},
+    {"tsSec": 1771200000, "date": "2026-02-16", "open": 120.9, "close": 123.6, "high": 126.2, "low": 119.4, "volume": 1840.0},
+    {"tsSec": 1771286400, "date": "2026-02-17", "open": 123.6, "close": 126.4, "high": 129.8, "low": 122.2, "volume": 1990.0},
+    {"tsSec": 1771372800, "date": "2026-02-18", "open": 126.4, "close": 125.1, "high": 128.7, "low": 123.8, "volume": 1920.0},
+    {"tsSec": 1771459200, "date": "2026-02-19", "open": 125.1, "close": 128.8, "high": 132.6, "low": 124.0, "volume": 2140.0},
+    {"tsSec": 1771545600, "date": "2026-02-20", "open": 128.8, "close": 131.5, "high": 135.2, "low": 126.9, "volume": 2380.0}
+  ]
+}

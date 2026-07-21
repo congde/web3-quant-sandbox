@@ -1,0 +1,47 @@
+﻿{
+  "ok": true,
+  "engine": "web3-trading/rolling-window",
+  "strategy_key": "ma_crossover",
+  "strategy": "均线交叉策略",
+  "symbol": "WEB3-DEMO/USDT",
+  "kline_type": "1day",
+  "num_windows": 3,
+  "windows": [
+    {
+      "window": "W1",
+      "bars": 5,
+      "start_ts": 1769990400,
+      "end_ts": 1770336000,
+      "total_return_pct": 0.0,
+      "max_drawdown_pct": 0.0,
+      "total_trades": 0,
+      "win_rate": 0
+    },
+    {
+      "window": "W2",
+      "bars": 5,
+      "start_ts": 1770595200,
+      "end_ts": 1770940800,
+      "total_return_pct": 0.0,
+      "max_drawdown_pct": 0.0,
+      "total_trades": 0,
+      "win_rate": 0
+    },
+    {
+      "window": "W3",
+      "bars": 5,
+      "start_ts": 1771200000,
+      "end_ts": 1771545600,
+      "total_return_pct": 0.0,
+      "max_drawdown_pct": 0.0,
+      "total_trades": 0,
+      "win_rate": 0
+    }
+  ],
+  "positive_windows": 0,
+  "stable": false,
+  "assumptions": [
+    "Each window reuses prior bars as indicator warmup.",
+    "Window stability is descriptive; it is not walk-forward optimization."
+  ]
+}

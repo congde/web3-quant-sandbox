@@ -1,0 +1,74 @@
+﻿{
+  "ok": true,
+  "engine": "web3-trading/rolling-window",
+  "symbol": "WEB3-DEMO/USDT",
+  "kline_type": "1day",
+  "total_candles": 35,
+  "stop_loss_pct": 3.0,
+  "take_profit_pct": 5.0,
+  "strategies": [
+    {
+      "strategy_key": "buy_and_hold",
+      "strategy": "买入持有基准",
+      "total_return_pct": 12.17,
+      "max_drawdown_pct": 4.3,
+      "sharpe_ratio": 11.71,
+      "win_rate": 75.0,
+      "total_trades": 4,
+      "calmar_ratio": 2.83,
+      "profit_factor": 3.79
+    },
+    {
+      "strategy_key": "ma_crossover",
+      "strategy": "均线交叉策略",
+      "total_return_pct": 2.97,
+      "max_drawdown_pct": 0.0,
+      "sharpe_ratio": 0.0,
+      "win_rate": 100.0,
+      "total_trades": 1,
+      "calmar_ratio": 0.0,
+      "profit_factor": 999.99
+    },
+    {
+      "strategy_key": "macd",
+      "strategy": "MACD策略",
+      "total_return_pct": 2.16,
+      "max_drawdown_pct": 0.0,
+      "sharpe_ratio": 0.0,
+      "win_rate": 100.0,
+      "total_trades": 1,
+      "calmar_ratio": 0.0,
+      "profit_factor": 999.99
+    },
+    {
+      "strategy_key": "rsi_mean_reversion",
+      "strategy": "RSI均值回归策略",
+      "total_return_pct": -1.88,
+      "max_drawdown_pct": 3.59,
+      "sharpe_ratio": -1.83,
+      "win_rate": 25.0,
+      "total_trades": 4,
+      "calmar_ratio": -0.52,
+      "profit_factor": 0.77
+    },
+    {
+      "strategy_key": "technical_signal",
+      "strategy": "技术信号策略",
+      "total_return_pct": 0.0,
+      "max_drawdown_pct": 0.0,
+      "sharpe_ratio": 0.0,
+      "win_rate": 0,
+      "total_trades": 0,
+      "calmar_ratio": 0.0,
+      "profit_factor": 0.0
+    }
+  ],
+  "leader": "buy_and_hold",
+  "laggard": "rsi_mean_reversion",
+  "errors": [],
+  "assumptions": [
+    "All strategies share the same candles, fees and risk exits.",
+    "Leader/laggard labels describe this sample only — not future ranking.",
+    "Do not optimize parameters on this table without a held-out window."
+  ]
+}

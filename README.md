@@ -15,7 +15,6 @@
 - **模拟交易工作站**：`/live-trading` 提供 K 线主画布、周期切换、交易计划线、dry-run 票据和证据面板。
 - **风险边界明确**：dry-run 只记录研究动作；项目默认不接交易所写接口、不提交真实订单。
 - **策略与指标可扩展**：包含 MA、MACD、BOLL、RSI、资金费率、因子挖掘和滚动回测示例。
-- **课程文档配套**：`docs/v2/` 中的章节、命令和代码需要与实际仓库保持一致。
 - **前后端一体**：Python 本地服务 + React / Ant Design / lightweight-charts 前端。
   
 配套课程：http://gk.link/a/12KKG
@@ -266,7 +265,6 @@ py scripts/course.py teaching-plots
 |   |-- ta/                    # 技术指标工具
 |   `-- web/                   # React + Ant Design 前端
 |-- data/                      # 离线样本和 dashboard 快照
-|-- docs/v2/                   # 课程章节
 |-- skills/                    # 课程沉淀的 Codex 技能
 |-- tests/                     # pytest 测试
 |-- outputs/                   # 生成产物
@@ -290,7 +288,6 @@ py scripts/course.py teaching-plots
 | 扩展因子挖掘 | `src/factor_mining/` |
 | 调整模拟交易和风控 | `src/web/src/pages/trading/LiveTradingPage.tsx`, `src/risk/`, `src/strategy_engine/` |
 | 修改 Web 页面 | `src/web/src/pages/trading/`, `src/web/src/components/` |
-| 更新课程章节 | `docs/v2/` |
 
 有通用价值的策略、指标、数据源适配或课程修正，欢迎提交 PR。
 

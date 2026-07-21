@@ -1,0 +1,310 @@
+{
+  "ok": true,
+  "engine": "factor-mining/risk-teaching-sandbox",
+  "mining_target": "risk",
+  "mode": "both",
+  "symbol": "WEB3-DEMO/USDT",
+  "kline_type": "1day",
+  "horizon_bars": 1,
+  "sample_bars": 35,
+  "train_bars": 24,
+  "test_bars": 11,
+  "feature_count": 12,
+  "features": [
+    "atr_pct",
+    "bb_pct_b",
+    "close_sma20",
+    "close_sma60",
+    "log_volume",
+    "macd_hist",
+    "range_pos",
+    "ret_1",
+    "ret_10",
+    "ret_5",
+    "rsi",
+    "vol_ratio"
+  ],
+  "baseline_univariate": [
+    {
+      "feature": "rsi",
+      "ic_mean": -0.684468,
+      "ir": -4.611635,
+      "hit_rate": 1.0,
+      "sample_count": 20
+    },
+    {
+      "feature": "atr_pct",
+      "ic_mean": 0.474615,
+      "ir": 2.44058,
+      "hit_rate": 1.0,
+      "sample_count": 20
+    },
+    {
+      "feature": "range_pos",
+      "ic_mean": -0.307657,
+      "ir": -0.861655,
+      "hit_rate": 1.0,
+      "sample_count": 34
+    },
+    {
+      "feature": "ret_10",
+      "ic_mean": -0.275277,
+      "ir": -1.35324,
+      "hit_rate": 0.708333,
+      "sample_count": 24
+    },
+    {
+      "feature": "ret_1",
+      "ic_mean": -0.068216,
+      "ir": -0.229636,
+      "hit_rate": 0.606061,
+      "sample_count": 33
+    },
+    {
+      "feature": "ret_5",
+      "ic_mean": 0.023895,
+      "ir": 0.095807,
+      "hit_rate": 0.655172,
+      "sample_count": 29
+    }
+  ],
+  "metric_name": "RIC",
+  "label_description": "forward absolute return (vol proxy)",
+  "application": "position_scale",
+  "data_source": "teaching_sample",
+  "data_from": "2026-01-05",
+  "data_through": "2026-02-20",
+  "data_saved_at": null,
+  "data_note": "Fixed course CSV — not live market data.",
+  "risk_kind": "abs_ret",
+  "gp": {
+    "method": "gp",
+    "expression": "ret_5",
+    "fitness": 0.068947,
+    "complexity": 1,
+    "history": [
+      {
+        "generation": 6,
+        "best_fitness": -0.01,
+        "best_ic": 0.0,
+        "expression": "vol_ratio"
+      },
+      {
+        "generation": 7,
+        "best_fitness": -0.01,
+        "best_ic": 0.0,
+        "expression": "vol_ratio"
+      },
+      {
+        "generation": 8,
+        "best_fitness": 0.068947,
+        "best_ic": -0.078947,
+        "expression": "ret_5"
+      }
+    ],
+    "train": {
+      "ic_mean": 0.0,
+      "ic_std": 0.0,
+      "ir": 0.0,
+      "hit_rate": 0.0,
+      "sample_count": 0
+    },
+    "test": {
+      "ic_mean": -0.309091,
+      "ic_std": 0.325064,
+      "ir": -0.950861,
+      "hit_rate": 0.6,
+      "sample_count": 10
+    },
+    "overfit_gap": -0.309091,
+    "factor_spec": {
+      "factor_source": "gp",
+      "label": "ret_5",
+      "horizon": 1,
+      "mining_target": "risk",
+      "application": "position_scale",
+      "expr": {
+        "op": "terminal",
+        "terminal": "ret_5"
+      }
+    },
+    "risk_spec": {
+      "factor_source": "gp",
+      "label": "ret_5",
+      "horizon": 1,
+      "mining_target": "risk",
+      "application": "position_scale",
+      "expr": {
+        "op": "terminal",
+        "terminal": "ret_5"
+      }
+    }
+  },
+  "ml": {
+    "method": "ml",
+    "selected_features": [
+      "range_pos",
+      "log_volume",
+      "vol_ratio"
+    ],
+    "weights": {
+      "range_pos": -0.00013,
+      "log_volume": 0.0,
+      "vol_ratio": 0.022556
+    },
+    "formula": "- 0.0001*range_pos",
+    "univariate_screen": [
+      {
+        "feature": "range_pos",
+        "ic_mean": -0.275397,
+        "ir": -0.795196,
+        "hit_rate": 0.625,
+        "abs_ic": 0.275397
+      },
+      {
+        "feature": "ret_1",
+        "ic_mean": 0.01088,
+        "ir": 0.036703,
+        "hit_rate": 0.608696,
+        "abs_ic": 0.01088
+      },
+      {
+        "feature": "log_volume",
+        "ic_mean": 0.0,
+        "ir": 0.0,
+        "hit_rate": 0.0,
+        "abs_ic": 0.0
+      },
+      {
+        "feature": "vol_ratio",
+        "ic_mean": 0.0,
+        "ir": 0.0,
+        "hit_rate": 1.0,
+        "abs_ic": 0.0
+      }
+    ],
+    "train": {
+      "ic_mean": 0.275397,
+      "ic_std": 0.346326,
+      "ir": 0.795196,
+      "hit_rate": 1.0,
+      "sample_count": 24
+    },
+    "test": {
+      "ic_mean": 0.575758,
+      "ic_std": 0.167332,
+      "ir": 3.44081,
+      "hit_rate": 1.0,
+      "sample_count": 10
+    },
+    "overfit_gap": -0.300361,
+    "factor_spec": {
+      "factor_source": "ml",
+      "label": "- 0.0001*range_pos",
+      "horizon": 1,
+      "mining_target": "risk",
+      "application": "position_scale",
+      "weights": {
+        "range_pos": -0.00013,
+        "log_volume": 0.0,
+        "vol_ratio": 0.022556
+      }
+    },
+    "risk_spec": {
+      "factor_source": "ml",
+      "label": "- 0.0001*range_pos",
+      "horizon": 1,
+      "mining_target": "risk",
+      "application": "position_scale",
+      "weights": {
+        "range_pos": -0.00013,
+        "log_volume": 0.0,
+        "vol_ratio": 0.022556
+      }
+    }
+  },
+  "leader": {
+    "method": "ml",
+    "label": "- 0.0001*range_pos",
+    "train_ic": 0.275397,
+    "test_ic": 0.575758,
+    "risk_spec": {
+      "factor_source": "ml",
+      "label": "- 0.0001*range_pos",
+      "horizon": 1,
+      "mining_target": "risk",
+      "application": "position_scale",
+      "weights": {
+        "range_pos": -0.00013,
+        "log_volume": 0.0,
+        "vol_ratio": 0.022556
+      }
+    }
+  },
+  "warnings": [
+    "教学沙箱：单标的时序相关，不是截面多股票因子检验。",
+    "高训练 RIC + 低测试 RIC 通常意味着过拟合，不应直接上线。",
+    "风险因子挖掘不替代第 22 讲运行时风控否决；仅演示仓位缩放思路。",
+    "Barra 式截面风险模型未实现；本沙箱为单标的时序波动预测。",
+    "测试集上 ML 表现更好，但仍需滚动窗口复核。"
+  ],
+  "what_it_proves": [
+    "GP / ML 搜索能预测未来波动代理（绝对收益或实现波动），RIC 为 Spearman 秩相关。",
+    "风险因子用于仓位缩放或加宽止损，不直接给出多空方向。",
+    "训练 / 测试按时间切分；RIC 高不代表样本外一定有效。"
+  ],
+  "risk_application": {
+    "method": "inverse_risk_z_scale",
+    "base_size": 1.0,
+    "sample_tail": [
+      {
+        "idx": 27,
+        "risk_z": 0.1528,
+        "position_scale": 0.8675
+      },
+      {
+        "idx": 28,
+        "risk_z": -0.247,
+        "position_scale": 1.0
+      },
+      {
+        "idx": 29,
+        "risk_z": -0.6467,
+        "position_scale": 1.0
+      },
+      {
+        "idx": 30,
+        "risk_z": -0.7819,
+        "position_scale": 1.0
+      },
+      {
+        "idx": 31,
+        "risk_z": -0.7836,
+        "position_scale": 1.0
+      },
+      {
+        "idx": 32,
+        "risk_z": -0.4266,
+        "position_scale": 1.0
+      },
+      {
+        "idx": 33,
+        "risk_z": -0.7811,
+        "position_scale": 1.0
+      },
+      {
+        "idx": 34,
+        "risk_z": -0.7804,
+        "position_scale": 1.0
+      }
+    ],
+    "mean_position_scale": 0.84,
+    "note": "Teaching demo: higher predicted risk -> lower scale; not live sizing advice."
+  },
+  "assumptions": [
+    "Risk-target mining: labels = forward absolute return (volatility proxy).",
+    "RIC = Spearman rank correlation between factor and risk label.",
+    "risk_application shows inverse position scale demo — not live sizing.",
+    "Does not replace chapter 22 runtime risk veto or Barra-style cross-section models."
+  ]
+}
