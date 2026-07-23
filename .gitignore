@@ -3,7 +3,6 @@
 /docs/v2/
 outputs/
 vendor/
-scripts/*_figures.py
 
 # Runtime state. Curated offline fixtures under data/dashboard/ and the latest
 # snapshot JSON files are committed so a fresh clone works without network access.

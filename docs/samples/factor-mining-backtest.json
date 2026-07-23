@@ -33,7 +33,7 @@
   "data_saved_at": null,
   "data_note": "Fixed course CSV — not live market data.",
   "assumptions": [
-    "Rolling-window engine adapted from vendor/web3-trading/src/backtest/.",
+    "Rolling-window engine adapted from the web3-trading backtest design.",
     "Uses fixed teaching sample or offline dashboard candles — no live orders.",
     "Default commission 0.1% per side; slippage disabled in teaching mode.",
     "Historical sample performance cannot predict future returns.",

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""ADX + EMA stack + MACD histogram — rules adapted from vendor/Qbot (MIT).
+"""ADX + EMA stack + MACD histogram — rules adapted from Qbot (MIT).
 
-Reference: vendor/Qbot/qbot/strategies/adx_strategy.py
+Reference: Qbot ``qbot/strategies/adx_strategy.py``.
 """
 
 from __future__ import annotations

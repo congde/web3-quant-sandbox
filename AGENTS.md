@@ -8,7 +8,6 @@ course prose and the runnable Web3 research sandbox as one product: examples in
 
 - `docs/v2/`: publishable chapter drafts.
 - `src/`: runnable product code (backtest, research, strategy engine, web UI).
-- `vendor/`: read-only upstream baselines (`web3-trading`, `ai-trading`, `Qbot`).
 - `data/`: fixed offline teaching samples.
 - `skills/`: reusable Codex skills taught by the course.
 - `docs/samples/`: small source artifacts used by non-code exercises.
@@ -18,7 +17,9 @@ course prose and the runnable Web3 research sandbox as one product: examples in
 - Do not recreate deleted legacy directories such as `app/`, `challenges/`,
   `harness-kit/`, or `labs/`.
 - Product code belongs under `src/`, aligned with the web3-trading layout.
-- `vendor/` is for comparison and reuse audit only; do not import it from `src/`.
+- Public releases must not include private upstream checkouts or depend on files
+  outside this repository. Product code under `src/` must be independently
+  implemented or covered by explicit authorization.
 - When prose names a file or command, verify that it exists and works.
 - Prefer a small runnable example over a long hypothetical configuration.
 - Do not claim a command passed unless it was actually run.

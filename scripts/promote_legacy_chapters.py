@@ -905,7 +905,7 @@ def write_10() -> None:
 def write_16() -> None:
     body = """# 第 16 讲｜怎样安全复用一个上游代码库
 
-第十五讲确定了技术路线。本讲审查 `vendor/web3-trading` 与 `vendor/ai-trading`：保留基线、检查授权、选择性迁移，拒绝整库照搬。
+第十五讲确定了技术路线。本讲审查 web3-trading 与 ai-trading：记录来源、检查授权、选择性迁移，拒绝整库照搬。
 
 ## 16.1 上游代码同时是资产和风险
 
@@ -933,7 +933,7 @@ def write_16() -> None:
 
 ## 16.3 完整示例
 
-从 web3-trading 提取指标计算，从 ai-trading 参考 DSL 形状；每次迁移一个行为并增加测试，不 import vendor 进 `src/`。
+从 web3-trading 提取指标计算，从 ai-trading 参考 DSL 形状；每次迁移一个行为并增加测试，不从外部上游检出目录 import 进 `src/`。
 
 ## 本章总结
 
@@ -961,7 +961,7 @@ def write_16() -> None:
 def write_18() -> None:
     body = """# 第 18 讲｜开工之前，先让 Codex 读懂仓库
 
-第十七讲交付了 [plan.md](../../plan.md)。本讲勘察 `data/`、`src/research/`、`src/backtest/`、`src/web/`、`tests/` 与 `vendor/`，形成实现 Brief。
+第十七讲交付了 [plan.md](../../plan.md)。本讲勘察 `data/`、`src/research/`、`src/backtest/`、`src/web/`、`tests/` 与来源记录，形成实现 Brief。
 
 ## 18.1 为什么直接修改是最昂贵的快捷方式
 
@@ -973,7 +973,7 @@ def write_18() -> None:
 |---|---|---|---|
 | data/ | 固定样本 | 只读 | 样本哈希 |
 | src/ | 产品代码 | 可写 | verify |
-| vendor/ | 上游基线 | 只读 | 不 import |
+| AGENTS.md | 仓库边界与公开规则 | 只读规则 | 不作为运行依赖 |
 | tests/ | 合同测试 | 可写 | pytest |
 
 **表 18-1　仓库区域、用途、修改权限与验证方式**
@@ -1000,7 +1000,7 @@ def write_18() -> None:
 
 ### 理解题
 
-1. 为什么 vendor/ 应标记为只读？
+1. 为什么上游来源记录不能替代本仓库的实现与测试？
 
 ### 判断题
 

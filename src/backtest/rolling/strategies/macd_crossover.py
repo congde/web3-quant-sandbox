@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""MACD line/signal crossover — rules adapted from vendor/Qbot (MIT).
+"""MACD line/signal crossover — rules adapted from Qbot (MIT).
 
-Reference: vendor/Qbot/qbot/engine/backtest/bitcoin_bt_example.py
+Reference: Qbot ``qbot/engine/backtest/bitcoin_bt_example.py``.
 """
 
 from __future__ import annotations

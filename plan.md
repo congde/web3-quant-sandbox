@@ -68,29 +68,23 @@ data/company.json + data/prices.csv
 `beea0d223f77a177c8a818ada432e3bd27d84367`。真正复制代码前，必须确认该提交的
 授权条件并记录复制文件、适配修改与对应测试。
 
-该提交的回测核心与示例已经先保存到
-[`vendor/web3-trading/`](vendor/web3-trading/UPSTREAM.md)，作为后续改造的只读基线；
-适配后的课程代码进入 `src/`，与 web3-trading 的 `src/` 布局对齐；`vendor/` 只保留只读对照。
+适配后的课程代码已经进入 `src/`，与 web3-trading 的产品布局保持可理解的对应关系。
+对外仓库不携带上游检出副本，也不依赖上游目录完成构建或验证；公开代码必须由
+本仓库独立实现，或具备明确的使用与分发授权。
 
-完整 `vendor_runtime_sdk` 也已迁入基线目录。它为后续 Agent 会话、权限、工作区、
-检查点与工作流改造提供起点，但当前 Web3 离线教学沙盒不直接启用其中需要 LLM、MCP、
-Redis、MongoDB、GitLab 或生产凭证的集成。
+需要 LLM、MCP、Redis、MongoDB、GitLab 或生产凭证的上游集成没有进入当前 Web3
+离线教学沙盒。研究看板与回测页只保留可离线验证的产品能力；实时交易、实盘执行和
+下单页面不得直接进入第一版。
 
-前端基线 `src/web/templates/`、`src/web/static/` 与 `shared/` 也已迁入。后续先改造
-研究看板与回测页的数据接口，再替换当前教学页；实时交易、实盘执行和下单页面不得
-直接进入 Web3 离线教学沙盒第一版。
-
-第二个上游 [ai-trading](https://github.com/johnnywuj81/ai-trading) 的 Apache-2.0
-产品核心也已迁入 `vendor/ai-trading/`。融合时以其受限 DSL、事件驱动回测契约、
-风险控制和 React Quant Atelier 前端为主要来源，以 web3-trading 的轻量指标、
-报告和运行时模式为补充。具体取舍与顺序见
-[`vendor/FUSION.md`](vendor/FUSION.md)。
+第二个上游 [ai-trading](https://github.com/johnnywuj81/ai-trading) 采用 Apache-2.0。
+融合时以其受限 DSL、事件驱动回测契约和风险控制为主要参考，以 web3-trading 的
+轻量指标、报告和运行时模式为补充。适配后的实现和测试全部位于本仓库。
 
 融合代码已进入 `src/strategy_engine/dsl/`：策略代码在进入回测
 前，可先执行 AST 安全校验与前视偏差检查；文件系统、进程、网络与动态执行能力
 默认禁止。
 
-第二轮融合已完成（详见 [`vendor/FUSION.md`](vendor/FUSION.md)）：
+第二轮融合已完成：
 
 - `src/strategy_engine/backtest/`：来自 ai-trading 的事件驱动回测引擎；
 - `src/backtest/runner.py`：教学回测入口，输出格式保持不变；

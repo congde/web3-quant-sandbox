@@ -20,12 +20,16 @@ def test_final_acceptance_commands_and_rubric_exist() -> None:
     assert missing == []
 
 
+def test_public_repository_does_not_bundle_upstream_checkouts() -> None:
+    assert not (ROOT / "vendor").exists()
+
+
 def test_course_check_runs_the_full_acceptance_stack() -> None:
     text = (ROOT / "scripts" / "course.py").read_text(encoding="utf-8")
     assert '"verify"' in text
-    assert '"vendor-drift"' in text
     assert '"asset-audit"' in text
     assert '"courseware-check"' in text
+    assert "vendor-drift" not in text
 
 
 def test_publishable_chapters_are_complete_through_chapter_35() -> None:

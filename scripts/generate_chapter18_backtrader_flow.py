@@ -19,7 +19,7 @@ def backtrader_vs_local() -> Path:
     draw.text(sb(56, 36), "Backtrader Cerebro 装配 vs 本仓库事件引擎", font=font(40), fill="#0f172a")
     draw.text(
         sb(58, 92),
-        "参考 vendor/Qbot/docs/notebook/03-backtrader.ipynb · 只借装配顺序，不迁入 backtrader 框架",
+        "参考 Qbot docs/notebook/03-backtrader.ipynb · 只借装配顺序，不迁入 backtrader 框架",
         font=font(22),
         fill="#64748b",
     )
@@ -28,7 +28,7 @@ def backtrader_vs_local() -> Path:
     center(
         draw,
         sb(48, 150, 780, 210),
-        "vendor/Qbot · cerebro 装配（只读对照 · 不 import 进 src/）",
+        "Qbot · cerebro 装配（上游参考 · 不 import 进 src/）",
         font(24),
         fill=(30, 64, 175),
     )
@@ -102,7 +102,7 @@ def backtrader_vs_local() -> Path:
         draw,
         sb(48, 870, 780, 975),
         "不能证明：cerebro 输出 = 本引擎输出\n"
-        "backtrader 全栈不迁入 · 见 vendor/QBOT_AUDIT.md",
+        "backtrader 全栈不迁入 · 仅保留独立教学实现",
         font(22),
         fill=(153, 27, 27),
     )

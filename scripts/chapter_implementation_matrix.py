@@ -56,8 +56,8 @@ MATRIX: tuple[ChapterImplementation, ...] = (
     ChapterImplementation(
         3,
         "搭建可复现的量化研究工作区",
-        ("repo_boundaries", "task_runner", "vendor_baseline"),
-        ("scripts/course.py", "verify.py", "vendor/FUSION.md"),
+        ("repo_boundaries", "task_runner", "source_provenance"),
+        ("scripts/course.py", "verify.py", "AGENTS.md"),
         ("tests/test_final_acceptance_contract.py", "tests/test_project.py"),
         ("py scripts/course.py verify", "py scripts/course.py check"),
     ),

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""Bollinger mean reversion — rules adapted from vendor/Qbot (MIT).
+"""Bollinger mean reversion — rules adapted from Qbot (MIT).
 
-Reference: vendor/Qbot/qbot/strategies/boll_strategy_bt.py
+Reference: Qbot ``qbot/strategies/boll_strategy_bt.py``.
 """
 
 from __future__ import annotations

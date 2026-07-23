@@ -84,7 +84,7 @@ def _build_config(
 
 def _base_assumptions(cost: dict[str, Any]) -> list[str]:
     return [
-        "Rolling-window engine adapted from vendor/web3-trading/src/backtest/.",
+        "Rolling-window engine adapted from the web3-trading backtest design.",
         "Uses fixed teaching sample or offline dashboard candles — no live orders.",
         *cost_assumptions(cost),
         "Historical sample performance cannot predict future returns.",

@@ -238,7 +238,7 @@ py scripts/course.py verify
 py scripts/course.py check
 ```
 
-`check` 会额外执行实现矩阵、vendor 漂移检查、资产审计和课程文档检查。编辑教学图脚本后，重新生成教学图：
+`check` 会额外执行实现矩阵、资产审计和课程文档检查。所有检查只依赖公开仓库中的文件。编辑教学图脚本后，重新生成教学图：
 
 ```powershell
 py scripts/course.py teaching-plots
@@ -267,8 +267,7 @@ py scripts/course.py teaching-plots
 |-- data/                      # 离线样本和 dashboard 快照
 |-- skills/                    # 课程沉淀的 Codex 技能
 |-- tests/                     # pytest 测试
-|-- outputs/                   # 生成产物
-`-- reports/                   # 报告产物
+`-- outputs/                   # 生成产物
 ```
 
 ## 适合谁使用
@@ -325,4 +324,3 @@ web3, quant, crypto-trading, backtest, trading-sandbox, algorithmic-trading, pyt
 联系方式：congdeyuan@gmail.com
 交流群： 
 ![交流群二维码](image/交流群二维码.png)
-

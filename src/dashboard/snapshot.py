@@ -13,6 +13,11 @@ HISTORY_DIR = SNAPSHOT_DIR / "history"
 FIXTURE_DIR = DATA_DIR / "dashboard"
 
 
+def _repository_path(path: Path) -> str:
+    """Return a portable path for persisted metadata."""
+    return path.relative_to(DATA_DIR.parent).as_posix()
+
+
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="microseconds")
 
@@ -93,7 +98,7 @@ def save_snapshot(name: str, payload: dict[str, Any], *, origin: str) -> Path:
         "saved_at": saved_at,
         "origin": origin,
         "history_id": history_id,
-        "history_path": str(history_path),
+        "history_path": _repository_path(history_path),
     }
     encoded = json.dumps(body, ensure_ascii=False, indent=2)
 
@@ -107,11 +112,11 @@ def save_snapshot(name: str, payload: dict[str, Any], *, origin: str) -> Path:
         _canonical_dataset_name(name),
         layer="snapshot",
         origin=origin,
-        path=str(history_path),
+        path=_repository_path(history_path),
         complete=detail["complete"],
         reason=str(detail.get("reason") or ""),
         cache_key=name,
-        latest_path=str(latest_path),
+        latest_path=_repository_path(latest_path),
         history_id=history_id,
     )
     return history_path

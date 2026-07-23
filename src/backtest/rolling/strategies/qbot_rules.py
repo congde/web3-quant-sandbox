@@ -1,6 +1,6 @@
 """Shared Qbot-style signal rules for rolling-window strategies.
 
-Reference lineage: vendor/Qbot (MIT) — sma_cross, boll_strategy_bt,
+Reference lineage: Qbot (MIT) — sma_cross, boll_strategy_bt,
 bitcoin_bt_example, adx_strategy.
 """
 

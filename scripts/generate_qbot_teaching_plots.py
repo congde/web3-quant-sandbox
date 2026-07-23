@@ -1,5 +1,5 @@
 ﻿#!/usr/bin/env python3
-"""Generate HD teaching plots inspired by vendor/Qbot/docs/notebook/ (MIT).
+"""Generate HD teaching plots inspired by Qbot ``docs/notebook/`` (MIT).
 
 Uses fixed offline sample data/prices.csv only — no live market APIs.
 Outputs PNGs under docs/v2/assets/generated/ at 300 DPI for print-ready course chapters.
@@ -21,7 +21,7 @@ PRICES_CSV = ROOT / "data" / "prices.csv"
 from print_figure_config import PRINT_DPI as DPI
 FOOTER = (
     "教学样本 WEB3-DEMO · data/prices.csv · 不进入实盘执行 · "
-    "参考 vendor/Qbot/docs/notebook/01-strategy.ipynb 出图模式"
+    "参考 Qbot docs/notebook/01-strategy.ipynb 出图模式"
 )
 
 
@@ -558,7 +558,7 @@ def plot_chapter19_equity_drawdown() -> Path:
     fig.text(
         0.5,
         0.01,
-        "参考 vendor/Qbot/docs/notebook/pandas.ipynb · execute_backtest(ma_crossover) · 不进入实盘执行",
+        "参考 Qbot docs/notebook/pandas.ipynb · execute_backtest(ma_crossover) · 不进入实盘执行",
         ha="center",
         fontsize=9,
         color="#64748b",
@@ -666,7 +666,7 @@ def plot_chapter21_factor_ic_panel() -> Path:
     fig.text(
         0.5,
         0.01,
-        "参考 vendor/Qbot/docs/notebook/02-alphalens.ipynb · src/factor_mining/ · 不进入实盘执行",
+        "参考 Qbot docs/notebook/02-alphalens.ipynb · src/factor_mining/ · 不进入实盘执行",
         ha="center",
         fontsize=9,
         color="#64748b",
@@ -736,7 +736,7 @@ def plot_chapter21_rolling_sharpe() -> Path:
     fig.text(
         0.5,
         0.01,
-        "参考 vendor/Qbot/docs/notebook/quantstats-rolling.ipynb · 不进入实盘执行",
+        "参考 Qbot docs/notebook/quantstats-rolling.ipynb · 不进入实盘执行",
         ha="center",
         fontsize=9,
         color="#64748b",
@@ -850,7 +850,7 @@ def plot_chapter18_event_backtest_combo() -> Path:
     fig.text(
         0.5,
         0.01,
-        "参考 vendor/Qbot/docs/notebook/average.ipynb cerebro.plot · execute_backtest · 不进入实盘执行",
+        "参考 Qbot docs/notebook/average.ipynb cerebro.plot · execute_backtest · 不进入实盘执行",
         ha="center",
         fontsize=9,
         color="#64748b",
@@ -930,7 +930,7 @@ def plot_chapter18_macd_trailing_backtest() -> Path:
     fig.text(
         0.5,
         0.01,
-        "参考 vendor/Qbot/qbot/engine/backtest/bitcoin_bt_example.py · 无 Amberdata 在线数据 · 不进入实盘执行",
+        "参考 Qbot qbot/engine/backtest/bitcoin_bt_example.py · 无 Amberdata 在线数据 · 不进入实盘执行",
         ha="center",
         fontsize=9,
         color="#64748b",

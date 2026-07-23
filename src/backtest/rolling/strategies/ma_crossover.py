@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""MA crossover — rules adapted from vendor/Qbot (MIT).
+"""MA crossover — rules adapted from Qbot (MIT).
 
-Reference: vendor/Qbot/qbot/strategies/sma_cross_strategy_bt.py
+Reference: Qbot ``qbot/strategies/sma_cross_strategy_bt.py``.
 """
 
 from __future__ import annotations

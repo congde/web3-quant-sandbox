@@ -2,7 +2,7 @@
 """MACD Strategy — trend-following via MACD crossover and histogram.
 
 Scoring variant used in multi-strategy compare; see also `macd_crossover.py`
-for Qbot-style binary cross (vendor/Qbot/qbot/engine/backtest/bitcoin_bt_example.py).
+for Qbot-style binary cross (``qbot/engine/backtest/bitcoin_bt_example.py``).
 """
 
 from __future__ import annotations

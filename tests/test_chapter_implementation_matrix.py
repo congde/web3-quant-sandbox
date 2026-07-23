@@ -15,7 +15,7 @@ def test_web_chapters_expose_reader_routes() -> None:
             assert item.routes, f"chapter {item.chapter:02d} must expose web routes"
 
 
-def test_matrix_is_bound_to_product_code_not_vendor_only() -> None:
+def test_matrix_is_bound_to_publishable_product_code() -> None:
     for item in MATRIX:
         joined = " ".join(item.code_paths)
         assert (
@@ -24,7 +24,7 @@ def test_matrix_is_bound_to_product_code_not_vendor_only() -> None:
             or "skills/" in joined
             or "verify.py" in joined
         )
-        assert not all(path.startswith("vendor/") for path in item.code_paths)
+        assert all(not path.startswith("vendor/") for path in item.code_paths)
 
 
 def test_matrix_references_real_test_files() -> None:

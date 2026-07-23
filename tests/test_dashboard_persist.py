@@ -25,6 +25,10 @@ def test_save_snapshot_keeps_history_entries() -> None:
     latest = load_snapshot(name)
     assert latest is not None
     assert latest["chance"][0]["symbol"] == "ETH"
+    assert latest["snapshot"]["history_path"].startswith(
+        "data/dashboard/snapshots/history/test_persist_history/"
+    )
+    assert "\\" not in latest["snapshot"]["history_path"]
     _cleanup_test_dataset(name)
 
 

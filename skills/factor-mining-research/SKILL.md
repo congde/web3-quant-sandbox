@@ -45,7 +45,7 @@ Use this skill to treat factor mining as an auditable research workflow, not as 
   - risk factors set `application: position_scale`;
   - return factors may expose `backtest_spec`.
 - Do not claim a factor works because an LLM suggested it. Only validated test metrics and backtest output count as evidence.
-- Do not import `vendor/` from `src/`.
+- Do not import code from an external upstream checkout into `src/`.
 
 ## External Patterns
 

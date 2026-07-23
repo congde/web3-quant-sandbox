@@ -232,7 +232,7 @@ Before finishing repository-wide changes, run:
 py scripts/course.py check
 ```
 
-`check` also runs the implementation matrix, vendor drift check, asset audit, and courseware check. After editing plot scripts, regenerate teaching figures:
+`check` also runs the implementation matrix, asset audit, and courseware check. Every check depends only on files in the public repository. After editing plot scripts, regenerate teaching figures:
 
 ```powershell
 py scripts/course.py teaching-plots
@@ -262,8 +262,7 @@ py scripts/course.py teaching-plots
 |-- docs/v2/                   # Course chapters
 |-- skills/                    # Codex skills developed in the course
 |-- tests/                     # pytest tests
-|-- outputs/                   # Generated outputs
-`-- reports/                   # Report artifacts
+`-- outputs/                   # Generated outputs
 ```
 
 ## Who It Is For

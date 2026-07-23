@@ -154,7 +154,6 @@ TASKS = {
     "courseware-check": lambda: python_task("scripts/verify_courseware.py"),
     "courseware-headings": courseware_headings,
     "asset-audit": lambda: python_task("scripts/audit_assets.py"),
-    "vendor-drift": lambda: python_task("scripts/check_vendor_drift.py"),
     "teaching-plots": print_figures,
     "print-figures": print_figures,
     "lab-10": lambda: python_task("verify.py"),
@@ -162,7 +161,7 @@ TASKS = {
 
 
 def check() -> None:
-    for task in ("verify", "implementation-matrix", "vendor-drift", "asset-audit", "courseware-check"):
+    for task in ("verify", "implementation-matrix", "asset-audit", "courseware-check"):
         print(f"==> {task}", flush=True)
         TASKS[task]()
     print("All repository checks passed.")

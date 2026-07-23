@@ -1,0 +1,2 @@
+# Captured snapshot fixtures preserve their original CRLF line endings.
+data/dashboard/snapshots/*.json -text whitespace=cr-at-eol

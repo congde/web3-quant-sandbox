@@ -46,12 +46,6 @@ def main() -> int:
         ROOT / "data/company.json",
         ROOT / "data/prices.csv",
         ROOT / "src/web/static/index.html",
-        ROOT / "vendor/web3-trading/UPSTREAM.md",
-        ROOT / "vendor/web3-trading/verify_baseline.py",
-        ROOT / "vendor/web3-trading/verify_frontend_baseline.py",
-        ROOT / "vendor/ai-trading/UPSTREAM.md",
-        ROOT / "vendor/ai-trading/verify_baseline.py",
-        ROOT / "vendor/FUSION.md",
     ]
     missing = [str(path.relative_to(ROOT)) for path in required if not path.is_file()]
     if missing:
@@ -76,18 +70,6 @@ def main() -> int:
         if phrase not in encoded:
             raise SystemExit(f"report is missing required boundary or metric: {phrase}")
 
-    subprocess.run(
-        [sys.executable, str(ROOT / "vendor/web3-trading/verify_baseline.py")],
-        check=True,
-    )
-    subprocess.run(
-        [sys.executable, str(ROOT / "vendor/web3-trading/verify_frontend_baseline.py")],
-        check=True,
-    )
-    subprocess.run(
-        [sys.executable, str(ROOT / "vendor/ai-trading/verify_baseline.py")],
-        check=True,
-    )
     subprocess.run(
         [sys.executable, "-m", "pytest", str(ROOT / "tests"), "-q"],
         check=True,

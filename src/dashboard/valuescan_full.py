@@ -55,7 +55,7 @@ def _assign(result: dict[str, Any], key: str, value: Any, expected: type) -> Non
 
 def fetch_full_token_data(symbol: str) -> dict[str, Any]:
     """
-  对齐 vendor ``fetch_full_token_data``：单币 ValueScan REST 全量（不含 SSE Worker）。
+  对齐上游 ``fetch_full_token_data``：单币 ValueScan REST 全量（不含 SSE Worker）。
     """
     sym = (symbol or "BTC").strip().upper()
     result: dict[str, Any] = {"symbol": sym, "fetchedAt": vs._now_ms()}
