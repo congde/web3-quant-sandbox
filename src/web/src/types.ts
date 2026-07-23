@@ -308,24 +308,123 @@ export interface Web3MacroPayload {
 export interface Web3GraphNode {
   id: string;
   label: string;
+  node_type: string;
   stage: string;
   domain: string;
   risk: "normal" | "medium" | "high" | "critical";
+  description: string;
+  website: string;
+  status: "active" | "archived";
+  version: number;
+  created_at: string;
+  updated_at: string;
   entities: string[];
   mentions: number;
-  evidence: Array<{ title: string; url?: string; source?: string }>;
+  evidence: Web3GraphEvidence[];
+}
+
+export interface Web3GraphEvidence {
+  id: string;
+  node_id?: string | null;
+  edge_id?: string | null;
+  title: string;
+  url: string;
+  source: string;
+  published_at?: string | null;
+  captured_at: string;
+  confidence: number;
+}
+
+export interface Web3GraphEdge {
+  id: string;
+  from: string;
+  to: string;
+  source_id: string;
+  target_id: string;
+  relation: string;
+  confidence: number;
+  evidence_count: number;
+  version: number;
+}
+
+export interface Web3GraphAuditEvent {
+  id: number;
+  action: "bootstrap" | "create" | "update" | "archive" | "approve" | "reject";
+  entity_type: "graph" | "node" | "edge" | "evidence" | "candidate";
+  entity_id: string;
+  actor: string;
+  before: Record<string, unknown> | null;
+  after: Record<string, unknown> | null;
+  created_at: string;
+}
+
+export interface Web3GraphCandidate {
+  id: string;
+  candidate_type: "node" | "edge";
+  source_node_id?: string | null;
+  target_node_id?: string | null;
+  relation?: string | null;
+  proposed_node?: Partial<Web3GraphNode> | null;
+  evidence: {
+    title: string;
+    url: string;
+    source: string;
+    published_at?: string | null;
+    confidence: number;
+  };
+  confidence: number;
+  extractor: string;
+  status: "pending" | "approved" | "rejected";
+  created_at: string;
+  reviewed_at?: string | null;
+  reviewed_by?: string | null;
+  review_note?: string | null;
+}
+
+export interface Web3GraphIngestionStatus {
+  ok: boolean;
+  latest_run?: {
+    id: string;
+    status: "running" | "completed" | "failed";
+    source: string;
+    extractor: string;
+    items_seen: number;
+    candidates_created: number;
+    error?: string | null;
+    started_at: string;
+    completed_at?: string | null;
+  } | null;
+  candidate_counts: {
+    pending: number;
+    approved: number;
+    rejected: number;
+  };
+  schedule: {
+    enabled: boolean;
+    interval_minutes: number;
+  };
 }
 
 export interface Web3GraphPayload {
   ok: boolean;
   scope: "web3-only";
+  storage: "sqlite";
+  database: string;
   source?: string;
   updated_at?: string;
+  news_updated_at?: string;
   stages: string[];
   domains: Array<{ name: string; count: number }>;
   nodes: Web3GraphNode[];
-  edges: Array<{ from: string; to: string; relation: string }>;
-  stats: { nodes: number; edges: number; risks: number; entities: number };
+  edges: Web3GraphEdge[];
+  stats: {
+    nodes: number;
+    edges: number;
+    risks: number;
+    entities: number;
+    evidence: number;
+    audit_events: number;
+  };
 }
 
 export interface ResearchDraftGateDataset {

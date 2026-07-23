@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import mimetypes
 import socket
+import sqlite3
 from datetime import datetime, timezone
 from decimal import Decimal
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -218,8 +219,55 @@ class Handler(BaseHTTPRequestHandler):
                 strategy_id = parsed.path.removeprefix("/api/strategy-lab/strategies/").removesuffix("/versions").strip("/")
                 self.create_strategy_version(strategy_id)
                 return
+            if parsed.path == "/api/dashboard/web3/knowledge-graph/nodes":
+                self.create_knowledge_graph_node()
+                return
+            if parsed.path == "/api/dashboard/web3/knowledge-graph/edges":
+                self.create_knowledge_graph_edge()
+                return
+            if parsed.path == "/api/dashboard/web3/knowledge-graph/evidence":
+                self.create_knowledge_graph_evidence()
+                return
+            if parsed.path == "/api/dashboard/web3/knowledge-graph/ingestion/run":
+                self.run_knowledge_graph_ingestion()
+                return
+            if (
+                parsed.path.startswith(
+                    "/api/dashboard/web3/knowledge-graph/candidates/"
+                )
+                and parsed.path.endswith("/review")
+            ):
+                candidate_id = parsed.path.removeprefix(
+                    "/api/dashboard/web3/knowledge-graph/candidates/"
+                ).removesuffix("/review").strip("/")
+                self.review_knowledge_graph_candidate(candidate_id)
+                return
             if parsed.path == "/api/dashboard/factor-mine/backtest":
                 self.factor_mine_backtest()
+                return
+            self.send_error(404)
+        except Exception as error:  # pragma: no cover
+            self.send_json({"error": str(error)}, status=500)
+
+    def do_PUT(self) -> None:
+        try:
+            parsed = urlparse(self.path)
+            if (
+                parsed.path
+                == "/api/dashboard/web3/knowledge-graph/ingestion/schedule"
+            ):
+                payload = dashboard_api.update_web3_graph_schedule(
+                    self.read_json_body()
+                )
+                self.send_json(payload, status=200)
+                return
+            if parsed.path.startswith(
+                "/api/dashboard/web3/knowledge-graph/nodes/"
+            ):
+                node_id = parsed.path.removeprefix(
+                    "/api/dashboard/web3/knowledge-graph/nodes/"
+                ).strip("/")
+                self.update_knowledge_graph_node(node_id)
                 return
             self.send_error(404)
         except Exception as error:  # pragma: no cover
@@ -228,6 +276,33 @@ class Handler(BaseHTTPRequestHandler):
     def do_DELETE(self) -> None:
         try:
             parsed = urlparse(self.path)
+            if parsed.path.startswith(
+                "/api/dashboard/web3/knowledge-graph/nodes/"
+            ):
+                node_id = parsed.path.removeprefix(
+                    "/api/dashboard/web3/knowledge-graph/nodes/"
+                ).strip("/")
+                dashboard_api.archive_web3_graph_node(node_id)
+                self.send_json({"ok": True}, status=200)
+                return
+            if parsed.path.startswith(
+                "/api/dashboard/web3/knowledge-graph/edges/"
+            ):
+                edge_id = parsed.path.removeprefix(
+                    "/api/dashboard/web3/knowledge-graph/edges/"
+                ).strip("/")
+                dashboard_api.archive_web3_graph_edge(edge_id)
+                self.send_json({"ok": True}, status=200)
+                return
+            if parsed.path.startswith(
+                "/api/dashboard/web3/knowledge-graph/evidence/"
+            ):
+                evidence_id = parsed.path.removeprefix(
+                    "/api/dashboard/web3/knowledge-graph/evidence/"
+                ).strip("/")
+                dashboard_api.archive_web3_graph_evidence(evidence_id)
+                self.send_json({"ok": True}, status=200)
+                return
             if parsed.path.startswith("/api/strategy-lab/versions/"):
                 version_id = parsed.path.removeprefix("/api/strategy-lab/versions/").strip("/")
                 STRATEGY_LAB.delete_version(version_id)
@@ -363,6 +438,17 @@ class Handler(BaseHTTPRequestHandler):
             ),
             "/api/dashboard/web3/knowledge-graph": lambda: dashboard_api.web3_knowledge_graph(
                 refresh=qb("refresh"),
+                query=q("q", ""),
+                domain=q("domain", ""),
+                risk=q("risk", ""),
+            ),
+            "/api/dashboard/web3/knowledge-graph/audit": lambda: dashboard_api.web3_graph_audit(
+                limit=qi("limit", 100),
+            ),
+            "/api/dashboard/web3/knowledge-graph/ingestion": lambda: dashboard_api.web3_graph_ingestion_status(),
+            "/api/dashboard/web3/knowledge-graph/candidates": lambda: dashboard_api.web3_graph_candidates(
+                status=q("status", "pending"),
+                limit=qi("limit", 100),
             ),
             "/api/market/ticker": lambda: dashboard_api.ticker_stats(
                 q("symbol", "BTC-USDT"),
@@ -620,6 +706,67 @@ class Handler(BaseHTTPRequestHandler):
             raise ValueError("请求体必须是 JSON 对象")
         return payload
 
+    def create_knowledge_graph_node(self) -> None:
+        try:
+            node = dashboard_api.create_web3_graph_node(self.read_json_body())
+            self.send_json({"ok": True, "node": node}, status=201)
+        except (ValueError, sqlite3.IntegrityError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def update_knowledge_graph_node(self, node_id: str) -> None:
+        try:
+            node = dashboard_api.update_web3_graph_node(
+                node_id, self.read_json_body()
+            )
+            self.send_json({"ok": True, "node": node}, status=200)
+        except KeyError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=404)
+        except RuntimeError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=409)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def create_knowledge_graph_edge(self) -> None:
+        try:
+            edge = dashboard_api.create_web3_graph_edge(self.read_json_body())
+            self.send_json({"ok": True, "edge": edge}, status=201)
+        except (ValueError, sqlite3.IntegrityError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def create_knowledge_graph_evidence(self) -> None:
+        try:
+            evidence = dashboard_api.create_web3_graph_evidence(
+                self.read_json_body()
+            )
+            self.send_json({"ok": True, "evidence": evidence}, status=201)
+        except (ValueError, sqlite3.IntegrityError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def run_knowledge_graph_ingestion(self) -> None:
+        try:
+            payload = self.read_json_body()
+            result = dashboard_api.run_web3_graph_ingestion(
+                refresh=bool(payload.get("refresh", True)),
+                use_llm=bool(payload.get("use_llm", True)),
+                model=str(payload.get("model") or "") or None,
+            )
+            self.send_json(result, status=200)
+        except (ValueError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
+    def review_knowledge_graph_candidate(self, candidate_id: str) -> None:
+        try:
+            result = dashboard_api.review_web3_graph_candidate(
+                candidate_id, self.read_json_body()
+            )
+            self.send_json(result, status=200)
+        except KeyError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=404)
+        except RuntimeError as error:
+            self.send_json({"ok": False, "message": str(error)}, status=409)
+        except (ValueError, sqlite3.IntegrityError, json.JSONDecodeError) as error:
+            self.send_json({"ok": False, "message": str(error)}, status=422)
+
     def create_strategy_asset(self) -> None:
         try:
             strategy = STRATEGY_LAB.create_strategy(self.read_json_body())
@@ -783,8 +930,13 @@ class Handler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     assert_port_available(HOST, PORT)
     server = SandboxHTTPServer((HOST, PORT), Handler)
+    from dashboard.graph_scheduler import GRAPH_SCHEDULER
+
+    GRAPH_SCHEDULER.start()
     print(f"Web3 research sandbox: http://{HOST}:{PORT}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         print("\nServer stopped.", flush=True)
+    finally:
+        GRAPH_SCHEDULER.stop()

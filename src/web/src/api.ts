@@ -17,6 +17,9 @@ import type {
   Web3ThemesPayload,
   Web3MacroPayload,
   Web3GraphPayload,
+  Web3GraphAuditEvent,
+  Web3GraphCandidate,
+  Web3GraphIngestionStatus,
   RollingBacktestPayload,
   RollingBacktestStrategy,
   BacktestComparePayload,
@@ -45,6 +48,23 @@ async function fetchDashboard<T>(path: string): Promise<T> {
   const payload = (await response.json()) as T & { message?: string };
   if (!response.ok) {
     throw new Error(payload.message ?? "加载失败");
+  }
+  return payload;
+}
+
+async function mutateDashboard<T>(
+  path: string,
+  method: "POST" | "PUT" | "DELETE",
+  body?: Record<string, unknown>,
+): Promise<T> {
+  const response = await fetch(path, {
+    method,
+    headers: body ? { "Content-Type": "application/json" } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const payload = (await response.json()) as T & { message?: string; error?: string };
+  if (!response.ok) {
+    throw new Error(payload.message ?? payload.error ?? "操作失败");
   }
   return payload;
 }
@@ -105,9 +125,138 @@ export function fetchWeb3Macro(options?: { refresh?: boolean }) {
   return fetchDashboard<Web3MacroPayload>(withRefresh("/api/dashboard/web3/macro", options?.refresh));
 }
 
-export function fetchWeb3KnowledgeGraph(options?: { refresh?: boolean }) {
+export function fetchWeb3KnowledgeGraph(options?: {
+  refresh?: boolean;
+  query?: string;
+  domain?: string;
+  risk?: string;
+}) {
+  const params = new URLSearchParams();
+  if (options?.refresh) params.set("refresh", "true");
+  if (options?.query) params.set("q", options.query);
+  if (options?.domain) params.set("domain", options.domain);
+  if (options?.risk) params.set("risk", options.risk);
+  const suffix = params.size ? `?${params.toString()}` : "";
   return fetchDashboard<Web3GraphPayload>(
-    withRefresh("/api/dashboard/web3/knowledge-graph", options?.refresh),
+    `/api/dashboard/web3/knowledge-graph${suffix}`,
+  );
+}
+
+export function createWeb3GraphNode(payload: Record<string, unknown>) {
+  return mutateDashboard<{ ok: boolean; node: Web3GraphPayload["nodes"][number] }>(
+    "/api/dashboard/web3/knowledge-graph/nodes",
+    "POST",
+    payload,
+  );
+}
+
+export function updateWeb3GraphNode(id: string, payload: Record<string, unknown>) {
+  return mutateDashboard<{ ok: boolean; node: Web3GraphPayload["nodes"][number] }>(
+    `/api/dashboard/web3/knowledge-graph/nodes/${encodeURIComponent(id)}`,
+    "PUT",
+    payload,
+  );
+}
+
+export function archiveWeb3GraphNode(id: string) {
+  return mutateDashboard<{ ok: boolean }>(
+    `/api/dashboard/web3/knowledge-graph/nodes/${encodeURIComponent(id)}`,
+    "DELETE",
+  );
+}
+
+export function archiveWeb3GraphEdge(id: string) {
+  return mutateDashboard<{ ok: boolean }>(
+    `/api/dashboard/web3/knowledge-graph/edges/${encodeURIComponent(id)}`,
+    "DELETE",
+  );
+}
+
+export function createWeb3GraphEdge(payload: Record<string, unknown>) {
+  return mutateDashboard<{ ok: boolean }>(
+    "/api/dashboard/web3/knowledge-graph/edges",
+    "POST",
+    payload,
+  );
+}
+
+export function fetchWeb3GraphAudit(limit = 100) {
+  return fetchDashboard<{ ok: boolean; events: Web3GraphAuditEvent[] }>(
+    `/api/dashboard/web3/knowledge-graph/audit?limit=${limit}`,
+  );
+}
+
+export function fetchWeb3GraphIngestionStatus() {
+  return fetchDashboard<Web3GraphIngestionStatus>(
+    "/api/dashboard/web3/knowledge-graph/ingestion",
+  );
+}
+
+export function fetchWeb3GraphCandidates(status = "pending", limit = 100) {
+  return fetchDashboard<
+    Web3GraphIngestionStatus & { candidates: Web3GraphCandidate[] }
+  >(
+    `/api/dashboard/web3/knowledge-graph/candidates?status=${encodeURIComponent(status)}&limit=${limit}`,
+  );
+}
+
+export function runWeb3GraphIngestion(options?: {
+  refresh?: boolean;
+  useLlm?: boolean;
+  model?: string;
+}) {
+  return mutateDashboard<
+    Web3GraphIngestionStatus & {
+      run_id: string;
+      extractor: string;
+      llm_configured: boolean;
+      llm_error?: string | null;
+      items_seen: number;
+      candidates_extracted: number;
+      candidates_created: number;
+    }
+  >("/api/dashboard/web3/knowledge-graph/ingestion/run", "POST", {
+    refresh: options?.refresh ?? true,
+    use_llm: options?.useLlm ?? true,
+    model: options?.model,
+  });
+}
+
+export function reviewWeb3GraphCandidate(
+  id: string,
+  decision: "approve" | "reject",
+  note = "",
+) {
+  return mutateDashboard<{ ok: boolean; candidate: Web3GraphCandidate }>(
+    `/api/dashboard/web3/knowledge-graph/candidates/${encodeURIComponent(id)}/review`,
+    "POST",
+    { decision, note },
+  );
+}
+
+export function updateWeb3GraphSchedule(
+  enabled: boolean,
+  intervalMinutes: number,
+) {
+  return mutateDashboard<{ ok: boolean; schedule: Web3GraphIngestionStatus["schedule"] }>(
+    "/api/dashboard/web3/knowledge-graph/ingestion/schedule",
+    "PUT",
+    { enabled, interval_minutes: intervalMinutes },
+  );
+}
+
+export function createWeb3GraphEvidence(payload: Record<string, unknown>) {
+  return mutateDashboard<{ ok: boolean }>(
+    "/api/dashboard/web3/knowledge-graph/evidence",
+    "POST",
+    payload,
+  );
+}
+
+export function archiveWeb3GraphEvidence(id: string) {
+  return mutateDashboard<{ ok: boolean }>(
+    `/api/dashboard/web3/knowledge-graph/evidence/${encodeURIComponent(id)}`,
+    "DELETE",
   );
 }
 

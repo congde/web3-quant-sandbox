@@ -80,6 +80,48 @@ def test_signal_analysis_api(server: str) -> None:
     assert payload.get("logicFlow")
 
 
+def test_knowledge_graph_api_is_persistent_and_audited(server: str) -> None:
+    import json
+
+    with urllib.request.urlopen(
+        f"{server}/api/dashboard/web3/knowledge-graph"
+    ) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert payload["ok"] is True
+    assert payload["storage"] == "sqlite"
+    assert payload["database"] == "knowledge_graph.db"
+    assert payload["nodes"]
+    assert payload["edges"]
+    assert "evidence" in payload["stats"]
+    assert "audit_events" in payload["stats"]
+
+    with urllib.request.urlopen(
+        f"{server}/api/dashboard/web3/knowledge-graph/audit?limit=5"
+    ) as response:
+        audit = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert audit["ok"] is True
+    assert isinstance(audit["events"], list)
+
+    with urllib.request.urlopen(
+        f"{server}/api/dashboard/web3/knowledge-graph/ingestion"
+    ) as response:
+        ingestion = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert ingestion["ok"] is True
+    assert "schedule" in ingestion
+    assert "candidate_counts" in ingestion
+
+    with urllib.request.urlopen(
+        f"{server}/api/dashboard/web3/knowledge-graph/candidates?status=pending"
+    ) as response:
+        candidates = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert candidates["ok"] is True
+    assert isinstance(candidates["candidates"], list)
+
+
 def test_llm_signal_submit_returns_task(server: str) -> None:
     import json
 

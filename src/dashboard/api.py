@@ -19,6 +19,7 @@ from dashboard.resolve import try_cached_first
 from dashboard.normalize import normalize_ai_picks, normalize_token_fund
 from dashboard.dataset_views import trim_dex_trending, trim_market_tickers
 from dashboard.kline_curve import kline_payload_to_curve
+from dashboard.knowledge_graph import get_knowledge_graph_repository
 from dashboard.persist import annotate_cached, maybe_persist
 from dashboard.persist_hooks import (
     persist_kucoin_bundle,
@@ -383,9 +384,141 @@ def web3_macro_observation(*, refresh: bool = False) -> dict[str, Any]:
     )
 
 
-def web3_knowledge_graph(*, refresh: bool = False) -> dict[str, Any]:
+def web3_knowledge_graph(
+    *,
+    refresh: bool = False,
+    query: str = "",
+    domain: str = "",
+    risk: str = "",
+) -> dict[str, Any]:
     news_payload = web3_news(limit=100, refresh=True) if refresh else load_offline("web3_news")
-    return web3_intelligence.build_knowledge_graph(news_payload)
+    repository = get_knowledge_graph_repository()
+    repository.ensure_seeded(
+        web3_intelligence.GRAPH_NODES,
+        web3_intelligence.GRAPH_EDGES,
+    )
+    repository.sync_news(
+        row
+        for row in news_payload.get("items") or []
+        if isinstance(row, dict) and web3_intelligence.is_web3_item(row)
+    )
+    payload = repository.graph(query=query, domain=domain, risk=risk)
+    payload["source"] = news_payload.get("source", "offline")
+    payload["news_updated_at"] = news_payload.get("updated_at")
+    return payload
+
+
+def create_web3_graph_node(payload: dict[str, Any]) -> dict[str, Any]:
+    return get_knowledge_graph_repository().create_node(
+        payload, actor=str(payload.get("actor") or "local-user")
+    )
+
+
+def update_web3_graph_node(node_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+    return get_knowledge_graph_repository().update_node(
+        node_id, payload, actor=str(payload.get("actor") or "local-user")
+    )
+
+
+def archive_web3_graph_node(node_id: str, actor: str = "local-user") -> None:
+    get_knowledge_graph_repository().archive_node(node_id, actor=actor)
+
+
+def create_web3_graph_edge(payload: dict[str, Any]) -> dict[str, Any]:
+    return get_knowledge_graph_repository().create_edge(
+        payload, actor=str(payload.get("actor") or "local-user")
+    )
+
+
+def archive_web3_graph_edge(edge_id: str, actor: str = "local-user") -> None:
+    get_knowledge_graph_repository().archive_edge(edge_id, actor=actor)
+
+
+def create_web3_graph_evidence(payload: dict[str, Any]) -> dict[str, Any]:
+    return get_knowledge_graph_repository().create_evidence(
+        payload, actor=str(payload.get("actor") or "local-user")
+    )
+
+
+def archive_web3_graph_evidence(
+    evidence_id: str, actor: str = "local-user"
+) -> None:
+    get_knowledge_graph_repository().archive_evidence(evidence_id, actor=actor)
+
+
+def web3_graph_audit(limit: int = 100) -> dict[str, Any]:
+    return {
+        "ok": True,
+        "events": get_knowledge_graph_repository().audit(limit=limit),
+    }
+
+
+def web3_graph_ingestion_status() -> dict[str, Any]:
+    repository = get_knowledge_graph_repository()
+    repository.ensure_seeded(
+        web3_intelligence.GRAPH_NODES,
+        web3_intelligence.GRAPH_EDGES,
+    )
+    return {"ok": True, **repository.ingestion_status()}
+
+
+def run_web3_graph_ingestion(
+    *,
+    refresh: bool = True,
+    use_llm: bool = True,
+    model: str | None = None,
+) -> dict[str, Any]:
+    from dashboard.graph_ingestion import run_ingestion
+
+    repository = get_knowledge_graph_repository()
+    repository.ensure_seeded(
+        web3_intelligence.GRAPH_NODES,
+        web3_intelligence.GRAPH_EDGES,
+    )
+    news_payload = web3_news(limit=100, refresh=refresh)
+    repository.sync_news(
+        item
+        for item in news_payload.get("items") or []
+        if isinstance(item, dict) and web3_intelligence.is_web3_item(item)
+    )
+    return run_ingestion(
+        repository,
+        news_payload,
+        use_llm=use_llm,
+        model=model,
+    )
+
+
+def web3_graph_candidates(
+    *, status: str = "pending", limit: int = 100
+) -> dict[str, Any]:
+    repository = get_knowledge_graph_repository()
+    return {
+        "ok": True,
+        "status": status,
+        "candidates": repository.candidates(status=status, limit=limit),
+        **repository.ingestion_status(),
+    }
+
+
+def review_web3_graph_candidate(
+    candidate_id: str, payload: dict[str, Any]
+) -> dict[str, Any]:
+    result = get_knowledge_graph_repository().review_candidate(
+        candidate_id,
+        decision=str(payload.get("decision") or ""),
+        reviewer=str(payload.get("reviewer") or "local-user"),
+        note=str(payload.get("note") or ""),
+    )
+    return {"ok": True, "candidate": result}
+
+
+def update_web3_graph_schedule(payload: dict[str, Any]) -> dict[str, Any]:
+    schedule = get_knowledge_graph_repository().set_schedule(
+        enabled=bool(payload.get("enabled")),
+        interval_minutes=int(payload.get("interval_minutes") or 240),
+    )
+    return {"ok": True, "schedule": schedule}
 
 
 def _offline_ticker_stats(symbol: str) -> dict[str, Any] | None:
@@ -914,5 +1047,3 @@ def sources_status() -> dict[str, Any]:
         except Exception as exc:
             probes.append({"id": source_id, "name": name, "ok": False, "error": str(exc)})
     return {"ok": True, "env": env, "probes": probes, "dashboard_url": get_dashboard_url()}
-
-
