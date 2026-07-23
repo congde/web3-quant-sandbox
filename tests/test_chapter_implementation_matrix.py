@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import pytest
+
 from scripts.chapter_implementation_matrix import MATRIX, ROOT, validate_matrix
 
 
+@pytest.mark.courseware
 def test_all_publishable_chapters_have_code_and_test_coverage() -> None:
     assert validate_matrix() == []
     assert [item.chapter for item in MATRIX] == list(range(36))

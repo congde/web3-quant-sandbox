@@ -10,6 +10,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 VENV = ROOT / ".venv"
+COURSEWARE_DIR = ROOT / "docs" / "v2"
 MIN_PYTHON = (3, 11)
 MANAGED_PYTHON_VERSION = (3, 11, 9)
 MANAGED_PYTHON = ROOT / ".python" / "python-3.11.9" / (
@@ -143,6 +144,24 @@ def print_figures() -> None:
     python_task("scripts/generate_supplementary_diagrams.py")
 
 
+def has_courseware() -> bool:
+    return COURSEWARE_DIR.is_dir() and any(COURSEWARE_DIR.glob("*.md"))
+
+
+def require_courseware() -> None:
+    if not has_courseware():
+        raise SystemExit(
+            "Private courseware is missing from docs/v2. "
+            "This is expected in a public Git checkout."
+        )
+
+
+def courseware_check() -> None:
+    require_courseware()
+    python_task("scripts/verify_courseware.py")
+    python_task("-m", "pytest", "tests", "-q", "-m", "courseware")
+
+
 TASKS = {
     "setup": setup,
     "verify": lambda: python_task("verify.py"),
@@ -151,7 +170,7 @@ TASKS = {
     "build-fixtures": lambda: python_task("scripts/build_dashboard_fixtures.py"),
     "sync-fixtures": lambda: python_task("scripts/build_dashboard_fixtures.py", "--sync-all"),
     "save-offline-data": save_offline_data,
-    "courseware-check": lambda: python_task("scripts/verify_courseware.py"),
+    "courseware-check": courseware_check,
     "courseware-headings": courseware_headings,
     "asset-audit": lambda: python_task("scripts/audit_assets.py"),
     "teaching-plots": print_figures,
@@ -161,7 +180,18 @@ TASKS = {
 
 
 def check() -> None:
-    for task in ("verify", "implementation-matrix", "asset-audit", "courseware-check"):
+    print("==> verify", flush=True)
+    TASKS["verify"]()
+
+    if not has_courseware():
+        print(
+            "Skipping private courseware checks: docs/v2 is not present.",
+            flush=True,
+        )
+        print("All public repository checks passed.")
+        return
+
+    for task in ("implementation-matrix", "asset-audit", "courseware-check"):
         print(f"==> {task}", flush=True)
         TASKS[task]()
     print("All repository checks passed.")

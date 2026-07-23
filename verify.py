@@ -71,7 +71,15 @@ def main() -> int:
             raise SystemExit(f"report is missing required boundary or metric: {phrase}")
 
     subprocess.run(
-        [sys.executable, "-m", "pytest", str(ROOT / "tests"), "-q"],
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            str(ROOT / "tests"),
+            "-q",
+            "-m",
+            "not courseware",
+        ],
         check=True,
     )
     print("Web3 research sandbox is valid.")

@@ -3,6 +3,10 @@ from __future__ import annotations
 from pathlib import Path
 import re
 
+import pytest
+
+from scripts import course
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -32,6 +36,32 @@ def test_course_check_runs_the_full_acceptance_stack() -> None:
     assert "vendor-drift" not in text
 
 
+def test_public_verify_excludes_private_courseware_tests() -> None:
+    text = (ROOT / "verify.py").read_text(encoding="utf-8")
+    assert '"not courseware"' in text
+
+
+def test_public_check_skips_private_courseware_when_absent(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    calls = []
+    monkeypatch.setattr(course, "COURSEWARE_DIR", tmp_path / "missing")
+    for task in ("verify", "implementation-matrix", "asset-audit", "courseware-check"):
+        monkeypatch.setitem(
+            course.TASKS,
+            task,
+            lambda task=task: calls.append(task),
+        )
+
+    course.check()
+
+    assert calls == ["verify"]
+    assert "Skipping private courseware checks" in capsys.readouterr().out
+
+
+@pytest.mark.courseware
 def test_publishable_chapters_are_complete_through_chapter_35() -> None:
     chapter_numbers = []
     for path in (ROOT / "docs" / "v2").glob("*.md"):
