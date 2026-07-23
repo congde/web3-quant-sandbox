@@ -114,7 +114,7 @@ def compute_metrics(
     """Compute all backtest metrics from trade list + equity curve.
 
     This replaces the old compute_metrics in backtest_service.py with:
-    - Correct Sharpe annualization
+    - Correct Sharpe annualization from marked-to-market bar returns
     - Sortino ratio
     - Calmar ratio
     - Monte Carlo 95% CI
@@ -138,8 +138,19 @@ def compute_metrics(
     if trades:
         avg_bars = sum(t.bars_held for t in trades) / len(trades)
 
-    sharpe = compute_sharpe(pnls, kline_type)
-    sortino = compute_sortino(pnls, kline_type)
+    period_returns: List[float] = []
+    previous_equity = 100.0
+    for point in equity_curve:
+        current_equity = float(point.get("equity", previous_equity))
+        if previous_equity > 0:
+            period_returns.append((current_equity / previous_equity - 1.0) * 100.0)
+        previous_equity = current_equity
+
+    # Sharpe and Sortino must use bar-frequency marked-to-market returns.
+    # Trade PnL observations arrive at an irregular frequency and therefore
+    # cannot be annualized with a daily/hourly bar factor.
+    sharpe = compute_sharpe(period_returns, kline_type)
+    sortino = compute_sortino(period_returns, kline_type)
     calmar = compute_calmar(total_return, max_dd)
     mc_95 = compute_monte_carlo_95(pnls)
     pf = compute_profit_factor(trades)

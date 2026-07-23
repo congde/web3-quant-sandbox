@@ -29,6 +29,7 @@ from backtest.rolling.service import (  # noqa: E402
     run_walk_forward,
     load_candles,
 )
+from backtest.investment_gate import evaluate_investment_gate  # noqa: E402
 from data.pit import pit_teaching_summary  # noqa: E402
 from backtest.rolling.portfolio import compare_portfolio  # noqa: E402
 from factor_mining.service import run_factor_mining, run_mined_factor_backtest  # noqa: E402
@@ -386,6 +387,7 @@ class Handler(BaseHTTPRequestHandler):
                 "ok": True,
                 "presets": list_cost_presets(),
             },
+            "/api/dashboard/backtest/investment-gate": lambda: evaluate_investment_gate(),
             "/api/dashboard/backtest/audit": lambda: get_trial_audit(
                 strategy_key=q("strategy", "") or None,
             ),

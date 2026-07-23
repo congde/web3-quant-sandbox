@@ -1,0 +1,11 @@
+{
+  "strategy_name": "跨周期趋势组合",
+  "strategy_version": "1.1.0",
+  "strategy_fingerprint": "0e530dc6fd56fbaea799cd9c9e52a2b9463a952a185d434dedda791300d7c2c2",
+  "frozen_at": "2026-07-23T00:00:00+08:00",
+  "cutoff_date": "2026-07-22",
+  "timezone": "UTC",
+  "minimum_bars": 90,
+  "decision_after_pass": "REQUEST_HUMAN_REVIEW",
+  "live_trading_authorized": false
+}

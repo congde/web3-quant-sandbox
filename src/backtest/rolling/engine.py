@@ -262,7 +262,7 @@ def _engine_loop(
                 yield EngineEvent(type=EventType.TRADE_CLOSED, idx=i)
 
         # --- Entry check ---
-        if position is None:
+        if position is None and i >= effective_start:
             should_enter = False
             direction = ""
 
@@ -307,15 +307,28 @@ def _engine_loop(
 
                     yield EngineEvent(type=EventType.TRADE_OPENED, idx=i)
 
-        # --- Record equity curve ---
+        # --- Record mark-to-market equity curve ---
         if i >= effective_start:
-            peak_equity = max(peak_equity, equity)
-            drawdown = (peak_equity - equity) / peak_equity * 100 if peak_equity > 0 else 0
+            curve_equity = equity
+            if position is not None:
+                price = float(c["close"])
+                if position.direction == "LONG":
+                    unrealized_pct = (price - position.entry_price) / position.entry_price * 100
+                else:
+                    unrealized_pct = (position.entry_price - price) / position.entry_price * 100
+                # Estimate liquidation value with the same round-trip cost basis
+                # used by close_position. Entry slippage is already embedded in
+                # entry_price; base exit slippage is reserved here.
+                unrealized_pct -= config.commission_pct * 2 + config.slippage_pct
+                curve_equity = equity * (1 + unrealized_pct / 100)
+
+            peak_equity = max(peak_equity, curve_equity)
+            drawdown = (peak_equity - curve_equity) / peak_equity * 100 if peak_equity > 0 else 0
             equity_curve.append({
                 "idx": i,
                 "ts": c["tsSec"],
                 "close": c["close"],
-                "equity": round(equity, 4),
+                "equity": round(curve_equity, 4),
                 "drawdown": round(drawdown, 2),
                 "inPosition": position is not None,
             })
@@ -333,6 +346,11 @@ def _engine_loop(
         equity *= (1 + position.pnl_pct / 100)
         if equity_curve:
             equity_curve[-1]["equity"] = round(equity, 4)
+            peak_equity = max(peak_equity, equity)
+            equity_curve[-1]["drawdown"] = round(
+                (peak_equity - equity) / peak_equity * 100 if peak_equity > 0 else 0,
+                2,
+            )
 
     # --- Fire engine done hook ---
     hooks.fire(HookContext(event=HookEvent.ON_ENGINE_DONE))

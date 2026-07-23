@@ -9,10 +9,12 @@ import {
   fetchBacktestPortfolio,
   fetchBacktestRobustness,
   fetchBacktestStrategies,
+  fetchInvestmentGate,
   fetchBacktestWalkForward,
   fetchBacktestWindows,
   runMinedFactorBacktest,
   runRollingBacktest,
+  type InvestmentGatePayload,
 } from "../../api";
 import BacktestComboChart from "../../components/charts/BacktestComboChart";
 import TradingChart from "../../components/charts/TradingChart";
@@ -235,6 +237,7 @@ export default function BacktestsPage() {
   const [maxHoldBars, setMaxHoldBars] = useState(0);
   const [barLimit, setBarLimit] = useState(120);
   const [result, setResult] = useState<RollingBacktestPayload | null>(null);
+  const [investmentGate, setInvestmentGate] = useState<InvestmentGatePayload | null>(null);
   const [compare, setCompare] = useState<BacktestComparePayload | null>(null);
   const [windows, setWindows] = useState<BacktestWindowsPayload | null>(null);
   const [walkForward, setWalkForward] = useState<BacktestWalkForwardPayload | null>(null);
@@ -271,6 +274,12 @@ export default function BacktestsPage() {
     setTakeProfit(handoff.takeProfit);
     setTrailingStop(handoff.trailingStop);
     setMaxHoldBars(handoff.maxHoldBars);
+  }, []);
+
+  useEffect(() => {
+    fetchInvestmentGate()
+      .then(setInvestmentGate)
+      .catch(() => setInvestmentGate(null));
   }, []);
 
   useEffect(() => {
@@ -658,6 +667,80 @@ export default function BacktestsPage() {
         </QuantGlowCard>
       }
     >
+      {investmentGate ? (
+        <QuantGlowCard
+          className="investment-gate-card"
+          title={
+            <SectionHeader
+              title={`投资准入策略 · ${investmentGate.strategy.name} v${investmentGate.strategy.version}`}
+              description={`${investmentGate.evaluation.holdout.first_date} 至 ${investmentGate.evaluation.holdout.last_date} · ${investmentGate.strategy.allocation}`}
+            />
+          }
+          badge={
+            <StatusPill tone={investmentGate.passed ? "profit" : "loss"}>
+              {investmentGate.passed ? "研究准入通过" : "准入拒绝"}
+            </StatusPill>
+          }
+        >
+          <Alert
+            type={investmentGate.passed ? "success" : "error"}
+            showIcon
+            message={
+              investmentGate.passed
+                ? "已通过全部历史研究门槛；不代表实盘授权"
+                : "至少一项投资研究门槛未通过"
+            }
+            description={`准入决定 ${investmentGate.decision} · 实盘授权：${investmentGate.live_trading_authorized ? "是" : "否"}`}
+          />
+          <Alert
+            className="investment-forward-alert"
+            type={
+              investmentGate.forward_validation.status === "FORWARD_PASSED"
+                ? "success"
+                : investmentGate.forward_validation.status.startsWith("BLOCKED") ||
+                    investmentGate.forward_validation.status === "FORWARD_FAILED"
+                  ? "error"
+                  : "info"
+            }
+            showIcon
+            message={`前向纸面验证 · ${investmentGate.forward_validation.status}`}
+            description={`冻结日 ${investmentGate.forward_validation.plan.cutoff_date} · 新样本 ${investmentGate.forward_validation.windows[0]?.bars ?? 0}/${investmentGate.forward_validation.plan.minimum_bars} 根 · 当前决定 ${investmentGate.forward_validation.decision}`}
+          />
+          <div className="trading-metric-grid">
+            <MetricTile
+              label="样本外收益"
+              value={`${investmentGate.evaluation.portfolio.total_return_pct.toFixed(2)}%`}
+              subtle={`基准 ${investmentGate.evaluation.benchmark.total_return_pct.toFixed(2)}%`}
+              tone="profit"
+            />
+            <MetricTile
+              label="样本外 Sharpe"
+              value={investmentGate.evaluation.portfolio.sharpe_ratio.toFixed(2)}
+              subtle="门槛 ≥ 0.60"
+              tone="neutral"
+            />
+            <MetricTile
+              label="最大回撤"
+              value={`${investmentGate.evaluation.portfolio.max_drawdown_pct.toFixed(2)}%`}
+              subtle="门槛 ≤ 15%"
+              tone="loss"
+            />
+            <MetricTile
+              label="盈利覆盖"
+              value={`${investmentGate.evaluation.portfolio.profitable_assets}/${investmentGate.evaluation.portfolio.asset_count}`}
+              subtle={`波动 ${investmentGate.evaluation.portfolio.annualized_volatility_pct.toFixed(2)}% · 平均敞口 ${(investmentGate.evaluation.portfolio.average_gross_exposure * 100).toFixed(1)}%`}
+              tone="profit"
+            />
+          </div>
+          <div className="investment-gate-checks">
+            {investmentGate.gates.map((gate) => (
+              <span key={gate.gate} className={gate.passed ? "pass" : "fail"}>
+                {gate.passed ? "PASS" : "FAIL"} · {gate.gate}
+              </span>
+            ))}
+          </div>
+        </QuantGlowCard>
+      ) : null}
       <section className="backtest-command-center">
         <QuantGlowCard
           className="backtest-config-panel"

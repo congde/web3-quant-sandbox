@@ -296,6 +296,82 @@ export async function fetchBacktestStrategies(): Promise<RollingBacktestStrategy
   return payload.strategies ?? [];
 }
 
+export interface InvestmentGatePayload {
+  ok: boolean;
+  decision: "PROMOTE_RESEARCH" | "REJECT";
+  passed: boolean;
+  live_trading_authorized: boolean;
+  strategy: {
+    name: string;
+    version: string;
+    universe: string[];
+    allocation: string;
+    params: Record<string, number>;
+  };
+    evaluation: {
+    holdout: { first_date: string; last_date: string; bars: number };
+    portfolio: {
+      total_return_pct: number;
+        sharpe_ratio: number;
+        sortino_ratio: number;
+        max_drawdown_pct: number;
+        annualized_volatility_pct: number;
+        average_gross_exposure: number;
+        max_gross_exposure: number;
+        allocation_turnover: number;
+        average_asset_weights: Record<string, number>;
+        median_asset_return_pct: number;
+      profitable_assets: number;
+      asset_count: number;
+    };
+    benchmark: {
+      name: string;
+      total_return_pct: number;
+      sharpe_ratio: number;
+      max_drawdown_pct: number;
+      };
+    };
+    forward_validation: {
+      status:
+        | "WAITING_FOR_DATA"
+        | "COLLECTING"
+        | "FORWARD_PASSED"
+        | "FORWARD_FAILED"
+        | "BLOCKED_SPEC_DRIFT"
+        | "BLOCKED_DATA_ALIGNMENT";
+      decision: "HOLD" | "REQUEST_HUMAN_REVIEW";
+      live_trading_authorized: boolean;
+      plan: {
+        cutoff_date: string;
+        minimum_bars: number;
+        strategy_fingerprint: string;
+      };
+      windows: Array<{
+        symbol: string;
+        bars: number;
+        first_date: string | null;
+        last_date: string | null;
+      }>;
+      metrics: null | {
+        total_return_pct: number;
+        sharpe_ratio: number;
+        max_drawdown_pct: number;
+        annualized_volatility_pct: number;
+      };
+    };
+    gates: Array<{
+    gate: string;
+    passed: boolean;
+    threshold: string;
+    value: unknown;
+  }>;
+  limitations: string[];
+}
+
+export function fetchInvestmentGate(): Promise<InvestmentGatePayload> {
+  return fetchDashboard<InvestmentGatePayload>("/api/dashboard/backtest/investment-gate");
+}
+
 export interface RunRollingBacktestOptions {
   strategy?: string;
   symbol?: string;

@@ -202,6 +202,45 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.investment-gate-card {
+  border-color: rgba(16, 185, 129, .32);
+}
+
+.investment-gate-card .trading-metric-grid {
+  margin-top: 14px;
+}
+
+.investment-forward-alert {
+  margin-top: 10px;
+}
+
+.investment-gate-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.investment-gate-checks span {
+  border: 1px solid rgba(148, 163, 184, .18);
+  border-radius: 999px;
+  font-family: var(--qa-font-mono);
+  font-size: 9px;
+  padding: 4px 8px;
+}
+
+.investment-gate-checks .pass {
+  background: rgba(16, 185, 129, .08);
+  border-color: rgba(16, 185, 129, .24);
+  color: var(--qa-profit);
+}
+
+.investment-gate-checks .fail {
+  background: rgba(239, 68, 68, .08);
+  border-color: rgba(239, 68, 68, .24);
+  color: var(--qa-loss);
+}
+
 .backtest-hero-actions {
   align-items: center;
   display: flex;

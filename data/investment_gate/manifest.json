@@ -1,0 +1,45 @@
+{
+  "source": "https://api.binance.com/api/v3/klines",
+  "source_name": "Binance spot klines",
+  "interval": "1d",
+  "timezone": "UTC",
+  "requested_limit": 1000,
+  "generated_at": "2026-07-23T06:30:24.262607+00:00",
+  "datasets": [
+    {
+      "symbol": "BTCUSDT",
+      "rows": 1000,
+      "first_open_time_ms": 1698364800000,
+      "last_open_time_ms": 1784678400000,
+      "file": "data/investment_gate/BTCUSDT.csv"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "rows": 1000,
+      "first_open_time_ms": 1698364800000,
+      "last_open_time_ms": 1784678400000,
+      "file": "data/investment_gate/ETHUSDT.csv"
+    },
+    {
+      "symbol": "BNBUSDT",
+      "rows": 1000,
+      "first_open_time_ms": 1698364800000,
+      "last_open_time_ms": 1784678400000,
+      "file": "data/investment_gate/BNBUSDT.csv"
+    },
+    {
+      "symbol": "SOLUSDT",
+      "rows": 1000,
+      "first_open_time_ms": 1698364800000,
+      "last_open_time_ms": 1784678400000,
+      "file": "data/investment_gate/SOLUSDT.csv"
+    },
+    {
+      "symbol": "XRPUSDT",
+      "rows": 1000,
+      "first_open_time_ms": 1698364800000,
+      "last_open_time_ms": 1784678400000,
+      "file": "data/investment_gate/XRPUSDT.csv"
+    }
+  ]
+}

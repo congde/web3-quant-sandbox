@@ -110,6 +110,22 @@ def test_backtest_api_exposes_simulation_result(server: str) -> None:
     assert "trades" in payload
 
 
+def test_investment_gate_api_exposes_research_promotion(server: str) -> None:
+    import json
+
+    with urllib.request.urlopen(
+        f"{server}/api/dashboard/backtest/investment-gate"
+    ) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    assert response.status == 200
+    assert payload["decision"] == "PROMOTE_RESEARCH"
+    assert payload["passed"] is True
+    assert payload["live_trading_authorized"] is False
+    assert payload["forward_validation"]["status"] == "WAITING_FOR_DATA"
+    assert payload["forward_validation"]["decision"] == "HOLD"
+    assert all(gate["passed"] for gate in payload["gates"])
+
+
 def test_dsl_strategy_backtest_executes_validated_code(server: str) -> None:
     import json
 

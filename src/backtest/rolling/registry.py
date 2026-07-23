@@ -68,6 +68,7 @@ def _ensure_loaded() -> None:
         MinedFactorLLMStrategy,
     )
     from backtest.rolling.strategies.rsi_mean_reversion import RSIMeanReversionStrategy
+    from backtest.rolling.strategies.regime_trend import RegimeTrendStrategy
     from backtest.rolling.strategies.technical_signal import TechnicalSignalStrategy
 
     for cls in [
@@ -100,5 +101,6 @@ def _ensure_loaded() -> None:
         MinedFactorGPStrategy,
         MinedFactorLLMStrategy,
         FundingRateStrategy,
+        RegimeTrendStrategy,
     ]:
         register(cls)
