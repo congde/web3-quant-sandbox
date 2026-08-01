@@ -251,7 +251,11 @@ export interface Web3ThemeEvidence {
   title: string;
   url?: string;
   source?: string;
+  publisher?: string;
   published_at?: string | null;
+  sentiment?: number;
+  risk_event?: boolean;
+  assets?: string[];
 }
 
 export interface Web3Theme {
@@ -263,10 +267,22 @@ export interface Web3Theme {
   status: string;
   catalysts: string[];
   assets: string[];
+  asset_map?: Array<{ symbol: string; role: string }>;
   evidence: Web3ThemeEvidence[];
   article_count: number;
+  source_count?: number;
   sentiment: number;
+  sentiment_label?: string;
+  sentiment_counts?: { positive: number; neutral: number; negative: number };
   risk_count: number;
+  evidence_score?: number;
+  evidence_grade?: string;
+  freshness_days?: number;
+  latest_at?: string;
+  recent_count?: number;
+  previous_count?: number;
+  momentum?: string;
+  research_note?: string;
 }
 
 export interface Web3ThemesPayload {
@@ -277,6 +293,13 @@ export interface Web3ThemesPayload {
   themes: Web3Theme[];
   categories: string[];
   article_count: number;
+  stats?: {
+    theme_count: number;
+    article_count: number;
+    publisher_count: number;
+    risk_count: number;
+  };
+  methodology?: string;
 }
 
 export interface Web3MacroCard {
@@ -286,9 +309,17 @@ export interface Web3MacroCard {
   category: string;
   value: number;
   change_24h: number;
-  change_period: number;
+  change_period: number | null;
   values: number[];
+  has_history?: boolean;
+  period_label?: string;
   series_origin?: string;
+  range_low?: number;
+  range_high?: number;
+  range_position_pct?: number | null;
+  return_7d?: number | null;
+  volatility_30d?: number | null;
+  max_drawdown_30d?: number | null;
 }
 
 export interface Web3MacroPayload {
@@ -297,12 +328,40 @@ export interface Web3MacroPayload {
   source?: string;
   updated_at?: string;
   regime: string;
+  regime_label?: string;
+  regime_score?: number;
+  confidence_score?: number;
+  confidence_label?: string;
   labels: string[];
   thesis: string;
+  drivers?: Array<{
+    id: string;
+    label: string;
+    score: number;
+    weight: number;
+    direction: "positive" | "negative" | "neutral";
+    value: string;
+    detail: string;
+  }>;
+  metrics?: {
+    fear_greed?: number;
+    fear_greed_change?: number;
+    breadth_pct?: number;
+    median_change_pct?: number;
+    btc_return_7d?: number | null;
+    btc_return_30d?: number | null;
+    btc_volatility_30d?: number | null;
+    btc_drawdown_30d?: number | null;
+    turnover_24h_usd?: number;
+    risk_event_count?: number;
+  };
+  conditions?: Array<{ id: string; label: string; status: boolean; rule: string }>;
   categories: string[];
   cards: Web3MacroCard[];
   events: Array<{ date: string; title: string; source?: string; url?: string; risk?: boolean }>;
   data_note?: string;
+  data_quality?: { coverage?: string; limitations?: string };
+  methodology?: string;
 }
 
 export interface Web3GraphNode {

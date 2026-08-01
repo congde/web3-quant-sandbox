@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from collections import Counter
 from datetime import datetime, timezone
+import math
 import re
+import statistics
 from typing import Any
+from urllib.parse import urlparse
 
 from dashboard.news import is_web3_news_item
 
@@ -15,6 +18,7 @@ THEME_RULES: tuple[dict[str, Any], ...] = (
         "category": "比特币",
         "terms": ("bitcoin", "btc", "bitcoin etf", "spot etf", "institutional"),
         "assets": ("BTC",),
+        "asset_roles": {"BTC": "核心价格敞口"},
         "catalysts": ("ETF 净流量", "机构持仓变化", "链上长期持有者行为"),
     },
     {
@@ -23,6 +27,7 @@ THEME_RULES: tuple[dict[str, Any], ...] = (
         "category": "以太坊生态",
         "terms": ("ethereum", "ether", "eth", "staking", "restaking", "eigenlayer"),
         "assets": ("ETH", "LDO", "EIGEN"),
+        "asset_roles": {"ETH": "结算与质押底层", "LDO": "流动性质押", "EIGEN": "再质押基础设施"},
         "catalysts": ("协议升级", "质押净流入", "再质押风险参数"),
     },
     {
@@ -31,6 +36,7 @@ THEME_RULES: tuple[dict[str, Any], ...] = (
         "category": "扩容基础设施",
         "terms": ("layer 2", "l2", "rollup", "arbitrum", "optimism", "base", "zk"),
         "assets": ("ETH", "ARB", "OP"),
+        "asset_roles": {"ETH": "结算层", "ARB": "Arbitrum 治理", "OP": "OP Stack 治理"},
         "catalysts": ("Blob 费用", "L2 活跃地址", "排序器收入"),
     },
     {
@@ -39,6 +45,7 @@ THEME_RULES: tuple[dict[str, Any], ...] = (
         "category": "DeFi",
         "terms": ("defi", "dex", "liquidity", "lending", "aave", "uniswap", "maker"),
         "assets": ("AAVE", "UNI", "MKR", "ETH"),
+        "asset_roles": {"AAVE": "借贷协议", "UNI": "DEX 协议", "MKR": "稳定币信用", "ETH": "抵押与结算资产"},
         "catalysts": ("TVL 与净存款", "清算风险", "协议费收入"),
     },
     {
@@ -47,6 +54,7 @@ THEME_RULES: tuple[dict[str, Any], ...] = (
         "category": "稳定币与 RWA",
         "terms": ("stablecoin", "usdt", "usdc", "tether", "circle", "rwa", "tokenized"),
         "assets": ("USDT", "USDC", "MKR"),
+        "asset_roles": {"USDT": "稳定币供给", "USDC": "合规支付入口", "MKR": "链上信用与 RWA"},
         "catalysts": ("稳定币总供应", "支付渠道扩张", "监管框架"),
     },
     {
@@ -55,6 +63,7 @@ THEME_RULES: tuple[dict[str, Any], ...] = (
         "category": "Solana 生态",
         "terms": ("solana", " sol ", "depin", "jupiter", "phantom"),
         "assets": ("SOL", "JUP"),
+        "asset_roles": {"SOL": "公链核心敞口", "JUP": "聚合交易入口"},
         "catalysts": ("活跃地址", "DEX 成交量", "客户端升级"),
     },
     {
@@ -63,6 +72,7 @@ THEME_RULES: tuple[dict[str, Any], ...] = (
         "category": "安全与风控",
         "terms": ("hack", "exploit", "breach", "vulnerability", "bridge", "smart contract"),
         "assets": ("BTC", "ETH", "SOL"),
+        "asset_roles": {"BTC": "市场风险代理", "ETH": "智能合约风险敞口", "SOL": "公链运行风险敞口"},
         "catalysts": ("漏洞披露", "资金追回", "审计与权限变更"),
     },
     {
@@ -71,6 +81,7 @@ THEME_RULES: tuple[dict[str, Any], ...] = (
         "category": "监管与合规",
         "terms": ("crypto regulation", "sec", "cftc", "compliance", "regulator", "lawsuit"),
         "assets": ("BTC", "ETH", "USDC"),
+        "asset_roles": {"BTC": "机构与市场结构", "ETH": "协议与证券属性", "USDC": "合规稳定币入口"},
         "catalysts": ("立法进度", "执法行动", "交易与托管牌照"),
     },
 )
@@ -89,31 +100,101 @@ def is_web3_item(item: dict[str, Any]) -> bool:
 
 
 def _date(value: Any) -> str:
-    raw = str(value or "")
-    return raw[:10] if len(raw) >= 10 else datetime.now(timezone.utc).date().isoformat()
+    parsed = _published_datetime(value)
+    return parsed.date().isoformat() if parsed else datetime.now(timezone.utc).date().isoformat()
+
+
+def _published_datetime(value: Any) -> datetime | None:
+    raw = str(value or "").strip()
+    if not raw:
+        return None
+    for pattern in ("%Y%m%dT%H%M%SZ", "%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%d"):
+        try:
+            parsed = datetime.strptime(raw, pattern)
+            return parsed.replace(tzinfo=parsed.tzinfo or timezone.utc).astimezone(timezone.utc)
+        except ValueError:
+            continue
+    try:
+        parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        return parsed.replace(tzinfo=parsed.tzinfo or timezone.utc).astimezone(timezone.utc)
+    except ValueError:
+        return None
+
+
+def _publisher(item: dict[str, Any]) -> str:
+    host = urlparse(str(item.get("url") or "")).hostname or ""
+    return host.removeprefix("www.") or str(item.get("source") or "未知来源")
+
+
+def _dedupe_stories(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Collapse syndicated copies so repeated headlines do not inflate evidence."""
+    unique: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for item in items:
+        key = re.sub(r"[^a-z0-9]+", " ", str(item.get("title") or "").lower()).strip()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        unique.append(item)
+    return unique
+
+
+def _momentum_label(recent: int, previous: int, freshness_days: int) -> str:
+    if freshness_days > 30:
+        return "证据过期"
+    if recent > previous:
+        return "升温"
+    if recent < previous:
+        return "降温"
+    return "平稳"
 
 
 def build_theme_research(news_payload: dict[str, Any]) -> dict[str, Any]:
     items = [row for row in news_payload.get("items") or [] if isinstance(row, dict) and is_web3_item(row)]
+    item_dates = [parsed for row in items if (parsed := _published_datetime(row.get("published_at")))]
+    reference_time = max(item_dates, default=datetime.now(timezone.utc))
     themes: list[dict[str, Any]] = []
     for rule in THEME_RULES:
         matches = [row for row in items if any(_matches_term(_text(row), term) for term in rule["terms"])]
         if not matches:
             continue
         matches.sort(key=lambda row: str(row.get("published_at") or ""), reverse=True)
+        matches = _dedupe_stories(matches)
         evidence = [
             {
                 "title": row.get("title", ""),
                 "url": row.get("url", ""),
                 "source": row.get("source", ""),
+                "publisher": _publisher(row),
                 "published_at": row.get("published_at"),
+                "sentiment": float(row.get("sentiment") or 0),
+                "risk_event": bool(row.get("risk_event")),
+                "assets": list(row.get("assets") or []),
             }
             for row in matches[:5]
         ]
         sentiments = [float(row.get("sentiment") or 0) for row in matches]
         risk_count = sum(bool(row.get("risk_event")) for row in matches)
+        positive_count = sum(value > 0 for value in sentiments)
+        negative_count = sum(value < 0 for value in sentiments)
+        neutral_count = len(sentiments) - positive_count - negative_count
+        publishers = {_publisher(row) for row in matches}
+        matched_dates = [parsed for row in matches if (parsed := _published_datetime(row.get("published_at")))]
+        latest_at = max(matched_dates, default=reference_time)
+        freshness_days = max(0, (reference_time.date() - latest_at.date()).days)
+        recent_count = sum((reference_time - parsed).days <= 7 for parsed in matched_dates)
+        previous_count = sum(7 < (reference_time - parsed).days <= 14 for parsed in matched_dates)
         mentioned_assets = Counter(asset for row in matches for asset in (row.get("assets") or []))
         mapped_assets = list(dict.fromkeys([*mentioned_assets.keys(), *rule["assets"]]))[:8]
+        evidence_score = round(
+            min(len(matches), 8) / 8 * 35
+            + min(len(publishers), 4) / 4 * 25
+            + max(0, 1 - freshness_days / 30) * 20
+            + min(len(mapped_assets), 4) / 4 * 10
+            + min(len(evidence), 5) / 5 * 10
+        )
+        sentiment_score = round(sum(sentiments) / len(sentiments), 2)
+        sentiment_label = "偏多" if sentiment_score > 0.3 else "偏空" if sentiment_score < -0.3 else "中性"
         lead = matches[0]
         themes.append(
             {
@@ -125,10 +206,29 @@ def build_theme_research(news_payload: dict[str, Any]) -> dict[str, Any]:
                 "status": "风险跟踪" if risk_count else "持续更新",
                 "catalysts": list(rule["catalysts"]),
                 "assets": mapped_assets,
+                "asset_map": [
+                    {"symbol": asset, "role": rule["asset_roles"].get(asset, "新闻关联资产")}
+                    for asset in mapped_assets
+                ],
                 "evidence": evidence,
                 "article_count": len(matches),
-                "sentiment": round(sum(sentiments) / len(sentiments), 2),
+                "source_count": len(publishers),
+                "sentiment": sentiment_score,
+                "sentiment_label": sentiment_label,
+                "sentiment_counts": {"positive": positive_count, "neutral": neutral_count, "negative": negative_count},
                 "risk_count": risk_count,
+                "evidence_score": evidence_score,
+                "evidence_grade": "较强" if evidence_score >= 75 else "中等" if evidence_score >= 50 else "偏弱",
+                "freshness_days": freshness_days,
+                "latest_at": latest_at.isoformat(),
+                "recent_count": recent_count,
+                "previous_count": previous_count,
+                "momentum": _momentum_label(recent_count, previous_count, freshness_days),
+                "research_note": (
+                    f"共捕获 {len(matches)} 条主题证据，覆盖 {len(publishers)} 个发布来源；"
+                    f"近 7 日新增 {recent_count} 条，情绪判断为{sentiment_label}，"
+                    f"其中 {risk_count} 条被标记为风险事件。"
+                ),
             }
         )
     themes.sort(key=lambda row: (row["date"], row["article_count"]), reverse=True)
@@ -140,15 +240,55 @@ def build_theme_research(news_payload: dict[str, Any]) -> dict[str, Any]:
         "themes": themes,
         "categories": sorted({row["category"] for row in themes}),
         "article_count": len(items),
+        "stats": {
+            "theme_count": len(themes),
+            "article_count": len(_dedupe_stories(items)),
+            "publisher_count": len({_publisher(row) for row in items}),
+            "risk_count": sum(bool(row.get("risk_event")) for row in items),
+        },
+        "methodology": "证据强度由主题覆盖、发布来源分散度、相对最新样本的时效性、资产映射和可审计证据数量加权得到；仅用于研究排序，不代表投资评级。",
     }
 
 
-def _normalized_curve(candles: list[dict[str, Any]], last: float, multiplier: float) -> list[float]:
-    closes = [float(row.get("close") or 0) for row in candles[-30:] if float(row.get("close") or 0) > 0]
-    if not closes:
-        return [last]
-    base = closes[-1]
-    return [round(last * (1 + ((value / base) - 1) * multiplier), 6) for value in closes]
+def _clamp(value: float, low: float = 0.0, high: float = 100.0) -> float:
+    return max(low, min(high, value))
+
+
+def _period_return(closes: list[float], periods: int) -> float | None:
+    if len(closes) <= periods or closes[-1 - periods] <= 0:
+        return None
+    return round((closes[-1] / closes[-1 - periods] - 1) * 100, 2)
+
+
+def _realized_volatility(closes: list[float], periods: int = 30) -> float | None:
+    sample = closes[-(periods + 1):]
+    if len(sample) < 3:
+        return None
+    returns = [sample[index] / sample[index - 1] - 1 for index in range(1, len(sample)) if sample[index - 1] > 0]
+    if len(returns) < 2:
+        return None
+    return round(statistics.stdev(returns) * math.sqrt(365) * 100, 2)
+
+
+def _maximum_drawdown(closes: list[float], periods: int = 30) -> float | None:
+    sample = closes[-periods:]
+    if len(sample) < 2:
+        return None
+    peak = sample[0]
+    worst = 0.0
+    for value in sample:
+        peak = max(peak, value)
+        worst = min(worst, value / peak - 1)
+    return round(worst * 100, 2)
+
+
+def _range_position(row: dict[str, Any]) -> float | None:
+    low = float(row.get("low") or 0)
+    high = float(row.get("high") or 0)
+    last = float(row.get("last") or 0)
+    if high <= low or last <= 0:
+        return None
+    return round(_clamp((last - low) / (high - low) * 100), 1)
 
 
 def build_macro_observation(
@@ -163,18 +303,22 @@ def build_macro_observation(
         if isinstance(row, dict)
     }
     candles = [row for row in candle_payload.get("candles") or [] if isinstance(row, dict)]
+    closes = [float(row.get("close") or 0) for row in candles if float(row.get("close") or 0) > 0]
+    btc_return_7d = _period_return(closes, 7)
+    btc_return_30d = _period_return(closes, 30)
+    btc_volatility_30d = _realized_volatility(closes)
+    btc_drawdown_30d = _maximum_drawdown(closes)
     cards: list[dict[str, Any]] = []
-    for symbol, name, category, multiplier in (
-        ("BTC-USDT", "比特币", "核心资产", 1.0),
-        ("ETH-USDT", "以太坊", "核心资产", 1.15),
-        ("SOL-USDT", "Solana", "公链生态", 1.45),
+    for symbol, name, category in (
+        ("BTC-USDT", "比特币", "核心资产"),
+        ("ETH-USDT", "以太坊", "核心资产"),
+        ("SOL-USDT", "Solana", "公链生态"),
     ):
         row = tickers.get(symbol)
         if not row:
             continue
         last = float(row.get("last") or 0)
-        values = _normalized_curve(candles, last, multiplier)
-        quarter = ((values[-1] / values[0]) - 1) * 100 if len(values) > 1 and values[0] else 0.0
+        has_history = symbol == "BTC-USDT" and bool(closes)
         cards.append(
             {
                 "id": symbol.split("-")[0].lower(),
@@ -183,16 +327,64 @@ def build_macro_observation(
                 "category": category,
                 "value": last,
                 "change_24h": round(float(row.get("changeRate") or 0) * 100, 2),
-                "change_period": round(quarter, 2),
-                "values": values,
-                "series_origin": "market candles" if symbol == "BTC-USDT" else "BTC normalized proxy",
+                "change_period": btc_return_30d if has_history else None,
+                "values": [round(value, 6) for value in closes[-30:]] if has_history else [],
+                "has_history": has_history,
+                "period_label": "30日真实行情" if has_history else "24小时横截面",
+                "series_origin": "market candles" if has_history else "ticker snapshot",
+                "range_low": round(float(row.get("low") or 0), 6),
+                "range_high": round(float(row.get("high") or 0), 6),
+                "range_position_pct": _range_position(row),
+                "return_7d": btc_return_7d if has_history else None,
+                "volatility_30d": btc_volatility_30d if has_history else None,
+                "max_drawdown_30d": btc_drawdown_30d if has_history else None,
             }
         )
     metrics = news_payload.get("metrics") or {}
     fear_greed = (((onchain_payload.get("marketSentiment") or {}).get("fearGreed") or {}))
     risk_count = int(metrics.get("risk_event_count") or 0)
     sentiment = float(metrics.get("sentiment_score") or 0)
-    regime = "risk-off" if risk_count >= 3 or sentiment < -0.5 else "risk-on" if sentiment > 0.5 else "neutral"
+    liquid_rows = sorted(
+        [row for row in tickers.values() if float(row.get("last") or 0) > 0 and float(row.get("volValue") or 0) > 0],
+        key=lambda row: float(row.get("volValue") or 0),
+        reverse=True,
+    )[:50]
+    cross_section_returns = [float(row.get("changeRate") or 0) * 100 for row in liquid_rows]
+    breadth_pct = round(sum(value > 0 for value in cross_section_returns) / len(cross_section_returns) * 100, 1) if cross_section_returns else 0.0
+    median_change_pct = round(statistics.median(cross_section_returns), 2) if cross_section_returns else 0.0
+    turnover_24h_usd = sum(float(row.get("volValue") or 0) for row in liquid_rows)
+    fear_value = float(fear_greed.get("value") or 50)
+    price_score = _clamp(50 + float(btc_return_30d or 0) * 3)
+    breadth_score = breadth_pct
+    appetite_score = _clamp(fear_value)
+    news_score = _clamp(50 + sentiment * 20 - risk_count * 2.5)
+    regime_score = round(price_score * 0.35 + breadth_score * 0.25 + appetite_score * 0.25 + news_score * 0.15)
+    regime = "risk-off" if regime_score < 40 else "risk-on" if regime_score > 60 else "neutral"
+    regime_label = "防御" if regime == "risk-off" else "进攻" if regime == "risk-on" else "中性"
+    confidence_score = 78 if closes and liquid_rows and fear_greed and metrics else 58
+    confidence_label = "较高" if confidence_score >= 75 else "中等"
+    drivers = [
+        {
+            "id": "btc-trend", "label": "BTC 价格趋势", "score": round(price_score), "weight": 35,
+            "direction": "positive" if price_score > 55 else "negative" if price_score < 45 else "neutral",
+            "value": f"{float(btc_return_30d or 0):+.2f}%", "detail": "30日真实收盘价收益",
+        },
+        {
+            "id": "market-breadth", "label": "市场宽度", "score": round(breadth_score), "weight": 25,
+            "direction": "positive" if breadth_score > 55 else "negative" if breadth_score < 45 else "neutral",
+            "value": f"{breadth_pct:.1f}%", "detail": "高流动性样本中24小时上涨占比",
+        },
+        {
+            "id": "risk-appetite", "label": "风险偏好", "score": round(appetite_score), "weight": 25,
+            "direction": "positive" if appetite_score > 55 else "negative" if appetite_score < 45 else "neutral",
+            "value": f"{fear_value:.0f}", "detail": f"恐惧贪婪指数 · 日变动 {float(fear_greed.get('change') or 0):+.0f}",
+        },
+        {
+            "id": "news-risk", "label": "事件风险", "score": round(news_score), "weight": 15,
+            "direction": "positive" if news_score > 55 else "negative" if news_score < 45 else "neutral",
+            "value": f"{risk_count} 条", "detail": f"新闻情绪 {sentiment:+.2f}",
+        },
+    ]
     top_topics = [str(row[0]) for row in metrics.get("top_topics") or [] if isinstance(row, (list, tuple)) and row]
     events = []
     for row in news_payload.get("items") or []:
@@ -210,12 +402,48 @@ def build_macro_observation(
         "source": news_payload.get("source", "offline"),
         "updated_at": news_payload.get("updated_at"),
         "regime": regime,
-        "labels": [f"crypto_regime:{regime}", f"fear_greed:{fear_greed.get('label', 'unknown')}", *top_topics[:2]],
-        "thesis": f"加密市场新闻情绪 {sentiment:+.2f}，风险事件 {risk_count} 条；恐惧贪婪指数为 {fear_greed.get('value', '—')}（{fear_greed.get('label', '暂无')}）。仅展示与链上资产、协议和加密流动性直接相关的观察。",
+        "regime_label": regime_label,
+        "regime_score": regime_score,
+        "confidence_score": confidence_score,
+        "confidence_label": confidence_label,
+        "labels": [f"市场状态：{regime_label}", f"风险偏好：{fear_greed.get('label', 'unknown')}", *top_topics[:2]],
+        "thesis": (
+            f"综合状态分 {regime_score}/100，当前处于{regime_label}区间。"
+            f"BTC 30日收益 {float(btc_return_30d or 0):+.2f}%，高流动性样本上涨宽度 {breadth_pct:.1f}%，"
+            f"恐惧贪婪指数 {fear_value:.0f}；新闻侧记录 {risk_count} 条风险事件。"
+        ),
+        "drivers": drivers,
+        "metrics": {
+            "fear_greed": round(fear_value),
+            "fear_greed_change": round(float(fear_greed.get("change") or 0), 1),
+            "breadth_pct": breadth_pct,
+            "median_change_pct": median_change_pct,
+            "btc_return_7d": btc_return_7d,
+            "btc_return_30d": btc_return_30d,
+            "btc_volatility_30d": btc_volatility_30d,
+            "btc_drawdown_30d": btc_drawdown_30d,
+            "turnover_24h_usd": round(turnover_24h_usd, 2),
+            "risk_event_count": risk_count,
+        },
+        "conditions": [
+            {
+                "id": "risk-on", "label": "升级为进攻", "status": regime_score > 60,
+                "rule": "状态分 > 60，且上涨宽度与风险偏好同步改善",
+            },
+            {
+                "id": "risk-off", "label": "降级为防御", "status": regime_score < 40,
+                "rule": "状态分 < 40，或价格趋势与市场宽度同时恶化",
+            },
+        ],
         "categories": ["总览", "核心资产", "公链生态"],
         "cards": cards,
         "events": events,
-        "data_note": "BTC 使用离线日线；ETH/SOL 在离线模式下使用 BTC 归一化路径并锚定各自最新价格，不作为独立历史行情。",
+        "data_quality": {
+            "coverage": "BTC 使用真实日线；市场宽度来自成交额前50个有效交易对；风险偏好来自恐惧贪婪快照。",
+            "limitations": "ETH/SOL 当前只有24小时行情快照，不绘制伪历史曲线；尚未接入利率、美元流动性、稳定币供给和永续资金费率历史。",
+        },
+        "data_note": "BTC 展示真实日线；ETH/SOL 仅展示24小时区间位置，避免把 BTC 代理曲线误读为独立历史行情。",
+        "methodology": "状态分按 BTC 30日趋势35%、高流动性市场宽度25%、恐惧贪婪25%、新闻事件风险15%加权；仅用于研究状态划分，不构成择时或交易建议。",
     }
 
 
