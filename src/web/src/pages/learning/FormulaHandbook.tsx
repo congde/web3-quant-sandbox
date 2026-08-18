@@ -9,6 +9,7 @@ import {
   SearchOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
+import { Drawer } from "antd";
 import { useEffect, useMemo, useState } from "react";
 
 import { ADVANCED_GROUPS } from "./FormulaHandbookAdvanced";
@@ -18,6 +19,7 @@ import {
   LEARNING_SOURCES,
 } from "./FormulaLearningGuides";
 import { KLINE_GUIDES, KLINE_SOURCES, KLINE_SYSTEM } from "./KlineLearningContent";
+import { getFormulaStory } from "./FormulaStories";
 import "./formula-handbook.css";
 
 export type FormulaDomain = "math" | "backtest" | "risk" | "kline";
@@ -35,6 +37,12 @@ export type FormulaGroup = {
   title: string;
   description: string;
   formulas: FormulaItem[];
+};
+
+type SelectedFormula = {
+  formula: FormulaItem;
+  groupTitle: string;
+  index: number;
 };
 
 export type FormulaSystem = {
@@ -217,6 +225,7 @@ export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
   const system = SYSTEMS[domain];
   const [groupIndex, setGroupIndex] = useState(0);
   const [query, setQuery] = useState("");
+  const [selectedFormula, setSelectedFormula] = useState<SelectedFormula | null>(null);
   const [completedGroups, setCompletedGroups] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
     try {
@@ -250,6 +259,15 @@ export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
       ...formula.variables,
     ].join(" ").toLocaleLowerCase().includes(normalizedQuery));
   }, [group, groups, normalizedQuery]);
+  const selectedStory = selectedFormula ? getFormulaStory(selectedFormula.formula, selectedFormula.groupTitle) : null;
+  const attributionKind = selectedStory && /没有单一|没有可确认|没有统一|不存在统一|不是传统数学定理/.test(selectedStory.attribution)
+    ? "长期演化形成"
+    : "有明确提出或系统化者";
+  const relatedFormulas = selectedFormula
+    ? (groups.find((item) => item.title === selectedFormula.groupTitle)?.formulas ?? [])
+      .filter((formula) => formula.name !== selectedFormula.formula.name)
+      .slice(0, 6)
+    : [];
 
   useEffect(() => {
     window.localStorage.setItem(`formula-progress:${domain}`, JSON.stringify(completedGroups));
@@ -333,17 +351,108 @@ export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
 
       <div className="formula-card-grid">
         {formulaEntries.map(({ formula, index, groupTitle }) => (
-          <article className="formula-knowledge-card" key={formula.name}>
+          <article
+            className="formula-knowledge-card"
+            key={formula.name}
+            role="button"
+            tabIndex={0}
+            aria-label={`查看${formula.name}的公式档案`}
+            onClick={() => setSelectedFormula({ formula, index, groupTitle })}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                setSelectedFormula({ formula, index, groupTitle });
+              }
+            }}
+          >
             <div className="formula-card-title"><span>F{String(index + 1).padStart(2, "0")}</span><h3>{formula.name}</h3>{normalizedQuery ? <em>{groupTitle}</em> : null}</div>
             <div className="formula-card-equation" aria-label={`${formula.name}公式`}>{formula.equation}</div>
             <p className="formula-card-purpose">{formula.purpose}</p>
             <div className="formula-variable-list"><b>符号说明</b>{formula.variables.map((variable) => <span key={variable}>{variable}</span>)}</div>
             <div className="formula-example"><CalculatorOutlined /><div><b>代入示例</b><span>{formula.example}</span></div></div>
             <div className="formula-warning"><WarningOutlined /><div><b>使用边界</b><span>{formula.boundary}</span></div></div>
+            <div className="formula-open-story"><BookOutlined /><span>查看公式的前世今生</span><b>→</b></div>
           </article>
         ))}
       </div>
       {normalizedQuery && formulaEntries.length === 0 ? <div className="formula-empty-search"><SearchOutlined /><strong>没有找到匹配公式</strong><span>可以尝试“波动”“回撤”“协方差”“滑点”“VaR”或具体符号。</span></div> : null}
+      <Drawer
+        className="formula-story-drawer"
+        open={selectedFormula !== null}
+        onClose={() => setSelectedFormula(null)}
+        width="min(760px, 100vw)"
+        title={selectedFormula ? <div className="formula-story-title"><span>{selectedFormula.groupTitle} · F{String(selectedFormula.index + 1).padStart(2, "0")}</span><strong>{selectedFormula.formula.name}</strong></div> : null}
+      >
+        {selectedFormula && selectedStory ? (
+          <div className="formula-story-content">
+            <section className="formula-story-hero">
+              <span>{selectedStory.era}</span>
+              <div>{selectedFormula.formula.equation}</div>
+              <p>{selectedStory.question}</p>
+            </section>
+
+            <div className="formula-story-timeline" aria-label="公式发展路径">
+              <span><b>01</b>时代问题</span><i>→</i><span><b>02</b>思想来源</span><i>→</i><span><b>03</b>提出与定型</span><i>→</i><span><b>04</b>量化应用</span>
+            </div>
+
+            <section className="formula-provenance-grid" aria-label="公式历史档案">
+              <article className="formula-attribution-card">
+                <span>WHO · 谁提出 / 谁系统化 <em>{attributionKind}</em></span>
+                <p>{selectedStory.attribution}</p>
+              </article>
+              <article>
+                <span>WHY THEN · 当时为什么需要它</span>
+                <p>{selectedStory.historicalContext}</p>
+              </article>
+              <article>
+                <span>ROOTS · 它参考了哪些思想</span>
+                <ul>{selectedStory.intellectualRoots.map((root) => <li key={root}>{root}</li>)}</ul>
+              </article>
+            </section>
+
+            <section className="formula-story-section">
+              <header><BookOutlined /><div><strong>历史脉络</strong><span>从现实问题到公式定型</span></div></header>
+              <p>{selectedStory.origin}</p>
+              {selectedStory.sources?.length ? (
+                <div className="formula-story-sources">
+                  <b>参考与原始资料</b>
+                  {selectedStory.sources.map((source) => <a className="formula-story-source" href={source.url} target="_blank" rel="noreferrer" key={`${source.label}-${source.url}`}><LinkOutlined />{source.label}</a>)}
+                </div>
+              ) : null}
+            </section>
+
+            <section className="formula-story-section">
+              <header><CalculatorOutlined /><div><strong>它是怎样推出来的</strong><span>从定义到结果的推导链</span></div></header>
+              <ol className="formula-derivation-list">{selectedStory.derivation.map((step, index) => <li key={step}><b>{String(index + 1).padStart(2, "0")}</b><span>{step}</span></li>)}</ol>
+            </section>
+
+            <div className="formula-story-two-column">
+              <section className="formula-story-section">
+                <header><BulbOutlined /><div><strong>直觉怎么理解</strong><span>不用背公式也能讲清楚</span></div></header>
+                <p>{selectedStory.intuition}</p>
+              </section>
+              <section className="formula-story-section">
+                <header><ExperimentOutlined /><div><strong>怎样进入现代量化</strong><span>传播路径与现代扩展</span></div></header>
+                <p>{selectedStory.transmission}</p>
+                <p className="formula-story-evolution">{selectedStory.evolution}</p>
+              </section>
+            </div>
+
+            <section className="formula-story-section">
+              <header><CalculatorOutlined /><div><strong>代入与边界</strong><span>会计算，也知道不能证明什么</span></div></header>
+              <div className="formula-story-example"><b>代入示例</b><p>{selectedFormula.formula.example}</p></div>
+              <div className="formula-story-boundary"><WarningOutlined /><div><b>不可越过的边界</b><p>{selectedFormula.formula.boundary}</p></div></div>
+            </section>
+
+            {relatedFormulas.length ? (
+              <section className="formula-story-related">
+                <header><strong>沿着知识链继续</strong><span>同章相关公式</span></header>
+                <div>{relatedFormulas.map((formula) => <button type="button" key={formula.name} onClick={() => setSelectedFormula({ formula, groupTitle: selectedFormula.groupTitle, index: (groups.find((item) => item.title === selectedFormula.groupTitle)?.formulas ?? []).findIndex((item) => item.name === formula.name) })}><span>{formula.name}</span><b>→</b></button>)}</div>
+              </section>
+            ) : null}
+          </div>
+        ) : null}
+      </Drawer>
     </section>
   );
 }
