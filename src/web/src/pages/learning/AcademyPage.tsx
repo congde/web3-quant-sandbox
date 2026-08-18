@@ -36,30 +36,36 @@ type Course = {
   outcome: string;
   path?: string;
   action?: string;
+  formulaCount?: number;
+  chapterCount?: number;
 };
 
 const COURSES: Course[] = [
   {
     key: "math",
-    title: "基础数学学堂",
-    subtitle: "读懂数字，不被数字误导",
-    description: "从收益率、复利和概率开始，逐步理解均值、方差、相关性与风险调整收益。",
+    title: "量化数学学堂",
+    subtitle: "从数学基础到量化模型",
+    description: "系统覆盖微积分、线性代数、概率统计、随机过程、回归、时间序列、机器学习、组合优化、期权、执行与 Web3。",
     icon: <CalculatorOutlined />,
-    lessons: ["百分比、收益率与复利", "均值、方差与标准差", "概率、条件概率与期望", "相关性不等于因果关系"],
+    lessons: ["微积分、线代、概率与统计", "推断、回归、时间序列与随机过程", "技术指标、机器学习与组合优化", "期权 Greeks、执行与 Web3"],
     outcome: "能够独立解释收益、波动和概率，不把单个指标当作确定答案。",
     path: "/math-learning",
-    action: "进入公式实验室",
+    action: "进入系统公式课",
+    formulaCount: 72,
+    chapterCount: 17,
   },
   {
     key: "backtest",
     title: "回测学堂",
     subtitle: "用历史数据检验规则",
-    description: "学习样本、基准、手续费、滑点、前视偏差与过拟合，建立可复现的验证习惯。",
+    description: "系统学习净值、成本、基准、回撤和交易质量公式，再用样本与偏差方法检验可靠性。",
     icon: <BarChartOutlined />,
-    lessons: ["回测能证明什么", "基准与评价指标", "前视偏差和数据污染", "样本外与稳定性检查"],
+    lessons: ["收益、净值与年化公式", "换手、手续费与滑点公式", "基准、绩效与回撤指标", "交易质量、偏差与稳健性"],
     outcome: "能够判断一份回测是否可信，并说清它不能证明什么。",
     path: "/backtest-learning",
-    action: "进入回测基础课",
+    action: "进入回测公式课",
+    formulaCount: 28,
+    chapterCount: 8,
   },
   {
     key: "kline",
@@ -67,10 +73,12 @@ const COURSES: Course[] = [
     subtitle: "从 OHLCV 到可验证规则",
     description: "通过真实离线行情认识实体、影线、周期、成交量和技术指标。",
     icon: <LineChartOutlined />,
-    lessons: ["认识一根 K 线", "周期与成交量", "组合与技术指标", "从观察到回测规则"],
-    outcome: "能够区分价格事实、指标描述与交易推断，并写出无歧义规则。",
+    lessons: ["OHLCV、周期聚合与时间边界", "实体影线、趋势结构与支撑阻力", "量价、动量、波动与通道指标", "形态算法化、数据质量与统计验证"],
+    outcome: "能够从数据构造、价格行为和技术指标形成可计算规则，并用样本外证据检验，而不是背诵形态口诀。",
     path: "/kline-learning",
-    action: "进入互动课程",
+    action: "进入系统 K 线课程",
+    formulaCount: 40,
+    chapterCount: 10,
   },
   {
     key: "diagnosis",
@@ -80,8 +88,6 @@ const COURSES: Course[] = [
     icon: <FundProjectionScreenOutlined />,
     lessons: ["提出可证伪问题", "价格与量能诊断", "资金、链上和消息证据", "冲突证据与不确定性"],
     outcome: "能够形成带来源、时间和反方证据的诊断记录。",
-    path: "/research",
-    action: "进入市场情报",
   },
   {
     key: "assets",
@@ -91,27 +97,27 @@ const COURSES: Course[] = [
     icon: <WalletOutlined />,
     lessons: ["目标、期限与风险承受力", "仓位与分散原则", "组合相关性与集中度", "再平衡和回撤管理"],
     outcome: "能够从组合整体评估风险，不让单个标的决定全部结果。",
-    path: "/risk",
-    action: "查看风控实验",
   },
   {
     key: "risk",
     title: "风控学堂",
     subtitle: "先活下来，再讨论收益",
-    description: "学习风险识别、单笔风险预算、止损与盈亏比、组合集中度、回撤门禁和紧急熔断。",
+    description: "系统学习暴露、定仓、盈亏结构、组合集中度、回撤与尾部风险公式，并转化为门禁规则。",
     icon: <WarningOutlined />,
-    lessons: ["风险地图与防线", "仓位和单笔风险预算", "止损、目标与盈亏比", "组合集中度", "回撤门禁与熔断"],
+    lessons: ["暴露、权重与杠杆公式", "风险预算与定仓公式", "盈亏结构与组合集中度", "回撤、VaR、CVaR 与熔断"],
     outcome: "能够在下单前计算最坏损失，并说明系统何时应该预警、拒单或熔断。",
     path: "/risk-learning",
-    action: "进入风控演练",
+    action: "进入风控公式课",
+    formulaCount: 29,
+    chapterCount: 8,
   },
 ];
 
 const JOURNEY = [
-  { title: "选股 / 选币", subtitle: "建立候选池", icon: <SearchOutlined />, path: "/radar" },
-  { title: "诊股 / 诊币", subtitle: "核验证据", icon: <FundProjectionScreenOutlined />, path: "/research" },
-  { title: "交易验证", subtitle: "规则与回测", icon: <SwapOutlined />, path: "/backtests" },
-  { title: "资产管理", subtitle: "组合与再平衡", icon: <WalletOutlined />, path: "/risk" },
+  { title: "选股 / 选币", subtitle: "学习价格与候选规则", icon: <SearchOutlined />, courseKey: "kline" as CourseKey },
+  { title: "诊股 / 诊币", subtitle: "学习证据核验方法", icon: <FundProjectionScreenOutlined />, courseKey: "diagnosis" as CourseKey },
+  { title: "交易验证", subtitle: "学习规则与回测", icon: <SwapOutlined />, courseKey: "backtest" as CourseKey },
+  { title: "资产管理", subtitle: "学习组合与再平衡", icon: <WalletOutlined />, courseKey: "assets" as CourseKey },
 ];
 
 export default function AcademyPage() {
@@ -141,7 +147,7 @@ export default function AcademyPage() {
         <div className="academy-journey">
           {JOURNEY.map((step, index) => (
             <div className="academy-journey-step" key={step.title}>
-              <button type="button" onClick={() => navigate(step.path)}>
+              <button type="button" onClick={() => setActiveKey(step.courseKey)}>
                 <i>{step.icon}</i>
                 <span><strong>{step.title}</strong><small>{step.subtitle}</small></span>
               </button>
@@ -158,7 +164,13 @@ export default function AcademyPage() {
       </QuantGlowCard>
 
       <section className="academy-course-section">
-        <SectionHeader title="六大学堂" description="选择一个主题查看课程内容；数学、回测、K 线与风控学堂已提供互动课程" />
+        <SectionHeader title="六大学堂" description="量化数学、K 线、回测与风控已提供合计 169 个公式的系统手册，并配章节导学、练习和互动演练" />
+        <div className="academy-depth-strip">
+          <div><strong>169</strong><span>核心公式</span><small>从定义到使用边界</small></div>
+          <div><strong>43</strong><span>章节导学</span><small>目标、先修与预计用时</small></div>
+          <div><strong>43</strong><span>复算任务</span><small>用小样本验证理解</small></div>
+          <div><strong>18</strong><span>权威资料</span><small>教材、论文与官方文档</small></div>
+        </div>
         <div className="academy-course-grid">
           {COURSES.map((course, index) => (
             <button
@@ -171,7 +183,7 @@ export default function AcademyPage() {
               <i>{course.icon}</i>
               <strong>{course.title}</strong>
               <small>{course.subtitle}</small>
-              {course.key === "kline" || course.key === "math" || course.key === "backtest" || course.key === "risk" ? <em>互动课已开放</em> : <em>课程纲要</em>}
+              {course.formulaCount ? <em>{course.chapterCount} 章 · {course.formulaCount} 个公式</em> : course.key === "kline" ? <em>互动课已开放</em> : <em>课程纲要</em>}
             </button>
           ))}
         </div>
@@ -180,8 +192,9 @@ export default function AcademyPage() {
       <QuantGlowCard
         className="academy-course-detail"
         title={<SectionHeader title={active.title} description={active.description} />}
-        badge={<StatusPill tone={active.key === "kline" || active.key === "math" || active.key === "backtest" || active.key === "risk" ? "profit" : "ai"}>{active.key === "kline" || active.key === "math" || active.key === "backtest" || active.key === "risk" ? "互动课程" : "学习单元"}</StatusPill>}
+        badge={<StatusPill tone={active.key === "kline" || active.key === "math" || active.key === "backtest" || active.key === "risk" ? "profit" : "ai"}>{active.key === "math" ? "系统公式课" : active.key === "kline" || active.key === "backtest" || active.key === "risk" ? "互动课程" : "学习单元"}</StatusPill>}
       >
+        {active.formulaCount ? <div className="academy-formula-strip"><CalculatorOutlined /><strong>系统公式手册</strong><span>{active.chapterCount} 章 · {active.formulaCount} 个核心公式</span><i>导学</i><b>→</b><i>公式</i><b>→</b><i>复算</i><b>→</b><i>来源</i></div> : null}
         <div className="academy-detail-layout">
           <ol>
             {active.lessons.map((lesson, index) => (
@@ -194,7 +207,7 @@ export default function AcademyPage() {
             {active.path ? (
               <Button type="primary" onClick={() => active.path && navigate(active.path)}>{active.action}<ArrowRightOutlined /></Button>
             ) : (
-              <Button onClick={() => setActiveKey("kline")}>继续 K 线基础课<ArrowRightOutlined /></Button>
+              <Button disabled>完整课程正在补充，本页先学习课程纲要</Button>
             )}
           </aside>
         </div>

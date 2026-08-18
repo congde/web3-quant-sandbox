@@ -1,7 +1,6 @@
 import {
   ArrowRightOutlined,
   BookOutlined,
-  CheckCircleOutlined,
   ExperimentOutlined,
 } from "@ant-design/icons";
 import { Button, Select, Slider, Spin } from "antd";
@@ -17,7 +16,10 @@ import {
   StatusPill,
   TradingPageShell,
 } from "../trading/TradingPageShell";
+import { FormulaHandbook } from "./FormulaHandbook";
+import { LearningCourseNav } from "./LearningCourseNav";
 import "./kline-learning.css";
+import "./learning-layout.css";
 
 const LESSONS = [
   {
@@ -31,14 +33,34 @@ const LESSONS = [
     description: "理解同一批成交如何聚合成不同周期的 K 线。",
   },
   {
-    title: "组合与技术指标",
-    short: "趋势、动量、波动",
-    description: "把多根 K 线转换为均线、RSI 和波动指标。",
+    title: "实体、影线与强度",
+    short: "用比例代替肉眼",
+    description: "用实体占比、影线占比和收盘位置量化一根 K 线。",
   },
   {
-    title: "规则与回测",
+    title: "趋势与市场结构",
+    short: "高低点、均线与滞后",
+    description: "从 HH/HL、LH/LL 和均线理解趋势结构与指标滞后。",
+  },
+  {
+    title: "支撑阻力与突破",
+    short: "区域、确认与假突破",
+    description: "把主观画线转换为滚动高低点和波动标准化规则。",
+  },
+  {
+    title: "量价与技术指标",
+    short: "成交量、动量、波动",
+    description: "理解量比、VWAP、RSI、MACD、ATR 与布林带的输入和边界。",
+  },
+  {
+    title: "形态算法化",
+    short: "条件定义而非口诀",
+    description: "把十字星、锤子和吞没形态写成明确的布尔条件。",
+  },
+  {
+    title: "数据质量与验证",
     short: "从观察到证据",
-    description: "把模糊形态写成可复现规则，并避免未来函数。",
+    description: "检查缺失、重复、未收盘柱和信号时序，并完成样本外验证。",
   },
 ] as const;
 
@@ -111,25 +133,73 @@ function LessonText({ lesson }: { lesson: number }) {
   if (lesson === 2) {
     return (
       <div className="kline-lesson-copy">
-        <h3>指标是 K 线的派生量</h3>
+        <h3>实体和影线必须放到总振幅中比较</h3>
+        <p>同样是 2 元实体，在振幅 3 元和振幅 20 元的 K 线上意义完全不同。用比例表达，才能跨价格、跨周期比较。</p>
+        <div className="kline-formula"><code>实体占比 = |C − O| ÷ (H − L)</code><code>收盘位置 = [(C−L)−(H−C)] ÷ (H−L)</code></div>
+        <p className="kline-note">长下影只表示价格曾经更低、最终收回一部分；它可能来自买盘承接，也可能只是高波动，不能脱离趋势位置直接解释为反转。</p>
+      </div>
+    );
+  }
+  if (lesson === 3) {
+    return (
+      <div className="kline-lesson-copy">
+        <h3>先定义结构，再使用均线</h3>
         <div className="kline-concept-grid">
-          <div><strong>MA20 / MA60</strong><span>描述一段窗口内的平均价格，用于观察方向。</span></div>
-          <div><strong>RSI</strong><span>描述近期涨跌动量，不是单独的买卖按钮。</span></div>
-          <div><strong>ATR</strong><span>描述真实波动范围，常用于风险尺度。</span></div>
-          <div><strong>成交量</strong><span>帮助判断价格变化是否伴随活跃成交。</span></div>
+          <div><strong>HH + HL</strong><span>更高高点与更高低点，是上升结构的候选定义。</span></div>
+          <div><strong>LH + LL</strong><span>更低高点与更低低点，是下降结构的候选定义。</span></div>
+          <div><strong>SMA / EMA</strong><span>平滑历史价格；EMA 更重视近期数据，但仍然滞后。</span></div>
+          <div><strong>结构破坏</strong><span>必须明确比较窗口、收盘确认还是盘中触碰。</span></div>
         </div>
+        <p className="kline-note">趋势线和摆动高低点若在看完整段行情后才画出，会产生事后选择；研究时必须写出实时可执行规则。</p>
+      </div>
+    );
+  }
+  if (lesson === 4) {
+    return (
+      <div className="kline-lesson-copy">
+        <h3>支撑阻力是候选区域，不是固定承诺</h3>
+        <p>可以用过去 n 根最高价和最低价构造候选区域，并使用收盘价和 ATR 确认突破，避免把一次盘中触碰当作有效突破。</p>
+        <div className="kline-formula"><code>阻力ₜ = max(Hₜ₋ₙ … Hₜ₋₁)</code><code>突破幅度 = (Cₜ − 阻力ₜ) ÷ ATRₜ</code></div>
+        <p className="kline-note">计算过去最高价时不能包含当前柱，否则规则会自我比较；窗口和确认阈值也应在验证前冻结。</p>
+      </div>
+    );
+  }
+  if (lesson === 5) {
+    return (
+      <div className="kline-lesson-copy">
+        <h3>指标是 K 线和成交量的派生量</h3>
+        <div className="kline-concept-grid">
+          <div><strong>量比 / VWAP / OBV</strong><span>观察活跃程度、成交均价和累积量价方向。</span></div>
+          <div><strong>RSI / Stochastic</strong><span>描述相对涨跌与区间位置，强趋势中可能长期钝化。</span></div>
+          <div><strong>MACD</strong><span>快慢 EMA 的差，描述趋势动量但具有滞后。</span></div>
+          <div><strong>ATR / 布林带</strong><span>描述波动和相对位置，不负责预测方向。</span></div>
+        </div>
+        <p className="kline-note">现货基础币数量、计价币成交额、合约张数和不同交易所成交量口径不同；使用指标前必须先统一数据。</p>
+      </div>
+    );
+  }
+  if (lesson === 6) {
+    return (
+      <div className="kline-lesson-copy">
+        <h3>形态名称必须变成数值条件</h3>
+        <div className="kline-rule-example">
+          <span className="bad">主观描述</span><p>“这根像锤子线，应该要反弹。”</p>
+          <ArrowRightOutlined />
+          <span className="good">算法定义</span><p>“下影线 ≥ 2×实体，上影线 ≤ 0.5×实体，且过去 10 根收益为负。”</p>
+        </div>
+        <p className="kline-note">定义完成后还要报告形态样本数、下一期条件收益、无条件基准、交易成本与样本外结果；测试很多形态时必须防止数据挖掘。</p>
       </div>
     );
   }
   return (
     <div className="kline-lesson-copy">
-      <h3>能回测的规则必须没有歧义</h3>
+      <h3>可回测规则必须只使用当时已知的数据</h3>
       <div className="kline-rule-example">
-        <span className="bad">模糊观察</span><p>“看起来要突破了，可以买入。”</p>
+        <span className="bad">未来信息</span><p>“本根收盘确认突破，并按本根收盘价成交。”</p>
         <ArrowRightOutlined />
-        <span className="good">可验证规则</span><p>“本根收盘价高于过去 20 根最高价，且成交量高于 20 根均量的 1.3 倍。”</p>
+        <span className="good">正确时序</span><p>“t 收盘确认信号，在 t+1 开盘或之后按明确成交模型执行。”</p>
       </div>
-      <p className="kline-note">策略在第 N 根 K 线作决定时，只能读取第 N 根及之前的数据；还要声明手续费、滑点和成交假设。</p>
+      <p className="kline-note">还要检查时间排序、重复、缺失、OHLC 合法性、时区、未收盘柱和跨周期重绘，并声明手续费、滑点与成交假设。</p>
     </div>
   );
 }
@@ -172,11 +242,11 @@ export default function KlineLearningPage() {
     <TradingPageShell
       eyebrow="LEARN · OBSERVE · VERIFY"
       title="K线学堂"
-      description="用真实离线行情认识 K 线，把读图直觉逐步转换为可计算、可回测的规则。教学内容不构成交易建议。"
+      description="系统学习 10 章、40 个 K 线与技术分析公式，并用真实离线行情把读图直觉转换为可计算、可验证的规则。教学内容不构成交易建议。"
       actions={
         <>
           <Button icon={<BookOutlined />} onClick={() => navigate("/academy")}>返回学堂</Button>
-          <Button icon={<ExperimentOutlined />} onClick={() => navigate("/backtests")}>进入策略回测</Button>
+          <Button icon={<ExperimentOutlined />} onClick={() => navigate("/backtest-learning")}>继续回测学堂</Button>
         </>
       }
       aside={
@@ -188,19 +258,10 @@ export default function KlineLearningPage() {
         </QuantGlowCard>
       }
     >
-      <section className="kline-learning-layout">
-        <aside className="kline-lesson-nav">
-          <div className="kline-lesson-nav-title"><BookOutlined /><span>学习路径</span></div>
-          {LESSONS.map((item, index) => (
-            <button key={item.title} type="button" className={lesson === index ? "active" : ""} onClick={() => setLesson(index)}>
-              <b>{String(index + 1).padStart(2, "0")}</b>
-              <span><strong>{item.title}</strong><small>{item.short}</small></span>
-              {lesson > index ? <CheckCircleOutlined /> : null}
-            </button>
-          ))}
-        </aside>
-
+      <LearningCourseNav />
+      <section className="learning-full-width">
         <div className="kline-learning-main">
+          <FormulaHandbook domain="kline" />
           <QuantGlowCard
             title={<SectionHeader title={LESSONS[lesson].title} description={LESSONS[lesson].description} />}
             badge={<StatusPill tone="ai">第 {lesson + 1} 课</StatusPill>}
@@ -245,7 +306,7 @@ export default function KlineLearningPage() {
             {lesson < LESSONS.length - 1 ? (
               <Button type="primary" onClick={() => setLesson((value) => Math.min(LESSONS.length - 1, value + 1))}>下一课 <ArrowRightOutlined /></Button>
             ) : (
-              <Button type="primary" onClick={() => navigate("/backtests")}>带着规则去回测 <ArrowRightOutlined /></Button>
+              <Button type="primary" onClick={() => navigate("/backtest-learning")}>继续学习回测方法 <ArrowRightOutlined /></Button>
             )}
           </div>
         </div>

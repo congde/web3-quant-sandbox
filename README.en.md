@@ -147,7 +147,7 @@ python app.py
 | Feature | Web route | Main code paths | Notes |
 | --- | --- | --- | --- |
 | Market dashboard | `/trading` | `src/dashboard/`, `src/web/src/pages/trading/DashboardPage.tsx` | Multi-asset quotes, K-line charts, trading signals, risk summaries, and execution entry points |
-| Public learning academy | `/academy`, `/math-learning`, `/backtest-learning`, `/kline-learning`, `/risk-learning` | `src/web/src/pages/learning/` | Foundational math, backtesting, K-line, diagnostic analysis, asset-management, and risk-control courses; the math, backtesting, K-line, and risk courses include interactive labs |
+| Public learning academy | `/academy`, `/math-learning`, `/backtest-learning`, `/kline-learning`, `/risk-learning` | `src/web/src/pages/learning/` | Quantitative math, backtesting, K-line, diagnostic analysis, asset-management, and risk-control courses; math, K-line, backtesting, and risk include 169 formulas, 43 chapter guides, search, progress, exercises, pitfalls, and authoritative references, with interactive labs retained for K-line, backtesting, and risk |
 | Opportunity radar | `/radar` | `src/dashboard/opportunity.py`, `src/web/src/pages/trading/RadarPage.tsx` | Scans opportunities with fund flow, trend, on-chain, and risk signals; labels hot paths, cold paths, and blocked paths |
 | Factor mining | `/factor-mining` | `src/factor_mining/`, `src/web/src/pages/trading/FactorMiningPage.tsx` | GP/ML/template/LLM candidate generation and IC/RIC validation; hands off via `backtest_spec` to strategy backtests |
 | Data source monitor | `/data-sources` | `src/dashboard/snapshot.py`, `src/dashboard/catalog.py` | Shows offline samples, online snapshots, API status, and research-draft gates |

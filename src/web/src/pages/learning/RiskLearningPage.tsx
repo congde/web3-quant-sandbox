@@ -16,7 +16,10 @@ import {
   StatusPill,
   TradingPageShell,
 } from "../trading/TradingPageShell";
+import { FormulaHandbook } from "./FormulaHandbook";
 import { Abs, Fn, Fraction, Symbol as Sym } from "./FormulaNotation";
+import { LearningCourseNav } from "./LearningCourseNav";
+import "./learning-layout.css";
 import "./risk-learning.css";
 
 const LESSONS = [
@@ -238,26 +241,23 @@ export default function RiskLearningPage() {
   }
 
   return <TradingPageShell
-    eyebrow="RISK FIRST · MEASURE → LIMIT → BLOCK"
+    eyebrow="RISK SYSTEM · 8 类公式 → 度量 → 门禁"
     title="风控学堂"
-    description="在下单前计算最坏损失，在异常扩大前限制风险，在系统不可控时停止交易。课程使用项目真实风控规则，仅用于公益教学和模拟。"
-    actions={<><Button icon={<BookOutlined />} onClick={() => navigate("/academy")}>返回学堂</Button><Button icon={<SafetyOutlined />} onClick={() => navigate("/risk")}>进入风控中心</Button></>}
-    aside={<QuantGlowCard className="risk-progress-card"><span>课程进度</span><strong>{lesson + 1} / {LESSONS.length}</strong><div><i style={{ width: `${(lesson + 1) / LESSONS.length * 100}%` }} /></div><small>当前：{LESSONS[lesson].title}</small></QuantGlowCard>}
+    description="系统学习 29 个风控公式：暴露、仓位、盈亏结构、组合风险、下行尾部、流动性执行、衍生品与链上风险，并将计算结果转成门禁。"
+    actions={<><Button icon={<BookOutlined />} onClick={() => navigate("/academy")}>返回学堂</Button><Button icon={<SafetyOutlined />} onClick={() => navigate("/math-learning")}>复习数学基础</Button></>}
+    aside={<QuantGlowCard className="risk-progress-card"><span>互动实验进度</span><strong>{lesson + 1} / {LESSONS.length}</strong><div><i style={{ width: `${(lesson + 1) / LESSONS.length * 100}%` }} /></div><small>公式手册：8 类 / 29 个公式</small><small>当前实验：{LESSONS[lesson].title}</small></QuantGlowCard>}
   >
-    <section className="risk-learning-layout">
-      <aside className="risk-lesson-nav">
-        <div className="risk-nav-heading"><SafetyOutlined /><span>风险防线</span></div>
-        {LESSONS.map((item, index) => <button type="button" key={item.title} className={index === lesson ? "active" : ""} onClick={() => move(index)}><b>{String(index + 1).padStart(2, "0")}</b><span><strong>{item.title}</strong><small>{item.short}</small></span>{index < lesson ? <CheckCircleFilled /> : null}</button>)}
-        <div className="risk-source-note"><SafetyOutlined /><p>阈值与 <code>src/risk/config.py</code> 默认规则保持一致。</p></div>
-      </aside>
+    <LearningCourseNav />
+    <section className="learning-full-width">
       <main className="risk-learning-main">
+        <FormulaHandbook domain="risk" />
         <QuantGlowCard title={<SectionHeader title={LESSONS[lesson].title} description="理解风险、计算暴露、观察门禁结果" />} badge={<StatusPill tone="loss">互动演练</StatusPill>}>{LABS[lesson]}</QuantGlowCard>
         <QuantGlowCard className="risk-quiz-card" title={<SectionHeader title="风险判断题" description="风控首先是一套清晰的判断规则" />} badge={<StatusPill tone="ai">1 题</StatusPill>}>
           <strong className="risk-quiz-question">{quiz.question}</strong>
           <div className="risk-quiz-options">{quiz.options.map((option, index) => <button type="button" key={option} className={answer === index ? (index === quiz.answer ? "correct" : "wrong") : ""} onClick={() => setAnswer(index)}><i>{String.fromCharCode(65 + index)}</i><span>{option}</span>{answer === index ? (index === quiz.answer ? <CheckCircleFilled /> : <CloseCircleFilled />) : null}</button>)}</div>
           {answer !== null ? <div className={`risk-quiz-feedback ${answer === quiz.answer ? "correct" : "wrong"}`}><strong>{answer === quiz.answer ? "判断正确" : "这会放大风险"}</strong><span>{quiz.reason}</span></div> : null}
         </QuantGlowCard>
-        <div className="risk-lesson-actions"><Button disabled={lesson === 0} onClick={() => move(lesson - 1)}>上一课</Button>{lesson < LESSONS.length - 1 ? <Button type="primary" onClick={() => move(lesson + 1)}>下一课 <ArrowRightOutlined /></Button> : <Button type="primary" onClick={() => navigate("/risk")}>进入风控中心 <ArrowRightOutlined /></Button>}</div>
+        <div className="risk-lesson-actions"><Button disabled={lesson === 0} onClick={() => move(lesson - 1)}>上一课</Button>{lesson < LESSONS.length - 1 ? <Button type="primary" onClick={() => move(lesson + 1)}>下一课 <ArrowRightOutlined /></Button> : <Button type="primary" onClick={() => navigate("/academy")}>完成课程，返回学堂 <ArrowRightOutlined /></Button>}</div>
       </main>
     </section>
   </TradingPageShell>;
