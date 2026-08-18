@@ -3,7 +3,7 @@
   "source": "snapshot",
   "provider": "binance",
   "full": true,
-  "count": 3649,
+  "count": 3681,
   "markets": [
     {
       "symbol": "ETH-BTC",
@@ -2326,7 +2326,7 @@
       "symbol": "XRP-BNB",
       "baseCurrency": "XRP",
       "quoteCurrency": "BNB",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "XRPBNB"
     },
     {
@@ -3250,7 +3250,7 @@
       "symbol": "ONG-BTC",
       "baseCurrency": "ONG",
       "quoteCurrency": "BTC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "ONGBTC"
     },
     {
@@ -3789,7 +3789,7 @@
       "symbol": "ALGO-BTC",
       "baseCurrency": "ALGO",
       "quoteCurrency": "BTC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "ALGOBTC"
     },
     {
@@ -10019,7 +10019,7 @@
       "symbol": "AR-BTC",
       "baseCurrency": "AR",
       "quoteCurrency": "BTC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "ARBTC"
     },
     {
@@ -10124,7 +10124,7 @@
       "symbol": "LPT-BTC",
       "baseCurrency": "LPT",
       "quoteCurrency": "BTC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "LPTBTC"
     },
     {
@@ -10845,7 +10845,7 @@
       "symbol": "QNT-BTC",
       "baseCurrency": "QNT",
       "quoteCurrency": "BTC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "QNTBTC"
     },
     {
@@ -12476,7 +12476,7 @@
       "symbol": "PYR-USDT",
       "baseCurrency": "PYR",
       "quoteCurrency": "USDT",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "PYRUSDT"
     },
     {
@@ -13372,7 +13372,7 @@
       "symbol": "BTTC-TRY",
       "baseCurrency": "BTTC",
       "quoteCurrency": "TRY",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "BTTCTRY"
     },
     {
@@ -14541,7 +14541,7 @@
       "symbol": "STORJ-TRY",
       "baseCurrency": "STORJ",
       "quoteCurrency": "TRY",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "STORJTRY"
     },
     {
@@ -14758,7 +14758,7 @@
       "symbol": "APT-BTC",
       "baseCurrency": "APT",
       "quoteCurrency": "BTC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "APTBTC"
     },
     {
@@ -14863,7 +14863,7 @@
       "symbol": "HFT-USDT",
       "baseCurrency": "HFT",
       "quoteCurrency": "USDT",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "HFTUSDT"
     },
     {
@@ -16473,7 +16473,7 @@
       "symbol": "PIVX-USDT",
       "baseCurrency": "PIVX",
       "quoteCurrency": "USDT",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "PIVXUSDT"
     },
     {
@@ -16536,14 +16536,14 @@
       "symbol": "VIC-USDT",
       "baseCurrency": "VIC",
       "quoteCurrency": "USDT",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "VICUSDT"
     },
     {
       "symbol": "VIC-TRY",
       "baseCurrency": "VIC",
       "quoteCurrency": "TRY",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "VICTRY"
     },
     {
@@ -16606,7 +16606,7 @@
       "symbol": "VANRY-USDT",
       "baseCurrency": "VANRY",
       "quoteCurrency": "USDT",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "VANRYUSDT"
     },
     {
@@ -16627,7 +16627,7 @@
       "symbol": "AEUR-USDT",
       "baseCurrency": "AEUR",
       "quoteCurrency": "USDT",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "AEURUSDT"
     },
     {
@@ -16830,7 +16830,7 @@
       "symbol": "VANRY-TRY",
       "baseCurrency": "VANRY",
       "quoteCurrency": "TRY",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "VANRYTRY"
     },
     {
@@ -19091,7 +19091,7 @@
       "symbol": "POL-BTC",
       "baseCurrency": "POL",
       "quoteCurrency": "BTC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "POLBTC"
     },
     {
@@ -19791,7 +19791,7 @@
       "symbol": "ACX-USDT",
       "baseCurrency": "ACX",
       "quoteCurrency": "USDT",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "ACXUSDT"
     },
     {
@@ -19833,7 +19833,7 @@
       "symbol": "MOVE-TRY",
       "baseCurrency": "MOVE",
       "quoteCurrency": "TRY",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "MOVETRY"
     },
     {
@@ -19868,7 +19868,7 @@
       "symbol": "ACX-USDC",
       "baseCurrency": "ACX",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "ACXUSDC"
     },
     {
@@ -19896,7 +19896,7 @@
       "symbol": "ACX-TRY",
       "baseCurrency": "ACX",
       "quoteCurrency": "TRY",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "ACXTRY"
     },
     {
@@ -20134,7 +20134,7 @@
       "symbol": "MOVE-USDC",
       "baseCurrency": "MOVE",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "MOVEUSDC"
     },
     {
@@ -20876,7 +20876,7 @@
       "symbol": "CVC-USDC",
       "baseCurrency": "CVC",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "CVCUSDC"
     },
     {
@@ -20946,7 +20946,7 @@
       "symbol": "RPL-USDC",
       "baseCurrency": "RPL",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "RPLUSDC"
     },
     {
@@ -21037,7 +21037,7 @@
       "symbol": "VANRY-USDC",
       "baseCurrency": "VANRY",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "VANRYUSDC"
     },
     {
@@ -21548,7 +21548,7 @@
       "symbol": "SIGN-BNB",
       "baseCurrency": "SIGN",
       "quoteCurrency": "BNB",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "SIGNBNB"
     },
     {
@@ -21849,7 +21849,7 @@
       "symbol": "A-USDC",
       "baseCurrency": "A",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "AUSDC"
     },
     {
@@ -21996,14 +21996,14 @@
       "symbol": "MASK-USDC",
       "baseCurrency": "MASK",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "MASKUSDC"
     },
     {
       "symbol": "SUSHI-USDC",
       "baseCurrency": "SUSHI",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "SUSHIUSDC"
     },
     {
@@ -22122,14 +22122,14 @@
       "symbol": "LPT-USDC",
       "baseCurrency": "LPT",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "LPTUSDC"
     },
     {
       "symbol": "RVN-USDC",
       "baseCurrency": "RVN",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "RVNUSDC"
     },
     {
@@ -22213,7 +22213,7 @@
       "symbol": "ERA-BNB",
       "baseCurrency": "ERA",
       "quoteCurrency": "BNB",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "ERABNB"
     },
     {
@@ -22423,7 +22423,7 @@
       "symbol": "MAGIC-USDC",
       "baseCurrency": "MAGIC",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "MAGICUSDC"
     },
     {
@@ -22479,7 +22479,7 @@
       "symbol": "CYBER-USDC",
       "baseCurrency": "CYBER",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "CYBERUSDC"
     },
     {
@@ -22493,7 +22493,7 @@
       "symbol": "SKL-USDC",
       "baseCurrency": "SKL",
       "quoteCurrency": "USDC",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "SKLUSDC"
     },
     {
@@ -23340,7 +23340,7 @@
       "symbol": "WAL-FDUSD",
       "baseCurrency": "WAL",
       "quoteCurrency": "FDUSD",
-      "enableTrading": true,
+      "enableTrading": false,
       "providerSymbol": "WALFDUSD"
     },
     {
@@ -25547,13 +25547,237 @@
       "quoteCurrency": "TRY",
       "enableTrading": true,
       "providerSymbol": "AEROTRY"
+    },
+    {
+      "symbol": "AXTIB-USDT",
+      "baseCurrency": "AXTIB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "AXTIBUSDT"
+    },
+    {
+      "symbol": "CRWVB-USDT",
+      "baseCurrency": "CRWVB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "CRWVBUSDT"
+    },
+    {
+      "symbol": "INTWB-USDT",
+      "baseCurrency": "INTWB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "INTWBUSDT"
+    },
+    {
+      "symbol": "KORUB-USDT",
+      "baseCurrency": "KORUB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "KORUBUSDT"
+    },
+    {
+      "symbol": "MUUB-USDT",
+      "baseCurrency": "MUUB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "MUUBUSDT"
+    },
+    {
+      "symbol": "MVLLB-USDT",
+      "baseCurrency": "MVLLB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "MVLLBUSDT"
+    },
+    {
+      "symbol": "ORCLB-USDT",
+      "baseCurrency": "ORCLB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "ORCLBUSDT"
+    },
+    {
+      "symbol": "QNTB-USDT",
+      "baseCurrency": "QNTB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "QNTBUSDT"
+    },
+    {
+      "symbol": "SNXXB-USDT",
+      "baseCurrency": "SNXXB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "SNXXBUSDT"
+    },
+    {
+      "symbol": "TQQQB-USDT",
+      "baseCurrency": "TQQQB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "TQQQBUSDT"
+    },
+    {
+      "symbol": "AAPLB-USDT",
+      "baseCurrency": "AAPLB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "AAPLBUSDT"
+    },
+    {
+      "symbol": "AMATB-USDT",
+      "baseCurrency": "AMATB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "AMATBUSDT"
+    },
+    {
+      "symbol": "AMZNB-USDT",
+      "baseCurrency": "AMZNB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "AMZNBUSDT"
+    },
+    {
+      "symbol": "BEB-USDT",
+      "baseCurrency": "BEB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "BEBUSDT"
+    },
+    {
+      "symbol": "DELLB-USDT",
+      "baseCurrency": "DELLB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "DELLBUSDT"
+    },
+    {
+      "symbol": "FLNCB-USDT",
+      "baseCurrency": "FLNCB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "FLNCBUSDT"
+    },
+    {
+      "symbol": "GSB-USDT",
+      "baseCurrency": "GSB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "GSBUSDT"
+    },
+    {
+      "symbol": "PYPLB-USDT",
+      "baseCurrency": "PYPLB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "PYPLBUSDT"
+    },
+    {
+      "symbol": "SMHB-USDT",
+      "baseCurrency": "SMHB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "SMHBUSDT"
+    },
+    {
+      "symbol": "SOXSB-USDT",
+      "baseCurrency": "SOXSB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "SOXSBUSDT"
+    },
+    {
+      "symbol": "U-USD",
+      "baseCurrency": "U",
+      "quoteCurrency": "USD",
+      "enableTrading": true,
+      "providerSymbol": "UUSD"
+    },
+    {
+      "symbol": "ASMLB-USDT",
+      "baseCurrency": "ASMLB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "ASMLBUSDT"
+    },
+    {
+      "symbol": "ASTSB-USDT",
+      "baseCurrency": "ASTSB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "ASTSBUSDT"
+    },
+    {
+      "symbol": "BMNRB-USDT",
+      "baseCurrency": "BMNRB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "BMNRBUSDT"
+    },
+    {
+      "symbol": "COHRB-USDT",
+      "baseCurrency": "COHRB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "COHRBUSDT"
+    },
+    {
+      "symbol": "CRDOB-USDT",
+      "baseCurrency": "CRDOB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "CRDOBUSDT"
+    },
+    {
+      "symbol": "IRENB-USDT",
+      "baseCurrency": "IRENB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "IRENBUSDT"
+    },
+    {
+      "symbol": "NFLXB-USDT",
+      "baseCurrency": "NFLXB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "NFLXBUSDT"
+    },
+    {
+      "symbol": "SMCIB-USDT",
+      "baseCurrency": "SMCIB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "SMCIBUSDT"
+    },
+    {
+      "symbol": "USARB-USDT",
+      "baseCurrency": "USARB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "USARBUSDT"
+    },
+    {
+      "symbol": "ALABB-USDT",
+      "baseCurrency": "ALABB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "ALABBUSDT"
+    },
+    {
+      "symbol": "GMEB-USDT",
+      "baseCurrency": "GMEB",
+      "quoteCurrency": "USDT",
+      "enableTrading": true,
+      "providerSymbol": "GMEBUSDT"
     }
   ],
   "snapshot": {
     "name": "binance_markets",
-    "saved_at": "2026-07-21T03:55:22.071087+00:00",
+    "saved_at": "2026-08-18T06:38:25.878283+00:00",
     "origin": "live",
-    "history_id": "2026-07-21T03-55-22.071087+00-00",
-    "history_path": "data/dashboard/snapshots/history/binance_markets/2026-07-21T03-55-22.071087+00-00.json"
+    "history_id": "2026-08-18T06-38-25.878283+00-00",
+    "history_path": "data/dashboard/snapshots/history/binance_markets/2026-08-18T06-38-25.878283+00-00.json"
   }
 }

@@ -6,6 +6,7 @@ import {
   FileSearchOutlined,
   FundOutlined,
   RadarChartOutlined,
+  ReadOutlined,
   SafetyOutlined,
   SwapOutlined,
 } from "@ant-design/icons";
@@ -19,6 +20,7 @@ const { Header, Sider, Content } = Layout;
 
 const NAV_ITEMS = [
   { key: "/trading", icon: <DashboardOutlined />, label: "市场总览" },
+  { key: "/academy", icon: <ReadOutlined />, label: "学堂" },
   { key: "/radar", icon: <RadarChartOutlined />, label: "机会雷达" },
   { key: "/factor-mining", icon: <FundOutlined />, label: "因子挖掘" },
   { key: "/backtests", icon: <BarChartOutlined />, label: "策略回测" },

@@ -12,6 +12,10 @@ import BacktestsPage from "./pages/trading/BacktestsPage";
 
 import DashboardPage from "./pages/trading/DashboardPage";
 
+import AcademyPage from "./pages/learning/AcademyPage";
+
+import KlineLearningPage from "./pages/learning/KlineLearningPage";
+
 import DataSourcesPage from "./pages/trading/DataSourcesPage";
 
 import FactorMiningPage from "./pages/trading/FactorMiningPage";
@@ -48,6 +52,10 @@ export default function App() {
                 <Route path="/dashboard" element={<Navigate to="/trading" replace />} />
 
                 <Route path="/trading" element={<DashboardPage />} />
+
+                <Route path="/academy" element={<AcademyPage />} />
+
+                <Route path="/kline-learning" element={<KlineLearningPage />} />
 
                 <Route path="/radar" element={<RadarPage />} />
 

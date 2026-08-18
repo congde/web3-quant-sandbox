@@ -31,12 +31,32 @@ def _free_port() -> int:
         return int(sock.getsockname()[1])
 
 
+def _start_server(app_module, *, attempts: int = 32):
+    """Bind a free port, retrying WinError 10013 races on Windows."""
+    last_error: OSError | None = None
+    for _ in range(attempts):
+        port = _free_port()
+        try:
+            httpd = app_module.SandboxHTTPServer(("127.0.0.1", port), app_module.Handler)
+        except OSError as exc:
+            # WinError 10013 / EADDRINUSE: port became unavailable between probe and bind.
+            if getattr(exc, "winerror", None) not in {10013, 10048} and getattr(exc, "errno", None) not in {
+                getattr(__import__("errno"), "EADDRINUSE", 98),
+                getattr(__import__("errno"), "EACCES", 13),
+            }:
+                raise
+            last_error = exc
+            continue
+        thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+        thread.start()
+        return httpd, thread, port
+    assert last_error is not None
+    raise last_error
+
+
 @pytest.fixture
 def server(app_module):
-    port = _free_port()
-    httpd = app_module.SandboxHTTPServer(("127.0.0.1", port), app_module.Handler)
-    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
-    thread.start()
+    httpd, thread, port = _start_server(app_module)
     try:
         yield f"http://127.0.0.1:{port}"
     finally:
