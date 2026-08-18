@@ -1,0 +1,49 @@
+.formula-mastery { background: linear-gradient(135deg, rgba(var(--formula-accent-rgb), .06), rgba(34, 211, 238, .025)); border: 1px solid rgba(var(--formula-accent-rgb), .24); border-radius: 9px; padding: 16px; }
+.formula-mastery > header { align-items: center; display: flex; justify-content: space-between; margin-bottom: 13px; }
+.formula-mastery > header > div { align-items: center; display: flex; gap: 9px; }
+.formula-mastery > header > div > svg { color: var(--formula-accent); font-size: 19px; }
+.formula-mastery > header span { display: flex; flex-direction: column; gap: 2px; }
+.formula-mastery > header strong { font-size: 14px; }
+.formula-mastery > header small { color: var(--qa-text-2); font-size: 9px; }
+.formula-mastery > header > b { background: rgba(var(--formula-accent-rgb), .1); border: 1px solid rgba(var(--formula-accent-rgb), .2); border-radius: 999px; color: var(--formula-accent); font-family: ui-monospace, Consolas, monospace; font-size: 9px; padding: 5px 8px; }
+.formula-mastery-questions { display: grid; gap: 9px; grid-template-columns: repeat(3, 1fr); }
+.formula-mastery-questions > article { background: rgba(148, 163, 184, .035); border: 1px solid var(--border); border-radius: 8px; min-width: 0; padding: 12px; }
+.formula-mastery-questions > article.correct { border-color: rgba(31, 157, 114, .4); }
+.formula-mastery-questions > article.wrong { border-color: rgba(211, 84, 58, .4); }
+.formula-mastery-question-title { align-items: center; display: flex; gap: 6px; }
+.formula-mastery-question-title > span { color: var(--formula-accent); font-family: ui-monospace, Consolas, monospace; font-size: 8px; }
+.formula-mastery-question-title > b { flex: 1; font-size: 10px; }
+.formula-mastery-question-title > svg { color: #1f9d72; }
+.formula-mastery-questions > article.wrong .formula-mastery-question-title > svg { color: #d3543a; }
+.formula-mastery-questions > article > p { font-size: 11px; line-height: 1.6; min-height: 52px; }
+.formula-mastery-options { display: flex; flex-direction: column; gap: 6px; }
+.formula-mastery-options button { align-items: flex-start; background: rgba(148, 163, 184, .045); border: 1px solid transparent; border-radius: 6px; color: var(--qa-text-2); cursor: pointer; display: grid; font: inherit; gap: 7px; grid-template-columns: 20px minmax(0, 1fr); padding: 8px; text-align: left; }
+.formula-mastery-options button:hover:not(:disabled), .formula-mastery-options button.selected { border-color: rgba(var(--formula-accent-rgb), .4); color: var(--qa-text-1); }
+.formula-mastery-options button:disabled { cursor: default; }
+.formula-mastery-options button > i { align-items: center; background: rgba(var(--formula-accent-rgb), .1); border-radius: 50%; color: var(--formula-accent); display: flex; font-size: 8px; font-style: normal; height: 20px; justify-content: center; width: 20px; }
+.formula-mastery-options button > span { font-size: 9px; line-height: 1.55; overflow-wrap: anywhere; }
+.formula-mastery-feedback { border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 3px; margin-top: 9px; padding-top: 8px; }
+.formula-mastery-feedback b { color: var(--formula-accent); font-size: 9px; }
+.formula-mastery-questions > article.wrong .formula-mastery-feedback b { color: #d3543a; }
+.formula-mastery-feedback span { color: var(--qa-text-2); font-size: 9px; line-height: 1.55; }
+.formula-mastery > footer { align-items: center; display: flex; justify-content: space-between; margin-top: 12px; }
+.formula-mastery > footer > span { color: var(--qa-text-2); font-size: 9px; }
+.formula-mastery button { font-family: inherit; }
+.formula-mastery > footer > button, .formula-mastery-complete > button { align-items: center; background: var(--formula-accent); border: 0; border-radius: 7px; color: #fff; cursor: pointer; display: flex; font-size: 10px; gap: 6px; padding: 8px 11px; }
+.formula-mastery > footer > button:disabled { cursor: not-allowed; opacity: .4; }
+.formula-mastery-complete { align-items: center; display: grid; gap: 11px; grid-template-columns: 28px 1fr auto; }
+.formula-mastery-complete > svg { color: #1f9d72; font-size: 24px; }
+.formula-mastery-complete > div { display: flex; flex-direction: column; gap: 3px; }
+.formula-mastery-complete > div strong { font-size: 13px; }
+.formula-mastery-complete > div span { color: var(--qa-text-2); font-size: 10px; }
+
+@media (max-width: 1180px) {
+  .formula-mastery-questions { grid-template-columns: 1fr; }
+  .formula-mastery-questions > article > p { min-height: 0; }
+}
+
+@media (max-width: 760px) {
+  .formula-mastery > header, .formula-mastery > footer { align-items: flex-start; flex-direction: column; gap: 9px; }
+  .formula-mastery-complete { grid-template-columns: 25px 1fr; }
+  .formula-mastery-complete > button { grid-column: 1 / -1; justify-self: start; }
+}

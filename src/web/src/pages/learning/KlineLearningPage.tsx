@@ -1,7 +1,9 @@
 import {
+  ArrowLeftOutlined,
   ArrowRightOutlined,
   BookOutlined,
   ExperimentOutlined,
+  ReloadOutlined,
 } from "@ant-design/icons";
 import { Button, Select, Slider, Spin } from "antd";
 import { useEffect, useMemo, useState } from "react";
@@ -17,6 +19,13 @@ import {
   TradingPageShell,
 } from "../trading/TradingPageShell";
 import { FormulaHandbook } from "./FormulaHandbook";
+import { KLINE_SYSTEM } from "./KlineLearningContent";
+import {
+  buildKlineStudy,
+  getDefaultKlineStudyParameters,
+  getKlineStudyControls,
+  type KlineStudyParameters,
+} from "./KlineStudyEngine";
 import { LearningCourseNav } from "./LearningCourseNav";
 import "./kline-learning.css";
 import "./learning-layout.css";
@@ -70,6 +79,36 @@ const TIMEFRAMES = [
   { value: "4hour", label: "4 小时" },
   { value: "1day", label: "1 日" },
 ];
+
+const GROUP_TO_LESSON: Record<string, number> = {
+  "OHLCV 与价格变换": 0,
+  "周期聚合与时间边界": 1,
+  "实体影线与柱内强度": 2,
+  "趋势与市场结构": 3,
+  "支撑阻力与突破": 4,
+  "成交量与价格确认": 5,
+  "动量与震荡指标": 5,
+  "波动率与通道": 5,
+  "形态算法化与统计验证": 6,
+  "数据质量与可回测规则": 7,
+};
+
+const LESSON_VISUALS = [
+  { group: "OHLCV 与价格变换", formula: "实体长度" },
+  { group: "周期聚合与时间边界", formula: "聚合开盘" },
+  { group: "实体影线与柱内强度", formula: "实体占比" },
+  { group: "趋势与市场结构", formula: "单期收盘收益" },
+  { group: "支撑阻力与突破", formula: "滚动阻力" },
+  { group: "成交量与价格确认", formula: "成交量均线" },
+  { group: "形态算法化与统计验证", formula: "十字星规则" },
+  { group: "数据质量与可回测规则", formula: "OHLC 合法性" },
+] as const;
+
+const KLINE_FORMULAS = KLINE_SYSTEM.groups.flatMap((group) => group.formulas.map((formula, index) => ({
+  formula,
+  formulaIndex: index,
+  groupTitle: group.title,
+})));
 
 function formatPrice(value: number) {
   if (!Number.isFinite(value)) return "—";
@@ -211,6 +250,9 @@ export default function KlineLearningPage() {
   const [payload, setPayload] = useState<KlineAnalysisPayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [activeFormula, setActiveFormula] = useState("实体长度");
+  const [activeGroup, setActiveGroup] = useState("OHLCV 与价格变换");
+  const [studyParameters, setStudyParameters] = useState<Record<string, KlineStudyParameters>>({});
 
   useEffect(() => {
     let alive = true;
@@ -237,6 +279,21 @@ export default function KlineLearningPage() {
     const amplitude = selected.open ? ((selected.high - selected.low) / selected.open) * 100 : 0;
     return { change, amplitude };
   }, [selected]);
+  const activeParameters = useMemo(() => ({
+    ...getDefaultKlineStudyParameters(activeFormula),
+    ...(studyParameters[activeFormula] ?? {}),
+  }), [activeFormula, studyParameters]);
+  const studyControls = useMemo(() => getKlineStudyControls(activeFormula), [activeFormula]);
+  const study = useMemo(() => buildKlineStudy(candles, activeFormula, selectedIndex, activeParameters), [candles, activeFormula, selectedIndex, activeParameters]);
+  const activeFormulaIndex = Math.max(0, KLINE_FORMULAS.findIndex((entry) => entry.formula.name === activeFormula));
+
+  function selectFormulaAt(index: number) {
+    const entry = KLINE_FORMULAS[Math.max(0, Math.min(KLINE_FORMULAS.length - 1, index))];
+    if (!entry) return;
+    setActiveFormula(entry.formula.name);
+    setActiveGroup(entry.groupTitle);
+    setLesson(GROUP_TO_LESSON[entry.groupTitle] ?? 0);
+  }
 
   return (
     <TradingPageShell
@@ -261,7 +318,16 @@ export default function KlineLearningPage() {
       <LearningCourseNav />
       <section className="learning-full-width">
         <div className="kline-learning-main">
-          <FormulaHandbook domain="kline" />
+          <FormulaHandbook
+            domain="kline"
+            activeGroupTitle={activeGroup}
+            visualFormulaName={activeFormula}
+            onFormulaChange={(selection) => {
+              setActiveFormula(selection.formula.name);
+              setActiveGroup(selection.groupTitle);
+              setLesson(GROUP_TO_LESSON[selection.groupTitle] ?? 0);
+            }}
+          />
           <QuantGlowCard
             title={<SectionHeader title={LESSONS[lesson].title} description={LESSONS[lesson].description} />}
             badge={<StatusPill tone="ai">第 {lesson + 1} 课</StatusPill>}
@@ -293,18 +359,60 @@ export default function KlineLearningPage() {
 
             <QuantGlowCard
               className="kline-context-card"
-              title={<SectionHeader title="放回行情上下文" description={`${payload?.symbol ?? "BTC-USDT"} · ${TIMEFRAMES.find((item) => item.value === timeframe)?.label}`} />}
+              title={<SectionHeader title={study.visualTitle} description={`${payload?.symbol ?? "BTC-USDT"} · ${TIMEFRAMES.find((item) => item.value === timeframe)?.label} · ${study.formulaName}`} />}
               badge={<Select value={timeframe} options={TIMEFRAMES} onChange={setTimeframe} style={{ width: 116 }} />}
             >
-              <KlineAnalysisChart candles={candles} showMa20 showMa60={false} showVolume height={390} />
-              <div className="kline-chart-legend"><span><i className="ma" />MA20：最近 20 根收盘价均值</span><span><i className="volume" />底部柱：成交量</span></div>
+              <div className="kline-study-toolbar">
+                <div className="kline-formula-stepper" aria-label="公式切换">
+                  <Button size="small" icon={<ArrowLeftOutlined />} disabled={activeFormulaIndex === 0} onClick={() => selectFormulaAt(activeFormulaIndex - 1)}>上一公式</Button>
+                  <span><b>{activeFormulaIndex + 1}</b> / {KLINE_FORMULAS.length}</span>
+                  <Button size="small" disabled={activeFormulaIndex === KLINE_FORMULAS.length - 1} onClick={() => selectFormulaAt(activeFormulaIndex + 1)}>下一公式<ArrowRightOutlined /></Button>
+                </div>
+                <div className="kline-parameter-controls">
+                  {studyControls.length ? studyControls.map((control) => (
+                    <label key={control.key}>
+                      <span>{control.label}<b>{activeParameters[control.key]}{control.suffix}</b></span>
+                      <Slider
+                        min={control.min}
+                        max={control.max}
+                        step={control.step}
+                        value={activeParameters[control.key]}
+                        onChange={(value) => setStudyParameters((current) => ({ ...current, [activeFormula]: { ...(current[activeFormula] ?? {}), [control.key]: value } }))}
+                        tooltip={{ formatter: (value) => `${value}${control.suffix}` }}
+                      />
+                    </label>
+                  )) : <span className="kline-fixed-formula">本公式没有自由参数；拖动左侧样本序号观察逐根计算。</span>}
+                  {studyControls.length ? <Button size="small" type="text" icon={<ReloadOutlined />} onClick={() => setStudyParameters((current) => { const next = { ...current }; delete next[activeFormula]; return next; })}>恢复默认</Button> : null}
+                </div>
+              </div>
+              <KlineAnalysisChart candles={candles} showMa20={false} showMa60={false} showVolume={study.showVolume} study={study} height={390} />
+              <div className="kline-study-result" aria-live="polite">
+                <div><span>当前公式</span><strong>{study.formulaName}</strong></div>
+                <div><span>{study.currentLabel}</span><strong>{study.currentValue}</strong></div>
+                <p>{study.explanation}</p>
+              </div>
+              <div className="kline-chart-legend">
+                {study.series.map((series) => <span key={series.label}><i style={{ background: series.color }} />{series.label}</span>)}
+                {study.showVolume ? <span><i className="volume" />成交量</span> : null}
+                {study.markers.length ? <span><i className="marker" />条件命中 / 当前样本</span> : null}
+              </div>
             </QuantGlowCard>
           </div>
 
           <div className="kline-lesson-actions">
-            <Button disabled={lesson === 0} onClick={() => setLesson((value) => Math.max(0, value - 1))}>上一课</Button>
+            <Button disabled={lesson === 0} onClick={() => {
+              const next = Math.max(0, lesson - 1);
+              setLesson(next);
+              setActiveGroup(LESSON_VISUALS[next].group);
+              setActiveFormula(LESSON_VISUALS[next].formula);
+            }}>上一课</Button>
             {lesson < LESSONS.length - 1 ? (
-              <Button type="primary" onClick={() => setLesson((value) => Math.min(LESSONS.length - 1, value + 1))}>下一课 <ArrowRightOutlined /></Button>
+              <Button type="primary" onClick={() => {
+                const next = Math.min(LESSONS.length - 1, lesson + 1);
+                setLesson(next);
+                setActiveGroup(LESSON_VISUALS[next].group);
+                setActiveFormula(LESSON_VISUALS[next].formula);
+              }}>下一课 <ArrowRightOutlined /></Button>
             ) : (
               <Button type="primary" onClick={() => navigate("/backtest-learning")}>继续学习回测方法 <ArrowRightOutlined /></Button>
             )}

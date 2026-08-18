@@ -86,8 +86,11 @@ const COURSES: Course[] = [
     subtitle: "把观点拆成证据",
     description: "从市场、资金、链上、消息和风险多个维度诊断标的，避免只看单一信号。",
     icon: <FundProjectionScreenOutlined />,
-    lessons: ["提出可证伪问题", "价格与量能诊断", "资金、链上和消息证据", "冲突证据与不确定性"],
+    lessons: ["从观点到可证伪问题", "价格、成交量与市场状态", "资金、链上与基本证据", "消息、事件与时间证据", "冲突证据与诊断结论"],
     outcome: "能够形成带来源、时间和反方证据的诊断记录。",
+    path: "/diagnosis-learning",
+    action: "进入诊断分析课程",
+    chapterCount: 5,
   },
   {
     key: "assets",
@@ -95,8 +98,11 @@ const COURSES: Course[] = [
     subtitle: "从单笔交易走向组合",
     description: "学习仓位、分散、相关性、再平衡、回撤预算和组合绩效。",
     icon: <WalletOutlined />,
-    lessons: ["目标、期限与风险承受力", "仓位与分散原则", "组合相关性与集中度", "再平衡和回撤管理"],
+    lessons: ["目标、期限与约束", "资本配置与风险预算", "分散、相关与集中度", "再平衡、成本与治理", "回撤、绩效与组合复核"],
     outcome: "能够从组合整体评估风险，不让单个标的决定全部结果。",
+    path: "/asset-management-learning",
+    action: "进入资产管理课程",
+    chapterCount: 5,
   },
   {
     key: "risk",
@@ -164,12 +170,13 @@ export default function AcademyPage() {
       </QuantGlowCard>
 
       <section className="academy-course-section">
-        <SectionHeader title="六大学堂" description="量化数学、K 线、回测与风控已提供合计 169 个公式的系统手册，并配章节导学、练习和互动演练" />
+        <SectionHeader title="六大学堂" description="六门系统课程全部开放：公式课程讲清定义、历史与边界，应用课程用证据框架、案例推演和知识检查验证理解" />
         <div className="academy-depth-strip">
           <div><strong>169</strong><span>核心公式</span><small>从定义到使用边界</small></div>
           <div><strong>43</strong><span>章节导学</span><small>目标、先修与预计用时</small></div>
           <div><strong>43</strong><span>复算任务</span><small>用小样本验证理解</small></div>
           <div><strong>18</strong><span>权威资料</span><small>教材、论文与官方文档</small></div>
+          <div><strong>10</strong><span>应用课程章节</span><small>诊断与资产管理案例</small></div>
         </div>
         <div className="academy-course-grid">
           {COURSES.map((course, index) => (
@@ -183,7 +190,7 @@ export default function AcademyPage() {
               <i>{course.icon}</i>
               <strong>{course.title}</strong>
               <small>{course.subtitle}</small>
-              {course.formulaCount ? <em>{course.chapterCount} 章 · {course.formulaCount} 个公式</em> : course.key === "kline" ? <em>互动课已开放</em> : <em>课程纲要</em>}
+              {course.formulaCount ? <em>{course.chapterCount} 章 · {course.formulaCount} 个公式</em> : course.path ? <em>{course.chapterCount} 章 · 系统课程已开放</em> : <em>课程纲要</em>}
             </button>
           ))}
         </div>
@@ -192,7 +199,7 @@ export default function AcademyPage() {
       <QuantGlowCard
         className="academy-course-detail"
         title={<SectionHeader title={active.title} description={active.description} />}
-        badge={<StatusPill tone={active.key === "kline" || active.key === "math" || active.key === "backtest" || active.key === "risk" ? "profit" : "ai"}>{active.key === "math" ? "系统公式课" : active.key === "kline" || active.key === "backtest" || active.key === "risk" ? "互动课程" : "学习单元"}</StatusPill>}
+        badge={<StatusPill tone="profit">{active.formulaCount ? "系统公式课" : "系统应用课"}</StatusPill>}
       >
         {active.formulaCount ? <div className="academy-formula-strip"><CalculatorOutlined /><strong>系统公式手册</strong><span>{active.chapterCount} 章 · {active.formulaCount} 个核心公式</span><i>导学</i><b>→</b><i>公式</i><b>→</b><i>复算</i><b>→</b><i>来源</i></div> : null}
         <div className="academy-detail-layout">

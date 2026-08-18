@@ -11,6 +11,7 @@ import {
 } from "lightweight-charts";
 
 import type { KlineCandle, TradePlan } from "../../types";
+import type { KlineStudy } from "../../pages/learning/KlineStudyEngine";
 import "./trading-chart.css";
 
 type ChartMode = "light" | "dark";
@@ -25,6 +26,7 @@ interface KlineAnalysisChartProps {
   height?: number;
   mode?: ChartMode;
   className?: string;
+  study?: KlineStudy | null;
 }
 
 function beijingTime(tsSec: number) {
@@ -58,6 +60,7 @@ export function KlineAnalysisChart({
   height = 420,
   mode = "dark",
   className,
+  study,
 }: KlineAnalysisChartProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<IChartApi | null>(null);
@@ -130,6 +133,12 @@ export function KlineAnalysisChart({
     }));
     candleSeries.setData(candleData);
 
+    const hasIndicatorStudy = Boolean(study?.series.some((item) => item.scale === "indicator"));
+    if (hasIndicatorStudy) {
+      chart.priceScale("right").applyOptions({ scaleMargins: { top: 0.04, bottom: 0.31 } });
+      chart.priceScale("study").applyOptions({ scaleMargins: { top: 0.75, bottom: 0.02 }, borderVisible: false });
+    }
+
     const closes = candles.map((item) => item.close);
     if (showMa20) {
       const ma20 = sma(closes, 20);
@@ -178,6 +187,36 @@ export function KlineAnalysisChart({
       );
     }
 
+    for (const studySeries of study?.series ?? []) {
+      const priceScaleId = studySeries.scale === "price" ? "right" : studySeries.scale === "volume" ? "volume" : "study";
+      const line = chart.addLineSeries({
+        color: studySeries.color,
+        lineWidth: 2,
+        priceLineVisible: false,
+        lastValueVisible: true,
+        title: studySeries.label,
+        priceScaleId,
+      });
+      line.setData(
+        studySeries.values
+          .map((value, index) => value == null || !candles[index] ? null : { time: beijingTime(candles[index].tsSec), value })
+          .filter(Boolean) as LineData[],
+      );
+    }
+
+    if (study?.markers.length) {
+      const markers = study.markers
+        .filter((item) => candles[item.index])
+        .map((item) => ({
+          time: beijingTime(candles[item.index].tsSec),
+          position: item.position,
+          color: item.color,
+          shape: item.shape,
+          text: item.label,
+        }));
+      candleSeries.setMarkers(markers as Parameters<typeof candleSeries.setMarkers>[0]);
+    }
+
     if (showPriceLines && tradePlan) {
       const lines = [
         { price: tradePlan.entryLow, title: "入场", color: "#3b82f6" },
@@ -215,7 +254,7 @@ export function KlineAnalysisChart({
       chart.remove();
       chartRef.current = null;
     };
-  }, [candles, tradePlan, showMa20, showMa60, showVolume, showPriceLines, height, mode]);
+  }, [candles, tradePlan, showMa20, showMa60, showVolume, showPriceLines, height, mode, study]);
 
   if (!candles.length) {
     return <div className={`trading-chart trading-chart-empty ${className ?? ""}`}>暂无 K 线数据</div>;

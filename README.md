@@ -11,7 +11,7 @@
 ## 项目亮点
 
 - **离线优先**：内置 `data/dashboard/*.json` 样本，断网也能打开核心页面。
-- **公益学堂**：`/academy` 汇集量化数学、回测、K 线、诊断分析、资产管理和风控六类课程；数学、K 线、回测与风控提供 169 个核心公式、43 份章节导学、复算任务、常见误区、全库检索、学习进度与权威延伸阅读。全部 165 个不重复公式都有公式级“公式史档案”，明确提出者或系统化者、产生背景、思想来源、推导链、传播路径、现代演化和参考资料；没有单一作者的公式会如实标记为长期演化形成。K 线、回测与风控另配互动演练。
+- **公益学堂**：`/academy` 汇集量化数学、回测、K 线、诊断分析、资产管理和风控六类课程；数学、K 线、回测与风控提供 169 个核心公式、43 份章节导学、复算任务、常见误区、全库检索、学习进度与权威延伸阅读。全部 165 个不重复公式都有公式级“公式史档案”，明确提出者或系统化者、产生背景、思想来源、推导链、传播路径、现代演化和参考资料；没有单一作者的公式会如实标记为长期演化形成。公式库支持按 Markowitz、Wilder、Bayes 等人物以及思想和历史背景检索，并展示“思想来源 → 公式 → 量化应用”谱系。章节进度不再依赖手动勾选：学习者必须通过公式识别、使用边界和历史来源三类掌握度检查。K 线、回测与风控另配互动演练。
 - **研究闭环完整**：覆盖行情总览、机会扫描、因子挖掘、数据源状态、策略回测、风险复核、模拟执行和研究报告。
 - **模拟交易工作站**：`/live-trading` 提供 K 线主画布、周期切换、交易计划线、dry-run 票据和证据面板。
 - **风险边界明确**：dry-run 只记录研究动作；项目默认不接交易所写接口、不提交真实订单。
@@ -148,7 +148,7 @@ python app.py
 | 能力 | Web 路由 | 主要代码路径 | 说明 |
 | --- | --- | --- | --- |
 | 市场总览 | `/trading` | `src/dashboard/`, `src/web/src/pages/trading/DashboardPage.tsx` | 多资产行情、K 线、交易信号、风险摘要和执行入口 |
-| 公益学堂 | `/academy`、`/math-learning`、`/backtest-learning`、`/kline-learning`、`/risk-learning` | `src/web/src/pages/learning/` | 量化数学、回测、K 线、诊断分析、资产管理和风控课程；包含 169 个公式、43 份章节导学、搜索、进度、公式历史/推导档案、练习、误区与权威来源 |
+| 公益学堂 | `/academy`、`/math-learning`、`/backtest-learning`、`/kline-learning`、`/diagnosis-learning`、`/asset-management-learning`、`/risk-learning` | `src/web/src/pages/learning/` | 量化数学、回测、K 线、诊断分析、资产管理和风控课程；包含 169 个公式、43 份公式章节导学、10 章应用案例、搜索、证据式掌握检查、公式历史/推导档案、误区与权威来源 |
 | 机会雷达 | `/radar` | `src/dashboard/opportunity.py`, `src/web/src/pages/trading/RadarPage.tsx` | 基于资金、趋势、链上和风险信号扫描机会，区分热路径、冷路径和风控阻断 |
 | 因子挖掘 | `/factor-mining` | `src/factor_mining/`, `src/web/src/pages/trading/FactorMiningPage.tsx` | GP/ML/模板/LLM 候选生成、IC/RIC 验证；通过 `backtest_spec` 交接到策略回测 |
 | 数据源监控 | `/data-sources` | `src/dashboard/snapshot.py`, `src/dashboard/catalog.py` | 查看离线样本、在线快照、API 状态和研究草稿门禁 |

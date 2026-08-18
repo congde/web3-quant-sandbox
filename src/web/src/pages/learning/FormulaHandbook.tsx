@@ -13,6 +13,8 @@ import { Drawer } from "antd";
 import { useEffect, useMemo, useState } from "react";
 
 import { ADVANCED_GROUPS } from "./FormulaHandbookAdvanced";
+import { FORMULA_HISTORY_NAMES } from "./FormulaHistoryCatalog";
+import { FormulaMasteryCheck } from "./FormulaMasteryCheck";
 import {
   FALLBACK_GUIDE,
   LEARNING_GUIDES,
@@ -39,7 +41,7 @@ export type FormulaGroup = {
   formulas: FormulaItem[];
 };
 
-type SelectedFormula = {
+export type FormulaSelection = {
   formula: FormulaItem;
   groupTitle: string;
   index: number;
@@ -221,15 +223,40 @@ function orderGroups(domain: FormulaDomain, core: FormulaGroup[], advanced: Form
   return ordered.filter((group): group is FormulaGroup => group !== undefined);
 }
 
-export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
+function getAttributionKind(attribution: string) {
+  return /没有单一|没有可确认|没有统一|不存在统一|不是传统数学定理/.test(attribution)
+    ? "长期演化形成"
+    : "有明确提出或系统化者";
+}
+
+function getSourceMeta(url: string) {
+  const domain = (() => {
+    try {
+      return new URL(url).hostname.replace(/^www\./, "");
+    } catch {
+      return "外部资料";
+    }
+  })();
+  const sourceType = /jstor|doi\.org|onlinelibrary\.wiley|papers\.ssrn|sites\.math\.washington|wfsharpe/.test(url)
+    ? "原始论文"
+    : /nobelprize|bis\.org|sec\.gov|cmegroup|justice\.gov|aave\.com|uniswap|bitmex/.test(url)
+      ? "官方 / 机构"
+      : /mathshistory|escholarship|wikisource|encyclopediaofmath/.test(url)
+        ? "历史资料"
+        : "专业参考";
+  return { domain, sourceType };
+}
+
+export function FormulaHandbook({ domain, activeGroupTitle, visualFormulaName, onFormulaChange }: { domain: FormulaDomain; activeGroupTitle?: string; visualFormulaName?: string; onFormulaChange?: (selection: FormulaSelection) => void }) {
   const system = SYSTEMS[domain];
   const [groupIndex, setGroupIndex] = useState(0);
   const [query, setQuery] = useState("");
-  const [selectedFormula, setSelectedFormula] = useState<SelectedFormula | null>(null);
-  const [completedGroups, setCompletedGroups] = useState<string[]>(() => {
+  const [selectedFormula, setSelectedFormula] = useState<FormulaSelection | null>(null);
+  const [activeFormulaName, setActiveFormulaName] = useState("");
+  const [masteredGroups, setMasteredGroups] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
     try {
-      const saved = window.localStorage.getItem(`formula-progress:${domain}`);
+      const saved = window.localStorage.getItem(`formula-mastery:v2:${domain}`);
       const parsed = saved ? JSON.parse(saved) : [];
       return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string") : [];
     } catch {
@@ -239,30 +266,40 @@ export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
   const groups = useMemo(() => orderGroups(domain, system.groups, ADVANCED_GROUPS[domain]), [domain, system.groups]);
   const group = groups[groupIndex] ?? groups[0];
   const formulaCount = useMemo(() => groups.reduce((total, item) => total + item.formulas.length, 0), [groups]);
+  const domainFormulaNames = useMemo(() => new Set(groups.flatMap((item) => item.formulas.map((formula) => formula.name))), [groups]);
+  const historyCoverageCount = useMemo(() => [...domainFormulaNames].filter((name) => FORMULA_HISTORY_NAMES.has(name)).length, [domainFormulaNames]);
   const guide = KLINE_GUIDES[group.title] ?? LEARNING_GUIDES[group.title] ?? FALLBACK_GUIDE;
   const sources = guide.sourceIds.map((id) => KLINE_SOURCES[id] ?? LEARNING_SOURCES[id]).filter((source) => source !== undefined);
-  const completedCount = groups.filter((item) => completedGroups.includes(item.title)).length;
-  const progress = groups.length ? completedCount / groups.length * 100 : 0;
+  const masteredCount = groups.filter((item) => masteredGroups.includes(item.title)).length;
+  const progress = groups.length ? masteredCount / groups.length * 100 : 0;
   const normalizedQuery = query.trim().toLocaleLowerCase();
   const formulaEntries = useMemo(() => {
     const allEntries = groups.flatMap((item) => item.formulas.map((formula, index) => ({ formula, index, groupTitle: item.title })));
     if (!normalizedQuery) {
       return group.formulas.map((formula, index) => ({ formula, index, groupTitle: group.title }));
     }
-    return allEntries.filter(({ formula, groupTitle }) => [
-      groupTitle,
-      formula.name,
-      formula.equation,
-      formula.purpose,
-      formula.example,
-      formula.boundary,
-      ...formula.variables,
-    ].join(" ").toLocaleLowerCase().includes(normalizedQuery));
+    return allEntries.filter(({ formula, groupTitle }) => {
+      const story = getFormulaStory(formula, groupTitle);
+      return [
+        groupTitle,
+        formula.name,
+        formula.equation,
+        formula.purpose,
+        formula.example,
+        formula.boundary,
+        ...formula.variables,
+        story.era,
+        story.attribution,
+        story.historicalContext,
+        story.origin,
+        story.transmission,
+        ...story.intellectualRoots,
+        ...(story.sources?.map((source) => source.label) ?? []),
+      ].join(" ").toLocaleLowerCase().includes(normalizedQuery);
+    });
   }, [group, groups, normalizedQuery]);
   const selectedStory = selectedFormula ? getFormulaStory(selectedFormula.formula, selectedFormula.groupTitle) : null;
-  const attributionKind = selectedStory && /没有单一|没有可确认|没有统一|不存在统一|不是传统数学定理/.test(selectedStory.attribution)
-    ? "长期演化形成"
-    : "有明确提出或系统化者";
+  const attributionKind = selectedStory ? getAttributionKind(selectedStory.attribution) : "";
   const relatedFormulas = selectedFormula
     ? (groups.find((item) => item.title === selectedFormula.groupTitle)?.formulas ?? [])
       .filter((formula) => formula.name !== selectedFormula.formula.name)
@@ -270,18 +307,49 @@ export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
     : [];
 
   useEffect(() => {
-    window.localStorage.setItem(`formula-progress:${domain}`, JSON.stringify(completedGroups));
-  }, [completedGroups, domain]);
+    window.localStorage.setItem(`formula-mastery:v2:${domain}`, JSON.stringify(masteredGroups));
+  }, [masteredGroups, domain]);
+
+  useEffect(() => {
+    const firstFormula = groups[0]?.formulas[0];
+    if (firstFormula) {
+      setActiveFormulaName(firstFormula.name);
+      onFormulaChange?.({ formula: firstFormula, groupTitle: groups[0].title, index: 0 });
+    }
+  }, [domain]);
+
+  useEffect(() => {
+    if (!activeGroupTitle) return;
+    const nextIndex = groups.findIndex((item) => item.title === activeGroupTitle);
+    if (nextIndex >= 0 && nextIndex !== groupIndex) {
+      setGroupIndex(nextIndex);
+      setQuery("");
+    }
+  }, [activeGroupTitle, groupIndex, groups]);
+
+  useEffect(() => {
+    if (visualFormulaName) setActiveFormulaName(visualFormulaName);
+  }, [visualFormulaName]);
+
+  function openFormula(selection: FormulaSelection) {
+    setSelectedFormula(selection);
+    setActiveFormulaName(selection.formula.name);
+    onFormulaChange?.(selection);
+  }
 
   function selectGroup(index: number) {
     setGroupIndex(index);
     setQuery("");
+    const nextGroup = groups[index];
+    const firstFormula = nextGroup?.formulas[0];
+    if (firstFormula) {
+      setActiveFormulaName(firstFormula.name);
+      onFormulaChange?.({ formula: firstFormula, groupTitle: nextGroup.title, index: 0 });
+    }
   }
 
-  function toggleCompleted() {
-    setCompletedGroups((current) => current.includes(group.title)
-      ? current.filter((title) => title !== group.title)
-      : [...current, group.title]);
+  function markGroupMastered() {
+    setMasteredGroups((current) => current.includes(group.title) ? current : [...current, group.title]);
   }
 
   return (
@@ -293,44 +361,44 @@ export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
           <h2>{system.title}</h2>
           <p>{system.description}</p>
         </div>
-        <strong>{groups.length} 类 · {formulaCount} 个公式</strong>
+        <strong>{groups.length} 类 · {formulaCount} 个公式 · 史档案 {historyCoverageCount}/{domainFormulaNames.size}</strong>
       </header>
 
       <div className="formula-command-bar">
         <label className="formula-search-box">
           <SearchOutlined />
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索公式、符号、用途或风险边界" aria-label="搜索公式" />
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜索公式、人物、思想、用途或风险边界" aria-label="搜索公式与公式史" />
           {query ? <button type="button" onClick={() => setQuery("")}>清除</button> : <kbd>{formulaCount} 条</kbd>}
         </label>
         <div className="formula-learning-progress">
-          <div><span>学习进度</span><strong>{completedCount} / {groups.length} 章</strong></div>
+          <div><span>掌握度进度</span><strong>{masteredCount} / {groups.length} 章</strong></div>
           <i><b style={{ width: `${progress}%` }} /></i>
-          <small>进度保存在当前浏览器</small>
+          <small>通过章节测验后记录在当前浏览器</small>
         </div>
       </div>
 
       <div className="formula-study-flow" aria-label="公式学习方法">
-        <span><b>01</b>读章节导学</span><i>→</i><span><b>02</b>理解公式与符号</span><i>→</i><span><b>03</b>完成复算任务</span><i>→</i><span><b>04</b>核对边界与来源</span>
+        <span><b>01</b>读章节导学</span><i>→</i><span><b>02</b>理解公式与符号</span><i>→</i><span><b>03</b>完成复算任务</span><i>→</i><span><b>04</b>核对边界与来源</span><i>→</i><span><b>05</b>通过掌握度测验</span>
       </div>
 
       <nav className="formula-group-tabs" aria-label="公式分类">
         {groups.map((item, index) => (
-          <button type="button" className={`${index === groupIndex && !query ? "active " : ""}${completedGroups.includes(item.title) ? "completed" : ""}`} key={item.title} onClick={() => selectGroup(index)}>
-            <b>{String(index + 1).padStart(2, "0")}</b><span>{item.title}</span><small>{completedGroups.includes(item.title) ? <CheckCircleFilled /> : `${item.formulas.length} 个`}</small>
+          <button type="button" className={`${index === groupIndex && !query ? "active " : ""}${masteredGroups.includes(item.title) ? "completed" : ""}`} key={item.title} onClick={() => selectGroup(index)}>
+            <b>{String(index + 1).padStart(2, "0")}</b><span>{item.title}</span><small>{masteredGroups.includes(item.title) ? <CheckCircleFilled /> : `${item.formulas.length} 个`}</small>
           </button>
         ))}
       </nav>
 
       {normalizedQuery ? (
-        <div className="formula-search-summary"><SearchOutlined /><div><strong>搜索结果</strong><span>“{query.trim()}”匹配 {formulaEntries.length} 个公式；搜索范围包含公式、符号、用途、例题与风险边界。</span></div></div>
+        <div className="formula-search-summary"><SearchOutlined /><div><strong>搜索结果</strong><span>“{query.trim()}”匹配 {formulaEntries.length} 个公式；搜索范围包含公式、人物、历史背景、思想来源、用途、例题与风险边界。</span></div></div>
       ) : (
         <>
           <section className="formula-chapter-guide">
             <header>
               <div><CalculatorOutlined /><span><b>{group.title}</b><small>{group.description}</small></span></div>
               <div className="formula-guide-meta"><em>{guide.stage}</em><em>{guide.difficulty}</em><em><ClockCircleOutlined /> {guide.minutes} 分钟</em></div>
-              <button type="button" className={completedGroups.includes(group.title) ? "completed" : ""} onClick={toggleCompleted}>
-                <CheckCircleFilled />{completedGroups.includes(group.title) ? "已完成本章" : "标记本章完成"}
+              <button type="button" className={masteredGroups.includes(group.title) ? "completed" : ""} disabled>
+                <CheckCircleFilled />{masteredGroups.includes(group.title) ? "已通过章节测验" : "完成测验后解锁"}
               </button>
             </header>
             <div className="formula-guide-grid">
@@ -352,16 +420,17 @@ export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
       <div className="formula-card-grid">
         {formulaEntries.map(({ formula, index, groupTitle }) => (
           <article
-            className="formula-knowledge-card"
+            className={`formula-knowledge-card${activeFormulaName === formula.name ? " active-visual" : ""}`}
             key={formula.name}
             role="button"
             tabIndex={0}
             aria-label={`查看${formula.name}的公式档案`}
-            onClick={() => setSelectedFormula({ formula, index, groupTitle })}
+            aria-pressed={activeFormulaName === formula.name}
+            onClick={() => openFormula({ formula, index, groupTitle })}
             onKeyDown={(event) => {
               if (event.key === "Enter" || event.key === " ") {
                 event.preventDefault();
-                setSelectedFormula({ formula, index, groupTitle });
+                openFormula({ formula, index, groupTitle });
               }
             }}
           >
@@ -371,10 +440,11 @@ export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
             <div className="formula-variable-list"><b>符号说明</b>{formula.variables.map((variable) => <span key={variable}>{variable}</span>)}</div>
             <div className="formula-example"><CalculatorOutlined /><div><b>代入示例</b><span>{formula.example}</span></div></div>
             <div className="formula-warning"><WarningOutlined /><div><b>使用边界</b><span>{formula.boundary}</span></div></div>
-            <div className="formula-open-story"><BookOutlined /><span>查看公式的前世今生</span><b>→</b></div>
+            <div className="formula-open-story"><BookOutlined /><span>{activeFormulaName === formula.name ? "下方图表正在展示此公式 · 点击查看史档案" : "切换下方图表并查看公式史档案"}</span><b>→</b></div>
           </article>
         ))}
       </div>
+      {!normalizedQuery ? <FormulaMasteryCheck group={group} allGroups={groups} mastered={masteredGroups.includes(group.title)} onMastered={markGroupMastered} /> : null}
       {normalizedQuery && formulaEntries.length === 0 ? <div className="formula-empty-search"><SearchOutlined /><strong>没有找到匹配公式</strong><span>可以尝试“波动”“回撤”“协方差”“滑点”“VaR”或具体符号。</span></div> : null}
       <Drawer
         className="formula-story-drawer"
@@ -410,13 +480,30 @@ export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
               </article>
             </section>
 
+            <section className="formula-lineage-map" aria-label="公式思想谱系">
+              <header><strong>思想谱系</strong><span>它不是孤立公式，而是一条知识链</span></header>
+              <div>
+                <article className="formula-lineage-roots">
+                  <b>继承的思想</b>
+                  {selectedStory.intellectualRoots.map((root) => <span key={root}>{root}</span>)}
+                </article>
+                <i>→</i>
+                <article className="formula-lineage-formula"><small>当前公式</small><b>{selectedFormula.formula.name}</b><span>{selectedFormula.formula.equation}</span></article>
+                <i>→</i>
+                <article className="formula-lineage-quant"><small>进入量化金融</small><p>{selectedStory.transmission}</p></article>
+              </div>
+            </section>
+
             <section className="formula-story-section">
               <header><BookOutlined /><div><strong>历史脉络</strong><span>从现实问题到公式定型</span></div></header>
               <p>{selectedStory.origin}</p>
               {selectedStory.sources?.length ? (
                 <div className="formula-story-sources">
                   <b>参考与原始资料</b>
-                  {selectedStory.sources.map((source) => <a className="formula-story-source" href={source.url} target="_blank" rel="noreferrer" key={`${source.label}-${source.url}`}><LinkOutlined />{source.label}</a>)}
+                  {selectedStory.sources.map((source) => {
+                    const sourceMeta = getSourceMeta(source.url);
+                    return <a className="formula-story-source" href={source.url} target="_blank" rel="noreferrer" key={`${source.label}-${source.url}`}><LinkOutlined /><span><b>{source.label}</b><small>{sourceMeta.domain}</small></span><em>{sourceMeta.sourceType}</em></a>;
+                  })}
                 </div>
               ) : null}
             </section>
@@ -447,7 +534,7 @@ export function FormulaHandbook({ domain }: { domain: FormulaDomain }) {
             {relatedFormulas.length ? (
               <section className="formula-story-related">
                 <header><strong>沿着知识链继续</strong><span>同章相关公式</span></header>
-                <div>{relatedFormulas.map((formula) => <button type="button" key={formula.name} onClick={() => setSelectedFormula({ formula, groupTitle: selectedFormula.groupTitle, index: (groups.find((item) => item.title === selectedFormula.groupTitle)?.formulas ?? []).findIndex((item) => item.name === formula.name) })}><span>{formula.name}</span><b>→</b></button>)}</div>
+                <div>{relatedFormulas.map((formula) => <button type="button" key={formula.name} onClick={() => openFormula({ formula, groupTitle: selectedFormula.groupTitle, index: (groups.find((item) => item.title === selectedFormula.groupTitle)?.formulas ?? []).findIndex((item) => item.name === formula.name) })}><span>{formula.name}</span><b>→</b></button>)}</div>
               </section>
             ) : null}
           </div>
