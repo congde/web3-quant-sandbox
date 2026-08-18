@@ -8,7 +8,9 @@ import {
   PlusOutlined,
   ReloadOutlined,
   SearchOutlined,
+  SafetyCertificateOutlined,
   UnorderedListOutlined,
+  WarningOutlined,
 } from "@ant-design/icons";
 import {
   Alert,
@@ -98,14 +100,16 @@ function GraphCanvas({ nodes, edges, stages, selectedId, onSelect }: GraphCanvas
         if (!fromNode || !toNode) return;
         const a = fromNode.getBoundingClientRect();
         const b = toNode.getBoundingClientRect();
-        const x1 = a.right - rect.left;
+        const leftToRight = a.left <= b.left;
+        const x1 = (leftToRight ? a.right : a.left) - rect.left;
         const y1 = a.top + a.height / 2 - rect.top;
-        const x2 = b.left - rect.left;
+        const x2 = (leftToRight ? b.left : b.right) - rect.left;
         const y2 = b.top + b.height / 2 - rect.top;
         const control = Math.max(24, (x2 - x1) * 0.45);
         context.beginPath();
         context.moveTo(x1, y1);
         context.bezierCurveTo(x1 + control, y1, x2 - control, y2, x2, y2);
+        context.lineWidth = selectedId && (selectedId === edge.from || selectedId === edge.to) ? 1.8 : 1;
         context.strokeStyle =
           selectedId && (selectedId === edge.from || selectedId === edge.to)
             ? "rgba(183,121,31,.88)"
@@ -128,7 +132,7 @@ function GraphCanvas({ nodes, edges, stages, selectedId, onSelect }: GraphCanvas
       className="knowledge-graph-stage"
       ref={shellRef}
       style={{
-        gridTemplateColumns: `repeat(${Math.max(1, stages.length)}, minmax(150px, 1fr))`,
+        gridTemplateColumns: `repeat(${Math.max(1, stages.length)}, minmax(118px, 1fr))`,
       }}
     >
       <canvas ref={canvasRef} className="knowledge-edge-canvas" aria-hidden="true" />
@@ -138,21 +142,30 @@ function GraphCanvas({ nodes, edges, stages, selectedId, onSelect }: GraphCanvas
           <div className="knowledge-stage-nodes">
             {nodes
               .filter((node) => node.stage === stage)
-              .map((node) => (
-                <button
-                  key={node.id}
-                  ref={(element) => {
-                    nodeRefs.current[node.id] = element;
-                  }}
-                  type="button"
-                  className={`knowledge-node risk-${node.risk}${selectedId === node.id ? " active" : ""}`}
-                  onClick={() => onSelect(node)}
-                >
-                  <strong>{node.label}</strong>
-                  <span>{node.entities.slice(0, 3).join(" · ") || node.node_type}</span>
-                  <b>{node.mentions} 条证据 · v{node.version}</b>
-                </button>
-              ))}
+              .map((node) => {
+                const degree = edges.filter((edge) => edge.from === node.id || edge.to === node.id).length;
+                const related = !selectedId || selectedId === node.id || edges.some((edge) =>
+                  (edge.from === selectedId && edge.to === node.id) || (edge.to === selectedId && edge.from === node.id));
+                return (
+                  <button
+                    key={node.id}
+                    ref={(element) => {
+                      nodeRefs.current[node.id] = element;
+                    }}
+                    type="button"
+                    className={`knowledge-node risk-${node.risk}${selectedId === node.id ? " active" : ""}${related ? "" : " subdued"}`}
+                    onClick={() => onSelect(node)}
+                    aria-label={`${node.label}，${node.mentions}条证据，${degree}条关系，风险等级${node.risk}`}
+                  >
+                    <strong>{node.label}</strong>
+                    <span>{node.entities.slice(0, 3).join(" · ") || node.node_type}</span>
+                    <footer>
+                      <b className={node.mentions ? "covered" : "gap"}>{node.mentions ? `${node.mentions} 条证据` : "证据缺口"}</b>
+                      <em>{degree} 关系 · v{node.version}</em>
+                    </footer>
+                  </button>
+                );
+              })}
           </div>
         </div>
       ))}
@@ -165,6 +178,7 @@ export default function KnowledgeGraphView() {
   const [domain, setDomain] = useState("全部 Web3");
   const [query, setQuery] = useState("");
   const [risk, setRisk] = useState("");
+  const [coverage, setCoverage] = useState<"all" | "covered" | "gap">("all");
   const [mode, setMode] = useState<"全景" | "泳道">("全景");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -216,12 +230,13 @@ export default function KnowledgeGraphView() {
       (node) =>
         (mode === "全景" || domain === "全部 Web3" || node.domain === domain) &&
         (!risk || node.risk === risk) &&
+        (coverage === "all" || (coverage === "covered" ? node.mentions > 0 : node.mentions === 0)) &&
         (!needle ||
           `${node.label} ${node.entities.join(" ")} ${node.domain} ${node.description}`
             .toLowerCase()
             .includes(needle)),
     );
-  }, [domain, mode, payload, query, risk]);
+  }, [coverage, domain, mode, payload, query, risk]);
   const visibleIds = new Set(nodes.map((node) => node.id));
   const edges = (payload?.edges ?? []).filter(
     (edge) => visibleIds.has(edge.from) && visibleIds.has(edge.to),
@@ -233,6 +248,36 @@ export default function KnowledgeGraphView() {
   const selectedEdges = (payload?.edges ?? []).filter(
     (edge) => edge.from === selectedId || edge.to === selectedId,
   );
+  const graphQuality = useMemo(() => {
+    const allNodes = payload?.nodes ?? [];
+    const allEdges = payload?.edges ?? [];
+    const coveredNodes = allNodes.filter((node) => node.mentions > 0).length;
+    const evidencedEdges = allEdges.filter((edge) => edge.evidence_count > 0).length;
+    const totalEvidence = allNodes.reduce((sum, node) => sum + node.mentions, 0);
+    const topThreeEvidence = [...allNodes]
+      .sort((a, b) => b.mentions - a.mentions)
+      .slice(0, 3)
+      .reduce((sum, node) => sum + node.mentions, 0);
+    return {
+      nodeCoverage: allNodes.length ? Math.round(coveredNodes / allNodes.length * 100) : 0,
+      edgeCoverage: allEdges.length ? Math.round(evidencedEdges / allEdges.length * 100) : 0,
+      gapNodes: allNodes.length - coveredNodes,
+      concentration: totalEvidence ? Math.round(topThreeEvidence / totalEvidence * 100) : 0,
+    };
+  }, [payload]);
+  const selectedSources = new Set(selectedNode?.evidence.map((item) => item.source) ?? []);
+  const selectedAverageConfidence = selectedNode?.evidence.length
+    ? Math.round(selectedNode.evidence.reduce((sum, item) => sum + item.confidence, 0) / selectedNode.evidence.length * 100)
+    : 0;
+  const selectedRelationshipCoverage = selectedEdges.length
+    ? Math.round(selectedEdges.filter((edge) => edge.evidence_count > 0).length / selectedEdges.length * 100)
+    : 0;
+  const selectedGaps = selectedNode ? [
+    !selectedNode.description && "研究描述",
+    !selectedNode.website && "官方网站",
+    selectedNode.mentions === 0 && "来源证据",
+    selectedEdges.some((edge) => edge.evidence_count === 0) && "关系证据",
+  ].filter(Boolean) as string[] : [];
 
   const openAudit = async () => {
     setAuditOpen(true);
@@ -459,32 +504,10 @@ export default function KnowledgeGraphView() {
 
       <div className="knowledge-main">
         <header className="knowledge-toolbar">
-          <div>
+          <div className="knowledge-toolbar-title">
             <span>Web3</span><b>›</b><strong>{mode === "泳道" ? domain : "协议全景"}</strong>
           </div>
-          <div>
-            <Segmented
-              value={mode}
-              onChange={(value) => setMode(value as "全景" | "泳道")}
-              options={[
-                { label: "全景", value: "全景", icon: <AppstoreOutlined /> },
-                { label: "泳道", value: "泳道", icon: <UnorderedListOutlined /> },
-              ]}
-            />
-            <Input
-              allowClear
-              prefix={<SearchOutlined />}
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="搜索实体 / 代币 / 描述"
-            />
-            <Select
-              allowClear
-              value={risk || undefined}
-              onChange={(value) => setRisk(value ?? "")}
-              placeholder="风险等级"
-              options={RISK_OPTIONS}
-            />
+          <div className="knowledge-toolbar-actions">
             <Button icon={<LinkOutlined />} onClick={() => setEdgeModal(true)}>
               新建关系
             </Button>
@@ -506,6 +529,40 @@ export default function KnowledgeGraphView() {
             </Button>
           </div>
         </header>
+        <div className="knowledge-filterbar">
+          <Segmented
+            value={mode}
+            onChange={(value) => setMode(value as "全景" | "泳道")}
+            options={[
+              { label: "全景", value: "全景", icon: <AppstoreOutlined /> },
+              { label: "泳道", value: "泳道", icon: <UnorderedListOutlined /> },
+            ]}
+          />
+          <Input
+            allowClear
+            prefix={<SearchOutlined />}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="搜索实体 / 代币 / 描述"
+          />
+          <Select
+            allowClear
+            value={risk || undefined}
+            onChange={(value) => setRisk(value ?? "")}
+            placeholder="风险等级"
+            options={RISK_OPTIONS}
+          />
+          <Select
+            value={coverage}
+            onChange={(value) => setCoverage(value)}
+            options={[
+              { label: "全部证据状态", value: "all" },
+              { label: "已有证据", value: "covered" },
+              { label: "证据缺口", value: "gap" },
+            ]}
+          />
+          <span className="knowledge-filter-result">显示 {nodes.length} 个实体 · {edges.length} 条关系</span>
+        </div>
         <div className="knowledge-data-strip">
           <span>持久层：{payload?.storage ?? "—"}</span>
           <span>审计事件：{payload?.stats.audit_events ?? 0}</span>
@@ -519,6 +576,26 @@ export default function KnowledgeGraphView() {
             查看审计
           </Button>
         </div>
+        {payload ? <section className="knowledge-quality-strip" aria-label="知识图谱证据健康度">
+          <article><span>节点覆盖率</span><strong>{graphQuality.nodeCoverage}%</strong><small>至少一条来源证据</small></article>
+          <article className={graphQuality.edgeCoverage < 50 ? "risk" : ""}><span>关系覆盖率</span><strong>{graphQuality.edgeCoverage}%</strong><small>有证据支撑的关系</small></article>
+          <article className={graphQuality.gapNodes ? "risk" : ""}><span>证据缺口</span><strong>{graphQuality.gapNodes}</strong><small>零证据实体</small></article>
+          <article className={graphQuality.concentration > 70 ? "risk" : ""}><span>证据集中度</span><strong>{graphQuality.concentration}%</strong><small>前三节点占全部证据</small></article>
+          <div className="knowledge-quality-verdict">
+            {graphQuality.gapNodes || graphQuality.edgeCoverage < 50 ? <WarningOutlined /> : <SafetyCertificateOutlined />}
+            <p><strong>{graphQuality.gapNodes || graphQuality.edgeCoverage < 50 ? "当前图谱适合发现关系，不宜直接作为结论依据" : "当前证据覆盖可支持关系核验"}</strong><span>优先补齐零证据实体与无来源关系，再扩大节点规模。</span></p>
+          </div>
+        </section> : null}
+        {selectedNode ? <div className="knowledge-selection-strip">
+          <strong>{selectedNode.label}</strong>
+          <span>{selectedEdges.length} 条关系</span>
+          {selectedEdges.slice(0, 4).map((edge) => {
+            const peerId = edge.from === selectedNode.id ? edge.to : edge.from;
+            const peer = payload?.nodes.find((node) => node.id === peerId);
+            return <button key={edge.id} type="button" onClick={() => setSelectedId(peerId)}>{edge.from === selectedNode.id ? "→" : "←"} {edge.relation} · {peer?.label ?? peerId}</button>;
+          })}
+          <button type="button" className="clear" onClick={() => setSelectedId(undefined)}>清除聚焦</button>
+        </div> : null}
         {error ? (
           <Alert type="error" showIcon message="Web3 知识图谱加载失败" description={error} />
         ) : null}
@@ -562,9 +639,18 @@ export default function KnowledgeGraphView() {
               <Tag color="gold">{selectedNode.domain}</Tag>
               <Tag>{selectedNode.stage}</Tag>
               <Tag color={selectedNode.risk === "critical" ? "red" : "orange"}>
-                {selectedNode.risk}
+                {RISK_OPTIONS.find((item) => item.value === selectedNode.risk)?.label ?? selectedNode.risk}
               </Tag>
             </div>
+            <section className={`knowledge-readiness ${selectedGaps.length ? "incomplete" : "ready"}`}>
+              <header><div><span>研究完备度</span><strong>{selectedGaps.length ? "待补全" : "可核验"}</strong></div><b>{selectedNode.mentions} 条节点证据</b></header>
+              <div>
+                <span>来源数<strong>{selectedSources.size}</strong></span>
+                <span>平均置信度<strong>{selectedAverageConfidence || "—"}{selectedAverageConfidence ? "%" : ""}</strong></span>
+                <span>关系覆盖<strong>{selectedRelationshipCoverage}%</strong></span>
+              </div>
+              {selectedGaps.length ? <p><WarningOutlined /> 待补：{selectedGaps.join("、")}</p> : <p><SafetyCertificateOutlined /> 基础字段、节点证据与关系证据已覆盖</p>}
+            </section>
             <p>{selectedNode.description || "暂无研究描述，可通过编辑补充。"}</p>
             <Descriptions size="small" column={1} bordered>
               <Descriptions.Item label="实体ID">{selectedNode.id}</Descriptions.Item>

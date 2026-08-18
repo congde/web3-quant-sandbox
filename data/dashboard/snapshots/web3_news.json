@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "snapshot",
-  "updated_at": "2026-08-18T06:38:34+00:00",
+  "updated_at": "2026-08-01T10:09:50+00:00",
   "sources": [
     {
       "id": "cointelegraph",
@@ -79,8 +79,8 @@
       "dataset": "web3_news",
       "source_name": "Cointelegraph",
       "url_or_endpoint": "https://cointelegraph.com/rss",
-      "fetched_at": "2026-08-18T06:38:34+00:00",
-      "payload_time": "2026-08-18T06:09:35+00:00",
+      "fetched_at": "2026-08-01T10:09:50+00:00",
+      "payload_time": "2026-08-01T09:23:56+00:00",
       "required_fields": [
         "source",
         "source_id",
@@ -98,8 +98,8 @@
       "dataset": "web3_news",
       "source_name": "The Block",
       "url_or_endpoint": "https://www.theblock.co/rss.xml",
-      "fetched_at": "2026-08-18T06:38:34+00:00",
-      "payload_time": "2026-08-17T22:26:02+00:00",
+      "fetched_at": "2026-08-01T10:09:50+00:00",
+      "payload_time": "2026-07-31T20:20:52+00:00",
       "required_fields": [
         "source",
         "source_id",
@@ -117,8 +117,8 @@
       "dataset": "web3_news",
       "source_name": "Decrypt",
       "url_or_endpoint": "https://decrypt.co/feed",
-      "fetched_at": "2026-08-18T06:38:34+00:00",
-      "payload_time": "2026-08-17T20:31:04+00:00",
+      "fetched_at": "2026-08-01T10:09:50+00:00",
+      "payload_time": "2026-07-31T17:10:49+00:00",
       "required_fields": [
         "source",
         "source_id",
@@ -136,7 +136,7 @@
       "dataset": "web3_news",
       "source_name": "CryptoSlate",
       "url_or_endpoint": "https://cryptoslate.com/feed/",
-      "fetched_at": "2026-08-18T06:38:34+00:00",
+      "fetched_at": "2026-08-01T10:09:50+00:00",
       "payload_time": "",
       "required_fields": [
         "source",
@@ -157,8 +157,8 @@
       "dataset": "web3_news",
       "source_name": "Cryptopolitan",
       "url_or_endpoint": "https://www.cryptopolitan.com/feed/",
-      "fetched_at": "2026-08-18T06:38:34+00:00",
-      "payload_time": "2026-08-18T05:45:23+00:00",
+      "fetched_at": "2026-08-01T10:09:50+00:00",
+      "payload_time": "2026-08-01T09:12:08+00:00",
       "required_fields": [
         "source",
         "source_id",
@@ -176,8 +176,8 @@
       "dataset": "web3_news",
       "source_name": "Bitcoin Magazine",
       "url_or_endpoint": "https://bitcoinmagazine.com/feed",
-      "fetched_at": "2026-08-18T06:38:34+00:00",
-      "payload_time": "2026-08-17T21:32:34+00:00",
+      "fetched_at": "2026-08-01T10:09:50+00:00",
+      "payload_time": "2026-07-31T21:01:14+00:00",
       "required_fields": [
         "source",
         "source_id",
@@ -195,8 +195,8 @@
       "dataset": "web3_news",
       "source_name": "BeInCrypto",
       "url_or_endpoint": "https://beincrypto.com/feed/",
-      "fetched_at": "2026-08-18T06:38:34+00:00",
-      "payload_time": "2026-08-18T05:43:51+00:00",
+      "fetched_at": "2026-08-01T10:09:50+00:00",
+      "payload_time": "2026-08-01T09:51:54+00:00",
       "required_fields": [
         "source",
         "source_id",
@@ -214,8 +214,8 @@
       "dataset": "web3_news",
       "source_name": "Ethereum Foundation",
       "url_or_endpoint": "https://blog.ethereum.org/feed.xml",
-      "fetched_at": "2026-08-18T06:38:34+00:00",
-      "payload_time": "2026-08-05T00:00:00+00:00",
+      "fetched_at": "2026-08-01T10:09:50+00:00",
+      "payload_time": "2026-07-29T00:00:00+00:00",
       "required_fields": [
         "source",
         "source_id",
@@ -233,7 +233,7 @@
       "dataset": "web3_news",
       "source_name": "GDELT",
       "url_or_endpoint": "",
-      "fetched_at": "2026-08-18T06:38:34+00:00",
+      "fetched_at": "2026-08-01T10:09:50+00:00",
       "payload_time": "",
       "required_fields": [
         "source",
@@ -253,11 +253,260 @@
   ],
   "items": [
     {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "America Broke a 28-Year Rule to Save the Yen and Bitcoin Felt It First",
+      "url": "https://beincrypto.com/bitcoin-us-yen-intervention-1998/",
+      "published_at": "2026-08-01T09:51:54+00:00",
+      "summary": "Bitcoin fell near $63,000 as the US bought yen for the first time since 1998, reviving carry trade unwind risk. The post America Broke a 28-Year Rule to Save the Yen and Bitcoin Felt It First appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Coldcard Bitcoin loss estimate rises to $70M after Galaxy analysis",
+      "url": "https://cointelegraph.com/news/coldcard-bitcoin-loss-estimate-70-million-galaxy-analysis?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-08-01T09:23:56+00:00",
+      "summary": "Galaxy Research identified 1,196 addresses that lost 1,082.65 Bitcoin in a 41-minute window, expanding the estimated scope of the Coldcard wallet incident.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "OpenAI shuts Cambodia-linked ChatGPT accounts over crypto scams",
+      "url": "https://www.cryptopolitan.com/openai-shuts-cambodia-chatgpt-scam-accounts/",
+      "published_at": "2026-08-01T09:12:08+00:00",
+      "summary": "OpenAI has reportedly terminated a series of ChatGPT accounts that are linked to a Cambodian criminal organization that used the chatbot to commit fraud in cryptocurrency investment. It presents another case where AI and crypto have been misused by organized criminals. This comes in when digital assets-linked scams are",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "BeInCrypto",
+      "source_id": "beincrypto",
+      "title": "$70 Million Gone in 40 Minutes: CZ Weighs in on Coldcard Fallout",
+      "url": "https://beincrypto.com/coldcard-firmware-bug-cz-warning/",
+      "published_at": "2026-08-01T08:16:53+00:00",
+      "summary": "A Coldcard firmware bug let thieves rebuild seeds and drain $70 million in BTC. CZ says no wallet is fully safe. The post $70 Million Gone in 40 Minutes: CZ Weighs in on Coldcard Fallout appeared first on BeInCrypto .",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Bitcoin ETFs end July in the green despite late-month selling",
+      "url": "https://cointelegraph.com/markets/bitcoin-etfs-july-green-despite-late-month-selling?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-08-01T07:23:07+00:00",
+      "summary": "Spot Bitcoin ETFs attracted $172.4 million in July inflows but remained $5.3 billion negative year to date after heavy withdrawals in May and June.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Russia expands mining ban to Moscow, pressuring global Bitcoin hash rate",
+      "url": "https://www.cryptopolitan.com/russia-expands-mining-ban-to-moscow-pressuring-global-bitcoin-hash-rate/",
+      "published_at": "2026-08-01T05:07:19+00:00",
+      "summary": "Russia has extended its cryptocurrency mining restrictions into Moscow, the surrounding Moscow Region and parts of Kursk Region, thereby reducing the mining capacity of one of the major Bitcoin centers in the world. The information regarding the ban was published on the legal information portal of the Russian governmen",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Bitcoin survived July’s biggest shocks: What’s next?",
+      "url": "https://www.cryptopolitan.com/bitcoin-survived-julys-biggest-shocks/",
+      "published_at": "2026-08-01T04:39:17+00:00",
+      "summary": "Bitcoin managed to finish July up nearly 8 percent. BTC defied rate-hike fears, the AI-driven sell-off and a major exchange security breach. However, traders are now waiting on cues from the jobs data and a potential return of spot Bitcoin exchange-traded funds. The OG crypto price is still down by more than 28% year t",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "trade.xyz repays traders after a stock glitch erased $60M in crypto longs",
+      "url": "https://www.cryptopolitan.com/trade-xyz-repays-traders-after-a-stock-glitch-erased-60m-in-crypto-longs/",
+      "published_at": "2026-08-01T04:18:45+00:00",
+      "summary": "The trading platform trade.xyz has started to repay traders whose leveraged trades were cancelled after a single wrong SK hynix order in South Korea, which later led to around $60 million in long liquidations on Hyperliquid. This situation shows how one mistake in the traditional stock market can easily carry over to t",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Arthur Hayes sells ETH at a $241K loss as crypto market slides",
+      "url": "https://www.cryptopolitan.com/arthur-hayes-sells-eth-at-a-241k-loss-as-crypto-market-slides/",
+      "published_at": "2026-08-01T02:45:20+00:00",
+      "summary": "Arthur Hayes disposed of 2,364.38 ETH for 4.3 million USDC last Friday, according to tracking platform Lookonchain, resulting in a possible loss of $241,000. The sale happened as the price of crypto, in general, was on the decline with the whole cryptocurrency market falling by about 2 percent within the past 24 hours.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "ICP price prediction 2026-2032: Is ICP a good investment?",
+      "url": "https://www.cryptopolitan.com/icp-price-prediction/",
+      "published_at": "2026-08-01T02:21:18+00:00",
+      "summary": "Key takeaways: Internet Computer (ICP) is a groundbreaking blockchain network developed by the DFINITY Foundation. It aims to extend the functionality of the internet, enabling it to host backend software and transforming it into a global, decentralized computer. Internet computer blockchain incorporates advanced crypt",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Pump.fun staff lost millions after layoffs, report claims",
+      "url": "https://www.cryptopolitan.com/pump-fun-staff-lost-millions-layoffs-report/",
+      "published_at": "2026-08-01T01:52:36+00:00",
+      "summary": "Solana memecoin platform Pump.fun reportedly terminated over 40 employees shortly before their token allocations vested. The cuts stripped staff of $PUMP tokens, leaving at least one former employee without a seven-figure payout. The launchpad fired staff in late March and early April. According to a Sandmark report, t",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Cryptopolitan",
+      "source_id": "cryptopolitan",
+      "title": "Coldcard's biggest security failure may have cost $70M",
+      "url": "https://www.cryptopolitan.com/coldcard-biggest-security-failure-cost-70m/",
+      "published_at": "2026-07-31T23:27:54+00:00",
+      "summary": "An attacker has drained over 1,000 bitcoin (approx worth around $70 million) from nearly 1,200 wallets that used Coldcard hardware to generate a key seed, Galaxy Research revealed on Friday. The figure is substantially higher than the initial estimates made by the company 24 hours earlier. The potential losses involve ",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "Coldcard Bitcoin Thief Likely Used Top Blockchain Services Provider: Report",
+      "url": "https://bitcoinmagazine.com/news/coldcard-thief-used-blockchain-service",
+      "published_at": "2026-07-31T21:01:14+00:00",
+      "summary": "Bitcoin Magazine Coldcard Bitcoin Thief Likely Used Top Blockchain Services Provider: Report Experts have since said that those holding Bitcoin on a Coldcard device should move funds now. This post Coldcard Bitcoin Thief Likely Used Top Blockchain Services Provider: Report first appeared on Bitcoin Magazine and is writ",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Bitcoin losses linked to Coldcard vulnerability grow to $70 million, Galaxy Research says",
+      "url": "https://www.theblock.co/post/410332/bitcoin-losses-linked-coldcard-vulnerability-70-million-galaxy-research?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-31T20:20:52+00:00",
+      "summary": "Galaxy said nearly 1,200 addresses were drained of more than 1,000 BTC worth roughly $70 million tied to a Coldcard vulnerability.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Bank of Italy finds no consistent cost advantage for stablecoin remittances",
+      "url": "https://cointelegraph.com/news/bank-of-italy-study-no-stablecoin-remittance-cost-advantages?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-31T20:10:21+00:00",
+      "summary": "Researchers found that fiat conversion costs and payment infrastructure, rather than blockchain fees, accounted for most of the differences in stablecoin remittance costs and settlement times.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": -1,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Coinbase’s Q2 miss sparks split on Wall Street, analysts debate growth beyond crypto trading",
+      "url": "https://www.theblock.co/post/410316/coinbase-q2-miss-sparks-split-wall-street-analysts-debate-growth-beyond-trading?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-31T19:34:26+00:00",
+      "summary": "Wall Street lowered Coinbase targets after second-quarter earnings but remains split on the company's outlook.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "Younger Democrats Understand Clarity Act And Bill Should Pass, Says Coinbase’s Chief Policy Officer",
+      "url": "https://bitcoinmagazine.com/news/clarity-act-should-pass-says-coinbase",
+      "published_at": "2026-07-31T19:12:37+00:00",
+      "summary": "Bitcoin Magazine Younger Democrats Understand Clarity Act And Bill Should Pass, Says Coinbase’s Chief Policy Officer The Clarity Act will likely get through despite some — older — Democrats holding it back, according to Coinbase’s Chief Policy Officer, Faryar Shirzad. Speaking on The Hill’s morning Rising show Friday, ",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
       "source": "Cointelegraph",
       "source_id": "cointelegraph",
       "title": "Here’s what happened in crypto today",
       "url": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "published_at": "2026-08-18T06:09:35+00:00",
+      "published_at": "2026-07-31T18:09:51+00:00",
       "summary": "Need to know what happened in crypto today? Here is the latest news on daily trends and events impacting Bitcoin price, blockchain, DeFi, Web3 and crypto regulation.",
       "source_category": "news",
       "assets": [
@@ -271,81 +520,12 @@
       "risk_event": true
     },
     {
-      "source": "Cryptopolitan",
-      "source_id": "cryptopolitan",
-      "title": "RWA DeFi Deposits Near $4 Billion After 6x Growth in One Year",
-      "url": "https://www.cryptopolitan.com/rwa-defi-tvl-near-4-billion/",
-      "published_at": "2026-08-18T05:45:23+00:00",
-      "summary": "Real World Assets that are actively deployed inside DeFi protocols are on the verge of reaching $4 billion. As of August 18, DefiLlama shows this number is at $3.98 billion. This same number stood at $650.88 million just a year ago and around $12 million three years ago. That is a 6x in twelve months...",
-      "source_category": "news",
-      "assets": [],
-      "topics": [
-        "DeFi"
-      ],
-      "sentiment": 1,
-      "risk_event": false
-    },
-    {
       "source": "BeInCrypto",
       "source_id": "beincrypto",
-      "title": "Solana Whale That Made $20 Million in 2023 Starts Buying Again",
-      "url": "https://beincrypto.com/solana-whale-returns-buys-sol-dip/",
-      "published_at": "2026-08-18T05:43:51+00:00",
-      "summary": "A Solana (SOL) whale that banked more than $20 million in 2023 has resurfaced after two years, buying $3.6 million in SOL. Blockchain tracker Lookonchain flagged the purchase. This comes as SOL trades roughly 74% below its January 2025 record high. Dormant Whale Buys $3.6 Million in Solana After Two Years The buy total",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Cryptopolitan",
-      "source_id": "cryptopolitan",
-      "title": "Floki Inu price prediction 2026-2032: Can FLOKI surpass previous ATH?",
-      "url": "https://www.cryptopolitan.com/floki-inu-price-prediction/",
-      "published_at": "2026-08-18T05:26:33+00:00",
-      "summary": "Key takeaways: Floki Inu is a meme coin driven by its community, the Floki Vikings. Inspired by Shiba Inu, Floki Inu aims to democratize power in the crypto space, pivoting the crypto market away from traditional financial entities. The Floki project ecosystem is diverse. It includes Valhalla, a blockchain combat game ",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Cointelegraph",
-      "source_id": "cointelegraph",
-      "title": "Ethereum Foundation warns some tools may break with Glamsterdam upgrade",
-      "url": "https://cointelegraph.com/news/ethereum-foundation-warns-some-tools-may-break-with-glamsterdam-upgrade?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "published_at": "2026-08-18T05:12:18+00:00",
-      "summary": "Developers have been urged to test on Plataberget before Glamsterdam’s new gas model reaches Ethereum’s other testnets and mainnet.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 1,
-      "risk_event": false
-    },
-    {
-      "source": "BeInCrypto",
-      "source_id": "beincrypto",
-      "title": "Tom Lee Sees Ethereum Pulling Ahead of Bitcoin — and Names 2 Reasons",
-      "url": "https://beincrypto.com/tom-lee-eth-btc-ratio-bitmine/",
-      "published_at": "2026-08-18T04:40:37+00:00",
-      "summary": "Bitmine Chairman Tom Lee says the ETH/BTC ratio has broken above a multi-year downtrend. He reads the shift as markets pricing in tokenization and agentic-AI demand for Ethereum (ETH). The comment accompanied BitMine’s weekly treasury update. It showed the company sharply slowing its Ethereum purchases while stepping u",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Cryptopolitan",
-      "source_id": "cryptopolitan",
-      "title": "Jane Street’s $990M Bitcoin ETF stake puts a top market maker back in the price spotlight",
-      "url": "https://www.cryptopolitan.com/jane-streets-990m-bitcoin-etf-stake-puts-a-top-market-maker/",
-      "published_at": "2026-08-18T04:40:18+00:00",
-      "summary": "Jane Street informed the US Securities and Exchange Commission that it possessed more than $990 million worth of spot BTC ETFs, which equals approximately 15,394 BTC at now existing prices. This is an important position because Jane Street is not merely another institutional investor. Indeed, it is also one of the larg",
+      "title": "BlackRock Bitcoin Buying Rebounds as ETF Investors Sit 22% Underwater",
+      "url": "https://beincrypto.com/blackrock-bitcoin-buying-etf-investors-underwater/",
+      "published_at": "2026-07-31T18:02:04+00:00",
+      "summary": "BlackRock clients bought $273 million in Bitcoin in two days while the average US spot ETF buyer sits 22% underwater. The post BlackRock Bitcoin Buying Rebounds as ETF Investors Sit 22% Underwater appeared first on BeInCrypto .",
       "source_category": "news",
       "assets": [
         "BTC"
@@ -357,12 +537,44 @@
       "risk_event": false
     },
     {
-      "source": "BeInCrypto",
-      "source_id": "beincrypto",
-      "title": "Fundstrat Predicts Bitcoin to $83,200, But Also $44,800 With 30% Swing Overdue",
-      "url": "https://beincrypto.com/fundstrat-bitcoin-30-percent-swing/",
-      "published_at": "2026-08-18T04:13:27+00:00",
-      "summary": "Fundstrat says bitcoin's calm trading range signals a 30% swing is coming, which could push BTC to $83,200 or $44,800. The post Fundstrat Predicts Bitcoin to $83,200, But Also $44,800 With 30% Swing Overdue appeared first on BeInCrypto .",
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Tether’s excess reserves fall by more than $4 billion amid weaker Q2 financial results",
+      "url": "https://www.theblock.co/post/410305/tethers-excess-reserves-fall-by-more-than-4-billion-amid-weaker-q2-financial-results?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-31T17:58:47+00:00",
+      "summary": "Tether swung from $4.9 billion in net profit for Q2 2025 to $1.5 in net operating profit during the second quarter of this year.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "Coinkite Releases Fixed Firmware After Coldcard Bug; AI Likely Involved In The Breach",
+      "url": "https://bitcoinmagazine.com/business/coinkite-releases-fixed-firmware-after-coldcard-bug-ai-likely-involved-in-the-hack",
+      "published_at": "2026-07-31T17:57:02+00:00",
+      "summary": "Bitcoin Magazine Coinkite Releases Fixed Firmware After Coldcard Bug; AI Likely Involved In The Breach NVK stated that AI-assisted code review can now find latent bugs at a speed outpacing even the industry’s most seasoned experts, calling it a sober reality of the new AI paradigm. This post Coinkite Releases Fixed Fir",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Analysts back Strategy’s cash buildup as Saylor shifts from ‘100% bitcoin’ approach",
+      "url": "https://www.theblock.co/post/410297/strategy-cash-buildup-saylor-shifts-from-100-bitcoin-approach?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-31T17:40:13+00:00",
+      "summary": "TD Cowen and Benchmark reiterated buy on Strategy after an $8.2 billion Q2 loss and a corporate STRC-to-par push.",
       "source_category": "news",
       "assets": [
         "BTC"
@@ -372,42 +584,246 @@
       "risk_event": false
     },
     {
-      "source": "Cryptopolitan",
-      "source_id": "cryptopolitan",
-      "title": "Pando Rings oracle exploiter resurfaces, routes ETH into Tornado Cash",
-      "url": "https://www.cryptopolitan.com/pando-rings-oracle-exploiter-resurfaces-routes-eth-into-tornado-cash/",
-      "published_at": "2026-08-18T04:09:09+00:00",
-      "summary": "The wallet associated with the 2022 Pando Rings oracle hack was reactivated on August 18 after two months of inactivity, as reported by blockchain tracker Onchain Lens, The hacker exchanged 3 million DAI for about 1,570 ETH, worth approximately three million dollars, through CoW Protocol. Approximately 800 ETH worth ar",
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "Tether Reports $1.5B Q2 Profit as USDT Supply Grows, Gold Holdings Rise",
+      "url": "https://decrypt.co/374796/tether-reports-1-5b-q2-profit-usdt-supply-grows",
+      "published_at": "2026-07-31T17:10:49+00:00",
+      "summary": "The latest attestation offers a snapshot of the assets backing the world's largest stablecoin, including U.S. Treasuries, repo agreements, and more than 146 metric tons of gold.",
       "source_category": "news",
       "assets": [],
       "topics": [
-        "Security"
+        "Stablecoin"
       ],
-      "sentiment": -2,
-      "risk_event": true
+      "sentiment": 0,
+      "risk_event": false
     },
     {
-      "source": "BeInCrypto",
-      "source_id": "beincrypto",
-      "title": "S&P 500 Falls, Bitcoin Surges as Traders Await the Fed Minutes: What Next?",
-      "url": "https://beincrypto.com/sp500-bitcoin-diverge-fomc-minutes-preview/",
-      "published_at": "2026-08-18T04:05:29+00:00",
-      "summary": "The S&P 500 closed down 0.52% on Monday while Bitcoin surged past $64,000, a sharp divergence just two days before the Federal Reserve releases its July meeting minutes. Markets are now in a holding pattern, with every asset class waiting for a single document to set the direction. Why S&P 500 Fell While Bitcoin Rallie",
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Ex-FTX users report funds being released in $900M distribution round",
+      "url": "https://cointelegraph.com/news/ftx-users-funds-released-fifth-distribution-round?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-31T16:56:31+00:00",
+      "summary": "Several users of the long-defunct crypto exchange reported that distribution agents had begun releasing funds to reimburse creditors for some of their 2022 losses.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Tether earns $1.5B in Q2 as US Treasury holdings fuel profits",
+      "url": "https://cointelegraph.com/news/tether-q2-profit-us-treasury-holdings-usdt-supply?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-31T16:25:47+00:00",
+      "summary": "Tether’s reserve surplus grew to $4.11 billion in the second quarter as USDT supply rose despite a weaker stablecoin market and continued pressure across the crypto sector.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Bybit adds tokenized Nvidia, Apple, Tesla stocks as loan collateral",
+      "url": "https://cointelegraph.com/news/bybit-tokenized-stocks-collateral-margin-loans?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-31T16:23:21+00:00",
+      "summary": "Eligible retail and institutional users can use tokenized shares of Nvidia, Apple, Tesla and three other US companies across Bybit’s trading and lending products.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "US Closes in on Iran’s Strait of Hormuz Bitcoin Insurance Policy, Sanctions Companies",
+      "url": "https://bitcoinmagazine.com/news/us-sanctions-iran-companies-using-bitcoin",
+      "published_at": "2026-07-31T16:20:58+00:00",
+      "summary": "Bitcoin Magazine US Closes in on Iran’s Strait of Hormuz Bitcoin Insurance Policy, Sanctions Companies The news comes after the U.S. froze Iran's other digital assets. This post US Closes in on Iran’s Strait of Hormuz Bitcoin Insurance Policy, Sanctions Companies first appeared on Bitcoin Magazine and is written by Mat",
       "source_category": "news",
       "assets": [
         "BTC"
       ],
       "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "US Treasury yields rise as TIPS challenge the inflation narrative",
+      "url": "https://cointelegraph.com/markets/us-treasury-yields-rise-as-tips-challenge-the-inflation-narrative?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-31T16:14:19+00:00",
+      "summary": "TIPS data points to rising real yields, not inflation, a dynamic that weighs on non-yielding assets like Bitcoin.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "Bitcoin price sinks to 2-week lows as US stocks fail to copy Asia rebound",
+      "url": "https://cointelegraph.com/markets/bitcoin-two-week-lows-us-stocks-fail-copy-asia-rebound?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-31T15:57:03+00:00",
+      "summary": "Bitcoin saw fresh downside pressure as US stocks tracked sideways into the end of the month, diverging from the relief bounce seen in Asia.",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "Circle Lands New York Trust Charter as Stablecoin Issuer Expands Regulatory Footprint",
+      "url": "https://decrypt.co/374791/circle-new-york-trust-charter-stablecoin-issuer",
+      "published_at": "2026-07-31T15:32:02+00:00",
+      "summary": "The approval comes weeks after Circle won federal approval to establish a national trust bank, adding another license as the USDC issuer expands.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "COLDCARD SECURITY RISK: IMMEDIATE ACTION REQUIRED",
+      "url": "https://bitcoinmagazine.com/news/coldcard-security-risk-immediate-action-required",
+      "published_at": "2026-07-31T15:22:26+00:00",
+      "summary": "Bitcoin Magazine COLDCARD SECURITY RISK: IMMEDIATE ACTION REQUIRED IMPORTANT: Major security vulnerability discovered in Coldcard hardware wallets. For your own safety read disclosures and take necessary actions immediately. This post COLDCARD SECURITY RISK: IMMEDIATE ACTION REQUIRED first appeared on Bitcoin Magazine ",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "Coldcard Wallet Flaw Exposes Years of Bitcoin Seeds After $70M in BTC Stolen",
+      "url": "https://bitcoinmagazine.com/news/coldcard-wallet-exposed-after-bitcoin-hack",
+      "published_at": "2026-07-31T15:22:11+00:00",
+      "summary": "Bitcoin Magazine Coldcard Wallet Flaw Exposes Years of Bitcoin Seeds After $70M in BTC Stolen Over $70 million in Bitcoin has been pinched. Coldcard has since urged its users to take precautions. This post Coldcard Wallet Flaw Exposes Years of Bitcoin Seeds After $70M in BTC Stolen first appeared on Bitcoin Magazine an",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": -1,
+      "risk_event": true
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "US Treasury Sanctions Iranian Firms Taking Bitcoin for Hormuz Passage",
+      "url": "https://decrypt.co/374789/us-treasury-sanctions-iranian-firms-taking-bitcoin-for-hormuz-passage",
+      "published_at": "2026-07-31T15:05:43+00:00",
+      "summary": "OFAC sanctioned two Iranian firms including Hormuz Safe, which “accepts payment in Bitcoin and other digital assets.”",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Uniswap launches ‘Earn’ with Morpho to let users earn yield on idle crypto assets",
+      "url": "https://www.theblock.co/post/410286/uniswap-morpho-earn-yield-gauntlet-vaults?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-31T15:00:52+00:00",
+      "summary": "Uniswap has teamed up with Morpho to launch Earn, a new lending product that lets users earn yield via Gauntlet-curated vaults.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
       "sentiment": 1,
       "risk_event": false
     },
     {
-      "source": "BeInCrypto",
-      "source_id": "beincrypto",
-      "title": "Jane Street Discloses Nearly $1 Billion Bitcoin ETF Position After $15 Billion Loss",
-      "url": "https://beincrypto.com/jane-street-bitcoin-etf-position-disclosure/",
-      "published_at": "2026-08-18T04:03:41+00:00",
-      "summary": "Jane Street disclosed a $990 million bitcoin ETF stake after a $15 billion loss, but it may not signal bullishness on BTC. The post Jane Street Discloses Nearly $1 Billion Bitcoin ETF Position After $15 Billion Loss appeared first on BeInCrypto .",
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Ethereum’s 43-day staking queue isn’t a clean demand signal, Sygnum says",
+      "url": "https://www.theblock.co/post/410285/ethereum-43-day-staking-queue-isnt-clean-demand-signal-sygnum?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-31T14:35:11+00:00",
+      "summary": "Sygnum's Thomas Brunner says Ethereum’s 43-day staking queue reflects mechanics, not just fresh demand from investors.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Cointelegraph",
+      "source_id": "cointelegraph",
+      "title": "AMLBot launches AI Tracer for self-service blockchain investigations",
+      "url": "https://cointelegraph.com/news/crypto-forensics-firm-launches-ai-tracing-service-track-your-stolen-coins?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "published_at": "2026-07-31T13:59:56+00:00",
+      "summary": "Crypto forensics company AMLBot launched an AI-enabled tool allowing users with no specialist knowledge to trace their digital assets, even after they are stolen.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Security"
+      ],
+      "sentiment": 0,
+      "risk_event": true
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "TD Cowen cuts Sharplink price target to $13 on lower 2026 ether outlook",
+      "url": "https://www.theblock.co/post/410273/td-cowen-cuts-sharplink-price-target-to-13-on-lower-2026-ether-outlook?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-31T13:03:29+00:00",
+      "summary": "TD Cowen cut Sharplink's price target after lowering its 2026 ether forecast while maintaining its long-term Ethereum investment thesis.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Circle secures NYDFS trust charter, adding state layer to federal USDC oversight",
+      "url": "https://www.theblock.co/post/410275/circle-secures-nydfs-trust-charter-adding-state-layer-to-federal-usdc-oversight?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-31T12:59:31+00:00",
+      "summary": "Circle won a limited-purpose trust charter from NYDFS for Circle Internet Trust Company after securing final OCC national trust approval.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [
+        "Stablecoin"
+      ],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "Decrypt",
+      "source_id": "decrypt",
+      "title": "Morning Minute: Coinbase Posts Surprise Loss as Crypto Trading Dries Up",
+      "url": "https://decrypt.co/374781/morning-minute-coinbase-posts-surprise-loss-as-crypto-trading-dries-up",
+      "published_at": "2026-07-31T12:11:17+00:00",
+      "summary": "Plus, BTC is red this morning despite $233M in ETF inflows yesterday; and NY State is trying to shut down Kalshi and seeking $36B in damages",
       "source_category": "news",
       "assets": [
         "BTC"
@@ -415,523 +831,16 @@
       "topics": [
         "ETF"
       ],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "BeInCrypto",
-      "source_id": "beincrypto",
-      "title": "Peter Schiff Calls Latest Bitcoin Rally A Sell Opportunity as BTC Approaches $65,000",
-      "url": "https://beincrypto.com/peter-schiff-bitcoin-rally-sell-opportunity/",
-      "published_at": "2026-08-18T03:58:00+00:00",
-      "summary": "Peter Schiff calls Bitcoin's rally past $64,000 a sell opportunity, but fading Fed hike odds tell another story. The post Peter Schiff Calls Latest Bitcoin Rally A Sell Opportunity as BTC Approaches $65,000 appeared first on BeInCrypto .",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 1,
-      "risk_event": false
-    },
-    {
-      "source": "Cointelegraph",
-      "source_id": "cointelegraph",
-      "title": "Alleged $165M crypto Ponzi mastermind faces US charges after Fiji deportation",
-      "url": "https://cointelegraph.com/news/edward-zimbardi-165m-crypto-ponzi-fiji-deportation?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "published_at": "2026-08-18T03:21:26+00:00",
-      "summary": "Prosecutors allege Edward Zimbardi collected crypto from thousands of investors, lost over $34 million on currency trades and spent at least $10 million personally.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Cryptopolitan",
-      "source_id": "cryptopolitan",
-      "title": "Dogwifhat price prediction 2026 – 2032: Can WIF recover to $1?",
-      "url": "https://www.cryptopolitan.com/dogwifhat-price-prediction/",
-      "published_at": "2026-08-18T02:09:11+00:00",
-      "summary": "Key takeaways: Remember Dogecoin and Shiba Inu? The popular dog-themed memecoins! Dogwifhat (WIF) is another dog-inspired memecoin built on the Solana blockchain. Despite being relatively new on the market (launched in November 2023), the “dog wif a hat” project saw remarkable success post-launch. Following the exchang",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 1,
-      "risk_event": false
-    },
-    {
-      "source": "Cointelegraph",
-      "source_id": "cointelegraph",
-      "title": "‘Fabricated rumors’ about BitMart founder, Binance bStocks dominate: Asia Express",
-      "url": "https://cointelegraph.com/magazine/fabricated-rumors-about-bitmart-founder-binance-bstocks-dominate-asia-express?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "published_at": "2026-08-18T01:28:37+00:00",
-      "summary": "Binance’s bStocks are the second largest tokenized stock issuer just two months after launch, and BitMart’s internal feud erupts into the spotlight ahead of its closure",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 1,
-      "risk_event": false
-    },
-    {
-      "source": "Cryptopolitan",
-      "source_id": "cryptopolitan",
-      "title": "IREN's $9.7B Microsoft AI deal hits first major milestone",
-      "url": "https://www.cryptopolitan.com/iren-9-7b-microsoft-ai-deal-milestone/",
-      "published_at": "2026-08-17T23:11:52+00:00",
-      "summary": "IREN completed the delivery of the first of four planned “Horizon” cloud deployments of artificial intelligence to Microsoft Corporation. With that, the first milestone of a five-year, $9.7 billion contract was completed, which underpins the transition of the former Bitcoin mining company into artificial intelligence i",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "BeInCrypto",
-      "source_id": "beincrypto",
-      "title": "5% Treasury Yields Won’t Crush Record-High Stocks. Can Bitcoin Say the Same?",
-      "url": "https://beincrypto.com/treasury-yields-5-percent-bitcoin-price/",
-      "published_at": "2026-08-17T23:03:53+00:00",
-      "summary": "Wall Street says 5% Treasury yields won't break stocks, but Bitcoin has fallen 46% as gold surged on the same yields. The post 5% Treasury Yields Won’t Crush Record-High Stocks. Can Bitcoin Say the Same? appeared first on BeInCrypto .",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 2,
-      "risk_event": false
-    },
-    {
-      "source": "The Block",
-      "source_id": "theblock",
-      "title": "Robinhood Chain TVL surges 45% in August as tokenized RWAs lose ground",
-      "url": "https://www.theblock.co/news/ecosystems/2026-08-17-robinhood-chain-tvl-surges-45-august-tokenized-rwas-lose-ground-411998",
-      "published_at": "2026-08-17T22:26:02+00:00",
-      "summary": "Stablecoin market cap on the chain has reached $640 million, the bulk of which has come from USDe.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [
-        "Stablecoin"
-      ],
-      "sentiment": 1,
-      "risk_event": false
-    },
-    {
-      "source": "BeInCrypto",
-      "source_id": "beincrypto",
-      "title": "Nike Stock Hits 12-Year Low: Riskier Than Bitcoin?",
-      "url": "https://beincrypto.com/nike-stock-12-year-low-bitcoin/",
-      "published_at": "2026-08-17T22:18:36+00:00",
-      "summary": "Nike stock hit a 12-year low, down 78% since 2021. Bitcoin fell half as far. See what broke the swoosh. The post Nike Stock Hits 12-Year Low: Riskier Than Bitcoin? appeared first on BeInCrypto .",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Cryptopolitan",
-      "source_id": "cryptopolitan",
-      "title": "Compound's COMP surges as project unveils $52M institutional pivot",
-      "url": "https://www.cryptopolitan.com/compound-institutional-pivot-comp-jumps/",
-      "published_at": "2026-08-17T21:45:11+00:00",
-      "summary": "Compound, one of the first protocols to make crypto lending work without a bank, has approved a record $52 million development budget and rebuilt its leadership around traditional-finance veterans. It is also wagering its next chapter on institutions, which is seen as a move away from retail yield-chasers who once drov",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 2,
-      "risk_event": false
-    },
-    {
-      "source": "Bitcoin Magazine",
-      "source_id": "bitcoinmagazine",
-      "title": "Losses Top $115M In Coldcard Bitcoin Hack: Galaxy Research",
-      "url": "https://bitcoinmagazine.com/news/losses-top-115-million-in-coldcard-hack",
-      "published_at": "2026-08-17T21:32:34+00:00",
-      "summary": "Bitcoin Magazine Losses Top $115M In Coldcard Bitcoin Hack: Galaxy Research The amount of bitcoin stolen has been confirmed at $115 million, according to Galaxy Digital's latest figures. This post Losses Top $115M In Coldcard Bitcoin Hack: Galaxy Research first appeared on Bitcoin Magazine and is written by Mathew Di S",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [
-        "Security"
-      ],
-      "sentiment": -2,
-      "risk_event": true
-    },
-    {
-      "source": "Cointelegraph",
-      "source_id": "cointelegraph",
-      "title": "OCC approves Trump family crypto company for trust charter",
-      "url": "https://cointelegraph.com/news/occ-donald-trump-world-liberty-financial-trust-charter?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "published_at": "2026-08-17T21:17:30+00:00",
-      "summary": "The US financial regulator gave conditional approval for World Liberty Financial’s charter bid as ten Democrats signed onto a bill to “prevent corruption in banking applications.“",
-      "source_category": "news",
-      "assets": [],
-      "topics": [
-        "Regulation"
-      ],
-      "sentiment": 1,
-      "risk_event": true
-    },
-    {
-      "source": "The Block",
-      "source_id": "theblock",
-      "title": "Tokenized equities triple market share as Ondo, Binance and xStocks dominate",
-      "url": "https://www.theblock.co/news/defi/2026-08-17-tokenized-equities-triple-market-share-ondo-binance-xstocks-dominate-411996",
-      "published_at": "2026-08-17T20:55:00+00:00",
-      "summary": "Tokenized stock market share has grown to 15%, up 3x from the start of the year, with the total market cap around $2.8 billion.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Bitcoin Magazine",
-      "source_id": "bitcoinmagazine",
-      "title": "Jane Street Reveals Nearly $1B Bitcoin Position",
-      "url": "https://bitcoinmagazine.com/news/jane-street-bitcoin-position",
-      "published_at": "2026-08-17T20:37:07+00:00",
-      "summary": "Bitcoin Magazine Jane Street Reveals Nearly $1B Bitcoin Position Top Wall Street firm Jane Street has bought Bitcoin via the spot ETFs. This post Jane Street Reveals Nearly $1B Bitcoin Position first appeared on Bitcoin Magazine and is written by Mathew Di Salvo .",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Decrypt",
-      "source_id": "decrypt",
-      "title": "Treasury Proposes Rules Defining Who Can Legally Sell Stablecoins in US",
-      "url": "https://decrypt.co/375817/treasury-rules-sell-stablecoins-us",
-      "published_at": "2026-08-17T20:31:04+00:00",
-      "summary": "Exchanges and other crypto platforms would face new restrictions on selling stablecoins to US customers beginning in 2027.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "The Block",
-      "source_id": "theblock",
-      "title": "IREN delivers first of four AI cloud deployments to Microsoft under $9.7 billion deal",
-      "url": "https://www.theblock.co/news/business/2026-08-17-iren-delivers-first-four-ai-cloud-deployments-microsoft-under-9-7-billion-deal-412016",
-      "published_at": "2026-08-17T19:54:52+00:00",
-      "summary": "IREN is targeting 480 MW of AI cloud capacity in 2026 and 1.2 gigawatts by 2027 as it continues to pivot away from bitcoin mining.",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Cointelegraph",
-      "source_id": "cointelegraph",
-      "title": "Binance to plan UK relaunch with FCA license application: Report",
-      "url": "https://cointelegraph.com/news/binance-uk-launch-plans-fca-license?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "published_at": "2026-08-17T18:45:00+00:00",
-      "summary": "Binance’s UK arm has been barred from offering regulated activities in the country since June 2021, but the company will reportedly move to secure licensing under new crypto rules.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
       "sentiment": 1,
       "risk_event": false
     },
     {
       "source": "Decrypt",
       "source_id": "decrypt",
-      "title": "Solana’s Pump Token Leads Crypto Market Gainers as Chart Paints Golden Cross",
-      "url": "https://decrypt.co/375788/solana-pump-price-crypto-market-golden-cross",
-      "published_at": "2026-08-17T18:29:56+00:00",
-      "summary": "The native token of Solana's Pump.fun is up 8%, and the pattern bulls have been waiting for is starting to form on the daily chart.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Decrypt",
-      "source_id": "decrypt",
-      "title": "Ethereum Developers Target Privacy Changes in Next Major Upgrade",
-      "url": "https://decrypt.co/375787/ethereum-developers-privacy-hegota-upgrade",
-      "published_at": "2026-08-17T18:19:46+00:00",
-      "summary": "A proposed package would let privacy pools pay their own transaction fees without relying on intermediaries.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 1,
-      "risk_event": false
-    },
-    {
-      "source": "Bitcoin Magazine",
-      "source_id": "bitcoinmagazine",
-      "title": "Investors Cash Out Fast of Bitcoin ETFs but Price Remains Stable",
-      "url": "https://bitcoinmagazine.com/news/investors-cash-out-of-bitcoin-etfs",
-      "published_at": "2026-08-17T18:04:52+00:00",
-      "summary": "Bitcoin Magazine Investors Cash Out Fast of Bitcoin ETFs but Price Remains Stable The Bitcoin investment vehicles were on a hot streak but investor sentiment last week changed. This post Investors Cash Out Fast of Bitcoin ETFs but Price Remains Stable first appeared on Bitcoin Magazine and is written by Mathew Di Salvo",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "The Block",
-      "source_id": "theblock",
-      "title": "Bitcoin production slips again in July for CleanSpark, BitFuFu and Canaan",
-      "url": "https://www.theblock.co/news/business/2026-08-17-bitcoin-production-slips-again-july-cleanspark-bitfufu-canaan-411985",
-      "published_at": "2026-08-17T17:13:59+00:00",
-      "summary": "CleanSpark is up 6.4% year to date, while BitFuFu and Canaan have fallen more than 50% and 70%, respectively.",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "The Block",
-      "source_id": "theblock",
-      "title": "US Treasury seeks public comment on GENIUS Act stablecoin rules",
-      "url": "https://www.theblock.co/news/regulation/2026-08-17-us-treasury-seeks-public-comment-genius-act-stablecoin-rules-411987",
-      "published_at": "2026-08-17T16:40:26+00:00",
-      "summary": "Under the law, entities generally cannot issue payment stablecoins in the U.S. without obtaining an appropriate federal or state license.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [
-        "Stablecoin"
-      ],
-      "sentiment": 1,
-      "risk_event": false
-    },
-    {
-      "source": "Bitcoin Magazine",
-      "source_id": "bitcoinmagazine",
-      "title": "US Treasury Asks For Public Input on Landmark Genius Act Crypto Legislation",
-      "url": "https://bitcoinmagazine.com/news/us-treasury-asks-for-input-on-genius-act",
-      "published_at": "2026-08-17T16:36:51+00:00",
-      "summary": "Bitcoin Magazine US Treasury Asks For Public Input on Landmark Genius Act Crypto Legislation The U.S. Department of the Treasury is moving fast with crypto regulation, with the government body asking for public comment on the landmark GENIUS Act. In a Monday announcement, the Treasury said that it was welcoming input f",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [
-        "Regulation"
-      ],
-      "sentiment": 0,
-      "risk_event": true
-    },
-    {
-      "source": "Cointelegraph",
-      "source_id": "cointelegraph",
-      "title": "US Treasury moves forward with rules on GENIUS Act after July deadline",
-      "url": "https://cointelegraph.com/news/us-treasury-public-comment-rules-genius-act?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "published_at": "2026-08-17T16:29:48+00:00",
-      "summary": "The stablecoin bill signed into law last year is scheduled to go into effect in January 2027, potentially without finalized regulations from US government agencies.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [
-        "Stablecoin"
-      ],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Decrypt",
-      "source_id": "decrypt",
-      "title": "Wall Street Pushback Halts SEC's Crypto Fundraising Framework, Sources Say",
-      "url": "https://decrypt.co/375779/wall-street-pushback-halts-sec-crypto-fundraising-framework",
-      "published_at": "2026-08-17T16:27:26+00:00",
-      "summary": "The securities regulator cited an \"unforeseen scheduling issue,\" but sources point to a legal threat from Wall Street trade group SIFMA and an administration waiting to see whether the Clarity Act passes in September.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [
-        "Regulation"
-      ],
-      "sentiment": 0,
-      "risk_event": true
-    },
-    {
-      "source": "Cointelegraph",
-      "source_id": "cointelegraph",
-      "title": "Bitcoin hits $64K as gold gains while oil shakes off Trump Oman threat",
-      "url": "https://cointelegraph.com/markets/bitcoin-hits-64k-as-gold-gains-while-oil-shakes-off-trump-oman-threat?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "published_at": "2026-08-17T16:16:40+00:00",
-      "summary": "Bitcoin price strength saw BTC/USD pass $64,000 on 2% daily gains as gold pushed higher while US stocks wobbled on fresh US-Iran rhetoric.",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Cointelegraph",
-      "source_id": "cointelegraph",
-      "title": "Bitmine nears 5% of Ethereum supply despite $8.4B in unrealized losses",
-      "url": "https://cointelegraph.com/news/bitmine-ethereum-supply-5-82-million-eth-staking?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "published_at": "2026-08-17T16:04:32+00:00",
-      "summary": "Tom Lee’s Ethereum treasury company keeps buying the second-biggest crypto through the downturn, while more than 5 million staked ETH is projected to generate $287 million in annual rewards.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Decrypt",
-      "source_id": "decrypt",
-      "title": "Tom Lee’s Bitmine Buys Another $19 Million in Ethereum as Stash Nears 5% of Total Supply",
-      "url": "https://decrypt.co/375768/tom-lee-bitcoin-buys-19-million-ethereum",
-      "published_at": "2026-08-17T15:47:59+00:00",
-      "summary": "The firm says it's 96% of the way to owning 5% of Ethereum's total supply, according to Chairman Tom Lee.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Bitcoin Magazine",
-      "source_id": "bitcoinmagazine",
-      "title": "Strategy Goes Another Week Without Buying — Or Selling — Bitcoin, Builds Up Cash Reserve",
-      "url": "https://bitcoinmagazine.com/news/strategy-goes-another-week-without-buying",
-      "published_at": "2026-08-17T14:23:17+00:00",
-      "summary": "Bitcoin Magazine Strategy Goes Another Week Without Buying — Or Selling — Bitcoin, Builds Up Cash Reserve Strategy last week sold MSTR shares for approximately $333.7 million and did not buy or sell any Bitcoin. This post Strategy Goes Another Week Without Buying — Or Selling — Bitcoin, Builds Up Cash Reserve first app",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "The Block",
-      "source_id": "theblock",
-      "title": "Austria’s FMA fines crypto broker Bitpanda $81,000 in first published MiCA penalty",
-      "url": "https://www.theblock.co/news/regulation/2026-08-17-austria-mica-penalty-bitpanda-411960",
-      "published_at": "2026-08-17T13:03:16+00:00",
-      "summary": "Austria's FMA fined Bitpanda €70,000 in its first published MiCA penalty, citing white paper and marketing disclosure failures.",
-      "source_category": "news",
-      "assets": [],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Cointelegraph",
-      "source_id": "cointelegraph",
-      "title": "Strategy raises $334M through stock sales but buys no Bitcoin",
-      "url": "https://cointelegraph.com/news/strategy-stock-sales-buys-no-bitcoin?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "published_at": "2026-08-17T12:51:03+00:00",
-      "summary": "Proceeds funded STRC dividends and repurchases, while $149.1 million was added to Strategy’s US dollar reserve, which reached $4.8 billion.",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "The Block",
-      "source_id": "theblock",
-      "title": "Strategy sells $334 million in MSTR shares, makes no bitcoin purchases or sales as USD reserve hits $4.8 billion",
-      "url": "https://www.theblock.co/news/business/2026-08-17-michael-saylor-strategy-btc-411942",
-      "published_at": "2026-08-17T12:15:52+00:00",
-      "summary": "Strategy's total holdings account for around 4% of the 21 million bitcoin supply cap — worth roughly $53.4 billion.",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "The Block",
-      "source_id": "theblock",
-      "title": "Bitcoin miner HIVE inks five-year $350 million AI cloud contract, adds $70 million in annualized revenue",
-      "url": "https://www.theblock.co/news/business/2026-08-17-bitcoin-miner-hive-inks-five-year-350-million-ai-cloud-contract-411940",
-      "published_at": "2026-08-17T10:30:30+00:00",
-      "summary": "HIVE's BUZZ HPC signed a five-year, $350M GPU cloud deal, adding $70M in ARR, its second large NVIDIA cluster deal in two months.",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Bitcoin Magazine",
-      "source_id": "bitcoinmagazine",
-      "title": "Edelman Financial, Tudor Investment Reveal Significant Bitcoin Holdings",
-      "url": "https://bitcoinmagazine.com/news/edelman-financial-reveals-bitcoin-positio",
-      "published_at": "2026-08-14T22:18:16+00:00",
-      "summary": "Bitcoin Magazine Edelman Financial, Tudor Investment Reveal Significant Bitcoin Holdings The two massive investment firms are big into Bitcoin. This post Edelman Financial, Tudor Investment Reveal Significant Bitcoin Holdings first appeared on Bitcoin Magazine and is written by Mathew Di Salvo .",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Bitcoin Magazine",
-      "source_id": "bitcoinmagazine",
-      "title": "Abu Dhabi Sovereign Wealth Funds Keep Big Bitcoin Positions",
-      "url": "https://bitcoinmagazine.com/news/abu-dhabi-funds-keep-big-bitcoin-positions",
-      "published_at": "2026-08-14T21:17:12+00:00",
-      "summary": "Bitcoin Magazine Abu Dhabi Sovereign Wealth Funds Keep Big Bitcoin Positions Bitcoin is the most important asset in two of Abu Dhabi sovereign wealth funds, according to regulatory filings. Abu Dhabi’s Mubadala Investment Company disclosed Friday that it held a $490 million stake in BlackRock’s iShares Bitcoin Trust — ",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [],
-      "sentiment": 0,
-      "risk_event": false
-    },
-    {
-      "source": "Bitcoin Magazine",
-      "source_id": "bitcoinmagazine",
-      "title": "Bitcoiners Warned After French Tax Authority Confirms Data Breach Affecting Hundreds of Thousands",
-      "url": "https://bitcoinmagazine.com/news/bitcoiners-warned-of-wrench-attacks",
-      "published_at": "2026-08-14T20:42:48+00:00",
-      "summary": "Bitcoin Magazine Bitcoiners Warned After French Tax Authority Confirms Data Breach Affecting Hundreds of Thousands France is already the epicenter of wrench attacks, where investors are targeted and forced to hand over their crypto. This post Bitcoiners Warned After French Tax Authority Confirms Data Breach Affecting H",
-      "source_category": "news",
-      "assets": [
-        "BTC"
-      ],
-      "topics": [
-        "Security"
-      ],
-      "sentiment": -1,
-      "risk_event": true
-    },
-    {
-      "source": "Bitcoin Magazine",
-      "source_id": "bitcoinmagazine",
-      "title": "Citi CEO Wants ‘Good’ Crypto Clarity Act To Get Passed",
-      "url": "https://bitcoinmagazine.com/news/citi-ceo-wants-clarity-act-passed",
-      "published_at": "2026-08-14T20:03:41+00:00",
-      "summary": "Bitcoin Magazine Citi CEO Wants ‘Good’ Crypto Clarity Act To Get Passed Citigroup CEO Jane Fraser has said that while some improvements need to be made to the crypto Clarity Act, the bank wants a “good bill to go through.” The banking executive said that the bank was a “leader in digital assets” so wanted “safe adoptio",
+      "title": "Crypto Kiosk Scams Cost Texans $57M as Lawmakers Weigh a Ban",
+      "url": "https://decrypt.co/374778/crypto-kiosk-scams-cost-texans-57m-as-lawmakers-weigh-a-ban",
+      "published_at": "2026-07-31T11:13:58+00:00",
+      "summary": "Three states have already outlawed Bitcoin ATMs, and a committee chair says Texas will go further than regulating them.",
       "source_category": "news",
       "assets": [
         "BTC"
@@ -941,12 +850,38 @@
       "risk_event": false
     },
     {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Bernstein sees 78% upside for Robinhood as tokenization, prediction markets expand its crypto business",
+      "url": "https://www.theblock.co/post/410259/bernstein-sees-78-upside-for-robinhood-as-tokenization-prediction-markets-expand-its-crypto-business?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-31T10:43:58+00:00",
+      "summary": "Bernstein held its $160 Robinhood price target, citing tokenization and prediction markets as Robinhood's next crypto growth drivers.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 1,
+      "risk_event": false
+    },
+    {
+      "source": "The Block",
+      "source_id": "theblock",
+      "title": "Senate Democrats propose anti-corruption bureau as Trump’s crypto portfolio draws more scrutiny",
+      "url": "https://www.theblock.co/post/410260/senate-democrat-anti-corruption-bureau?utm_source=rss&utm_medium=rss",
+      "published_at": "2026-07-31T09:34:29+00:00",
+      "summary": "Recent financial disclosures showed that Trump made hundreds of millions of dollars in crypto-related income.",
+      "source_category": "news",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
       "source": "Bitcoin Magazine",
       "source_id": "bitcoinmagazine",
-      "title": "Bitcoin Treasury Strategy Bites Back After MSCI Announces Possible Index Removal",
-      "url": "https://bitcoinmagazine.com/news/strategy-slams-msci-possible-index-removal",
-      "published_at": "2026-08-14T17:24:58+00:00",
-      "summary": "Bitcoin Magazine Bitcoin Treasury Strategy Bites Back After MSCI Announces Possible Index Removal Bitcoin treasury Strategy could be dropped from the MSCI. It doesn't appear to care. This post Bitcoin Treasury Strategy Bites Back After MSCI Announces Possible Index Removal first appeared on Bitcoin Magazine and is writ",
+      "title": "‘Bitcoin Senator’ Cynthia Lummis Blasts Democrats For Stalling Crypto Clarity Act",
+      "url": "https://bitcoinmagazine.com/news/cynthia-lummis-blasts-democrats-on-clarity",
+      "published_at": "2026-07-30T21:37:45+00:00",
+      "summary": "Bitcoin Magazine ‘Bitcoin Senator’ Cynthia Lummis Blasts Democrats For Stalling Crypto Clarity Act Republican Senator Cynthia Lummis has again attacked the Democrats for holding back the long-awaited crypto Clarity Act. Speaking on the Crypto in America podcast Thursday, Lummis said that the bill could have been passed",
       "source_category": "news",
       "assets": [
         "BTC"
@@ -956,14 +891,46 @@
       "risk_event": false
     },
     {
-      "source": "Ethereum Foundation",
-      "source_id": "ethereum-foundation",
-      "title": "Announcing a Trillion Dollar Security grant for WEBCAT",
-      "url": "https://blog.ethereum.org/en/2026/08/05/1ts-grant",
-      "published_at": "2026-08-05T00:00:00+00:00",
-      "summary": "The Ethereum Foundation’s Trillion Dollar Security (1TS) initiative is proud to announce a grant allocation to Freedom of the Press Foundation (FPF) to support the continued development of WEBCAT. WEBCAT is an open source tool that lets browsers verify that code served by an enrolled website matches what its developers",
-      "source_category": "protocol",
-      "assets": [],
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "Bitcoin Treasury Strategy Posts $8.2B Loss As BTC Price Suffered",
+      "url": "https://bitcoinmagazine.com/news/bitcoin-treasury-strategy-posts-loss",
+      "published_at": "2026-07-30T21:00:08+00:00",
+      "summary": "Bitcoin Magazine Bitcoin Treasury Strategy Posts $8.2B Loss As BTC Price Suffered The Bitcoin treasury company posted massive losses but aims to continue making digital credit a \"new asset class.\" This post Bitcoin Treasury Strategy Posts $8.2B Loss As BTC Price Suffered first appeared on Bitcoin Magazine and is writte",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "Legendary Investor Ray Dalio Still Holds Bitcoin — But Only 1% of His Portfolio",
+      "url": "https://bitcoinmagazine.com/news/ray-dalio-prefers-gold-over-bitcoin",
+      "published_at": "2026-07-30T19:57:05+00:00",
+      "summary": "Bitcoin Magazine Legendary Investor Ray Dalio Still Holds Bitcoin — But Only 1% of His Portfolio Ray Dalio still prefers the precious metal over \"digital gold.\" This post Legendary Investor Ray Dalio Still Holds Bitcoin — But Only 1% of His Portfolio first appeared on Bitcoin Magazine and is written by Mathew Di Salvo ",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Bitcoin Magazine",
+      "source_id": "bitcoinmagazine",
+      "title": "Treasury Secretary Scott Bessent Urges Lawmakers to Vote on Clarity Act, Quotes Satoshi Nakamoto",
+      "url": "https://bitcoinmagazine.com/news/scott-bessent-urges-vote-on-clarity-act",
+      "published_at": "2026-07-30T18:07:56+00:00",
+      "summary": "Bitcoin Magazine Treasury Secretary Scott Bessent Urges Lawmakers to Vote on Clarity Act, Quotes Satoshi Nakamoto The Treasury Secretary slammed Democrats for holding back the landmark legislation. This post Treasury Secretary Scott Bessent Urges Lawmakers to Vote on Clarity Act, Quotes Satoshi Nakamoto first appeared ",
+      "source_category": "news",
+      "assets": [
+        "BTC"
+      ],
       "topics": [],
       "sentiment": 0,
       "risk_event": false
@@ -980,35 +947,74 @@
       "topics": [],
       "sentiment": 0,
       "risk_event": false
+    },
+    {
+      "source": "Ethereum Foundation",
+      "source_id": "ethereum-foundation",
+      "title": "Devcon 8 Tickets Are Live: Find Your Path to Mumbai",
+      "url": "https://blog.ethereum.org/en/2026/07/14/devcon8-tickets",
+      "published_at": "2026-07-14T00:00:00+00:00",
+      "summary": "Devcon 8 tickets are live! 🇮🇳 This November, the Ethereum community will gather in Mumbai for a more focused and intimate Devcon. Devcon gathers minds from across Ethereum and beyond: builders, researchers, maintainers, organizers, and anyone curious about the future of open technology. Across four days, you can...",
+      "source_category": "protocol",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Ethereum Foundation",
+      "source_id": "ethereum-foundation",
+      "title": "The triage is the product: running AI agents against Ethereum's protocol code",
+      "url": "https://blog.ethereum.org/en/2026/07/09/triage-is-the-product",
+      "published_at": "2026-07-09T00:00:00+00:00",
+      "summary": "Notes from the Ethereum Foundation's Protocol Security team on running coordinated AI agents against real protocol code, including how we organize the work, what holds up under scrutiny, and what client teams and security researchers can take from it. This post stands on its own; later posts will go deeper...",
+      "source_category": "protocol",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
+    },
+    {
+      "source": "Ethereum Foundation",
+      "source_id": "ethereum-foundation",
+      "title": "Ethereum for Governments and Institutions: Why neutral infrastructure matters now",
+      "url": "https://blog.ethereum.org/en/2026/07/01/ethereum-for-institutions",
+      "published_at": "2026-07-01T00:00:00+00:00",
+      "summary": "Current global shifts clearly signal a critical need for shared, neutral digital public infrastructure outside the control of any single centralized actor. As a public, programmable network designed to operate without reliance on any single party, Ethereum was built to address precisely these needs. Today, the Ethereum",
+      "source_category": "protocol",
+      "assets": [],
+      "topics": [],
+      "sentiment": 0,
+      "risk_event": false
     }
   ],
   "metrics": {
     "article_count": 50,
-    "positive_count": 13,
-    "negative_count": 4,
+    "positive_count": 7,
+    "negative_count": 6,
     "risk_event_count": 7,
-    "positive_ratio": 0.26,
-    "sentiment_score": 0.18,
+    "positive_ratio": 0.14,
+    "sentiment_score": 0.02,
     "top_topics": [
       [
-        "Regulation",
-        4
+        "Stablecoin",
+        7
       ],
       [
         "Security",
-        3
-      ],
-      [
-        "Stablecoin",
-        3
-      ],
-      [
-        "DeFi",
-        2
+        6
       ],
       [
         "ETF",
         2
+      ],
+      [
+        "DeFi",
+        1
+      ],
+      [
+        "Regulation",
+        1
       ]
     ],
     "top_assets": [
@@ -1022,7 +1028,7 @@
   "factor_signals": {
     "news_heat_24h": 50,
     "risk_event_count_24h": 7,
-    "positive_news_ratio_24h": 0.26,
+    "positive_news_ratio_24h": 0.14,
     "asset_mention_count_24h": {
       "BTC": 26
     },
@@ -1030,9 +1036,9 @@
   },
   "snapshot": {
     "name": "web3_news",
-    "saved_at": "2026-08-18T06:38:34.429052+00:00",
+    "saved_at": "2026-08-01T10:09:50.819884+00:00",
     "origin": "live",
-    "history_id": "2026-08-18T06-38-34.429052+00-00",
-    "history_path": "data/dashboard/snapshots/history/web3_news/2026-08-18T06-38-34.429052+00-00.json"
+    "history_id": "2026-08-01T10-09-50.819884+00-00",
+    "history_path": "data/dashboard/snapshots/history/web3_news/2026-08-01T10-09-50.819884+00-00.json"
   }
 }

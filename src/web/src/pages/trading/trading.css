@@ -658,6 +658,367 @@
   margin-bottom: 12px;
 }
 
+.factor-mining-card,
+.backtest-config-panel,
+.backtest-summary-panel {
+  min-width: 0;
+}
+
+.factor-mining-card .factor-metric-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+}
+
+.factor-trial-settings {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--qa-line-subtle);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.factor-trial-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.factor-trial-heading strong {
+  color: var(--qa-text-1);
+  font-size: 13px;
+}
+
+.factor-trial-heading span {
+  color: var(--qa-text-2);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.factor-trial-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.factor-gate {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--qa-line-subtle);
+  border-left-width: 3px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 14px;
+}
+
+.factor-gate-pass {
+  border-left-color: var(--qa-profit);
+}
+
+.factor-gate-watch {
+  border-left-color: #f59e0b;
+}
+
+.factor-gate-fail {
+  border-left-color: var(--qa-loss);
+}
+
+.factor-gate-summary {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.factor-gate-summary span,
+.factor-gate-summary strong {
+  display: block;
+}
+
+.factor-gate-summary > div > span {
+  color: var(--qa-text-2);
+  font-size: 11px;
+  margin-bottom: 3px;
+  text-transform: uppercase;
+}
+
+.factor-gate-summary strong {
+  color: var(--qa-text-1);
+  font-size: 17px;
+}
+
+.factor-gate-checks {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.factor-gate-checks > div {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--qa-line-subtle);
+  border-radius: 7px;
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 10px;
+}
+
+.factor-gate-checks > div > span {
+  color: var(--qa-text-2);
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.factor-gate-checks > div.is-passed > span {
+  color: var(--qa-profit);
+}
+
+.factor-gate-checks > div.is-failed > span {
+  color: var(--qa-loss);
+}
+
+.factor-gate-checks strong {
+  color: var(--qa-text-1);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.factor-candidate-section {
+  margin: 16px 0 12px;
+  min-width: 0;
+}
+
+.factor-candidate-table code {
+  color: var(--qa-text-1);
+  font-size: 11px;
+}
+
+.factor-warning-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.factor-warning-list li {
+  line-height: 1.55;
+  margin: 3px 0;
+}
+
+.factor-handoff-slot {
+  grid-column: 1 / -1;
+}
+
+.factor-lineage-card {
+  background:
+    linear-gradient(135deg, rgba(16, 185, 129, 0.09), transparent 42%),
+    rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(16, 185, 129, 0.24);
+  border-radius: 9px;
+  padding: 14px;
+}
+
+.factor-lineage-empty {
+  background:
+    linear-gradient(135deg, rgba(34, 211, 238, 0.07), transparent 44%),
+    rgba(255, 255, 255, 0.025);
+  border-color: var(--qa-line-subtle);
+}
+
+.factor-lineage-head,
+.factor-lineage-meta,
+.factor-lineage-note,
+.factor-result-source {
+  min-width: 0;
+}
+
+.factor-lineage-head {
+  align-items: start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.factor-lineage-head span,
+.factor-result-source > span {
+  color: var(--qa-text-2);
+  display: block;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.factor-lineage-head strong {
+  color: var(--qa-text-1);
+  display: block;
+  font-family: var(--qa-font-mono);
+  font-size: 16px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.factor-lineage-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.factor-lineage-meta > span {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--qa-line-subtle);
+  border-radius: 999px;
+  color: var(--qa-text-2);
+  font-size: 11px;
+  padding: 6px 9px;
+}
+
+.factor-lineage-meta b {
+  color: var(--qa-text-1);
+  font-family: var(--qa-font-mono);
+  margin-left: 4px;
+}
+
+.factor-flow-rail {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.factor-flow-rail > div {
+  border: 1px solid var(--qa-line-subtle);
+  border-radius: 8px;
+  display: grid;
+  gap: 3px;
+  min-height: 72px;
+  padding: 9px 10px;
+}
+
+.factor-flow-rail b,
+.factor-flow-rail span,
+.factor-flow-rail strong {
+  display: block;
+}
+
+.factor-flow-rail b {
+  color: var(--qa-text-3);
+  font-size: 10px;
+}
+
+.factor-flow-rail span {
+  color: var(--qa-text-2);
+  font-size: 10px;
+}
+
+.factor-flow-rail strong {
+  color: var(--qa-text-1);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.factor-flow-rail .is-complete {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.24);
+}
+
+.factor-flow-rail .is-complete b,
+.factor-flow-rail .is-complete span {
+  color: var(--qa-profit);
+}
+
+.factor-flow-rail .is-current {
+  background: rgba(34, 211, 238, 0.08);
+  border-color: rgba(34, 211, 238, 0.26);
+}
+
+.factor-flow-rail .is-current b,
+.factor-flow-rail .is-current span {
+  color: var(--qa-neutral);
+}
+
+.factor-flow-rail .is-pending {
+  opacity: 0.64;
+}
+
+.factor-lineage-note,
+.factor-lineage-empty p {
+  color: var(--qa-text-2);
+  font-size: 11px;
+  line-height: 1.55;
+  margin: 11px 0 0;
+}
+
+.factor-locked-value {
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 34px;
+  padding: 7px 10px;
+}
+
+.factor-locked-value strong {
+  color: var(--qa-text-1);
+  font-size: 12px;
+}
+
+.factor-locked-value small {
+  color: var(--qa-text-2);
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+.factor-result-source {
+  background: rgba(16, 185, 129, 0.07);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-left: 3px solid var(--qa-profit);
+  border-radius: 8px;
+  padding: 11px 12px;
+}
+
+.factor-result-source strong,
+.factor-result-source em {
+  display: block;
+}
+
+.factor-result-source strong {
+  color: var(--qa-text-1);
+  font-family: var(--qa-font-mono);
+  font-size: 12px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.factor-result-source em {
+  color: var(--qa-text-2);
+  font-size: 11px;
+  font-style: normal;
+  margin-top: 4px;
+}
+
+.factor-footer-stage {
+  color: var(--qa-text-2);
+  font-size: 11px;
+}
+
+.backtest-evidence-empty {
+  order: 3;
+}
+
+.backtest-empty-flow {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.backtest-empty-flow span {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--qa-line-subtle);
+  border-radius: 7px;
+  color: var(--qa-text-2);
+  font-size: 11px;
+  padding: 10px;
+}
+
 .factor-metric-grid {
   grid-template-columns: minmax(260px, 1.6fr) repeat(4, minmax(120px, 1fr));
 }
@@ -1574,6 +1935,10 @@
 [data-theme="light"] .backtest-run-card,
 [data-theme="light"] .backtest-disclaimer,
 [data-theme="light"] .backtest-verdict-row,
+[data-theme="light"] .factor-lineage-card,
+[data-theme="light"] .factor-result-source,
+[data-theme="light"] .factor-locked-value,
+[data-theme="light"] .backtest-empty-flow span,
 [data-theme="light"] .trading-metric-tile,
 [data-theme="light"] .trading-list-row,
 [data-theme="light"] .trading-kv div,
@@ -1584,6 +1949,12 @@
 [data-theme="light"] .trading-console {
   background: #ffffff !important;
   border-color: rgba(23, 33, 24, 0.10) !important;
+}
+
+[data-theme="light"] .factor-lineage-card,
+[data-theme="light"] .factor-result-source,
+[data-theme="light"] .factor-locked-value {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.08), #ffffff) !important;
 }
 
 [data-theme="light"] .trading-action-tile:hover,
@@ -1806,6 +2177,20 @@
   }
 }
 
+@media (max-width: 960px) {
+  .backtest-command-center {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .backtest-config-panel .backtest-form-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  }
+
+  .factor-gate-checks {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 720px) {
   .trading-heading {
     padding: 18px;
@@ -1880,6 +2265,30 @@
   }
 
   .backtest-config-footer .ant-btn {
+    width: 100%;
+  }
+
+  .factor-trial-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .factor-flow-rail,
+  .backtest-empty-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .factor-backtest-action {
+    align-items: stretch;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .factor-backtest-action span {
+    max-width: none;
+    padding: 0 4px 4px;
+  }
+
+  .factor-backtest-button.ant-btn {
     width: 100%;
   }
 

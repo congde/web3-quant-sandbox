@@ -196,6 +196,11 @@ interface TradeRow {
   bars: number;
 }
 
+type FactorExperimentConfig = Pick<
+  FactorHandoff,
+  "symbol" | "limit" | "stopLoss" | "takeProfit" | "trailingStop" | "maxHoldBars"
+>;
+
 function initialBacktestSection(): BacktestSectionKey {
   if (typeof window === "undefined") {
     return "overview";
@@ -258,6 +263,19 @@ export default function BacktestsPage() {
   } | null>(null);
   const [activeSection, setActiveSection] = useState<BacktestSectionKey>(() => initialBacktestSection());
 
+  const resetExperimentEvidence = useCallback(() => {
+    setResult(null);
+    setCompare(null);
+    setWindows(null);
+    setWalkForward(null);
+    setRobustness(null);
+    setCpcv(null);
+    setPortfolio(null);
+    setLoadError(null);
+    setRunFeedback(null);
+    setActiveSection("overview");
+  }, []);
+
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.hash.replace("#", "") === "factor-research") {
       navigate("/factor-mining", { replace: true });
@@ -318,7 +336,15 @@ export default function BacktestsPage() {
   );
 
   const runMinedFactorExperiment = useCallback(
-    async (handoff: FactorHandoff) => {
+    async (handoff: FactorHandoff, override?: FactorExperimentConfig) => {
+      const execution = override ?? {
+        symbol,
+        limit: barLimit,
+        stopLoss,
+        takeProfit,
+        trailingStop,
+        maxHoldBars,
+      };
       setLoading(true);
       setLoadError(null);
       setRunFeedback({ type: "info", message: "挖掘因子回测运行中：正在送入滚动回测引擎。" });
@@ -326,31 +352,31 @@ export default function BacktestsPage() {
       try {
         const payload = await runMinedFactorBacktest({
           backtestSpec: handoff.backtestSpec,
-          symbol: handoff.symbol,
-          limit: handoff.limit,
-          stopLoss: handoff.stopLoss,
-          takeProfit: handoff.takeProfit,
-          trailingStop: handoff.trailingStop,
-          maxHoldBars: handoff.maxHoldBars,
-          refresh: refreshLive && handoff.symbol !== "WEB3-DEMO/USDT",
+          symbol: execution.symbol,
+          limit: execution.limit,
+          stopLoss: execution.stopLoss,
+          takeProfit: execution.takeProfit,
+          trailingStop: execution.trailingStop,
+          maxHoldBars: execution.maxHoldBars,
+          refresh: refreshLive && execution.symbol !== "WEB3-DEMO/USDT",
         });
         const [comparePayload, windowPayload] = await Promise.all([
           fetchBacktestCompare({
-            symbol: handoff.symbol,
-            stopLoss: handoff.stopLoss,
-            takeProfit: handoff.takeProfit,
-            trailingStop: handoff.trailingStop,
-            maxHoldBars: handoff.maxHoldBars,
-            limit: handoff.limit,
+            symbol: execution.symbol,
+            stopLoss: execution.stopLoss,
+            takeProfit: execution.takeProfit,
+            trailingStop: execution.trailingStop,
+            maxHoldBars: execution.maxHoldBars,
+            limit: execution.limit,
             costPreset,
           }),
           fetchBacktestWindows({
             strategy: "mined_factor",
-            symbol: handoff.symbol,
-            stopLoss: handoff.stopLoss,
-            takeProfit: handoff.takeProfit,
+            symbol: execution.symbol,
+            stopLoss: execution.stopLoss,
+            takeProfit: execution.takeProfit,
             windows: 3,
-            limit: handoff.limit,
+            limit: execution.limit,
             costPreset,
           }),
         ]);
@@ -372,7 +398,7 @@ export default function BacktestsPage() {
         setLoading(false);
       }
     },
-    [costPreset, refreshLive],
+    [barLimit, costPreset, maxHoldBars, refreshLive, stopLoss, symbol, takeProfit, trailingStop],
   );
 
   const runBacktest = useCallback(async () => {
@@ -385,7 +411,9 @@ export default function BacktestsPage() {
         message.warning(detail);
         return;
       }
-      applyFactorHandoff(handoff);
+      if (!factorHandoff) {
+        applyFactorHandoff(handoff);
+      }
       await runMinedFactorExperiment(handoff);
       return;
     }
@@ -540,7 +568,7 @@ export default function BacktestsPage() {
     const handoff = loadFactorHandoff();
     if (fromFactor && handoff) {
       applyFactorHandoff(handoff);
-      void runMinedFactorExperiment(handoff);
+      void runMinedFactorExperiment(handoff, handoff);
       return;
     }
     void runBacktest();
@@ -595,12 +623,24 @@ export default function BacktestsPage() {
   }, [result, windowLabel]);
 
   const selectedStrategyLabel = useMemo(
-    () => strategies.find((item) => item.value === strategy)?.label ?? result?.strategy ?? strategy,
-    [result?.strategy, strategies, strategy],
+    () =>
+      strategyFamily === "factor" && factorHandoff
+        ? `因子回测 · ${(factorHandoff.method ?? "factor").toUpperCase()}`
+        : strategies.find((item) => item.value === strategy)?.label ?? result?.strategy ?? strategy,
+    [factorHandoff, result?.strategy, strategies, strategy, strategyFamily],
   );
   const dataModeLabel = refreshLive && symbol !== "WEB3-DEMO/USDT" ? "实时刷新" : "离线快照";
   const runStateLabel = loading ? "运行中" : result ? "已完成" : "待运行";
   const refreshDisabled = loading || symbol === "WEB3-DEMO/USDT";
+  const factorRunComplete = strategyFamily === "factor" && Boolean(factorHandoff && result);
+  const factorHandoffTime = factorHandoff
+    ? new Date(factorHandoff.savedAt).toLocaleString("zh-CN", {
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "—";
   const resultVerdict = useMemo(() => {
     if (!result) {
       return {
@@ -637,33 +677,60 @@ export default function BacktestsPage() {
       description="按研究顺序组织：先配置并运行一次实验，再看证据、做对照，最后用稳健性工具决定是否继续研究。"
       actions={
         <div className="backtest-hero-actions">
-          <StatusPill tone={loading ? "neutral" : loadError ? "loss" : "profit"}>{runStateLabel}</StatusPill>
-          <Button className="btn-gradient" type="primary" size="large" loading={loading} onClick={() => void runBacktest()}>
-            <ReloadOutlined /> 运行实验
+          <StatusPill tone={loading || !result ? "neutral" : loadError ? "loss" : "profit"}>{runStateLabel}</StatusPill>
+          <Button
+            className="btn-gradient"
+            type="primary"
+            size="large"
+            loading={loading}
+            onClick={() => {
+              if (strategyFamily === "factor" && !factorHandoff) {
+                navigate("/factor-mining");
+                return;
+              }
+              void runBacktest();
+            }}
+          >
+            <ReloadOutlined /> {strategyFamily === "factor" && !factorHandoff ? "前往因子挖掘" : "运行实验"}
           </Button>
         </div>
       }
       aside={
         <QuantGlowCard
           title={<SectionHeader title="当前回测" description={windowLabel} />}
-          badge={<StatusPill tone="profit">{loading ? "running" : "done"}</StatusPill>}
+          badge={<StatusPill tone={result ? "profit" : "neutral"}>{loading ? "running" : result ? "done" : "waiting"}</StatusPill>}
         >
-          <TradingChart
-            curve={asideCurve}
-            rollingTrades={rollingTrades}
-            trades={chartTrades}
-            variant="compact"
-          />
-          <div className="trading-kv">
-            <div>
-              <span>收益</span>
-              <strong>{(result?.total_return_pct ?? 0).toFixed(1)}%</strong>
-            </div>
-            <div>
-              <span>最大回撤</span>
-              <strong>{-(result?.max_drawdown_pct ?? 0).toFixed(1)}%</strong>
-            </div>
-          </div>
+          {result ? (
+            <>
+              <TradingChart
+                curve={asideCurve}
+                rollingTrades={rollingTrades}
+                trades={chartTrades}
+                variant="compact"
+              />
+              <div className="trading-kv">
+                <div>
+                  <span>收益</span>
+                  <strong>{result.total_return_pct.toFixed(1)}%</strong>
+                </div>
+                <div>
+                  <span>最大回撤</span>
+                  <strong>{-result.max_drawdown_pct.toFixed(1)}%</strong>
+                </div>
+              </div>
+            </>
+          ) : (
+            <Alert
+              type="info"
+              showIcon
+              message={strategyFamily === "factor" ? "等待因子实验" : "等待策略实验"}
+              description={
+                strategyFamily === "factor" && !factorHandoff
+                  ? "先从因子挖掘交接候选，再在这里验证交易表现。"
+                  : "完成配置并运行后，这里会显示权益曲线和核心结果。"
+              }
+            />
+          )}
         </QuantGlowCard>
       }
     >
@@ -759,6 +826,9 @@ export default function BacktestsPage() {
                 value={strategyFamily}
                 onChange={(value) => {
                   const next = value as "rules" | "ml" | "factor";
+                  if (next !== strategyFamily) {
+                    resetExperimentEvidence();
+                  }
                   setStrategyFamily(next);
                   if (next === "factor") {
                     const handoff = factorHandoff ?? loadFactorHandoff();
@@ -772,94 +842,127 @@ export default function BacktestsPage() {
               />
             </label>
             {strategyFamily === "factor" ? (
-              <div className="backtest-field backtest-field-wide">
+              <div className="backtest-field backtest-field-wide factor-handoff-slot">
                 {factorHandoff ? (
-                  <Alert
-                    type="success"
-                    showIcon
-                    message={`已交接：${factorHandoff.label ?? "领先因子"}`}
-                    description={
-                      <>
-                        {(factorHandoff.method ?? "factor").toUpperCase()}
-                        {factorHandoff.testIc != null ? ` · 测试 IC ${factorHandoff.testIc.toFixed(3)}` : ""}
-                        {" · "}
-                        {factorHandoff.symbol} · {factorHandoff.limit} 根。可直接运行实验；重新挖掘请回{" "}
-                        <Link to="/factor-mining">因子挖掘</Link>。
-                      </>
-                    }
-                  />
+                  <div className="factor-lineage-card">
+                    <div className="factor-lineage-head">
+                      <div>
+                        <span>已接收因子候选</span>
+                        <strong>{factorHandoff.label ?? "未命名因子"}</strong>
+                      </div>
+                      <StatusPill tone="profit">来源已锁定</StatusPill>
+                    </div>
+                    <div className="factor-lineage-meta">
+                      <span>方法 <b>{(factorHandoff.method ?? "factor").toUpperCase()}</b></span>
+                      <span>测试 IC <b>{factorHandoff.testIc?.toFixed(3) ?? "—"}</b></span>
+                      <span>前瞻 <b>{factorHandoff.backtestSpec.horizon ?? 1} bar</b></span>
+                      <span>交接时间 <b>{factorHandoffTime}</b></span>
+                    </div>
+                    <div className="factor-flow-rail" aria-label="因子研究进度">
+                      <div className="is-complete"><b>01</b><span>因子挖掘</span><strong>候选已筛选</strong></div>
+                      <div className={factorRunComplete ? "is-complete" : "is-current"}><b>02</b><span>策略回测</span><strong>{factorRunComplete ? "实验已完成" : "等待运行"}</strong></div>
+                      <div className={factorRunComplete ? "is-current" : "is-pending"}><b>03</b><span>稳健性复核</span><strong>{factorRunComplete ? "下一步" : "等待回测"}</strong></div>
+                    </div>
+                    <div className="factor-lineage-note">
+                      因子表达式保持不变；下面只调整交易执行、成本与验证窗口。重新选因子请回 <Link to="/factor-mining">因子挖掘</Link>。
+                    </div>
+                  </div>
                 ) : (
-                  <Alert
-                    type="info"
-                    showIcon
-                    message="需要先从因子挖掘交接"
-                    description={
-                      <>
-                        请先在 <Link to="/factor-mining">因子挖掘</Link> 生成领先因子并点击「送入策略回测」。本页不负责挖因子。
-                      </>
-                    }
-                  />
+                  <div className="factor-lineage-card factor-lineage-empty">
+                    <div className="factor-lineage-head">
+                      <div>
+                        <span>缺少上游输入</span>
+                        <strong>还没有可回测的因子候选</strong>
+                      </div>
+                      <StatusPill tone="neutral">等待交接</StatusPill>
+                    </div>
+                    <div className="factor-flow-rail" aria-label="因子研究进度">
+                      <div className="is-current"><b>01</b><span>因子挖掘</span><strong>选择并交接候选</strong></div>
+                      <div className="is-pending"><b>02</b><span>策略回测</span><strong>等待因子</strong></div>
+                      <div className="is-pending"><b>03</b><span>稳健性复核</span><strong>等待回测</strong></div>
+                    </div>
+                    <p>回测台不会代替因子挖掘生成表达式。先完成样本外筛选，再把选中的候选带到这里。</p>
+                  </div>
                 )}
               </div>
             ) : null}
-            <label className="backtest-field">
-              <span>策略模型</span>
-              <Select
-                value={strategy}
-                onChange={(value) => {
-                  setStrategy(value);
-                  setStrategyFamily(STRATEGY_FAMILY[value] ?? "rules");
-                }}
-                options={visibleStrategies.length ? visibleStrategies : strategies}
-                disabled={loading}
-              />
-            </label>
+            {strategyFamily !== "factor" || factorHandoff ? (
+              <>
+            {strategyFamily === "factor" ? (
+              <div className="backtest-field">
+                <span>策略模型</span>
+                <div className="factor-locked-value">
+                  <strong>挖掘因子策略</strong>
+                  <small>由交接的表达式生成方向信号</small>
+                </div>
+              </div>
+            ) : (
+              <label className="backtest-field">
+                <span>策略模型</span>
+                <Select
+                  value={strategy}
+                  onChange={(value) => {
+                    resetExperimentEvidence();
+                    setStrategy(value);
+                    setStrategyFamily(STRATEGY_FAMILY[value] ?? "rules");
+                  }}
+                  options={visibleStrategies.length ? visibleStrategies : strategies}
+                  disabled={loading}
+                />
+              </label>
+            )}
             <label className="backtest-field">
               <span>标的资产</span>
-              <Select value={symbol} onChange={setSymbol} options={SYMBOL_OPTIONS} disabled={loading} />
+              <Select value={symbol} onChange={(value) => { resetExperimentEvidence(); setSymbol(value); }} options={SYMBOL_OPTIONS} disabled={loading} />
             </label>
             <label className="backtest-field">
               <span>K 线数量</span>
-              <Select value={barLimit} onChange={setBarLimit} options={LIMIT_OPTIONS} disabled={loading} />
+              <Select value={barLimit} onChange={(value) => { resetExperimentEvidence(); setBarLimit(value); }} options={LIMIT_OPTIONS} disabled={loading} />
             </label>
             <label className="backtest-field">
               <span>成本假设</span>
               <Select
                 value={costPreset}
-                onChange={(value) => setCostPreset(value as "teaching" | "realistic" | "perp")}
+                onChange={(value) => { resetExperimentEvidence(); setCostPreset(value as "teaching" | "realistic" | "perp"); }}
                 options={COST_PRESET_OPTIONS}
                 disabled={loading}
               />
             </label>
             <label className="backtest-field">
               <span>止损 %</span>
-              <InputNumber min={0.5} max={20} step={0.5} value={stopLoss} onChange={(v) => setStopLoss(Number(v ?? 3))} />
+              <InputNumber min={0.5} max={20} step={0.5} value={stopLoss} onChange={(v) => { resetExperimentEvidence(); setStopLoss(Number(v ?? 3)); }} />
             </label>
             <label className="backtest-field">
               <span>止盈 %</span>
-              <InputNumber min={0.5} max={50} step={0.5} value={takeProfit} onChange={(v) => setTakeProfit(Number(v ?? 5))} />
+              <InputNumber min={0.5} max={50} step={0.5} value={takeProfit} onChange={(v) => { resetExperimentEvidence(); setTakeProfit(Number(v ?? 5)); }} />
             </label>
             <label className="backtest-field">
               <span>移动止损 %</span>
-              <InputNumber min={0} max={20} step={0.5} value={trailingStop} onChange={(v) => setTrailingStop(Number(v ?? 0))} />
+              <InputNumber min={0} max={20} step={0.5} value={trailingStop} onChange={(v) => { resetExperimentEvidence(); setTrailingStop(Number(v ?? 0)); }} />
             </label>
             <label className="backtest-field">
               <span>最长持仓</span>
-              <InputNumber min={0} max={500} step={1} value={maxHoldBars} onChange={(v) => setMaxHoldBars(Number(v ?? 0))} />
+              <InputNumber min={0} max={500} step={1} value={maxHoldBars} onChange={(v) => { resetExperimentEvidence(); setMaxHoldBars(Number(v ?? 0)); }} />
             </label>
             <label className="backtest-field">
               <span>WFO 窗口</span>
-              <InputNumber min={2} max={5} value={wfoWindows} onChange={(v) => setWfoWindows(Number(v ?? 3))} />
+              <InputNumber min={2} max={5} value={wfoWindows} onChange={(v) => { resetExperimentEvidence(); setWfoWindows(Number(v ?? 3)); }} />
             </label>
+              </>
+            ) : null}
           </div>
           <div className="backtest-config-footer">
-            <Checkbox
-              checked={refreshLive}
-              onChange={(event) => setRefreshLive(event.target.checked)}
-              disabled={refreshDisabled}
-            >
-              拉取最新 K 线
-            </Checkbox>
+            {strategyFamily === "factor" && !factorHandoff ? (
+              <span className="factor-footer-stage">研究链路尚未开始</span>
+            ) : (
+              <Checkbox
+                checked={refreshLive}
+                onChange={(event) => { resetExperimentEvidence(); setRefreshLive(event.target.checked); }}
+                disabled={refreshDisabled}
+              >
+                拉取最新 K 线
+              </Checkbox>
+            )}
             <span>
               {strategyFamily === "factor"
                 ? factorHandoff
@@ -894,17 +997,39 @@ export default function BacktestsPage() {
           title={<SectionHeader title="2. 本次实验状态" description={chartRangeLabel} />}
         >
           <div className="backtest-summary-stack">
-            <div className="backtest-run-card">
-              <span>{dataModeLabel}</span>
-              <strong>{selectedStrategyLabel}</strong>
-              <em>{symbol} · {barLimit} 根 · {costPreset}</em>
-            </div>
-            <div className="backtest-summary-metrics">
-              <MetricTile label="总收益" value={result?.total_return_pct ?? 0} kind="pct" tone={(result?.total_return_pct ?? 0) >= 0 ? "profit" : "loss"} showSign />
-              <MetricTile label="最大回撤" value={-(result?.max_drawdown_pct ?? 0)} kind="pct" tone="loss" showSign />
-              <MetricTile label="Sharpe" value={result?.sharpe_ratio ?? 0} tone="neutral" precision={2} />
-              <MetricTile label="Alpha" value={result?.alpha_pct ?? 0} kind="pct" tone={(result?.alpha_pct ?? 0) >= 0 ? "profit" : "loss"} showSign />
-            </div>
+            {result ? (
+              <>
+                {strategyFamily === "factor" && factorHandoff ? (
+                  <div className="factor-result-source">
+                    <span>结果来源</span>
+                    <strong>{(factorHandoff.method ?? "factor").toUpperCase()} · {factorHandoff.label ?? "未命名因子"}</strong>
+                    <em>挖掘测试 IC {factorHandoff.testIc?.toFixed(3) ?? "—"} → 当前回测验证交易收益</em>
+                  </div>
+                ) : null}
+                <div className="backtest-run-card">
+                  <span>{dataModeLabel}</span>
+                  <strong>{selectedStrategyLabel}</strong>
+                  <em>{symbol} · {barLimit} 根 · {costPreset}</em>
+                </div>
+                <div className="backtest-summary-metrics">
+                  <MetricTile label="总收益" value={result.total_return_pct} kind="pct" tone={result.total_return_pct >= 0 ? "profit" : "loss"} showSign />
+                  <MetricTile label="最大回撤" value={-result.max_drawdown_pct} kind="pct" tone="loss" showSign />
+                  <MetricTile label="Sharpe" value={result.sharpe_ratio} tone="neutral" precision={2} />
+                  <MetricTile label="Alpha" value={result.alpha_pct ?? 0} kind="pct" tone={(result.alpha_pct ?? 0) >= 0 ? "profit" : "loss"} showSign />
+                </div>
+              </>
+            ) : (
+              <Alert
+                type="info"
+                showIcon
+                message={strategyFamily === "factor" && !factorHandoff ? "等待因子交接" : "等待运行实验"}
+                description={
+                  strategyFamily === "factor" && !factorHandoff
+                    ? "完成因子挖掘并交接候选后，这里才会生成对应的交易验证结果。"
+                    : "当前配置尚未产生结果；运行后会显示收益、回撤、Sharpe 与 Alpha。"
+                }
+              />
+            )}
             {loadError ? (
               <Alert type="warning" showIcon message={loadError} />
             ) : (
@@ -915,6 +1040,8 @@ export default function BacktestsPage() {
           </div>
         </QuantGlowCard>
       </section>
+      {result ? (
+        <>
       <nav className="backtest-section-nav backtest-section-banner" aria-label="回测步骤">
         {BACKTEST_SECTIONS.map((item) => (
           <button
@@ -995,7 +1122,20 @@ export default function BacktestsPage() {
             <MetricTile label="Payoff" value={result?.payoff_ratio ?? 0} tone="neutral" precision={2} />
             <MetricTile label="Omega" value={result?.omega_ratio ?? 0} tone="neutral" precision={2} />
             <MetricTile label="恢复因子" value={result?.recovery_factor ?? 0} tone="neutral" precision={2} />
-            <MetricTile label="MC 5%收益" value={result?.monte_carlo_95 ?? 0} kind="pct" tone={(result?.monte_carlo_95 ?? 0) >= 0 ? "profit" : "loss"} showSign />
+            <MetricTile
+              label="MC 5%收益"
+              value={result?.monte_carlo_95 ?? "—"}
+              kind="pct"
+              tone={
+                result?.monte_carlo_95 == null
+                  ? "neutral"
+                  : result.monte_carlo_95 >= 0
+                    ? "profit"
+                    : "loss"
+              }
+              showSign
+              subtle={result?.monte_carlo_95 == null ? "至少需要 5 笔已平仓交易" : "经验自助法下行场景"}
+            />
             <MetricTile label="连胜" value={result?.max_consecutive_wins ?? 0} kind="qty" tone="profit" />
             <MetricTile label="连亏" value={result?.max_consecutive_losses ?? 0} kind="qty" tone="loss" />
           </div>
@@ -1328,6 +1468,20 @@ export default function BacktestsPage() {
 
         </>) : null}
       </section>
+        </>
+      ) : (
+        <QuantGlowCard
+          className="backtest-evidence-empty"
+          title={<SectionHeader title="验证证据将在运行后展开" description="结果、过程、交易、对照与稳健性工具都绑定同一次实验，避免混用旧结果。" />}
+        >
+          <div className="backtest-empty-flow">
+            <span>01 配置实验</span>
+            <span>02 运行回测</span>
+            <span>03 阅读证据</span>
+            <span>04 稳健性复核</span>
+          </div>
+        </QuantGlowCard>
+      )}
     </TradingPageShell>
   );
 }

@@ -108,7 +108,7 @@ class BacktestResult:
     worst_trade_pct: float = 0.0
     profit_factor: float = 0.0
     avg_bars_held: float = 0.0
-    monte_carlo_95: Optional[float] = None   # 95th percentile worst return
+    monte_carlo_95: Optional[float] = None   # bootstrap 5th-percentile return
     equity_curve: List[Dict[str, Any]] = field(default_factory=list)
     trades: List[Dict[str, Any]] = field(default_factory=list)
     candle_signals: List[Dict[str, Any]] = field(default_factory=list)

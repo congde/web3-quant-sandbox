@@ -4,7 +4,7 @@ Backtest metrics computation — Sharpe, Sortino, Calmar, Monte Carlo.
 
 Fixes the broken Sharpe annualization from the old code and adds
 Sortino (downside-only risk), Calmar (return / max-drawdown), and
-Monte Carlo 95% confidence interval via trade-sequence shuffling.
+Monte Carlo 5% return bound via empirical trade-return bootstrap.
 """
 
 from __future__ import annotations
@@ -71,23 +71,35 @@ def compute_monte_carlo_95(
     n_simulations: int = 1000,
     seed: int = 42,
 ) -> Optional[float]:
-    """Monte Carlo simulation: shuffle trade sequence, return 95th percentile worst total return.
+    """Return the 5th percentile compounded return from bootstrap paths.
 
-    This tests how fragile the equity curve is to trade ordering.
+    Each path samples ``len(pnls)`` observed trade returns with replacement.
+    Merely shuffling the original returns cannot estimate terminal-return risk:
+    compounded terminal wealth is invariant to permutation.  The empirical
+    bootstrap instead varies both the frequency and ordering of outcomes while
+    retaining the observed one-trade return distribution.
+
+    This is a teaching-scale, i.i.d. bootstrap.  It does not model regime
+    changes or serial dependence and should be read as a downside scenario,
+    not a guaranteed confidence bound.
     """
     if len(pnls) < 5:
         return None
+    if n_simulations < 1:
+        raise ValueError("n_simulations must be at least 1")
+    if any(not math.isfinite(value) for value in pnls):
+        raise ValueError("pnls must contain only finite values")
+
     rng = random.Random(seed)
-    final_returns = []
+    final_returns: List[float] = []
     for _ in range(n_simulations):
-        shuffled = pnls[:]
-        rng.shuffle(shuffled)
         equity = 100.0
-        for p in shuffled:
-            equity *= (1 + p / 100)
+        for _ in pnls:
+            sampled_return = rng.choice(pnls)
+            equity *= max(0.0, 1.0 + sampled_return / 100.0)
         final_returns.append(equity - 100.0)
     final_returns.sort()
-    idx_5pct = max(0, int(len(final_returns) * 0.05))
+    idx_5pct = max(0, math.ceil(len(final_returns) * 0.05) - 1)
     return round(final_returns[idx_5pct], 2)
 
 
@@ -117,7 +129,7 @@ def compute_metrics(
     - Correct Sharpe annualization from marked-to-market bar returns
     - Sortino ratio
     - Calmar ratio
-    - Monte Carlo 95% CI
+    - Monte Carlo 5% terminal-return bound
     - Average bars held
     """
     winning = [t for t in trades if t.pnl_pct > 0]
