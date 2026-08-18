@@ -10,11 +10,17 @@ import MainLayout from "./layouts/MainLayout";
 
 import BacktestsPage from "./pages/trading/BacktestsPage";
 
+import BacktestLearningPage from "./pages/learning/BacktestLearningPage";
+
 import DashboardPage from "./pages/trading/DashboardPage";
 
 import AcademyPage from "./pages/learning/AcademyPage";
 
 import KlineLearningPage from "./pages/learning/KlineLearningPage";
+
+import MathLearningPage from "./pages/learning/MathLearningPage";
+
+import RiskLearningPage from "./pages/learning/RiskLearningPage";
 
 import DataSourcesPage from "./pages/trading/DataSourcesPage";
 
@@ -54,6 +60,12 @@ export default function App() {
                 <Route path="/trading" element={<DashboardPage />} />
 
                 <Route path="/academy" element={<AcademyPage />} />
+
+                <Route path="/math-learning" element={<MathLearningPage />} />
+
+                <Route path="/backtest-learning" element={<BacktestLearningPage />} />
+
+                <Route path="/risk-learning" element={<RiskLearningPage />} />
 
                 <Route path="/kline-learning" element={<KlineLearningPage />} />
 

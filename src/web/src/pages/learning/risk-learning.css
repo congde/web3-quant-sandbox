@@ -1,0 +1,91 @@
+.risk-learning-layout { display:grid; gap:14px; grid-template-columns:238px minmax(0,1fr); order:4; }
+.risk-progress-card { display:flex; flex-direction:column; height:100%; justify-content:center; }
+.risk-progress-card > span,.risk-progress-card small { color:var(--qa-text-2); }
+.risk-progress-card strong { font-family:ui-monospace,Consolas,monospace; font-size:27px; margin:5px 0; }
+.risk-progress-card > div { background:rgba(148,163,184,.16); border-radius:999px; height:6px; margin:3px 0 9px; overflow:hidden; }
+.risk-progress-card i { background:linear-gradient(90deg,#d3543a,#d9a441); display:block; height:100%; transition:width .25s ease; }
+.risk-lesson-nav { align-self:start; backdrop-filter:blur(16px); background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:8px; padding:12px; position:sticky; top:0; }
+.risk-nav-heading { align-items:center; color:var(--qa-text-2); display:flex; font-size:12px; font-weight:700; gap:8px; padding:6px 8px 12px; }
+.risk-lesson-nav > button { align-items:center; background:transparent; border:0; border-radius:7px; color:var(--qa-text-2); cursor:pointer; display:grid; gap:10px; grid-template-columns:28px minmax(0,1fr) 16px; margin-bottom:5px; padding:12px 9px; text-align:left; width:100%; }
+.risk-lesson-nav > button:hover,.risk-lesson-nav > button.active { background:rgba(211,84,58,.09); color:var(--qa-text-1); }
+.risk-lesson-nav > button.active { box-shadow:inset 3px 0 #d3543a; }
+.risk-lesson-nav > button > b { color:#d3543a; font-family:ui-monospace,Consolas,monospace; font-size:12px; }
+.risk-lesson-nav > button > span { display:flex; flex-direction:column; gap:3px; }
+.risk-lesson-nav button strong { font-size:13px; }
+.risk-lesson-nav button small { color:var(--qa-text-2); font-size:11px; }
+.risk-source-note { align-items:flex-start; border-top:1px solid var(--border); color:#d9a441; display:flex; gap:8px; margin-top:10px; padding:13px 8px 3px; }
+.risk-source-note p { color:var(--qa-text-2); font-size:10px; line-height:1.5; margin:0; }
+.risk-source-note code { color:var(--qa-text-1); }
+.risk-learning-main { display:flex; flex-direction:column; gap:14px; min-width:0; }
+.risk-lab-content { display:grid; gap:24px; grid-template-columns:minmax(300px,.82fr) minmax(430px,1.18fr); }
+.risk-explain { border-right:1px solid var(--border); padding-right:24px; }
+.risk-explain h3 { font-size:20px; margin:0 0 9px; }
+.risk-explain > p { color:var(--qa-text-2); line-height:1.7; margin:0 0 16px; }
+.risk-formula { background:rgba(211,84,58,.06); border:1px solid rgba(211,84,58,.18); border-radius:7px; display:flex; flex-direction:column; gap:6px; margin-top:9px; padding:12px; }
+.risk-formula > .formula-meaning { color:var(--qa-text-2); font-size:11px; }
+.risk-boundary { border-left:3px solid #d9a441; color:var(--qa-text-2); font-size:11px; line-height:1.55; margin-top:14px; padding:8px 0 8px 11px; }
+.risk-defense-flow { align-items:center; display:flex; flex-wrap:wrap; gap:6px; }
+.risk-defense-flow span { background:rgba(211,84,58,.08); border:1px solid rgba(211,84,58,.15); border-radius:6px; font-size:10px; padding:7px; }
+.risk-defense-flow b { color:#d9a441; }
+.risk-simulator { min-width:0; }
+.risk-simulator > header { align-items:center; display:flex; gap:10px; margin-bottom:16px; }
+.risk-simulator > header > svg { background:rgba(211,84,58,.1); border-radius:8px; color:#d3543a; font-size:20px; padding:9px; }
+.risk-simulator > header > div { display:flex; flex:1; flex-direction:column; gap:3px; }
+.risk-simulator > header span { color:var(--qa-text-2); font-size:11px; }
+.risk-case-tabs { display:grid; gap:6px; grid-template-columns:repeat(5,1fr); }
+.risk-case-tabs button { background:rgba(148,163,184,.06); border:1px solid var(--border); border-radius:6px; color:var(--qa-text-2); cursor:pointer; font-size:10px; padding:8px 5px; }
+.risk-case-tabs button.active { background:rgba(211,84,58,.1); border-color:rgba(211,84,58,.45); color:var(--qa-text-1); }
+.risk-case-detail { display:grid; gap:8px; grid-template-columns:1fr 1fr; margin-top:10px; }
+.risk-case-detail div { background:rgba(148,163,184,.06); border-radius:7px; padding:11px; }
+.risk-case-detail div:first-child { grid-column:1/-1; }
+.risk-case-detail span { color:var(--qa-text-2); font-size:10px; }
+.risk-case-detail p { line-height:1.55; margin:5px 0 0; }
+.risk-input-grid { display:grid; gap:9px; grid-template-columns:1fr 1fr; }
+.risk-input-grid.three { grid-template-columns:repeat(3,1fr); }
+.risk-input-grid label { display:flex; flex-direction:column; gap:6px; }
+.risk-input-grid label > span,.risk-series-input > span { color:var(--qa-text-2); font-size:11px; }
+.risk-input-grid .ant-input-number { width:100%; }
+.risk-results { display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(125px,1fr)); margin-top:14px; }
+.risk-result { background:rgba(148,163,184,.07); border:1px solid var(--border); border-radius:7px; display:flex; flex-direction:column; gap:5px; min-height:82px; padding:11px; }
+.risk-result > span { color:var(--qa-text-2); font-size:10px; }
+.risk-result > strong { font-family:ui-monospace,Consolas,monospace; font-size:18px; }
+.risk-result small { color:var(--qa-text-2); font-size:9px; }
+.risk-result-safe { border-color:rgba(31,157,114,.3); }
+.risk-result-safe > strong { color:#1f9d72; }
+.risk-result-warn { border-color:rgba(217,164,65,.35); }
+.risk-result-warn > strong { color:#d9a441; }
+.risk-result-block { border-color:rgba(211,84,58,.38); }
+.risk-result-block > strong { color:#d3543a; }
+.risk-price-track { background:rgba(148,163,184,.14); border-radius:999px; height:8px; margin:32px 8px 15px; position:relative; }
+.risk-price-track i { border-radius:50%; height:16px; position:absolute; top:-4px; transform:translateX(-50%); width:16px; }
+.risk-price-track i::after { color:var(--qa-text-2); font-size:9px; left:50%; position:absolute; top:-18px; transform:translateX(-50%); white-space:nowrap; }
+.risk-price-track .stop { background:#d3543a; }.risk-price-track .stop::after { content:"止损"; }
+.risk-price-track .entry { background:#22d3ee; }.risk-price-track .entry::after { content:"入场"; }
+.risk-price-track .target { background:#1f9d72; }.risk-price-track .target::after { content:"目标"; }
+.risk-series-input { display:flex; flex-direction:column; gap:6px; }
+.risk-weight-bars { display:flex; flex-direction:column; gap:7px; margin-top:13px; }
+.risk-weight-bars div { align-items:center; display:grid; gap:8px; grid-template-columns:58px 1fr 46px; }
+.risk-weight-bars span,.risk-weight-bars b { color:var(--qa-text-2); font-size:10px; }
+.risk-weight-bars i { background:linear-gradient(90deg,#d9a441,#d3543a); border-radius:999px; display:block; height:8px; min-width:2px; }
+.risk-rule-list { display:grid; gap:5px; margin-top:13px; }
+.risk-rule-list span { background:rgba(148,163,184,.06); border-radius:5px; color:var(--qa-text-2); font-size:9px; padding:6px 8px; }
+.risk-rule-list b { color:var(--qa-text-1); margin-right:6px; }
+.risk-spread-slider { display:block; margin-top:14px; }
+.risk-spread-slider > span { color:var(--qa-text-2); display:flex; font-size:11px; justify-content:space-between; }
+.risk-spread-slider b { color:var(--qa-text-1); font-family:ui-monospace,Consolas,monospace; }
+.risk-quiz-question { display:block; font-size:15px; margin-bottom:12px; }
+.risk-quiz-options { display:grid; gap:8px; grid-template-columns:repeat(3,1fr); }
+.risk-quiz-options button { align-items:center; background:rgba(148,163,184,.06); border:1px solid var(--border); border-radius:7px; color:var(--qa-text-1); cursor:pointer; display:flex; gap:8px; min-height:48px; padding:9px 12px; text-align:left; }
+.risk-quiz-options button:hover { border-color:rgba(211,84,58,.45); }
+.risk-quiz-options button > i { align-items:center; background:rgba(148,163,184,.12); border-radius:50%; display:flex; flex:0 0 auto; font-size:10px; font-style:normal; height:24px; justify-content:center; width:24px; }
+.risk-quiz-options button > span { flex:1; }
+.risk-quiz-options button.correct { background:rgba(31,157,114,.1); border-color:rgba(31,157,114,.5); }
+.risk-quiz-options button.wrong { background:rgba(211,84,58,.08); border-color:rgba(211,84,58,.45); }
+.risk-quiz-options button.correct > svg { color:#1f9d72; }.risk-quiz-options button.wrong > svg { color:#d3543a; }
+.risk-quiz-feedback { border-radius:7px; display:flex; flex-direction:column; gap:4px; margin-top:10px; padding:10px 12px; }
+.risk-quiz-feedback.correct { background:rgba(31,157,114,.09); }.risk-quiz-feedback.wrong { background:rgba(211,84,58,.08); }
+.risk-quiz-feedback span { color:var(--qa-text-2); font-size:11px; }
+.risk-lesson-actions { display:flex; gap:8px; justify-content:flex-end; padding-bottom:10px; }
+[data-theme="light"] .risk-lesson-nav { background:rgba(255,253,248,.82); border-color:rgba(23,33,24,.08); }
+@media (max-width:1180px) { .risk-learning-layout { grid-template-columns:1fr; }.risk-lesson-nav { display:grid; grid-template-columns:repeat(5,1fr); position:static; }.risk-nav-heading,.risk-source-note { grid-column:1/-1; }.risk-lab-content { grid-template-columns:1fr; }.risk-explain { border-bottom:1px solid var(--border); border-right:0; padding-bottom:20px; padding-right:0; }.academy-course-grid { grid-template-columns:repeat(3,1fr); } }
+@media (max-width:760px) { .risk-lesson-nav { grid-template-columns:1fr 1fr; }.risk-input-grid,.risk-input-grid.three,.risk-quiz-options,.risk-case-tabs { grid-template-columns:1fr; }.risk-results { grid-template-columns:1fr 1fr; }.risk-case-detail { grid-template-columns:1fr; }.risk-case-detail div:first-child { grid-column:auto; }.academy-course-grid { grid-template-columns:1fr 1fr; } }

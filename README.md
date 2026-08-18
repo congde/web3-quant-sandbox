@@ -11,7 +11,7 @@
 ## 项目亮点
 
 - **离线优先**：内置 `data/dashboard/*.json` 样本，断网也能打开核心页面。
-- **公益学堂**：`/academy` 汇集基础数学、回测、K 线、诊断分析和资产管理五类课程，并以风控贯穿“选股/选币 → 诊断 → 交易验证 → 资产管理”。
+- **公益学堂**：`/academy` 汇集基础数学、回测、K 线、诊断分析、资产管理和风控六类课程，并以风控贯穿“选股/选币 → 诊断 → 交易验证 → 资产管理”。
 - **研究闭环完整**：覆盖行情总览、机会扫描、因子挖掘、数据源状态、策略回测、风险复核、模拟执行和研究报告。
 - **模拟交易工作站**：`/live-trading` 提供 K 线主画布、周期切换、交易计划线、dry-run 票据和证据面板。
 - **风险边界明确**：dry-run 只记录研究动作；项目默认不接交易所写接口、不提交真实订单。
@@ -148,7 +148,7 @@ python app.py
 | 能力 | Web 路由 | 主要代码路径 | 说明 |
 | --- | --- | --- | --- |
 | 市场总览 | `/trading` | `src/dashboard/`, `src/web/src/pages/trading/DashboardPage.tsx` | 多资产行情、K 线、交易信号、风险摘要和执行入口 |
-| 公益学堂 | `/academy`、`/kline-learning` | `src/web/src/pages/learning/` | 基础数学、回测、K 线、诊断分析、资产管理课程；K 线课程提供真实离线样本互动实验 |
+| 公益学堂 | `/academy`、`/math-learning`、`/backtest-learning`、`/kline-learning`、`/risk-learning` | `src/web/src/pages/learning/` | 基础数学、回测、K 线、诊断分析、资产管理和风控课程；数学、回测、K 线与风控课程提供互动实验 |
 | 机会雷达 | `/radar` | `src/dashboard/opportunity.py`, `src/web/src/pages/trading/RadarPage.tsx` | 基于资金、趋势、链上和风险信号扫描机会，区分热路径、冷路径和风控阻断 |
 | 因子挖掘 | `/factor-mining` | `src/factor_mining/`, `src/web/src/pages/trading/FactorMiningPage.tsx` | GP/ML/模板/LLM 候选生成、IC/RIC 验证；通过 `backtest_spec` 交接到策略回测 |
 | 数据源监控 | `/data-sources` | `src/dashboard/snapshot.py`, `src/dashboard/catalog.py` | 查看离线样本、在线快照、API 状态和研究草稿门禁 |

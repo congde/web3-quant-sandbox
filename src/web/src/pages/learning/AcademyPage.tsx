@@ -10,6 +10,7 @@ import {
   SwapOutlined,
   TeamOutlined,
   WalletOutlined,
+  WarningOutlined,
 } from "@ant-design/icons";
 import { Button } from "antd";
 import { useMemo, useState, type ReactNode } from "react";
@@ -23,7 +24,7 @@ import {
 } from "../trading/TradingPageShell";
 import "./academy.css";
 
-type CourseKey = "math" | "backtest" | "kline" | "diagnosis" | "assets";
+type CourseKey = "math" | "backtest" | "kline" | "diagnosis" | "assets" | "risk";
 
 type Course = {
   key: CourseKey;
@@ -46,6 +47,8 @@ const COURSES: Course[] = [
     icon: <CalculatorOutlined />,
     lessons: ["百分比、收益率与复利", "均值、方差与标准差", "概率、条件概率与期望", "相关性不等于因果关系"],
     outcome: "能够独立解释收益、波动和概率，不把单个指标当作确定答案。",
+    path: "/math-learning",
+    action: "进入公式实验室",
   },
   {
     key: "backtest",
@@ -55,8 +58,8 @@ const COURSES: Course[] = [
     icon: <BarChartOutlined />,
     lessons: ["回测能证明什么", "基准与评价指标", "前视偏差和数据污染", "样本外与稳定性检查"],
     outcome: "能够判断一份回测是否可信，并说清它不能证明什么。",
-    path: "/backtests",
-    action: "进入回测实验",
+    path: "/backtest-learning",
+    action: "进入回测基础课",
   },
   {
     key: "kline",
@@ -90,6 +93,17 @@ const COURSES: Course[] = [
     outcome: "能够从组合整体评估风险，不让单个标的决定全部结果。",
     path: "/risk",
     action: "查看风控实验",
+  },
+  {
+    key: "risk",
+    title: "风控学堂",
+    subtitle: "先活下来，再讨论收益",
+    description: "学习风险识别、单笔风险预算、止损与盈亏比、组合集中度、回撤门禁和紧急熔断。",
+    icon: <WarningOutlined />,
+    lessons: ["风险地图与防线", "仓位和单笔风险预算", "止损、目标与盈亏比", "组合集中度", "回撤门禁与熔断"],
+    outcome: "能够在下单前计算最坏损失，并说明系统何时应该预警、拒单或熔断。",
+    path: "/risk-learning",
+    action: "进入风控演练",
   },
 ];
 
@@ -135,7 +149,7 @@ export default function AcademyPage() {
             </div>
           ))}
         </div>
-        <button type="button" className="academy-risk-floor" onClick={() => navigate("/risk")}>
+        <button type="button" className="academy-risk-floor" onClick={() => navigate("/risk-learning")}>
           <SafetyOutlined />
           <strong>风控底座</strong>
           <span>数据质量 · 仓位上限 · 止损纪律 · 回撤控制 · 执行边界</span>
@@ -144,7 +158,7 @@ export default function AcademyPage() {
       </QuantGlowCard>
 
       <section className="academy-course-section">
-        <SectionHeader title="五大学堂" description="选择一个主题查看课程内容；K 线学堂已提供互动课程" />
+        <SectionHeader title="六大学堂" description="选择一个主题查看课程内容；数学、回测、K 线与风控学堂已提供互动课程" />
         <div className="academy-course-grid">
           {COURSES.map((course, index) => (
             <button
@@ -157,7 +171,7 @@ export default function AcademyPage() {
               <i>{course.icon}</i>
               <strong>{course.title}</strong>
               <small>{course.subtitle}</small>
-              {course.key === "kline" ? <em>互动课已开放</em> : <em>课程纲要</em>}
+              {course.key === "kline" || course.key === "math" || course.key === "backtest" || course.key === "risk" ? <em>互动课已开放</em> : <em>课程纲要</em>}
             </button>
           ))}
         </div>
@@ -166,7 +180,7 @@ export default function AcademyPage() {
       <QuantGlowCard
         className="academy-course-detail"
         title={<SectionHeader title={active.title} description={active.description} />}
-        badge={<StatusPill tone={active.key === "kline" ? "profit" : "ai"}>{active.key === "kline" ? "互动课程" : "学习单元"}</StatusPill>}
+        badge={<StatusPill tone={active.key === "kline" || active.key === "math" || active.key === "backtest" || active.key === "risk" ? "profit" : "ai"}>{active.key === "kline" || active.key === "math" || active.key === "backtest" || active.key === "risk" ? "互动课程" : "学习单元"}</StatusPill>}
       >
         <div className="academy-detail-layout">
           <ol>

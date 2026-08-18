@@ -1,0 +1,102 @@
+.formula-notation {
+  align-items: center;
+  color: var(--qa-text-1);
+  display: flex;
+  flex-wrap: wrap;
+  font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+  font-size: 19px;
+  font-weight: 500;
+  gap: 5px;
+  line-height: 1.8;
+  min-height: 38px;
+}
+
+.formula-symbol {
+  display: inline-flex;
+  line-height: 1;
+  padding: 0 1px;
+  position: relative;
+}
+
+.formula-symbol i { font-style: italic; }
+
+.formula-symbol sub,
+.formula-symbol sup {
+  font-family: inherit;
+  font-size: 62%;
+  font-style: normal;
+  line-height: 1;
+  margin-left: 1px;
+}
+
+.formula-symbol sub { align-self: flex-end; transform: translateY(35%); }
+.formula-symbol sup { align-self: flex-start; transform: translateY(-30%); }
+.formula-symbol sub + sup { margin-left: -1px; }
+
+.formula-fraction {
+  align-items: stretch;
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.2;
+  margin: 0 3px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.formula-fraction > span {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 22px;
+  padding: 1px 6px;
+}
+
+.formula-fraction > span:first-child { border-bottom: 1.5px solid currentColor; }
+
+.formula-root {
+  align-items: flex-start;
+  display: inline-flex;
+  margin-left: 2px;
+}
+
+.formula-root > b {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.formula-root > span {
+  border-top: 1.5px solid currentColor;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  line-height: 1.45;
+  padding: 1px 3px 0;
+}
+
+.formula-power {
+  align-items: flex-start;
+  display: inline-flex;
+}
+
+.formula-power > sup {
+  font-size: 62%;
+  line-height: 1;
+  margin-left: 1px;
+  transform: translateY(-20%);
+}
+
+.formula-abs {
+  border-left: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  display: inline-flex;
+  margin: 0 2px;
+  padding: 0 4px;
+}
+
+.formula-function { font-style: normal; }
+
+@media (max-width: 760px) {
+  .formula-notation { font-size: 16px; }
+  .formula-root > b { font-size: 24px; }
+}

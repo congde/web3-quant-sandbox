@@ -11,7 +11,7 @@ By default, the project runs from bundled samples and repository snapshots. It d
 ## Highlights
 
 - **Offline-first**: bundled `data/dashboard/*.json` samples let the core pages run without network access.
-- **Public learning academy**: `/academy` combines foundational math, backtesting, K-line, diagnostic analysis, and asset-management courses, with risk controls spanning selection, diagnosis, trade validation, and portfolio management.
+- **Public learning academy**: `/academy` combines foundational math, backtesting, K-line, diagnostic analysis, asset-management, and risk-control courses, with risk controls spanning selection, diagnosis, trade validation, and portfolio management.
 - **Complete research loop**: market overview, opportunity scanning, factor mining, data-source status, strategy backtests, risk review, simulated execution, and research reports.
 - **Simulated trading workstation**: `/live-trading` includes a K-line canvas, timeframe switching, trade-plan overlays, dry-run tickets, and evidence panels.
 - **Clear safety boundary**: dry-run only records research actions; the project does not submit real exchange orders by default.
@@ -147,7 +147,7 @@ python app.py
 | Feature | Web route | Main code paths | Notes |
 | --- | --- | --- | --- |
 | Market dashboard | `/trading` | `src/dashboard/`, `src/web/src/pages/trading/DashboardPage.tsx` | Multi-asset quotes, K-line charts, trading signals, risk summaries, and execution entry points |
-| Public learning academy | `/academy`, `/kline-learning` | `src/web/src/pages/learning/` | Foundational math, backtesting, K-line, diagnostic analysis, and asset-management courses; the K-line course includes an interactive offline-data lab |
+| Public learning academy | `/academy`, `/math-learning`, `/backtest-learning`, `/kline-learning`, `/risk-learning` | `src/web/src/pages/learning/` | Foundational math, backtesting, K-line, diagnostic analysis, asset-management, and risk-control courses; the math, backtesting, K-line, and risk courses include interactive labs |
 | Opportunity radar | `/radar` | `src/dashboard/opportunity.py`, `src/web/src/pages/trading/RadarPage.tsx` | Scans opportunities with fund flow, trend, on-chain, and risk signals; labels hot paths, cold paths, and blocked paths |
 | Factor mining | `/factor-mining` | `src/factor_mining/`, `src/web/src/pages/trading/FactorMiningPage.tsx` | GP/ML/template/LLM candidate generation and IC/RIC validation; hands off via `backtest_spec` to strategy backtests |
 | Data source monitor | `/data-sources` | `src/dashboard/snapshot.py`, `src/dashboard/catalog.py` | Shows offline samples, online snapshots, API status, and research-draft gates |
