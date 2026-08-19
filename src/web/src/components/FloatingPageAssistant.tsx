@@ -23,6 +23,7 @@ const PAGE_LABELS: Record<string, string> = {
   "/trading": "市场总览",
   "/academy": "公益学堂",
   "/math-learning": "量化数学学堂",
+  "/machine-learning": "机器学习学堂",
   "/backtest-learning": "回测学堂",
   "/risk-learning": "风控学堂",
   "/kline-learning": "K线学堂",

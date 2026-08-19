@@ -24,6 +24,8 @@ import KlineLearningPage from "./pages/learning/KlineLearningPage";
 
 import MathLearningPage from "./pages/learning/MathLearningPage";
 
+import MachineLearningPage from "./pages/learning/MachineLearningPage";
+
 import RiskLearningPage from "./pages/learning/RiskLearningPage";
 
 import DataSourcesPage from "./pages/trading/DataSourcesPage";
@@ -66,6 +68,8 @@ export default function App() {
                 <Route path="/academy" element={<AcademyPage />} />
 
                 <Route path="/math-learning" element={<MathLearningPage />} />
+
+                <Route path="/machine-learning" element={<MachineLearningPage />} />
 
                 <Route path="/diagnosis-learning" element={<DiagnosisLearningPage />} />
 

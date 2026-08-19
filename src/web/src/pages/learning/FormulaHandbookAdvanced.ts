@@ -164,6 +164,26 @@ export const ADVANCED_GROUPS: Record<FormulaDomain, FormulaGroup[]> = {
         { name: "概率夏普比率", equation: "PSR = Φ[(SR−SR*)√(n−1) / √(1−γ₃SR+(γ₄−1)SR²/4)]", purpose: "结合样本数、偏度和峰度评估 Sharpe 超过基准的概率。", variables: ["SR：观测 Sharpe", "SR*：基准 Sharpe", "γ₃/γ₄：偏度/峰度"], example: "相同 Sharpe 下，样本更长、尾部分布更温和会得到更高 PSR。", boundary: "依赖平稳性和矩估计；多重试验还需 Deflated Sharpe 等修正。" },
       ],
     },
+    {
+      title: "样本外验证与不确定性",
+      description: "用有效样本量、置信区间和滚动窗口汇总，判断效果是否能够跨时间复现。",
+      formulas: [
+        { name: "一阶相关有效样本量", equation: "neff ≈ n(1−ρ₁)/(1+ρ₁)", purpose: "粗略修正一阶自相关导致的独立信息量下降。", variables: ["n：名义观测数", "ρ₁：一阶自相关", "neff：有效样本量"], example: "n=1,000、ρ₁=0.5 时，有效样本量粗略降至约 333。", boundary: "这是 AR(1) 近似；多阶相关、重叠标签和状态切换需要更完整方法。" },
+        { name: "均值置信区间", equation: "CI = r̄ ± tα/2 × s/√neff", purpose: "给平均收益或超额收益提供包含估计误差的区间。", variables: ["r̄：样本均值", "s：样本标准差", "neff：有效样本量", "tα/2：临界值"], example: "均值为正但区间跨过 0，说明方向证据仍不充分。", boundary: "厚尾、自相关和异方差会破坏普通 t 区间，应使用稳健标准误或 Bootstrap。" },
+        { name: "Walk-forward 加权指标", equation: "MetricWF = Σₖ nₖMetricOOS,k / Σₖnₖ", purpose: "按各样本外窗口长度汇总滚动验证结果。", variables: ["MetricOOS,k：第 k 个样本外指标", "nₖ：窗口有效观测数"], example: "六个滚动窗口按各自交易数加权，避免短窗口和长窗口影响相同。", boundary: "聚合值会隐藏失败窗口，必须同时展示窗口分布、最差段和状态标签。" },
+        { name: "样本外正收益窗口率", equation: "PassRate = Σₖ1(MetricOOS,k>0) / K", purpose: "衡量策略在多少个独立向前窗口保持预期方向。", variables: ["K：样本外窗口数", "1(·)：指示函数", "MetricOOS,k：窗口效果"], example: "8 个窗口中 6 个为正，正收益窗口率为 75%。", boundary: "窗口高度重叠时并不独立；只看正负也会忽略收益幅度和尾部损失。" },
+      ],
+    },
+    {
+      title: "Bootstrap 与蒙特卡洛",
+      description: "通过经验重采样和大量路径模拟，估计终值、回撤与触及风险线的分布。",
+      formulas: [
+        { name: "逐笔 Bootstrap", equation: "R* = (Rᵢ₁,…,Rᵢₙ)，iⱼ ~ Uniform{1,…,n}", purpose: "从历史交易逐笔有放回抽样，生成同长度的替代交易序列。", variables: ["R：历史交易收益", "R*：重采样序列", "iⱼ：随机索引"], example: "从 200 笔历史交易重复抽取 200 次，形成一条新的可能路径。", boundary: "逐笔抽样破坏连胜连亏和波动聚集，只适合依赖较弱的交易序列。" },
+        { name: "分块 Bootstrap", equation: "R* = concat(Bᵢ₁,…,Bᵢm)", purpose: "以连续数据块为抽样单位，部分保留短期自相关和市场状态。", variables: ["Bᵢ：长度为 L 的连续块", "L：块长度", "m：抽取块数"], example: "以 5 笔交易为一块重采样，比逐笔抽样更能保留连亏聚集。", boundary: "块太短会丢失依赖，太长会减少可用组合；块长度必须做敏感度检查。" },
+        { name: "蒙特卡洛终值分位数", equation: "Qp = Quantilep(VT¹,…,VTᴹ)", purpose: "用 M 条模拟路径的终值分布给出悲观、中位和乐观范围。", variables: ["VTᵐ：第 m 条路径终值", "M：模拟路径数", "Qp：p 分位终值"], example: "P05 终值收益为 −18%，表示约 5% 模拟路径更差。", boundary: "分位数只反映模拟假设；输入分布遗漏黑天鹅时会系统性低估尾部。" },
+        { name: "经验破产概率", equation: "Pruin ≈ Σₘ1(minₜVₜᵐ≤B) / M", purpose: "估计模拟路径触及资本、保证金或回撤风险线 B 的比例。", variables: ["Vₜᵐ：第 m 条路径净值", "B：风险线", "M：路径数"], example: "1,000 条路径中 37 条触及 −30% 风险线，经验概率为 3.7%。", boundary: "结果依赖仓位规则、再投资、相关性和压力参数，不能解释为真实世界精确概率。" },
+      ],
+    },
   ],
   risk: [
     {
@@ -195,6 +215,26 @@ export const ADVANCED_GROUPS: Record<FormulaDomain, FormulaGroup[]> = {
         { name: "基差风险", equation: "Basis = (Futures − Spot) / Spot", purpose: "衡量期货与现货价格的相对偏离。", variables: ["Futures：期货价格", "Spot：现货价格"], example: "期货 103、现货 100：基差 3%。", boundary: "套利仍承担资金、借贷、交易所、交割和脱钩风险。" },
         { name: "恒定乘积无常损失", equation: "IL(r) = 2√r/(1+r) − 1", purpose: "估计 50/50 恒定乘积池相对单纯持币的价值差。", variables: ["r：两资产相对价格变化倍数", "IL：无常损失"], example: "相对价格翻倍 r=2：IL 约 −5.72%。", boundary: "未计手续费、激励、集中流动性范围和再平衡。" },
         { name: "借贷健康因子", equation: "HF = Σ(CollateralValue×LiqThreshold) / DebtValue", purpose: "衡量抵押品折算价值覆盖债务的程度。", variables: ["CollateralValue：抵押价值", "LiqThreshold：清算阈值", "DebtValue：债务"], example: "折算抵押 120、债务 100：HF=1.2；接近 1 时风险升高。", boundary: "预言机延迟、资产相关下跌和链上拥堵会造成跳跃式清算。" },
+      ],
+    },
+    {
+      title: "压力测试与情景风险",
+      description: "把价格、相关性、流动性和执行故障组合为可复算的联合压力情景。",
+      formulas: [
+        { name: "组合情景损失", equation: "StressLoss = Σᵢ Exposureᵢ × Shockᵢ + ExecutionCost", purpose: "汇总多项暴露在指定联合冲击下的估计损失。", variables: ["Exposureᵢ：第 i 项风险暴露", "Shockᵢ：情景冲击幅度", "ExecutionCost：退出成本"], example: "BTC 暴露 60 万下跌 15%、ETH 暴露 40 万下跌 20%，再加 1 万退出成本，情景损失为 18 万。", boundary: "冲击必须同时考虑方向、非线性头寸、相关变化和实际可执行价格。" },
+        { name: "压力组合波动", equation: "σstress = √(wᵀΣstress w)", purpose: "使用压力相关和压力波动矩阵重估组合风险。", variables: ["w：组合权重", "Σstress：压力协方差矩阵", "σstress：压力组合波动"], example: "将平均相关从 0.2 提升到 0.8 后，分散组合的压力波动通常明显上升。", boundary: "压力矩阵是情景假设，不是未来危机协方差的精确预测。" },
+        { name: "流动性调整 VaR", equation: "LVaR = VaR + LiquidationCost", purpose: "在市场风险阈值上增加估计清仓成本。", variables: ["VaR：指定置信度的损失阈值", "LiquidationCost：点差、冲击、费用和 Gas", "LVaR：流动性调整风险"], example: "95% VaR 为 5 万、压力退出成本 1.5 万：LVaR 为 6.5 万。", boundary: "极端拥堵时退出成本可能非线性放大，简单加总仍可能低估。" },
+        { name: "反向压力冲击", equation: "Shock* = LossLimit / EffectiveExposure", purpose: "反推何种市场冲击会刚好突破损失限额。", variables: ["LossLimit：最大允许损失", "EffectiveExposure：方向与敏感度调整后的暴露", "Shock*：临界冲击"], example: "有效暴露 100 万、损失限额 10 万：约 10% 不利冲击即触线。", boundary: "期权、清算和 AMM 等非线性头寸应使用情景求解，不能只除以名义暴露。" },
+      ],
+    },
+    {
+      title: "风险门禁与恢复治理",
+      description: "把风险预算、损失限额、模拟触线概率和恢复证据转换为运行决策。",
+      formulas: [
+        { name: "风险预算使用率", equation: "Utilization = RiskUsed / RiskLimit", purpose: "判断当前已使用风险相对批准限额的占比。", variables: ["RiskUsed：当前风险占用", "RiskLimit：批准风险上限", "Utilization：使用率"], example: "已用风险 7.5 万、限额 10 万：使用率 75%。", boundary: "风险占用必须覆盖相关、流动性和未成交订单，不能只加总单笔止损。" },
+        { name: "损失限额使用率", equation: "LossUsage = CurrentLoss / LossLimit", purpose: "将当日、滚动期或策略累计损失映射为统一门禁比例。", variables: ["CurrentLoss：当前口径损失", "LossLimit：同口径损失限额", "LossUsage：限额使用率"], example: "当日亏损 3 万、日损失限额 5 万：使用率 60%。", boundary: "当前损失和限额必须使用相同币种、时间窗、已实现/未实现口径。" },
+        { name: "经验红线触及概率", equation: "Pbreach ≈ Σₘ 1(MaxDDₘ ≥ Limit) / M", purpose: "用模拟路径中触线频率校准仓位、回撤阈值和熔断规则。", variables: ["MaxDDₘ：第 m 条路径最大回撤", "Limit：风险红线", "M：模拟路径数"], example: "5,000 条路径中 420 条触及 20% 回撤线：经验触线率为 8.4%。", boundary: "它只反映输入模型下的频率，输入分布、相关结构和压力参数错了，概率也会误导。" },
+        { name: "剩余风险容量", equation: "AvailableRisk = max(0, RiskLimit − RiskUsed)", purpose: "计算允许新增头寸继续占用的风险额度。", variables: ["RiskLimit：批准上限", "RiskUsed：已使用风险", "AvailableRisk：剩余容量"], example: "风险限额 10 万、已用 8.2 万：最多剩余 1.8 万风险容量。", boundary: "触发硬门禁或数据异常时，即使数值为正也应将可用容量强制设为零。" },
       ],
     },
   ],

@@ -736,6 +736,8 @@ export interface FetchFactorMineOptions {
   seed?: number;
   refresh?: boolean;
   llmModel?: string;
+  costBps?: number;
+  validationFolds?: number;
 }
 
 export async function fetchFactorMine(options: FetchFactorMineOptions = {}): Promise<FactorMiningPayload> {
@@ -748,6 +750,8 @@ export async function fetchFactorMine(options: FetchFactorMineOptions = {}): Pro
     gpGenerations: String(options.gpGenerations ?? 10),
     gpPopulation: String(options.gpPopulation ?? 20),
     seed: String(options.seed ?? 42),
+    costBps: String(options.costBps ?? 8),
+    validationFolds: String(options.validationFolds ?? 4),
   });
   if (options.symbol) {
     params.set("symbol", options.symbol);

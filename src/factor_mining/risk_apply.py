@@ -6,7 +6,7 @@ from typing import Any
 
 from factor_mining.expressions import eval_series
 from factor_mining.features import build_feature_matrix
-from factor_mining.ml import _combine_linear, _normalize_features
+from factor_mining.ml import _apply_normalizer, _combine_linear, _normalize_features
 from factor_mining.serialize import expr_from_dict
 from factor_mining.stats import zscore_series
 
@@ -19,8 +19,13 @@ def risk_factor_series(
 ) -> list[float | None]:
     features, _, _ = build_feature_matrix(candles, horizon=horizon, target="return")
     source = str(risk_spec.get("factor_source") or "gp")
-    if source == "ml":
-        normalized = _normalize_features(features)
+    if source in ("ml", "llm"):
+        normalization = risk_spec.get("normalization") or {}
+        normalized = (
+            _apply_normalizer(features, normalization)
+            if normalization
+            else _normalize_features(features)
+        )
         weights = dict(risk_spec.get("weights") or {})
         return _combine_linear(normalized, weights)
     expr_payload = risk_spec.get("expr")

@@ -1005,6 +1005,10 @@ export interface FactorMetricsView {
   p_value?: number;
   rank_autocorr?: number;
   quantile_returns?: number[];
+  ic_confidence_low?: number;
+  ic_confidence_high?: number;
+  quantile_monotonicity?: number;
+  cost_adjusted_spread?: number;
 }
 
 export interface FactorValidationView {
@@ -1017,6 +1021,7 @@ export interface FactorBacktestSpec {
   factor_source: "gp" | "ml" | "template" | "llm";
   expr?: Record<string, unknown>;
   weights?: Record<string, number>;
+  normalization?: Record<string, { mean: number; std: number }>;
   label?: string;
   horizon?: number;
   mining_target?: "return" | "risk";
@@ -1039,6 +1044,7 @@ export interface FactorMiningLeader {
   method: "gp" | "ml" | "template" | "llm";
   label?: string;
   train_ic?: number;
+  validation_ic?: number;
   test_ic?: number;
   backtest_spec?: FactorBacktestSpec;
   risk_spec?: FactorRiskSpec;
@@ -1057,9 +1063,11 @@ export interface FactorMiningBranch {
   complexity?: number;
   selected_features?: string[];
   weights?: Record<string, number>;
-  candidates?: Array<{ name?: string; expression?: string; rationale?: string; train_ic?: number; test_ic?: number }>;
-  proposals?: Array<{ name?: string; rationale?: string; weights?: Record<string, number>; train_ic?: number; test_ic?: number }>;
+  normalization?: Record<string, { mean: number; std: number }>;
+  candidates?: Array<{ name?: string; expression?: string; rationale?: string; train_ic?: number; validation_ic?: number; test_ic?: number }>;
+  proposals?: Array<{ name?: string; rationale?: string; weights?: Record<string, number>; train_ic?: number; validation_ic?: number; test_ic?: number }>;
   train?: FactorMetricsView;
+  validation?: FactorMetricsView;
   test?: FactorMetricsView;
   overfit_gap?: number;
   backtest_spec?: FactorBacktestSpec;
@@ -1080,10 +1088,62 @@ export interface FactorMiningPayload {
   horizon_bars: number;
   sample_bars: number;
   train_bars: number;
+  validation_bars?: number;
   test_bars: number;
   feature_count: number;
   features: string[];
   baseline_univariate?: Array<{ feature: string; ic_mean: number; ir: number; hit_rate: number }>;
+  research_design?: {
+    discovery: string;
+    selection: string;
+    final_holdout: string;
+    split_policy: string;
+    cost_bps: number;
+    validation_folds: number;
+    normalization: string;
+    point_in_time: boolean;
+    purge_bars: number;
+  };
+  feature_taxonomy?: Array<{
+    key: string;
+    label: string;
+    thesis: string;
+    features: string[];
+  }>;
+  experiment_audit?: {
+    estimated_trials: number;
+    correction: string;
+    raw_best_validation_p: number;
+    adjusted_best_validation_p: number;
+    alpha: number;
+    note: string;
+  };
+  candidate_registry?: Array<{
+    method: FactorMiningBranch["method"];
+    label: string;
+    train_ic: number;
+    validation_ic: number;
+    holdout_ic: number;
+    adjusted_p: number;
+    net_spread: number;
+    status: "research_ready" | "watch" | "reject";
+    passed_checks: number;
+  }>;
+  stability_report?: {
+    folds: Array<{ fold: number; range: string; ic: number; oriented_ic: number; net_spread: number; samples: number }>;
+    positive_fold_rate: number;
+    worst_oriented_ic: number;
+    regimes: Array<{ key: string; label: string; ic: number; net_spread: number; samples: number }>;
+    note: string;
+  };
+  research_gate?: {
+    verdict: "research_ready" | "watch" | "reject";
+    passed: number;
+    total: number;
+    checks: Array<{ label: string; passed: boolean; value: number }>;
+    production_ready: boolean;
+    next_step: string;
+  };
   gp?: FactorMiningBranch;
   ml?: FactorMiningBranch;
   template?: FactorMiningBranch;

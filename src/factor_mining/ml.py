@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from factor_mining.evaluate import FactorMetrics, evaluate_factor, spearman
-from factor_mining.stats import zscore_series
+import math
 
 
 def _metrics_dict(metrics: FactorMetrics | None) -> dict[str, Any]:
@@ -41,8 +41,38 @@ def _combine_linear(
     return out
 
 
+def _fit_normalizer(features: dict[str, list[float | None]]) -> dict[str, dict[str, float]]:
+    stats: dict[str, dict[str, float]] = {}
+    for name, series in features.items():
+        values = [float(value) for value in series if value is not None and math.isfinite(value)]
+        if not values:
+            stats[name] = {"mean": 0.0, "std": 1.0}
+            continue
+        mean = sum(values) / len(values)
+        variance = sum((value - mean) ** 2 for value in values) / max(1, len(values) - 1)
+        stats[name] = {"mean": mean, "std": math.sqrt(variance) if variance > 1e-12 else 1.0}
+    return stats
+
+
+def _apply_normalizer(
+    features: dict[str, list[float | None]],
+    stats: dict[str, dict[str, float]],
+) -> dict[str, list[float | None]]:
+    normalized: dict[str, list[float | None]] = {}
+    for name, series in features.items():
+        item = stats.get(name) or {"mean": 0.0, "std": 1.0}
+        mean = float(item.get("mean", 0.0))
+        std = max(1e-9, float(item.get("std", 1.0)))
+        normalized[name] = [
+            None if value is None or not math.isfinite(value) else (float(value) - mean) / std
+            for value in series
+        ]
+    return normalized
+
+
 def _normalize_features(features: dict[str, list[float | None]]) -> dict[str, list[float | None]]:
-    return {name: zscore_series(series) for name, series in features.items()}
+    """Backward-compatible batch normalization; research service passes fitted train stats."""
+    return _apply_normalizer(features, _fit_normalizer(features))
 
 
 def run_ml_search(
@@ -53,7 +83,8 @@ def run_ml_search(
     max_features: int = 4,
     min_samples: int = 20,
 ) -> dict[str, Any]:
-    normalized = _normalize_features(features)
+    normalization = _fit_normalizer(features)
+    normalized = _apply_normalizer(features, normalization)
 
     univariate: list[dict[str, Any]] = []
     for name in feature_names:
@@ -98,6 +129,7 @@ def run_ml_search(
         "method": "ml",
         "selected_features": selected,
         "weights": {k: round(v, 6) for k, v in weights.items()},
+        "normalization": {name: normalization[name] for name in weights if name in normalization},
         "formula": _formula_string(weights),
         "univariate_screen": univariate[:8],
         "metrics": _metrics_dict(combo_metrics),

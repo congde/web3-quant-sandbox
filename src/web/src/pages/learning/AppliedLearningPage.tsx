@@ -25,6 +25,45 @@ import "./learning-layout.css";
 
 const masteryKey = (course: AppliedCourse) => `applied-mastery:v1:${course.key}`;
 
+function clamp(value: number, lower = 0, upper = 100) {
+  return Math.min(upper, Math.max(lower, value));
+}
+
+function AppliedSlider({ label, value, min = 0, max = 100, step = 1, suffix = "", onChange }: { label: string; value: number; min?: number; max?: number; step?: number; suffix?: string; onChange: (value: number) => void }) {
+  return <label className="applied-workbench-slider"><span>{label}<b>{value}{suffix}</b></span><input type="range" min={min} max={max} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} /></label>;
+}
+
+function DiagnosisWorkbench({ lessonTitle }: { lessonTitle: string }) {
+  const [quality, setQuality] = useState(78);
+  const [independence, setIndependence] = useState(62);
+  const [support, setSupport] = useState(70);
+  const [counter, setCounter] = useState(34);
+  const [freshness, setFreshness] = useState(76);
+  const score = clamp(quality * 0.25 + independence * 0.2 + support * 0.4 + freshness * 0.15 - counter * 0.3);
+  const conclusion = score >= 70 ? "支持" : score >= 50 ? "部分支持" : score >= 35 ? "证据不足" : "反对";
+  const tone = score >= 70 ? "profit" : score >= 50 ? "neutral" : score >= 35 ? "ai" : "loss";
+  const conflict = Math.min(support, counter);
+  return <section className="applied-workbench"><header><div><span>DIAGNOSIS WORKBENCH</span><strong>证据置信度校准台</strong><small>当前主题：{lessonTitle}</small></div><StatusPill tone={tone}>{conclusion}</StatusPill></header><div className="applied-workbench-body"><div className="applied-slider-grid"><AppliedSlider label="来源质量" value={quality} onChange={setQuality} /><AppliedSlider label="证据独立性" value={independence} onChange={setIndependence} /><AppliedSlider label="支持证据强度" value={support} onChange={setSupport} /><AppliedSlider label="反方证据强度" value={counter} onChange={setCounter} /><AppliedSlider label="信息新鲜度" value={freshness} onChange={setFreshness} /></div><div className="applied-decision-panel"><div><span>校准置信分</span><strong>{score.toFixed(1)}</strong><small>不是上涨概率，而是当前证据质量评分</small></div><div className="applied-decision-metrics"><p><span>证据冲突度</span><b>{conflict.toFixed(0)}</b></p><p><span>来源 × 独立性</span><b>{Math.sqrt(quality * independence).toFixed(0)}</b></p><p><span>复核优先级</span><b>{freshness < 50 || conflict > 50 ? "高" : "常规"}</b></p></div></div></div><footer>结论必须同时保存输入快照、反证、未知项、有效期和下一次复核条件；评分变化不能静默覆盖旧结论。</footer></section>;
+}
+
+function AssetWorkbench({ lessonTitle }: { lessonTitle: string }) {
+  const [liquidity, setLiquidity] = useState(12);
+  const [concentration, setConcentration] = useState(28);
+  const [stressLoss, setStressLoss] = useState(18);
+  const [drawdownLimit, setDrawdownLimit] = useState(25);
+  const [cost, setCost] = useState(0.8);
+  const blocked = liquidity < 6 || concentration > 40 || stressLoss > drawdownLimit;
+  const warned = !blocked && (liquidity < 12 || concentration > 25 || stressLoss > drawdownLimit * 0.8 || cost > 1.5);
+  const decision = blocked ? "BLOCK" : warned ? "WATCH" : "ALLOW";
+  const tone = blocked ? "loss" : warned ? "ai" : "profit";
+  const capacity = Math.max(0, drawdownLimit - stressLoss);
+  return <section className="applied-workbench"><header><div><span>PORTFOLIO WORKBENCH</span><strong>组合约束与情景门禁</strong><small>当前主题：{lessonTitle}</small></div><StatusPill tone={tone}>{decision}</StatusPill></header><div className="applied-workbench-body"><div className="applied-slider-grid"><AppliedSlider label="流动性覆盖" value={liquidity} min={0} max={36} suffix=" 月" onChange={setLiquidity} /><AppliedSlider label="最大单项权重" value={concentration} min={0} max={80} suffix="%" onChange={setConcentration} /><AppliedSlider label="联合压力损失" value={stressLoss} min={0} max={60} suffix="%" onChange={setStressLoss} /><AppliedSlider label="最大回撤上限" value={drawdownLimit} min={5} max={60} suffix="%" onChange={setDrawdownLimit} /><AppliedSlider label="预计调仓成本" value={cost} min={0} max={5} step={0.1} suffix="%" onChange={setCost} /></div><div className="applied-decision-panel"><div><span>组合门禁</span><strong>{decision}</strong><small>{blocked ? "至少一项硬约束已突破" : warned ? "接近预算边界，需要缩量或复核" : "当前输入满足示例约束"}</small></div><div className="applied-decision-metrics"><p><span>剩余回撤容量</span><b>{capacity.toFixed(1)}%</b></p><p><span>流动性门禁</span><b>{liquidity >= 12 ? "通过" : liquidity >= 6 ? "观察" : "阻断"}</b></p><p><span>集中度门禁</span><b>{concentration <= 25 ? "通过" : concentration <= 40 ? "观察" : "阻断"}</b></p></div></div></div><footer>组合决策应同时记录目标、风险预算、压力情景、执行成本和批准人；硬约束不能通过临时修改目标权重规避。</footer></section>;
+}
+
+function AppliedWorkbench({ course, lessonTitle }: { course: AppliedCourse; lessonTitle: string }) {
+  return course.key === "diagnosis" ? <DiagnosisWorkbench lessonTitle={lessonTitle} /> : <AssetWorkbench lessonTitle={lessonTitle} />;
+}
+
 function readMastery(course: AppliedCourse) {
   if (typeof window === "undefined") return [] as string[];
   try {
@@ -148,6 +187,8 @@ export function AppliedLearningPage({ course }: { course: AppliedCourse }) {
               <p><b>证据边界</b>{lesson.caseStudy.limits}</p>
             </div>
           </section>
+
+          <AppliedWorkbench key={`${course.key}-${lesson.title}`} course={course} lessonTitle={lesson.title} />
 
           <div className="applied-two-column">
             <section><h3><CheckCircleFilled /> 可复用检查表</h3><ul>{lesson.checklist.map((item) => <li key={item}>{item}</li>)}</ul></section>

@@ -11,7 +11,7 @@ from backtest.rolling.strategies.base import Strategy
 from factor_mining.expressions import eval_series
 from factor_mining.serialize import expr_from_dict
 from factor_mining.features import build_feature_matrix
-from factor_mining.ml import _combine_linear, _normalize_features
+from factor_mining.ml import _apply_normalizer, _combine_linear, _normalize_features
 from factor_mining.stats import zscore_series
 
 
@@ -29,7 +29,12 @@ class MinedFactorStrategy(Strategy):
 
         source = params.get("factor_source", "gp")
         if source in ("ml", "llm"):
-            normalized = _normalize_features(features)
+            normalization = params.get("normalization") or {}
+            normalized = (
+                _apply_normalizer(features, normalization)
+                if isinstance(normalization, dict) and normalization
+                else _normalize_features(features)
+            )
             weights = params.get("weights") or {}
             raw = _combine_linear(normalized, weights)
         else:
@@ -73,6 +78,7 @@ class MinedFactorStrategy(Strategy):
             "factor_source": "gp",
             "expr": None,
             "weights": {},
+            "normalization": {},
             "label": self.display_name,
             "horizon": 1,
             "entry_threshold": 0.5,

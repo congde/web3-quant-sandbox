@@ -95,8 +95,8 @@ def template_expressions() -> list[tuple[str, Expr, str]]:
 def run_template_search(
     features: dict[str, list[float | None]],
     train_labels: list[float | None],
-    test_features: dict[str, list[float | None]],
-    test_labels: list[float | None],
+    validation_features: dict[str, list[float | None]],
+    validation_labels: list[float | None],
 ) -> dict[str, Any]:
     candidates: list[dict[str, Any]] = []
     for name, expr, rationale in template_expressions():
@@ -104,8 +104,8 @@ def run_template_search(
         train_metrics = evaluate_factor(train_signal, train_labels, min_samples=15)
         if train_metrics is None:
             continue
-        test_signal = eval_series(expr, test_features)
-        test_metrics = evaluate_factor(test_signal, test_labels, min_samples=10)
+        validation_signal = eval_series(expr, validation_features)
+        validation_metrics = evaluate_factor(validation_signal, validation_labels, min_samples=10)
         candidates.append(
             {
                 "name": name,
@@ -114,7 +114,7 @@ def run_template_search(
                 "expr": expr,
                 "rationale": rationale,
                 "train": train_metrics,
-                "test": test_metrics,
+                "validation": validation_metrics,
             }
         )
 
@@ -124,11 +124,14 @@ def run_template_search(
             "expression": "0",
             "rationale": "No template candidate had enough samples.",
             "metrics": _empty_metrics(),
-            "test": _empty_metrics(),
+            "validation": _empty_metrics(),
             "candidates": [],
         }
 
-    candidates.sort(key=lambda row: abs(row["test"].ic_mean if row["test"] else 0.0), reverse=True)
+    candidates.sort(
+        key=lambda row: abs(row["validation"].ic_mean if row["validation"] else 0.0),
+        reverse=True,
+    )
     best = candidates[0]
     return {
         "method": "template",
@@ -136,14 +139,14 @@ def run_template_search(
         "expr": best["expr"],
         "rationale": best["rationale"],
         "metrics": _metrics_dict(best["train"]),
-        "test": _metrics_dict(best["test"]),
+        "validation": _metrics_dict(best["validation"]),
         "candidates": [
             {
                 "name": row["name"],
                 "expression": row["expression"],
                 "rationale": row["rationale"],
                 "train_ic": row["train"].ic_mean if row["train"] else 0.0,
-                "test_ic": row["test"].ic_mean if row["test"] else 0.0,
+                "validation_ic": row["validation"].ic_mean if row["validation"] else 0.0,
             }
             for row in candidates[:6]
         ],
@@ -172,6 +175,10 @@ def _metrics_dict(metrics: Any) -> dict[str, Any]:
         "p_value": metrics.p_value,
         "rank_autocorr": metrics.rank_autocorr,
         "quantile_returns": list(metrics.quantile_returns),
+        "ic_confidence_low": metrics.ic_confidence_low,
+        "ic_confidence_high": metrics.ic_confidence_high,
+        "quantile_monotonicity": metrics.quantile_monotonicity,
+        "cost_adjusted_spread": metrics.cost_adjusted_spread,
     }
 
 
@@ -190,4 +197,8 @@ def _empty_metrics() -> dict[str, Any]:
         "p_value": 1.0,
         "rank_autocorr": 0.0,
         "quantile_returns": [0.0, 0.0, 0.0, 0.0, 0.0],
+        "ic_confidence_low": 0.0,
+        "ic_confidence_high": 0.0,
+        "quantile_monotonicity": 0.0,
+        "cost_adjusted_spread": 0.0,
     }

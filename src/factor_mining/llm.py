@@ -10,14 +10,14 @@ from typing import Any
 from dashboard.http_client import http_post
 from dashboard.llm_signal import llm_configured, resolve_model
 from factor_mining.evaluate import evaluate_factor
-from factor_mining.ml import _combine_linear, _normalize_features
+from factor_mining.ml import _apply_normalizer, _combine_linear, _fit_normalizer
 
 
 def run_llm_factor_search(
     features: dict[str, list[float | None]],
     train_labels: list[float | None],
-    test_features: dict[str, list[float | None]],
-    test_labels: list[float | None],
+    validation_features: dict[str, list[float | None]],
+    validation_labels: list[float | None],
     feature_names: list[str],
     *,
     target: str,
@@ -25,8 +25,9 @@ def run_llm_factor_search(
     symbol: str,
     model: str | None = None,
 ) -> dict[str, Any]:
-    normalized_train = _normalize_features(features)
-    normalized_test = _normalize_features(test_features)
+    normalization = _fit_normalizer(features)
+    normalized_train = _apply_normalizer(features, normalization)
+    normalized_validation = _apply_normalizer(validation_features, normalization)
     proposals = _fallback_proposals(target)
     source = "fallback_templates"
     error: str | None = None
@@ -51,9 +52,9 @@ def run_llm_factor_search(
             continue
         train_signal = _combine_linear(normalized_train, weights)
         train_metrics = evaluate_factor(train_signal, train_labels, min_samples=15)
-        test_signal = _combine_linear(normalized_test, weights)
-        test_metrics = evaluate_factor(test_signal, test_labels, min_samples=10)
-        if train_metrics is None and test_metrics is None:
+        validation_signal = _combine_linear(normalized_validation, weights)
+        validation_metrics = evaluate_factor(validation_signal, validation_labels, min_samples=10)
+        if train_metrics is None and validation_metrics is None:
             continue
         scored.append(
             {
@@ -61,7 +62,7 @@ def run_llm_factor_search(
                 "rationale": str(proposal.get("rationale") or ""),
                 "weights": weights,
                 "train": _metrics_dict(train_metrics),
-                "test": _metrics_dict(test_metrics),
+                "validation": _metrics_dict(validation_metrics),
             }
         )
 
@@ -72,11 +73,11 @@ def run_llm_factor_search(
                 "rationale": "No valid proposal had enough samples.",
                 "weights": {},
                 "train": _empty_metrics(),
-                "test": _empty_metrics(),
+                "validation": _empty_metrics(),
             }
         ]
 
-    scored.sort(key=lambda row: abs(row["test"].get("ic_mean", 0.0)), reverse=True)
+    scored.sort(key=lambda row: abs(row["validation"].get("ic_mean", 0.0)), reverse=True)
     best = scored[0]
     return {
         "method": "llm",
@@ -85,15 +86,18 @@ def run_llm_factor_search(
         "formula": _formula_string(best["weights"]),
         "rationale": best["rationale"],
         "weights": best["weights"],
+        "normalization": {
+            name: normalization[name] for name in best["weights"] if name in normalization
+        },
         "metrics": best["train"],
-        "test": best["test"],
+        "validation": best["validation"],
         "proposals": [
             {
                 "name": row["name"],
                 "rationale": row["rationale"],
                 "weights": row["weights"],
                 "train_ic": row["train"].get("ic_mean", 0.0),
-                "test_ic": row["test"].get("ic_mean", 0.0),
+                "validation_ic": row["validation"].get("ic_mean", 0.0),
             }
             for row in scored[:6]
         ],
@@ -255,6 +259,10 @@ def _metrics_dict(metrics: Any) -> dict[str, Any]:
         "p_value": metrics.p_value,
         "rank_autocorr": metrics.rank_autocorr,
         "quantile_returns": list(metrics.quantile_returns),
+        "ic_confidence_low": metrics.ic_confidence_low,
+        "ic_confidence_high": metrics.ic_confidence_high,
+        "quantile_monotonicity": metrics.quantile_monotonicity,
+        "cost_adjusted_spread": metrics.cost_adjusted_spread,
     }
 
 
@@ -273,4 +281,8 @@ def _empty_metrics() -> dict[str, Any]:
         "p_value": 1.0,
         "rank_autocorr": 0.0,
         "quantile_returns": [0.0, 0.0, 0.0, 0.0, 0.0],
+        "ic_confidence_low": 0.0,
+        "ic_confidence_high": 0.0,
+        "quantile_monotonicity": 0.0,
+        "cost_adjusted_spread": 0.0,
     }

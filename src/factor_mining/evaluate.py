@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import random
 from dataclasses import dataclass
 from typing import Sequence
 
@@ -22,6 +23,10 @@ class FactorMetrics:
     p_value: float = 1.0
     rank_autocorr: float = 0.0
     quantile_returns: tuple[float, ...] = ()
+    ic_confidence_low: float = 0.0
+    ic_confidence_high: float = 0.0
+    quantile_monotonicity: float = 0.0
+    cost_adjusted_spread: float = 0.0
 
 
 def _rank_values(values: list[float]) -> list[float]:
@@ -134,12 +139,40 @@ def _normal_p_value_from_t(t_stat: float) -> float:
     return max(0.0, min(1.0, math.erfc(abs(t_stat) / math.sqrt(2.0))))
 
 
+def _block_bootstrap_ic(
+    xs: list[float],
+    ys: list[float],
+    *,
+    samples: int = 200,
+    seed: int = 42,
+) -> tuple[float, float]:
+    """Deterministic moving-block bootstrap interval for serially dependent bars."""
+    n = len(xs)
+    if n < 12:
+        return 0.0, 0.0
+    rng = random.Random(seed)
+    block = max(3, int(math.sqrt(n)))
+    estimates: list[float] = []
+    for _ in range(samples):
+        picked: list[int] = []
+        while len(picked) < n:
+            start = rng.randrange(0, max(1, n - block + 1))
+            picked.extend(range(start, min(n, start + block)))
+        picked = picked[:n]
+        estimates.append(spearman([xs[i] for i in picked], [ys[i] for i in picked]))
+    estimates.sort()
+    low = estimates[max(0, int(samples * 0.025) - 1)]
+    high = estimates[min(samples - 1, int(samples * 0.975))]
+    return low, high
+
+
 def evaluate_factor(
     signal: Sequence[float | None],
     labels: Sequence[float | None],
     *,
     min_samples: int = 20,
     rolling_window: int = 10,
+    cost_bps: float = 8.0,
 ) -> FactorMetrics | None:
     xs, ys = _paired_rows(signal, labels)
     if len(xs) < min_samples:
@@ -166,6 +199,10 @@ def evaluate_factor(
     turnover = _turnover_rate(signal)
     rank_autocorr = _rank_autocorr(signal)
     quantile_returns = _quantile_returns(xs, ys)
+    monotonicity = spearman(list(range(1, len(quantile_returns) + 1)), list(quantile_returns))
+    confidence_low, confidence_high = _block_bootstrap_ic(xs, ys)
+    round_trip_cost = max(0.0, float(cost_bps)) * 2.0 / 10_000.0
+    cost_adjusted_spread = abs(spread) - turnover * round_trip_cost
 
     return FactorMetrics(
         ic_mean=round(ic, 6),
@@ -181,6 +218,10 @@ def evaluate_factor(
         p_value=round(_normal_p_value_from_t(t_stat), 6),
         rank_autocorr=round(rank_autocorr, 6),
         quantile_returns=quantile_returns,
+        ic_confidence_low=round(confidence_low, 6),
+        ic_confidence_high=round(confidence_high, 6),
+        quantile_monotonicity=round(monotonicity, 6),
+        cost_adjusted_spread=round(cost_adjusted_spread, 6),
     )
 
 
@@ -189,6 +230,19 @@ def chronological_split(n: int, train_ratio: float = 0.7) -> tuple[slice, slice]
         return slice(0, n), slice(n, n)
     cut = max(1, min(n - 1, int(n * train_ratio)))
     return slice(0, cut), slice(cut, n)
+
+
+def chronological_three_way_split(
+    n: int,
+    train_ratio: float = 0.6,
+    validation_ratio: float = 0.2,
+) -> tuple[slice, slice, slice]:
+    """Chronological discovery / selection / untouched holdout split."""
+    if n < 3:
+        return slice(0, n), slice(n, n), slice(n, n)
+    train_cut = max(1, min(n - 2, int(n * train_ratio)))
+    validation_cut = max(train_cut + 1, min(n - 1, int(n * (train_ratio + validation_ratio))))
+    return slice(0, train_cut), slice(train_cut, validation_cut), slice(validation_cut, n)
 
 
 def slice_series(values: Sequence[float | None], part: slice) -> list[float | None]:

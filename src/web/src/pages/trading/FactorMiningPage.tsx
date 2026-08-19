@@ -1,5 +1,24 @@
-import { ExperimentOutlined, PlayCircleOutlined, SendOutlined } from "@ant-design/icons";
-import { Alert, Button, Checkbox, InputNumber, Progress, Select, Space, Table, message } from "antd";
+import {
+  BookOutlined,
+  DatabaseOutlined,
+  ExperimentOutlined,
+  FundProjectionScreenOutlined,
+  PlayCircleOutlined,
+  SafetyCertificateOutlined,
+  SendOutlined,
+} from "@ant-design/icons";
+import {
+  Alert,
+  Button,
+  Checkbox,
+  InputNumber,
+  Select,
+  Space,
+  Table,
+  Tabs,
+  Tag,
+  message,
+} from "antd";
 import { useCallback, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -7,46 +26,92 @@ import { fetchFactorMine, runMinedFactorBacktest } from "../../api";
 import { saveFactorHandoff } from "../../factorHandoff";
 import { MonoNumber } from "../../quant-atelier";
 import type { FactorMiningBranch, FactorMiningPayload, MinedFactorBacktestPayload } from "../../types";
-import {
-  MetricTile,
-  QuantGlowCard,
-  SectionHeader,
-  StatusPill,
-  TradingPageShell,
-} from "./TradingPageShell";
+import { MetricTile, QuantGlowCard, SectionHeader, StatusPill, TradingPageShell } from "./TradingPageShell";
 import "./trading.css";
+import "./factor-research.css";
 
 const SYMBOL_OPTIONS = [
-  { label: "WEB3-DEMO/USDT · 教学样本（固定至 2026-02-20）", value: "WEB3-DEMO/USDT" },
+  { label: "WEB3-DEMO/USDT · 固定教学样本", value: "WEB3-DEMO/USDT" },
   { label: "BTC-USDT · 离线快照 / 可拉最新", value: "BTC-USDT" },
 ];
 
-const LIMIT_OPTIONS = [
-  { label: "60 根", value: 60 },
-  { label: "120 根", value: 120 },
-  { label: "300 根", value: 300 },
+const METHOD_LABELS: Record<FactorMiningBranch["method"], string> = {
+  gp: "GP 符号搜索",
+  ml: "ML 线性组合",
+  template: "经济直觉模板",
+  llm: "LLM 假设提案",
+};
+
+const STATUS_META = {
+  research_ready: { label: "可进入复核", tone: "profit" as const },
+  watch: { label: "观察", tone: "ai" as const },
+  reject: { label: "拒绝", tone: "loss" as const },
+};
+
+const PAPERS = [
+  {
+    tag: "Crypto factors",
+    title: "Common Risk Factors in Cryptocurrency",
+    authors: "Liu, Tsyvinski & Wu · Journal of Finance, 2022",
+    method: "把市场、规模、动量作为加密资产横截面基准；本页据此明确区分“单币时序”与“多币横截面”。",
+    href: "https://www.nber.org/papers/w25882",
+  },
+  {
+    tag: "Multiple testing",
+    title: "… and the Cross-Section of Expected Returns",
+    authors: "Harvey, Liu & Zhu · Review of Financial Studies, 2016",
+    method: "候选越多，普通 p-value 越不可信；本页记录实验预算并显示 Bonferroni 调整值。",
+    href: "https://www.nber.org/papers/w20592",
+  },
+  {
+    tag: "Selection bias",
+    title: "The Deflated Sharpe Ratio",
+    authors: "Bailey & López de Prado · Journal of Portfolio Management, 2014",
+    method: "提醒研究者把非正态收益与多次试验纳入绩效解释；本页不把单次高 IC 当上线证明。",
+    href: "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2460551",
+  },
+  {
+    tag: "Machine learning",
+    title: "Empirical Asset Pricing via Machine Learning",
+    authors: "Gu, Kelly & Xiu · Review of Financial Studies, 2020",
+    method: "强调非线性、交互项与严格样本外比较；特征库按动量、流动性、波动与结构分组。",
+    href: "https://www.nber.org/papers/w25398",
+  },
+  {
+    tag: "Factor redundancy",
+    title: "Which Factors?",
+    authors: "Hou, Mo, Xue & Zhang · Review of Finance, 2019",
+    method: "大量因子可能被少数基准吸收；候选入库前仍需做相关性、增量解释力与 spanning 检验。",
+    href: "https://www.nber.org/papers/w20682",
+  },
+  {
+    tag: "Backtest overfit",
+    title: "Backtest Overfitting in Financial Markets",
+    authors: "Bailey et al. · 2015",
+    method: "反复查看留出集会把它变成验证集；本页采用 60/20/20，并把最终留出标为一次性审计。",
+    href: "https://escholarship.org/uc/item/4hn4t174",
+  },
 ];
 
-const METHOD_LABELS: Record<FactorMiningBranch["method"], string> = {
-  gp: "GP 遗传规划",
-  ml: "ML 线性筛选",
-  template: "模板 Alpha",
-  llm: "LLM 提案",
-};
+function pct(value: number | undefined, digits = 2) {
+  return `${((value ?? 0) * 100).toFixed(digits)}%`;
+}
 
 export default function FactorMiningPage() {
   const navigate = useNavigate();
   const [symbol, setSymbol] = useState("BTC-USDT");
-  const [barLimit, setBarLimit] = useState(120);
+  const [barLimit, setBarLimit] = useState(300);
   const [refreshLive, setRefreshLive] = useState(false);
-  const [stopLoss, setStopLoss] = useState(3);
-  const [takeProfit, setTakeProfit] = useState(5);
-  const [trailingStop, setTrailingStop] = useState(0);
-  const [maxHoldBars, setMaxHoldBars] = useState(0);
   const [mineHorizon, setMineHorizon] = useState(1);
   const [mineMode, setMineMode] = useState<"gp" | "ml" | "template" | "llm" | "both" | "all">("all");
   const [mineTarget, setMineTarget] = useState<"return" | "risk">("return");
   const [mineRiskKind, setMineRiskKind] = useState<"abs_ret" | "realized_vol">("abs_ret");
+  const [costBps, setCostBps] = useState(8);
+  const [validationFolds, setValidationFolds] = useState(4);
+  const [stopLoss, setStopLoss] = useState(3);
+  const [takeProfit, setTakeProfit] = useState(5);
+  const [trailingStop, setTrailingStop] = useState(0);
+  const [maxHoldBars, setMaxHoldBars] = useState(0);
   const [factorMine, setFactorMine] = useState<FactorMiningPayload | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<FactorMiningBranch["method"] | null>(null);
   const [resultFingerprint, setResultFingerprint] = useState<string | null>(null);
@@ -54,32 +119,24 @@ export default function FactorMiningPage() {
   const [factorError, setFactorError] = useState<string | null>(null);
   const [backtestLoading, setBacktestLoading] = useState(false);
   const [backtestResult, setBacktestResult] = useState<MinedFactorBacktestPayload | null>(null);
-  const [runFeedback, setRunFeedback] = useState<{
-    type: "success" | "info" | "warning" | "error";
-    message: string;
-  } | null>(null);
 
-  const refreshDisabled = symbol === "WEB3-DEMO/USDT" || factorLoading || backtestLoading;
-  const currentMiningFingerprint = useMemo(
-    () =>
-      JSON.stringify({
-        symbol,
-        barLimit,
-        refreshLive: refreshLive && symbol !== "WEB3-DEMO/USDT",
-        mineHorizon,
-        mineMode,
-        mineTarget,
-        mineRiskKind: mineTarget === "risk" ? mineRiskKind : null,
-      }),
-    [barLimit, mineHorizon, mineMode, mineRiskKind, mineTarget, refreshLive, symbol],
+  const fingerprint = useMemo(
+    () => JSON.stringify({ symbol, barLimit, refreshLive, mineHorizon, mineMode, mineTarget, mineRiskKind, costBps, validationFolds }),
+    [barLimit, costBps, mineHorizon, mineMode, mineRiskKind, mineTarget, refreshLive, symbol, validationFolds],
   );
-  const resultIsStale = Boolean(factorMine && resultFingerprint !== currentMiningFingerprint);
+  const resultIsStale = Boolean(factorMine && fingerprint !== resultFingerprint);
+  const leaderMethod = factorMine?.leader?.method ?? null;
+  const selectedBranch = selectedMethod ? factorMine?.[selectedMethod] : undefined;
+  const isLeaderSelected = Boolean(selectedMethod && selectedMethod === leaderMethod);
+
+  const hypothesis = mineTarget === "risk"
+    ? `量价、波动与价格结构能否排序未来 ${mineHorizon} bar 的${mineRiskKind === "abs_ret" ? "绝对收益" : "实现波动"}？`
+    : `动量、反转、流动性与波动状态能否排序未来 ${mineHorizon} bar 收益？`;
 
   const runFactorMine = useCallback(async () => {
     setFactorLoading(true);
     setFactorError(null);
     setBacktestResult(null);
-    setRunFeedback({ type: "info", message: "因子挖掘运行中：正在生成候选并执行训练/测试切分。" });
     try {
       const payload = await fetchFactorMine({
         mode: mineMode,
@@ -91,40 +148,28 @@ export default function FactorMiningPage() {
         gpGenerations: 10,
         gpPopulation: 20,
         refresh: refreshLive && symbol !== "WEB3-DEMO/USDT",
+        costBps,
+        validationFolds,
       });
       setFactorMine(payload);
       setSelectedMethod(payload.leader?.method ?? null);
-      setResultFingerprint(currentMiningFingerprint);
-      const metric = payload.metric_name ?? "IC";
-      setRunFeedback({
-        type: "success",
-        message: `因子挖掘完成：测试 ${metric} ${(payload.leader?.test_ic ?? 0).toFixed(3)}`,
-      });
-      message.success(
-        `${mineTarget === "risk" ? "风险" : "收益"}因子挖掘完成 · 测试 ${metric} ${(payload.leader?.test_ic ?? 0).toFixed(3)}`,
-      );
-    } catch (err) {
-      const detail = err instanceof Error ? err.message : "因子挖掘失败";
+      setResultFingerprint(fingerprint);
+      message.success(`研究完成 · 验证集选出 ${payload.leader?.method?.toUpperCase() ?? "候选"}`);
+    } catch (error) {
+      const detail = error instanceof Error ? error.message : "因子研究失败";
       setFactorError(detail);
-      setRunFeedback({ type: "error", message: `因子挖掘失败：${detail}` });
       message.error(detail);
     } finally {
       setFactorLoading(false);
     }
-  }, [barLimit, currentMiningFingerprint, mineHorizon, mineMode, mineRiskKind, mineTarget, refreshLive, symbol]);
+  }, [barLimit, costBps, fingerprint, mineHorizon, mineMode, mineRiskKind, mineTarget, refreshLive, symbol, validationFolds]);
 
-  const runMinedBacktest = useCallback(async () => {
-    const spec = selectedMethod ? factorMine?.[selectedMethod]?.backtest_spec : undefined;
-    if (!spec || resultIsStale) {
-      const detail = resultIsStale ? "配置已变化，请重新运行挖掘后再试跑" : "请先运行收益因子挖掘";
-      setRunFeedback({ type: "warning", message: detail });
-      message.warning(detail);
-      return;
-    }
+  const runQuickBacktest = useCallback(async () => {
+    const spec = selectedBranch?.backtest_spec;
+    if (!spec || resultIsStale || mineTarget === "risk") return;
     setBacktestLoading(true);
-    setRunFeedback({ type: "info", message: "领先因子回测运行中：正在送入滚动回测引擎。" });
     try {
-      const payload = await runMinedFactorBacktest({
+      const result = await runMinedFactorBacktest({
         backtestSpec: spec,
         symbol,
         limit: barLimit,
@@ -134,35 +179,18 @@ export default function FactorMiningPage() {
         maxHoldBars,
         refresh: refreshLive && symbol !== "WEB3-DEMO/USDT",
       });
-      setBacktestResult(payload);
-      setRunFeedback({
-        type: "success",
-        message: `挖掘因子回测完成：收益 ${payload.total_return_pct.toFixed(2)}% · 交易 ${payload.total_trades} 笔`,
-      });
-      message.success(`挖掘因子回测：${payload.total_return_pct.toFixed(2)}%`);
-    } catch (err) {
-      const detail = err instanceof Error ? err.message : "挖掘因子回测失败";
-      setRunFeedback({ type: "error", message: detail });
-      message.error(detail);
+      setBacktestResult(result);
+      message.success(`快速试跑完成 · ${result.total_return_pct.toFixed(2)}%`);
+    } catch (error) {
+      message.error(error instanceof Error ? error.message : "快速试跑失败");
     } finally {
       setBacktestLoading(false);
     }
-  }, [barLimit, factorMine, maxHoldBars, refreshLive, resultIsStale, selectedMethod, stopLoss, symbol, takeProfit, trailingStop]);
+  }, [barLimit, maxHoldBars, mineTarget, refreshLive, resultIsStale, selectedBranch, stopLoss, symbol, takeProfit, trailingStop]);
 
   const sendToBacktests = useCallback(() => {
-    const selectedBranch = selectedMethod ? factorMine?.[selectedMethod] : undefined;
     const spec = selectedBranch?.backtest_spec;
-    if (!spec || mineTarget === "risk" || resultIsStale) {
-      const detail =
-        resultIsStale
-          ? "配置已变化，请重新运行挖掘后再交接"
-          : mineTarget === "risk"
-            ? "风险因子仅做仓位缩放，不能送入方向性回测"
-            : "请先运行收益因子挖掘";
-      setRunFeedback({ type: "warning", message: detail });
-      message.warning(detail);
-      return;
-    }
+    if (!spec || resultIsStale || mineTarget === "risk") return;
     saveFactorHandoff({
       backtestSpec: spec,
       symbol,
@@ -175,655 +203,257 @@ export default function FactorMiningPage() {
       testIc: selectedBranch?.test?.ic_mean,
       method: selectedMethod ?? undefined,
     });
-    message.success("已交接领先因子，正在打开策略回测台");
     navigate("/backtests?from=factor-mining");
-  }, [
-    barLimit,
-    factorMine,
-    maxHoldBars,
-    mineTarget,
-    navigate,
-    resultIsStale,
-    selectedMethod,
-    stopLoss,
-    symbol,
-    takeProfit,
-    trailingStop,
-  ]);
+  }, [barLimit, maxHoldBars, mineTarget, navigate, resultIsStale, selectedBranch, selectedMethod, stopLoss, symbol, takeProfit, trailingStop]);
 
-  const leaderBranch = useMemo(() => {
-    const method = factorMine?.leader?.method;
-    return method ? factorMine?.[method] : undefined;
-  }, [factorMine]);
+  const registryRows = factorMine?.candidate_registry ?? [];
+  const quantiles = selectedBranch?.test?.quantile_returns ?? [];
+  const maxQuantile = Math.max(...quantiles.map((value) => Math.abs(value)), 0.0001);
+  const gateMeta = factorMine?.research_gate ? STATUS_META[factorMine.research_gate.verdict] : null;
 
-  const selectedBranch = useMemo(
-    () => (selectedMethod ? factorMine?.[selectedMethod] : leaderBranch),
-    [factorMine, leaderBranch, selectedMethod],
+  const overview = (
+    <div className="factor-tab-stack">
+      {!factorMine ? (
+        <div className="factor-empty-blueprint">
+          <div>
+            <span>当前研究问题</span>
+            <strong>{hypothesis}</strong>
+            <p>先写清经济机制，再生成候选。没有机制说明的高 IC 只进入“观察”，不会自动成为可交易因子。</p>
+          </div>
+          <ol>
+            <li><b>01</b><span>定义标签</span><small>收益 / 风险、持有期</small></li>
+            <li><b>02</b><span>冻结数据契约</span><small>时点可得、无未来信息</small></li>
+            <li><b>03</b><span>训练段发现</span><small>模板、GP、ML、LLM</small></li>
+            <li><b>04</b><span>验证段选优</span><small>不触碰最终留出</small></li>
+            <li><b>05</b><span>留出集审计</span><small>置信区间、成本、稳定性</small></li>
+            <li><b>06</b><span>登记与复核</span><small>多标的、WFO、组合层</small></li>
+          </ol>
+        </div>
+      ) : (
+        <>
+          <div className="factor-split-contract">
+            <div className="factor-split-train" style={{ flex: factorMine.train_bars }}>
+              <b>发现集 60%</b><span>{factorMine.train_bars} bars</span><small>拟合 + 生成候选</small>
+            </div>
+            <div className="factor-split-validation" style={{ flex: factorMine.validation_bars ?? 0 }}>
+              <b>验证集 20%</b><span>{factorMine.validation_bars ?? 0} bars</span><small>只负责选冠军</small>
+            </div>
+            <div className="factor-split-test" style={{ flex: factorMine.test_bars }}>
+              <b>最终留出 20%</b><span>{factorMine.test_bars} bars</span><small>一次性报告</small>
+            </div>
+          </div>
+          <div className="trading-metric-grid factor-research-metrics">
+            <MetricTile label="验证集 IC" value={factorMine.leader?.validation_ic ?? 0} precision={3} />
+            <MetricTile label="最终留出 IC" value={factorMine.leader?.test_ic ?? 0} precision={3} />
+            <MetricTile label="调整后 p" value={factorMine.experiment_audit?.adjusted_best_validation_p ?? 1} precision={3} />
+            <MetricTile label="估算试验数" value={factorMine.experiment_audit?.estimated_trials ?? 0} kind="qty" />
+            <MetricTile label="稳定时间片" value={pct(factorMine.stability_report?.positive_fold_rate)} />
+          </div>
+          <section className="factor-registry-section">
+            <SectionHeader title="候选登记簿" description="按验证集排序，最终留出 IC 不参与冠军选择；点击一行切换诊断与试跑对象。" />
+            <Table
+              className="trading-ant-table"
+              size="small"
+              pagination={false}
+              rowKey="method"
+              scroll={{ x: 980 }}
+              rowClassName={(row) => row.method === selectedMethod ? "factor-selected-row" : ""}
+              onRow={(row) => ({ onClick: () => { setSelectedMethod(row.method); setBacktestResult(null); } })}
+              dataSource={registryRows}
+              columns={[
+                { title: "方法", dataIndex: "method", width: 130, render: (value: FactorMiningBranch["method"]) => <strong>{METHOD_LABELS[value]}</strong> },
+                { title: "候选表达式", dataIndex: "label", width: 250, ellipsis: true, render: (value: string) => <code title={value}>{value}</code> },
+                { title: "训练 IC", dataIndex: "train_ic", width: 100, render: (value: number) => <MonoNumber value={value} precision={3} /> },
+                { title: "验证 IC", dataIndex: "validation_ic", width: 100, render: (value: number) => <MonoNumber value={value} precision={3} /> },
+                { title: "最终留出 IC", dataIndex: "holdout_ic", width: 118, render: (value: number) => <MonoNumber value={value} precision={3} /> },
+                { title: "调整 p", dataIndex: "adjusted_p", width: 92, render: (value: number) => <MonoNumber value={value} precision={3} /> },
+                { title: "成本后 spread", dataIndex: "net_spread", width: 126, render: (value: number) => <MonoNumber value={value * 100} kind="pct" precision={2} /> },
+                { title: "研究状态", dataIndex: "status", width: 112, render: (value: keyof typeof STATUS_META) => <StatusPill tone={STATUS_META[value].tone}>{STATUS_META[value].label}</StatusPill> },
+              ]}
+            />
+          </section>
+          {(factorMine.warnings ?? []).length > 0 ? (
+            <Alert type="warning" showIcon message="解释边界" description={<ul className="factor-warning-list">{factorMine.warnings?.map((item) => <li key={item}>{item}</li>)}</ul>} />
+          ) : null}
+        </>
+      )}
+    </div>
   );
 
-  const quantileRows = useMemo(() => {
-    const quantiles = selectedBranch?.test?.quantile_returns ?? [];
-    const maxAbs = Math.max(...quantiles.map((value) => Math.abs(value)), 0.0001);
-    return quantiles.map((value, index) => ({
-      bucket: `Q${index + 1}`,
-      return: value,
-      magnitude: Math.round((Math.abs(value) / maxAbs) * 100),
-    }));
-  }, [selectedBranch]);
+  const validation = factorMine && selectedBranch ? (
+    <div className="factor-tab-stack">
+      <div className="factor-selected-head">
+        <div><span>当前诊断对象</span><strong>{METHOD_LABELS[selectedBranch.method]}</strong><code>{selectedBranch.expression ?? selectedBranch.formula}</code></div>
+        <StatusPill tone={isLeaderSelected ? "profit" : "neutral"}>{isLeaderSelected ? "验证集冠军" : "对照候选"}</StatusPill>
+      </div>
+      <div className="factor-validation-grid">
+        <section className="factor-diagnostic-card factor-diagnostic-wide">
+          <SectionHeader title="最终留出：IC 不确定性" description="区块 Bootstrap 保留时间依赖；置信区间跨 0 时，方向证据仍不足。" />
+          <div className="factor-ci-track">
+            <span>−1</span><div><i /><b style={{ left: `${((selectedBranch.test?.ic_confidence_low ?? 0) + 1) * 50}%`, width: `${Math.max(1, ((selectedBranch.test?.ic_confidence_high ?? 0) - (selectedBranch.test?.ic_confidence_low ?? 0)) * 50)}%` }} /><em style={{ left: `${((selectedBranch.test?.ic_mean ?? 0) + 1) * 50}%` }} /></div><span>+1</span>
+          </div>
+          <div className="factor-ci-values">
+            <span>P2.5 <b>{selectedBranch.test?.ic_confidence_low?.toFixed(3) ?? "—"}</b></span>
+            <span>IC <b>{selectedBranch.test?.ic_mean?.toFixed(3) ?? "—"}</b></span>
+            <span>P97.5 <b>{selectedBranch.test?.ic_confidence_high?.toFixed(3) ?? "—"}</b></span>
+          </div>
+        </section>
+        <section className="factor-diagnostic-card">
+          <SectionHeader title="成本与可交易性" description={`${costBps} bps / 边，按换手代理扣减`} />
+          <dl className="factor-stat-list">
+            <div><dt>毛 spread</dt><dd>{pct(Math.abs(selectedBranch.test?.quintile_spread ?? 0))}</dd></div>
+            <div><dt>成本后 spread</dt><dd>{pct(selectedBranch.test?.cost_adjusted_spread)}</dd></div>
+            <div><dt>换手 proxy</dt><dd>{pct(selectedBranch.test?.turnover_rate)}</dd></div>
+            <div><dt>分位单调性</dt><dd>{(selectedBranch.test?.quantile_monotonicity ?? 0).toFixed(2)}</dd></div>
+          </dl>
+        </section>
+        <section className="factor-diagnostic-card factor-diagnostic-wide">
+          <SectionHeader title="非重叠时间片稳定性" description={factorMine.stability_report?.note ?? ""} />
+          {isLeaderSelected ? (
+            <div className="factor-fold-chart">
+              {factorMine.stability_report?.folds.map((fold) => (
+                <div key={fold.fold}>
+                  <span>{fold.oriented_ic.toFixed(2)}</span>
+                  <i style={{ height: `${Math.max(8, Math.min(100, Math.abs(fold.oriented_ic) * 100))}%` }} className={fold.oriented_ic >= 0 ? "is-positive" : "is-negative"} />
+                  <b>W{fold.fold}</b><small>{fold.range}</small>
+                </div>
+              ))}
+            </div>
+          ) : <Alert type="info" showIcon message="稳定性报告只对验证集冠军生成" description="切回冠军候选可查看完整时间片与状态诊断。" />}
+        </section>
+        <section className="factor-diagnostic-card">
+          <SectionHeader title="波动状态切片" description="同一因子在高 / 低波动期可能完全不同" />
+          <div className="factor-regime-list">
+            {factorMine.stability_report?.regimes.map((regime) => <div key={regime.key}><span>{regime.label}<small>{regime.samples} 样本</small></span><b>IC {regime.ic.toFixed(3)}</b><em>净 spread {pct(regime.net_spread)}</em></div>)}
+          </div>
+        </section>
+      </div>
+      <section className="factor-diagnostic-card">
+        <SectionHeader title="五分位收益梯" description="理想结果应从 Q1 到 Q5 近似单调，而不只是首尾偶然拉开。" />
+        <div className="factor-quantile-ladder">
+          {quantiles.map((value, index) => <div key={index}><b>Q{index + 1}</b><span><i style={{ width: `${Math.abs(value) / maxQuantile * 100}%` }} className={value >= 0 ? "is-positive" : "is-negative"} /></span><em>{pct(value)}</em></div>)}
+        </div>
+      </section>
+      {isLeaderSelected && factorMine.research_gate && gateMeta ? (
+        <section className={`factor-research-gate factor-research-gate-${factorMine.research_gate.verdict}`}>
+          <div className="factor-gate-title"><div><span>研究闸门</span><strong>{gateMeta.label}</strong><small>{factorMine.research_gate.next_step}</small></div><StatusPill tone={gateMeta.tone}>{factorMine.research_gate.passed}/{factorMine.research_gate.total}</StatusPill></div>
+          <div className="factor-gate-matrix">{factorMine.research_gate.checks.map((check) => <div key={check.label} className={check.passed ? "is-passed" : "is-failed"}><span>{check.passed ? "PASS" : "FAIL"}</span><b>{check.label}</b><MonoNumber value={check.value} precision={3} /></div>)}</div>
+          <Alert type="info" showIcon message="通过研究闸门 ≠ 可以上线" description="当前仍是单标的时序教学检验。生产前必须完成多币种横截面、真正的滚动重拟合、容量与组合暴露约束。" />
+        </section>
+      ) : null}
+    </div>
+  ) : <Alert type="info" showIcon message="运行研究后生成验证驾驶舱" />;
 
-  const candidateRows = useMemo(() => {
-    if (!factorMine) return [];
-    return (["gp", "ml", "template", "llm"] as const)
-      .map((method) => {
-        const branch = factorMine[method];
-        if (!branch) return null;
-        const trainIc = branch.train?.ic_mean ?? 0;
-        const testIc = branch.test?.ic_mean ?? 0;
-        const gap = Math.max(0, branch.overfit_gap ?? Math.abs(trainIc) - Math.abs(testIc));
-        const pValue = branch.test?.p_value ?? 1;
-        const passCount = Number(Math.abs(testIc) >= 0.1) + Number(gap <= 0.15) + Number(pValue <= 0.1);
-        return {
-          key: method,
-          method,
-          label: branch.expression ?? branch.formula ?? branch.candidates?.[0]?.expression ?? "—",
-          trainIc,
-          testIc,
-          gap,
-          ir: branch.test?.ir ?? 0,
-          pValue,
-          passCount,
-          verdict: passCount === 3 ? "通过" : passCount === 2 ? "观察" : "拒绝",
-        };
-      })
-      .filter((row): row is NonNullable<typeof row> => row !== null)
-      .sort((a, b) => Math.abs(b.testIc) - Math.abs(a.testIc));
-  }, [factorMine]);
+  const library = (
+    <div className="factor-tab-stack">
+      <Alert type="info" showIcon message="特征不是越多越好" description="每个特征必须对应可解释机制、可用时点与预期失效条件；单变量筛选仅在发现集运行。" />
+      <div className="factor-library-grid">
+        {(factorMine?.feature_taxonomy ?? [
+          { key: "momentum", label: "动量", thesis: "价格延续与加速度", features: ["ret_5", "ret_20", "macd_hist"] },
+          { key: "reversal", label: "反转", thesis: "过度反应与影线拒绝", features: ["ret_5_reversal", "rsi_centered"] },
+          { key: "liquidity", label: "量价 / 流动性", thesis: "成交确认与压力", features: ["volume_z20", "dollar_volume_z20"] },
+          { key: "volatility", label: "波动率", thesis: "风险状态与聚集", features: ["atr_z20", "ret_vol_20"] },
+        ]).map((group) => (
+          <section key={group.key} className="factor-library-card"><div><span>{group.label}</span><b>{group.features.length} 项</b></div><p>{group.thesis}</p><div>{group.features.slice(0, 10).map((feature) => <Tag key={feature}>{feature}</Tag>)}{group.features.length > 10 ? <Tag>+{group.features.length - 10}</Tag> : null}</div></section>
+        ))}
+      </div>
+      {factorMine?.baseline_univariate?.length ? (
+        <section className="factor-diagnostic-card">
+          <SectionHeader title="发现集单变量初筛" description="只用于生成假设，不得把这里的高 IC 当作样本外证据。" />
+          <Table className="trading-ant-table" size="small" pagination={false} rowKey="feature" dataSource={factorMine.baseline_univariate} columns={[
+            { title: "特征", dataIndex: "feature", render: (value: string) => <code>{value}</code> },
+            { title: "IC", dataIndex: "ic_mean", render: (value: number) => <MonoNumber value={value} precision={3} /> },
+            { title: "IR", dataIndex: "ir", render: (value: number) => <MonoNumber value={value} precision={2} /> },
+            { title: "方向命中", dataIndex: "hit_rate", render: (value: number) => pct(value) },
+          ]} />
+        </section>
+      ) : null}
+    </div>
+  );
 
-  const leaderChecks = useMemo(() => {
-    if (!factorMine || !selectedBranch) return [];
-    const testIc = selectedBranch.test?.ic_mean ?? 0;
-    const trainIc = selectedBranch.train?.ic_mean ?? 0;
-    const gap = Math.max(0, selectedBranch.overfit_gap ?? Math.abs(trainIc) - Math.abs(testIc));
-    return [
-      { label: `样本外 |${factorMine.metric_name ?? "IC"}| ≥ 0.10`, passed: Math.abs(testIc) >= 0.1, value: Math.abs(testIc) },
-      { label: "训练/测试衰减 ≤ 0.15", passed: gap <= 0.15, value: gap },
-      { label: "显著性 p-value ≤ 0.10", passed: (selectedBranch.test?.p_value ?? 1) <= 0.1, value: selectedBranch.test?.p_value ?? 1 },
-    ];
-  }, [factorMine, selectedBranch]);
-  const leaderPassCount = leaderChecks.filter((item) => item.passed).length;
+  const evidence = (
+    <div className="factor-tab-stack">
+      <div className="factor-paper-intro"><BookOutlined /><div><strong>论文不是装饰：每篇对应一个研究控制</strong><p>优先采用原始论文或工作论文页面。这里展示“论文结论 → 本产品实现 → 尚未覆盖”的映射。</p></div></div>
+      <div className="factor-paper-grid">{PAPERS.map((paper) => <a key={paper.title} href={paper.href} target="_blank" rel="noreferrer" className="factor-paper-card"><span>{paper.tag}</span><strong>{paper.title}</strong><small>{paper.authors}</small><p>{paper.method}</p><em>查看原文 ↗</em></a>)}</div>
+      <div className="factor-boundary-map">
+        <section><b>本页已实现</b><p>时点安全特征、60/20/20、验证集选优、最终留出、Bootstrap、多重检验、成本后 spread、时间片与波动状态诊断。</p></section>
+        <section><b>下一层：横截面研究</b><p>多币种同一时点排序、行业/规模/流动性中性化、Fama–MacBeth、基准因子 spanning 与增量解释力。</p></section>
+        <section><b>上线前：组合与执行</b><p>滚动重拟合、purge / embargo、容量与冲击成本、组合暴露、实时漂移和失效退出规则。</p></section>
+      </div>
+    </div>
+  );
+
+  const handoff = (
+    <div className="factor-handoff-grid">
+      <section className="factor-diagnostic-card">
+        <SectionHeader title="快速策略化试跑" description="这里只检查信号接线是否合理；正式证据应在策略回测台完成 WFO、成本压力与对照实验。" />
+        <div className="factor-handoff-form">
+          <label><span>止损 %</span><InputNumber min={0.5} max={20} step={0.5} value={stopLoss} onChange={(value) => setStopLoss(Number(value ?? 3))} /></label>
+          <label><span>止盈 %</span><InputNumber min={0.5} max={50} step={0.5} value={takeProfit} onChange={(value) => setTakeProfit(Number(value ?? 5))} /></label>
+          <label><span>移动止损 %</span><InputNumber min={0} max={20} step={0.5} value={trailingStop} onChange={(value) => setTrailingStop(Number(value ?? 0))} /></label>
+          <label><span>最长持仓</span><InputNumber min={0} max={500} value={maxHoldBars} onChange={(value) => setMaxHoldBars(Number(value ?? 0))} /></label>
+        </div>
+        <Space wrap>
+          <Button type="primary" icon={<PlayCircleOutlined />} loading={backtestLoading} disabled={!selectedBranch?.backtest_spec || mineTarget === "risk" || resultIsStale} onClick={() => void runQuickBacktest()}>快速试跑</Button>
+          <Button className="btn-gradient" icon={<SendOutlined />} disabled={!selectedBranch?.backtest_spec || mineTarget === "risk" || resultIsStale} onClick={sendToBacktests}>送入策略回测台</Button>
+        </Space>
+      </section>
+      <section className="factor-diagnostic-card">
+        <SectionHeader title="试跑结果 / 风险应用" description="收益因子用于方向信号；风险因子只用于仓位缩放预览。" />
+        {backtestResult ? <div className="trading-metric-grid factor-handoff-metrics"><MetricTile label="总收益" value={backtestResult.total_return_pct} kind="pct" /><MetricTile label="最大回撤" value={backtestResult.max_drawdown_pct} kind="pct" /><MetricTile label="Sharpe" value={backtestResult.sharpe_ratio} /><MetricTile label="交易数" value={backtestResult.total_trades} kind="qty" /></div> : factorMine?.risk_application ? <div className="factor-risk-preview"><b>平均仓位缩放 {factorMine.risk_application.mean_position_scale?.toFixed(3)}</b><p>{factorMine.risk_application.note}</p><div>{factorMine.risk_application.sample_tail?.map((row) => <span key={row.idx}>z {row.risk_z.toFixed(2)} → {row.position_scale.toFixed(2)}</span>)}</div></div> : <Alert type="info" showIcon message="选择收益候选后可快速试跑" />}
+        <p className="factor-handoff-note">完整验证请进入 <Link to="/backtest-learning">回测学堂</Link> 学习样本构建，再到策略回测台执行滚动复核；运行时约束由 <Link to="/risk">风控中心</Link> 负责。</p>
+      </section>
+    </div>
+  );
 
   return (
     <TradingPageShell
-      eyebrow="Factor Research"
-      title="因子挖掘工作台"
-      description="独立研究入口：先挖收益/风险因子，看训练测试 IC 与过拟合提示，再把领先因子送入滚动回测。"
-      actions={
-        <Space wrap>
-          <StatusPill tone={factorMine?.leader ? "profit" : "neutral"}>
-            {resultIsStale
-              ? "配置待重跑"
-              : factorMine?.leader
-                ? `${factorMine.leader.method?.toUpperCase()} 领先`
-                : "待挖掘"}
-          </StatusPill>
-          <Button
-            className="btn-gradient"
-            type="primary"
-            size="large"
-            loading={factorLoading}
-            icon={<ExperimentOutlined />}
-            onClick={() => void runFactorMine()}
-          >
-            {factorLoading ? "挖掘中" : "运行挖掘"}
-          </Button>
-        </Space>
-      }
+      eyebrow="FACTOR RESEARCH OS"
+      title="因子研究实验室"
+      description="从经济假设、时点安全特征和实验预算出发，用验证集选优、最终留出审计与成本后证据决定因子去留。"
+      actions={<Space wrap><StatusPill tone={gateMeta?.tone ?? "neutral"}>{gateMeta?.label ?? (resultIsStale ? "配置待重跑" : "研究未运行")}</StatusPill><Button className="btn-gradient" size="large" type="primary" icon={<ExperimentOutlined />} loading={factorLoading} onClick={() => void runFactorMine()}>运行研究</Button></Space>}
     >
-      <section className="backtest-command-center">
-        <QuantGlowCard
-          className="backtest-config-panel"
-          title={
-            <SectionHeader
-              title="1. 配置挖掘任务"
-              description="选择标的、样本长度与挖掘模式。收益因子可继续回测；风险因子用于仓位缩放预览。"
-            />
-          }
-        >
-          <div className="backtest-form-grid">
-            <label className="backtest-field">
-              <span>标的资产</span>
-              <Select
-                value={symbol}
-                onChange={setSymbol}
-                options={SYMBOL_OPTIONS}
-                disabled={factorLoading || backtestLoading}
-              />
-            </label>
-            <label className="backtest-field">
-              <span>K 线数量</span>
-              <Select
-                value={barLimit}
-                onChange={setBarLimit}
-                options={LIMIT_OPTIONS}
-                disabled={factorLoading || backtestLoading}
-              />
-            </label>
-            <label className="backtest-field">
-              <span>因子目标</span>
-              <Select
-                value={mineTarget}
-                onChange={setMineTarget}
-                options={[
-                  { label: "收益因子", value: "return" },
-                  { label: "风险因子", value: "risk" },
-                ]}
-                disabled={factorLoading || backtestLoading}
-              />
-            </label>
-            {mineTarget === "risk" ? (
-              <label className="backtest-field">
-                <span>风险标签</span>
-                <Select
-                  value={mineRiskKind}
-                  onChange={setMineRiskKind}
-                  options={[
-                    { label: "前瞻 |收益|", value: "abs_ret" },
-                    { label: "前瞻实现波动", value: "realized_vol" },
-                  ]}
-                  disabled={factorLoading || backtestLoading}
-                />
-              </label>
-            ) : null}
-            <label className="backtest-field">
-              <span>挖掘模式</span>
-              <Select
-                value={mineMode}
-                onChange={setMineMode}
-                options={[
-                  { label: "全量", value: "all" },
-                  { label: "GP + ML", value: "both" },
-                  { label: "模板 Alpha", value: "template" },
-                  { label: "LLM 提案", value: "llm" },
-                  { label: "仅 GP", value: "gp" },
-                  { label: "仅 ML", value: "ml" },
-                ]}
-                disabled={factorLoading || backtestLoading}
-              />
-            </label>
-            <label className="backtest-field">
-              <span>前瞻 bar</span>
-              <InputNumber
-                min={1}
-                max={10}
-                value={mineHorizon}
-                onChange={(v) => setMineHorizon(Number(v ?? 1))}
-                disabled={factorLoading || backtestLoading}
-              />
-            </label>
+      <section className="factor-research-command">
+        <QuantGlowCard className="factor-hypothesis-panel" title={<SectionHeader title="研究契约" description="先冻结问题与成本假设，再允许搜索器看数据。" />}>
+          <div className="factor-hypothesis-box"><span>可证伪假设</span><strong>{hypothesis}</strong><small>失效条件：验证与留出方向相反、区间跨 0、成本后收益为负或跨状态不稳定。</small></div>
+          <div className="factor-config-grid">
+            <label><span>研究标的</span><Select value={symbol} options={SYMBOL_OPTIONS} onChange={setSymbol} /></label>
+            <label><span>样本长度</span><Select value={barLimit} options={[{ label: "120 bars", value: 120 }, { label: "300 bars", value: 300 }, { label: "600 bars", value: 600 }]} onChange={setBarLimit} /></label>
+            <label><span>预测目标</span><Select value={mineTarget} options={[{ label: "未来收益排序", value: "return" }, { label: "未来风险排序", value: "risk" }]} onChange={setMineTarget} /></label>
+            {mineTarget === "risk" ? <label><span>风险标签</span><Select value={mineRiskKind} options={[{ label: "未来绝对收益", value: "abs_ret" }, { label: "未来实现波动", value: "realized_vol" }]} onChange={setMineRiskKind} /></label> : null}
+            <label><span>预测期 bars</span><InputNumber min={1} max={10} value={mineHorizon} onChange={(value) => setMineHorizon(Number(value ?? 1))} /></label>
+            <label><span>搜索器</span><Select value={mineMode} options={[{ label: "全部方法", value: "all" }, { label: "GP + ML", value: "both" }, { label: "经济模板", value: "template" }, { label: "LLM 提案", value: "llm" }, { label: "仅 GP", value: "gp" }, { label: "仅 ML", value: "ml" }]} onChange={setMineMode} /></label>
+            <label><span>单边成本 bps</span><InputNumber min={0} max={100} value={costBps} onChange={(value) => setCostBps(Number(value ?? 8))} /></label>
+            <label><span>稳定性切片</span><InputNumber min={3} max={6} value={validationFolds} onChange={(value) => setValidationFolds(Number(value ?? 4))} /></label>
           </div>
-          <div className="backtest-config-footer">
-            <Checkbox
-              checked={refreshLive}
-              onChange={(event) => setRefreshLive(event.target.checked)}
-              disabled={refreshDisabled}
-            >
-              拉取最新 K 线
-            </Checkbox>
-            <span>
-              {symbol === "WEB3-DEMO/USDT"
-                ? "教学样本固定，不支持实时刷新"
-                : "可使用快照或刷新最新行情"}
-            </span>
-            <Button
-              className="btn-gradient"
-              type="primary"
-              loading={factorLoading}
-              icon={<ExperimentOutlined />}
-              onClick={() => void runFactorMine()}
-            >
-              运行挖掘
-            </Button>
-          </div>
-          {runFeedback ? (
-            <Alert type={runFeedback.type} showIcon message={runFeedback.message} style={{ marginTop: 12 }} />
-          ) : null}
-          {resultIsStale ? (
-            <Alert
-              type="warning"
-              showIcon
-              message="挖掘配置已变化"
-              description="当前结果仍保留用于对照，但试跑与交接已暂停；重新运行后会按新配置刷新。"
-              style={{ marginTop: 12 }}
-            />
-          ) : null}
+          <div className="factor-config-footer"><Checkbox checked={refreshLive} disabled={symbol === "WEB3-DEMO/USDT"} onChange={(event) => setRefreshLive(event.target.checked)}>刷新最新 K 线</Checkbox><span>训练段冻结归一化 · 分段边界 purge {mineHorizon} bars</span></div>
+          {factorError ? <Alert type="error" showIcon message={factorError} /> : null}
+          {resultIsStale ? <Alert type="warning" showIcon message="研究契约已变化" description="当前结果保留供对照，但试跑与交接已锁定；请按新契约重跑。" /> : null}
         </QuantGlowCard>
-
-        <QuantGlowCard
-          className="backtest-summary-panel"
-          title={
-            <SectionHeader
-              title="2. 研究闭环"
-              description="本页先做统计验证与一次试跑；对照、WFO、稳健性审计交给策略回测台。"
-            />
-          }
-        >
-          <div className="backtest-summary-stack">
-            <div className="factor-trial-settings">
-              <div className="factor-trial-heading">
-                <strong>试跑风控参数</strong>
-                <span>仅影响领先因子的快速回测，不参与因子挖掘。</span>
-              </div>
-              <div className="backtest-form-grid factor-trial-grid">
-                <label className="backtest-field">
-                  <span>止损 %</span>
-                  <InputNumber
-                    min={0.5}
-                    max={20}
-                    step={0.5}
-                    value={stopLoss}
-                    onChange={(v) => setStopLoss(Number(v ?? 3))}
-                    disabled={factorLoading || backtestLoading}
-                  />
-                </label>
-                <label className="backtest-field">
-                  <span>止盈 %</span>
-                  <InputNumber
-                    min={0.5}
-                    max={50}
-                    step={0.5}
-                    value={takeProfit}
-                    onChange={(v) => setTakeProfit(Number(v ?? 5))}
-                    disabled={factorLoading || backtestLoading}
-                  />
-                </label>
-                <label className="backtest-field">
-                  <span>移动止损 %</span>
-                  <InputNumber
-                    min={0}
-                    max={20}
-                    step={0.5}
-                    value={trailingStop}
-                    onChange={(v) => setTrailingStop(Number(v ?? 0))}
-                    disabled={factorLoading || backtestLoading}
-                  />
-                </label>
-                <label className="backtest-field">
-                  <span>最长持仓</span>
-                  <InputNumber
-                    min={0}
-                    max={500}
-                    step={1}
-                    value={maxHoldBars}
-                    onChange={(v) => setMaxHoldBars(Number(v ?? 0))}
-                    disabled={factorLoading || backtestLoading}
-                  />
-                </label>
-              </div>
+        <div className="factor-research-side">
+          <QuantGlowCard title={<SectionHeader title="证据链" description="每一步回答一个不同的问题。" />}>
+            <div className="factor-evidence-chain">
+              <div><DatabaseOutlined /><span><b>数据契约</b><small>标签、时点、缺失与样本边界</small></span></div>
+              <div><ExperimentOutlined /><span><b>发现与选优分离</b><small>60% 发现 · 20% 验证</small></span></div>
+              <div><FundProjectionScreenOutlined /><span><b>最终留出审计</b><small>20% 仅报告一次</small></span></div>
+              <div><SafetyCertificateOutlined /><span><b>研究闸门</b><small>不确定性、成本、稳定性、多重检验</small></span></div>
             </div>
-            <div className="factor-backtest-action">
-              <Button
-                className="factor-backtest-button"
-                type="primary"
-                size="large"
-                loading={backtestLoading}
-                disabled={mineTarget === "risk" || resultIsStale || !selectedBranch?.backtest_spec}
-                icon={<PlayCircleOutlined />}
-                onClick={() => void runMinedBacktest()}
-              >
-                用领先因子试跑
-              </Button>
-              <span className={selectedBranch?.backtest_spec ? "factor-action-ready" : ""}>
-                {resultIsStale
-                  ? "配置变化，需重新挖掘"
-                  : mineTarget === "risk"
-                  ? "风险因子仅做仓位缩放"
-                  : selectedBranch?.backtest_spec
-                    ? `${selectedMethod?.toUpperCase() ?? "当前"} 候选已就绪`
-                    : "先运行收益因子挖掘"}
-              </span>
-            </div>
-            {backtestResult ? (
-              <>
-                <div className="backtest-summary-metrics">
-                  <MetricTile
-                    label="总收益"
-                    value={backtestResult.total_return_pct}
-                    kind="pct"
-                    tone={backtestResult.total_return_pct >= 0 ? "profit" : "loss"}
-                    showSign
-                  />
-                  <MetricTile
-                    label="最大回撤"
-                    value={-backtestResult.max_drawdown_pct}
-                    kind="pct"
-                    tone="loss"
-                    showSign
-                  />
-                  <MetricTile label="Sharpe" value={backtestResult.sharpe_ratio} tone="neutral" precision={2} />
-                  <MetricTile label="交易数" value={backtestResult.total_trades} kind="qty" tone="neutral" />
-                </div>
-                <Alert
-                  type={backtestResult.total_return_pct > 0 && backtestResult.sharpe_ratio > 0 ? "success" : "warning"}
-                  showIcon
-                  message={
-                    backtestResult.total_return_pct > 0 && backtestResult.sharpe_ratio > 0
-                      ? "快速试跑通过，可继续做滚动复核"
-                      : "快速试跑未形成正向收益"
-                  }
-                  description={
-                    backtestResult.total_return_pct > 0 && backtestResult.sharpe_ratio > 0
-                      ? "统计关系已转化为正向策略表现；仍需在策略回测台完成 WFO、成本和稳健性检查。"
-                      : "样本外 IC 不等于可交易收益。可切换其他候选重试，或送入策略回测台检查方向、成本与窗口稳定性。"
-                  }
-                />
-              </>
-            ) : (
-              <Alert
-                type="info"
-                showIcon
-                message="试跑结果会显示在这里"
-                description="完成收益因子挖掘后可先试跑；需要窗口/对照/稳健性时再送入策略回测。"
-              />
-            )}
-            <Space wrap>
-              <Button
-                className="btn-gradient"
-                type="primary"
-                icon={<SendOutlined />}
-                disabled={mineTarget === "risk" || resultIsStale || !selectedBranch?.backtest_spec}
-                onClick={sendToBacktests}
-              >
-                送入策略回测
-              </Button>
-              <Button type="default" onClick={() => navigate("/backtests")}>
-                打开策略回测台
-              </Button>
-            </Space>
-            <div className="backtest-disclaimer">
-              因子挖掘证明预测关系，不替代策略回测。风控边界见 <Link to="/risk">风控中心</Link>。
-            </div>
-          </div>
-        </QuantGlowCard>
+          </QuantGlowCard>
+          <div className="factor-scope-warning"><b>能力边界</b><p>当前引擎是<strong>单标的时序因子实验室</strong>，不是多币种横截面定价模型。研究闸门通过也不能直接上线。</p></div>
+        </div>
       </section>
 
-      <QuantGlowCard
-        id="factor-research"
-        className="trading-span-12 factor-mining-card"
-        style={{ marginBottom: 16 }}
-        title={
-          <SectionHeader
-            title="挖掘结果"
-            description="收益因子（IC→方向回测）· 风险因子（RIC→仓位缩放预览）· 训练/测试切分与过拟合提示"
-          />
-        }
-        badge={
-          factorMine?.leader ? (
-            <StatusPill tone={Math.abs(factorMine.leader.test_ic ?? 0) >= 0.2 ? "profit" : "neutral"}>
-              {factorMine.leader.method?.toUpperCase()}
-            </StatusPill>
-          ) : undefined
-        }
-      >
-        {factorLoading && (
-          <Alert
-            type="info"
-            showIcon
-            message="因子挖掘正在运行"
-            description="完成后本区域会自动刷新。"
-            style={{ marginBottom: 12 }}
-          />
-        )}
-        {factorError && <Alert type="error" message={factorError} showIcon style={{ marginBottom: 12 }} />}
-        {factorMine ? (
-          <>
-            <div className="trading-metric-grid factor-metric-grid" style={{ marginBottom: 12 }}>
-              <MetricTile
-                label="当前候选"
-                value={(selectedBranch?.expression ?? selectedBranch?.formula ?? factorMine.leader?.label)?.slice(0, 24) ?? "—"}
-                subtle={`${selectedMethod?.toUpperCase() ?? factorMine.leader?.method?.toUpperCase() ?? "—"} · 测试 ${factorMine.metric_name ?? "IC"} ${(selectedBranch?.test?.ic_mean ?? factorMine.leader?.test_ic ?? 0).toFixed(3)}`}
-              />
-              <MetricTile
-                label="候选方法"
-                value={candidateRows.length}
-                kind="qty"
-                subtle={candidateRows.map((row) => row.method.toUpperCase()).join(" · ")}
-              />
-              <MetricTile label="训练 bar" value={factorMine.train_bars} kind="qty" tone="neutral" />
-              <MetricTile label="测试 bar" value={factorMine.test_bars} kind="qty" tone="neutral" />
-              <MetricTile label="特征数量" value={factorMine.feature_count} kind="qty" tone="neutral" />
-            </div>
-            {leaderChecks.length ? (
-              <div className={`factor-gate factor-gate-${leaderPassCount === 3 ? "pass" : leaderPassCount === 2 ? "watch" : "fail"}`}>
-                <div className="factor-gate-summary">
-                  <div>
-                    <span>稳健性门槛</span>
-                    <strong>
-                      {leaderPassCount === 3
-                        ? "建议进入滚动复核"
-                        : leaderPassCount === 2
-                          ? "保留观察，暂缓交接"
-                          : "未通过样本外筛选"}
-                    </strong>
-                  </div>
-                  <StatusPill tone={leaderPassCount === 3 ? "profit" : leaderPassCount === 2 ? "ai" : "loss"}>
-                    {leaderPassCount}/3 通过
-                  </StatusPill>
-                </div>
-                <div className="factor-gate-checks">
-                  {leaderChecks.map((check) => (
-                    <div key={check.label} className={check.passed ? "is-passed" : "is-failed"}>
-                      <span>{check.passed ? "通过" : "未通过"}</span>
-                      <strong>{check.label}</strong>
-                      <MonoNumber value={check.value} precision={3} tone={check.passed ? "profit" : "loss"} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-            {factorMine.mining_target === "risk" && factorMine.risk_application?.sample_tail?.length ? (
-              <Alert
-                type="info"
-                showIcon
-                style={{ marginBottom: 10 }}
-                message="仓位缩放预览（教学演示）"
-                description={
-                  <>
-                    均值 scale {factorMine.risk_application.mean_position_scale?.toFixed(3) ?? "—"} · 最近{" "}
-                    {factorMine.risk_application.sample_tail.length} 根：
-                    {factorMine.risk_application.sample_tail.map((row) => (
-                      <span key={row.idx} style={{ marginLeft: 8 }}>
-                        z={row.risk_z.toFixed(2)}→{row.position_scale.toFixed(2)}
-                      </span>
-                    ))}
-                    <div style={{ marginTop: 6, fontSize: 12, opacity: 0.85 }}>
-                      {factorMine.risk_application.note}
-                    </div>
-                  </>
-                }
-              />
-            ) : null}
-            {candidateRows.length ? (
-              <div className="factor-candidate-section">
-                <SectionHeader
-                  title="候选因子对比"
-                  description="按样本外绝对 IC 排序；门槛综合强度、训练测试衰减与显著性。"
-                />
-                <Table
-                  className="trading-ant-table factor-candidate-table"
-                  pagination={false}
-                  size="small"
-                  rowKey="key"
-                  scroll={{ x: 820 }}
-                  rowSelection={{
-                    type: "radio",
-                    selectedRowKeys: selectedMethod ? [selectedMethod] : [],
-                    onChange: (keys) => {
-                      setSelectedMethod((keys[0] as FactorMiningBranch["method"] | undefined) ?? null);
-                      setBacktestResult(null);
-                    },
-                  }}
-                  dataSource={candidateRows}
-                  columns={[
-                    {
-                      title: "方法",
-                      dataIndex: "method",
-                      width: 138,
-                      render: (value: FactorMiningBranch["method"]) => (
-                        <strong>{METHOD_LABELS[value]}</strong>
-                      ),
-                    },
-                    {
-                      title: "因子表达式",
-                      dataIndex: "label",
-                      width: 260,
-                      ellipsis: true,
-                      render: (value: string) => <code title={value}>{value}</code>,
-                    },
-                    {
-                      title: `训练 ${factorMine.metric_name ?? "IC"}`,
-                      dataIndex: "trainIc",
-                      width: 110,
-                      render: (value: number) => <MonoNumber value={value} precision={3} />,
-                    },
-                    {
-                      title: `测试 ${factorMine.metric_name ?? "IC"}`,
-                      dataIndex: "testIc",
-                      width: 110,
-                      render: (value: number) => (
-                        <MonoNumber value={value} precision={3} tone={Math.abs(value) >= 0.1 ? "profit" : "loss"} />
-                      ),
-                    },
-                    {
-                      title: "IC 衰减",
-                      dataIndex: "gap",
-                      width: 100,
-                      render: (value: number) => (
-                        <MonoNumber value={value} precision={3} tone={value <= 0.15 ? "profit" : "loss"} />
-                      ),
-                    },
-                    {
-                      title: "测试 IR",
-                      dataIndex: "ir",
-                      width: 90,
-                      render: (value: number) => <MonoNumber value={value} precision={2} />,
-                    },
-                    {
-                      title: "结论",
-                      dataIndex: "verdict",
-                      width: 88,
-                      render: (value: string, row) => (
-                        <StatusPill tone={row.passCount === 3 ? "profit" : row.passCount === 2 ? "ai" : "loss"}>
-                          {value}
-                        </StatusPill>
-                      ),
-                    },
-                  ]}
-                />
-              </div>
-            ) : null}
-            {(factorMine.warnings ?? []).length ? (
-              <Alert
-                type="warning"
-                showIcon
-                message="研究边界与复核提示"
-                description={
-                  <ul className="factor-warning-list">
-                    {(factorMine.warnings ?? []).map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                }
-                style={{ marginBottom: 10 }}
-              />
-            ) : null}
-            {selectedBranch?.test ? (
-              <>
-                <div className="trading-metric-grid" style={{ marginBottom: 8 }}>
-                  <MetricTile
-                    label="五分位 spread"
-                    value={selectedBranch.test.quintile_spread ?? 0}
-                    tone="neutral"
-                    precision={4}
-                  />
-                  <MetricTile
-                    label="换手 proxy"
-                    value={selectedBranch.test.turnover_rate ?? 0}
-                    tone="neutral"
-                    precision={3}
-                  />
-                  <MetricTile
-                    label="IC 衰减"
-                    value={Math.max(0, selectedBranch.overfit_gap ?? 0)}
-                    tone="neutral"
-                    precision={4}
-                  />
-                  <MetricTile
-                    label="t-stat"
-                    value={selectedBranch.test.t_stat ?? 0}
-                    tone="neutral"
-                    precision={2}
-                  />
-                  <MetricTile
-                    label="p-value"
-                    value={selectedBranch.test.p_value ?? 1}
-                    tone="neutral"
-                    precision={3}
-                  />
-                  <MetricTile
-                    label="Rank 自相关"
-                    value={selectedBranch.test.rank_autocorr ?? 0}
-                    tone="neutral"
-                    precision={3}
-                  />
-                </div>
-                {quantileRows.length ? (
-                  <Table
-                    className="trading-ant-table"
-                    pagination={false}
-                    size="small"
-                    rowKey="bucket"
-                    dataSource={quantileRows}
-                    columns={[
-                      { title: "测试分位", dataIndex: "bucket", width: 100 },
-                      {
-                        title: "前瞻收益",
-                        dataIndex: "return",
-                        render: (value: number) => (
-                          <MonoNumber
-                            value={value * 100}
-                            kind="pct"
-                            tone={value >= 0 ? "profit" : "loss"}
-                            showSign
-                          />
-                        ),
-                      },
-                      {
-                        title: "相对强度",
-                        dataIndex: "magnitude",
-                        render: (value: number, row) => (
-                          <Progress
-                            percent={value}
-                            size="small"
-                            showInfo={false}
-                            strokeColor={row.return >= 0 ? "var(--qa-profit)" : "var(--qa-loss)"}
-                            aria-label={`${row.bucket} 相对强度 ${value}%`}
-                          />
-                        ),
-                      },
-                    ]}
-                  />
-                ) : null}
-              </>
-            ) : null}
-          </>
-        ) : (
-          <Alert
-            type="info"
-            showIcon
-            message="尚未运行挖掘"
-            description="点击右上角或配置区的「运行挖掘」。完成后可一键把领先因子送入滚动回测引擎。"
-          />
-        )}
+      <QuantGlowCard className="factor-workbench" title={<SectionHeader title="研究工作台" description="总览不重复堆指标；细节按验证、特征、论文和交接分层。" />}>
+        <Tabs
+          defaultActiveKey="overview"
+          items={[
+            { key: "overview", label: "01 研究总览", children: overview },
+            { key: "validation", label: "02 验证诊断", children: validation },
+            { key: "library", label: "03 特征库", children: library },
+            { key: "evidence", label: "04 论文方法", children: evidence },
+            { key: "handoff", label: "05 回测交接", children: handoff },
+          ]}
+        />
       </QuantGlowCard>
     </TradingPageShell>
   );

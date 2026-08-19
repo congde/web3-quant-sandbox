@@ -567,6 +567,8 @@ class Handler(BaseHTTPRequestHandler):
                 gp_population=qi("gpPopulation", 24),
                 seed=qi("seed", 42),
                 llm_model=q("llmModel", "") or None,
+                cost_bps=qf("costBps", 8.0),
+                validation_folds=qi("validationFolds", 4),
             ),
         }
         handler = routes.get(path)

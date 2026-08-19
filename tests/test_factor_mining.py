@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import pytest
-from factor_mining.evaluate import evaluate_factor, spearman
+from factor_mining.evaluate import chronological_three_way_split, evaluate_factor, spearman
 from factor_mining.expressions import eval_series, random_expr, stringify
 from factor_mining.features import build_feature_matrix
 from factor_mining.gp import GPConfig, run_gp_search
 from factor_mining.ml import run_ml_search
-from factor_mining.service import run_factor_mining, run_mined_factor_backtest
+from factor_mining.service import _pick_leader, run_factor_mining, run_mined_factor_backtest
 from factor_mining.serialize import expr_from_dict, expr_to_dict
 
 
@@ -48,6 +48,35 @@ def test_build_feature_matrix_aligns_labels() -> None:
     assert -1.0 <= metrics.rank_autocorr <= 1.0
     assert 0.0 <= metrics.p_value <= 1.0
     assert len(metrics.quantile_returns) == 5
+    assert -1.0 <= metrics.ic_confidence_low <= metrics.ic_confidence_high <= 1.0
+    assert -1.0 <= metrics.quantile_monotonicity <= 1.0
+
+
+def test_research_split_keeps_untouched_holdout() -> None:
+    train, validation, holdout = chronological_three_way_split(120)
+    assert (train.start, train.stop) == (0, 72)
+    assert (validation.start, validation.stop) == (72, 96)
+    assert (holdout.start, holdout.stop) == (96, 120)
+
+
+def test_leader_is_selected_on_validation_not_holdout() -> None:
+    gp = {
+        "method": "gp",
+        "expression": "gp",
+        "train": {"ic_mean": 0.3},
+        "validation": {"ic_mean": 0.4},
+        "test": {"ic_mean": 0.1},
+    }
+    ml = {
+        "method": "ml",
+        "formula": "ml",
+        "train": {"ic_mean": 0.3},
+        "validation": {"ic_mean": 0.2},
+        "test": {"ic_mean": 0.9},
+    }
+    leader = _pick_leader(gp, ml)
+    assert leader is not None
+    assert leader["method"] == "gp"
 
 
 def test_gp_search_returns_expression() -> None:
@@ -99,6 +128,15 @@ def test_run_factor_mining_both_modes() -> None:
     assert payload["leader"]["backtest_spec"]
     assert payload["baseline_univariate"]
     assert payload["warnings"]
+    assert payload["validation_bars"] > 0
+    assert payload["train_bars"] + payload["validation_bars"] + payload["test_bars"] == payload["sample_bars"]
+    assert payload["leader"]["validation_ic"] == payload[payload["leader"]["method"]]["validation"]["ic_mean"]
+    assert payload["research_design"]["split_policy"] == "chronological_60_20_20"
+    assert payload["research_design"]["purge_bars"] == 1
+    assert payload["experiment_audit"]["estimated_trials"] >= payload["feature_count"]
+    assert payload["candidate_registry"]
+    assert payload["research_gate"]["production_ready"] is False
+    assert payload["stability_report"]["folds"]
 
 
 def test_run_factor_mining_all_modes_adds_template_and_llm() -> None:
@@ -114,11 +152,15 @@ def test_run_factor_mining_all_modes_adds_template_and_llm() -> None:
     assert payload["ok"] is True
     assert payload["feature_count"] >= 50
     assert payload["template"]["expression"]
+    assert payload["template"]["validation"]
+    assert "validation_ic" in payload["template"]["candidates"][0]
     assert payload["llm"]["formula"]
     assert payload["llm"]["proposal_source"] in {"llm", "fallback_templates"}
     assert payload["leader"]["method"] in {"gp", "ml", "template", "llm"}
     if payload["leader"]["method"] == "llm":
         assert payload["leader"]["backtest_spec"]["factor_source"] == "llm"
+    if payload["leader"]["method"] in {"ml", "llm"}:
+        assert payload["leader"]["backtest_spec"]["normalization"]
 
 
 def test_mined_factor_backtest_runs() -> None:

@@ -216,9 +216,9 @@ function orderGroups(domain: FormulaDomain, core: FormulaGroup[], advanced: Form
   const ordered = domain === "math"
     ? [advanced[0], advanced[8], core[0], core[1], core[2], advanced[1], advanced[2], core[3], advanced[3], advanced[4], advanced[9], advanced[5], advanced[10], advanced[6], core[4], advanced[11], advanced[7]]
     : domain === "backtest"
-      ? [advanced[0], core[0], advanced[1], core[1], core[2], core[3], core[4], advanced[2]]
+      ? [advanced[0], core[0], advanced[1], core[1], core[2], core[3], core[4], advanced[2], advanced[3], advanced[4]]
       : domain === "risk"
-        ? [core[0], core[1], core[2], core[3], advanced[0], core[4], advanced[1], advanced[2]]
+        ? [core[0], core[1], core[2], core[3], advanced[0], core[4], advanced[1], advanced[2], advanced[3], advanced[4]]
         : core;
   return ordered.filter((group): group is FormulaGroup => group !== undefined);
 }

@@ -4,6 +4,7 @@ import {
   CalculatorOutlined,
   FundProjectionScreenOutlined,
   LineChartOutlined,
+  RobotOutlined,
   SafetyOutlined,
   WalletOutlined,
 } from "@ant-design/icons";
@@ -12,6 +13,7 @@ import { NavLink } from "react-router-dom";
 const COURSES = [
   { path: "/academy", label: "学堂首页", subtitle: "课程地图", icon: <BookOutlined />, end: true },
   { path: "/math-learning", label: "数学学堂", subtitle: "量化基础", icon: <CalculatorOutlined />, end: false },
+  { path: "/machine-learning", label: "机器学习", subtitle: "概率建模", icon: <RobotOutlined />, end: false },
   { path: "/kline-learning", label: "K线学堂", subtitle: "价格行为", icon: <LineChartOutlined />, end: false },
   { path: "/diagnosis-learning", label: "诊断学堂", subtitle: "证据判断", icon: <FundProjectionScreenOutlined />, end: false },
   { path: "/backtest-learning", label: "回测学堂", subtitle: "历史验证", icon: <BarChartOutlined />, end: false },

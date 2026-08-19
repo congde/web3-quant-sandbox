@@ -12,7 +12,7 @@
   border-radius: 8px;
   display: grid;
   gap: 6px;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   order: 3;
   padding: 6px;
 }
@@ -98,7 +98,7 @@
 
 @media (max-width: 980px) {
   .learning-course-nav {
-    grid-template-columns: repeat(7, minmax(116px, 1fr));
+    grid-template-columns: repeat(8, minmax(116px, 1fr));
     overflow-x: auto;
   }
 }

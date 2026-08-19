@@ -2,10 +2,12 @@ import {
   ArrowLeftOutlined,
   ArrowRightOutlined,
   BookOutlined,
+  CheckCircleFilled,
+  CloseCircleFilled,
   ExperimentOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
-import { Button, Select, Slider, Spin } from "antd";
+import { Button, Segmented, Select, Slider, Spin } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -57,19 +59,29 @@ const LESSONS = [
     description: "把主观画线转换为滚动高低点和波动标准化规则。",
   },
   {
-    title: "量价与技术指标",
-    short: "成交量、动量、波动",
-    description: "理解量比、VWAP、RSI、MACD、ATR 与布林带的输入和边界。",
+    title: "成交量与价格确认",
+    short: "量比、VWAP 与 OBV",
+    description: "区分成交数量、成交额和合约张数，用量价关系描述参与程度。",
   },
   {
-    title: "形态算法化",
+    title: "动量与震荡指标",
+    short: "RSI、随机指标与 MACD",
+    description: "理解动量指标如何由历史价格派生，以及趋势环境中的钝化边界。",
+  },
+  {
+    title: "波动率与通道",
+    short: "ATR、标准差与布林带",
+    description: "用真实波幅和滚动波动描述风险尺度，而不是直接预测涨跌方向。",
+  },
+  {
+    title: "形态算法化与检验",
     short: "条件定义而非口诀",
-    description: "把十字星、锤子和吞没形态写成明确的布尔条件。",
+    description: "把十字星、锤子和吞没形态写成明确条件，并统计条件收益。",
   },
   {
-    title: "数据质量与验证",
-    short: "从观察到证据",
-    description: "检查缺失、重复、未收盘柱和信号时序，并完成样本外验证。",
+    title: "数据质量与样本外验证",
+    short: "从观察规则到可复现证据",
+    description: "检查缺失、重复、未收盘柱和信号时序，再完成成本后样本外验证。",
   },
 ] as const;
 
@@ -87,10 +99,10 @@ const GROUP_TO_LESSON: Record<string, number> = {
   "趋势与市场结构": 3,
   "支撑阻力与突破": 4,
   "成交量与价格确认": 5,
-  "动量与震荡指标": 5,
-  "波动率与通道": 5,
-  "形态算法化与统计验证": 6,
-  "数据质量与可回测规则": 7,
+  "动量与震荡指标": 6,
+  "波动率与通道": 7,
+  "形态算法化与统计验证": 8,
+  "数据质量与可回测规则": 9,
 };
 
 const LESSON_VISUALS = [
@@ -100,8 +112,23 @@ const LESSON_VISUALS = [
   { group: "趋势与市场结构", formula: "单期收盘收益" },
   { group: "支撑阻力与突破", formula: "滚动阻力" },
   { group: "成交量与价格确认", formula: "成交量均线" },
+  { group: "动量与震荡指标", formula: "RSI" },
+  { group: "波动率与通道", formula: "真实波幅 TR" },
   { group: "形态算法化与统计验证", formula: "十字星规则" },
   { group: "数据质量与可回测规则", formula: "OHLC 合法性" },
+] as const;
+
+const QUIZZES = [
+  { question: "一根长阳线能否单独证明下一根继续上涨？", options: ["能", "不能，它只描述当前柱的 OHLC 事实", "只有日线能"], answer: 1, reason: "K 线压缩了已发生的成交，下一期方向仍需独立统计验证。" },
+  { question: "4 小时 K 线尚未收盘时使用其最高、最低和收盘值，主要风险是什么？", options: ["重绘和未来信息", "手续费上升", "成交量一定变小"], answer: 0, reason: "未收盘柱仍在变化，历史回看时固定的值在实时并不可得。" },
+  { question: "长下影线最准确的事实描述是什么？", options: ["必然反转", "价格曾下探并从低点收回一部分", "主力一定吸筹"], answer: 1, reason: "影线描述柱内价格区间，不能自动推出参与者身份或未来方向。" },
+  { question: "均线为什么天然滞后？", options: ["因为只使用历史价格", "因为颜色太少", "因为成交量太大"], answer: 0, reason: "均线是历史价格的平滑变换，只能在价格发生后更新。" },
+  { question: "计算过去 20 根阻力时为什么通常不包含当前柱？", options: ["避免当前价格与包含自身的阈值比较", "让图更漂亮", "减少成交量"], answer: 0, reason: "包含当前柱会造成定义自我引用，并可能引入不可执行时序。" },
+  { question: "不同交易所的成交量可以不做处理直接相加吗？", options: ["可以", "不可以，要统一基础币、计价额或合约张数口径", "只在牛市可以"], answer: 1, reason: "成交量单位和合约乘数可能不同，直接相加没有一致经济含义。" },
+  { question: "RSI 超过 70 是否等于立刻做空？", options: ["等于", "不等于，它描述窗口内相对上涨强度", "只在小时线等于"], answer: 1, reason: "强趋势中 RSI 可能长期处于高位，阈值本身不是完整交易规则。" },
+  { question: "ATR 上升最直接说明什么？", options: ["上涨概率增加", "近期真实波幅扩大", "成交量一定增加"], answer: 1, reason: "ATR 衡量波动尺度，不提供固定方向预测。" },
+  { question: "形态算法化后还必须补充什么？", options: ["更多形态名字", "样本数、基准、成本和样本外结果", "只看命中率"], answer: 1, reason: "数值定义只是开始，是否具有增量信息必须用完整验证链判断。" },
+  { question: "t 收盘才能确认的信号，最早应在何时模拟成交？", options: ["t 收盘前", "t+1 或之后的明确可成交时点", "任意历史最低价"], answer: 1, reason: "信号确认后才能提交订单，成交模型还要包含延迟、费用和滑点。" },
 ] as const;
 
 const KLINE_FORMULAS = KLINE_SYSTEM.groups.flatMap((group) => group.formulas.map((formula, index) => ({
@@ -206,18 +233,42 @@ function LessonText({ lesson }: { lesson: number }) {
   if (lesson === 5) {
     return (
       <div className="kline-lesson-copy">
-        <h3>指标是 K 线和成交量的派生量</h3>
+        <h3>成交量先统一单位，再讨论确认关系</h3>
         <div className="kline-concept-grid">
-          <div><strong>量比 / VWAP / OBV</strong><span>观察活跃程度、成交均价和累积量价方向。</span></div>
-          <div><strong>RSI / Stochastic</strong><span>描述相对涨跌与区间位置，强趋势中可能长期钝化。</span></div>
-          <div><strong>MACD</strong><span>快慢 EMA 的差，描述趋势动量但具有滞后。</span></div>
-          <div><strong>ATR / 布林带</strong><span>描述波动和相对位置，不负责预测方向。</span></div>
+          <div><strong>量比</strong><span>当前成交量相对历史均量，描述活跃程度。</span></div>
+          <div><strong>VWAP</strong><span>成交价格按成交量加权，不能代表所有订单都能成交。</span></div>
+          <div><strong>OBV</strong><span>按收盘涨跌方向累积成交量，是规则化摘要。</span></div>
+          <div><strong>量价确认</strong><span>必须与无条件基准比较，不能只挑成功突破。</span></div>
         </div>
         <p className="kline-note">现货基础币数量、计价币成交额、合约张数和不同交易所成交量口径不同；使用指标前必须先统一数据。</p>
       </div>
     );
   }
   if (lesson === 6) {
+    return (
+      <div className="kline-lesson-copy">
+        <h3>动量指标描述历史变化速度，不承诺反转</h3>
+        <div className="kline-concept-grid">
+          <div><strong>RSI</strong><span>比较窗口内平均上涨和平均下跌，阈值会随状态失效。</span></div>
+          <div><strong>Stochastic</strong><span>描述收盘价在近期高低区间中的相对位置。</span></div>
+          <div><strong>MACD</strong><span>快慢 EMA 的差，兼具趋势和平滑滞后。</span></div>
+          <div><strong>参数敏感性</strong><span>窗口邻域应表现连续，不能只挑一个最优点。</span></div>
+        </div>
+        <p className="kline-note">“超买、超卖”只是指标区间名称。是否具有反转或延续信息，必须按市场状态和持有期做样本外统计。</p>
+      </div>
+    );
+  }
+  if (lesson === 7) {
+    return (
+      <div className="kline-lesson-copy">
+        <h3>波动指标回答变化多大，不回答方向</h3>
+        <div className="kline-formula"><code>TR = max(H−L, |H−C₋₁|, |L−C₋₁|)</code><code>布林带 = SMA ± kσ</code></div>
+        <div className="kline-process"><span>当前波动尺度</span><b>→</b><span>止损与仓位</span><b>→</b><span>通道宽度</span><b>→</b><span>压力成本</span></div>
+        <p className="kline-note">ATR 是价格单位，跨资产比较时通常需要除以价格；布林带的 ±2σ 也不能直接解释为正态分布下固定覆盖率。</p>
+      </div>
+    );
+  }
+  if (lesson === 8) {
     return (
       <div className="kline-lesson-copy">
         <h3>形态名称必须变成数值条件</h3>
@@ -243,8 +294,21 @@ function LessonText({ lesson }: { lesson: number }) {
   );
 }
 
+function KlineCourseMap({ lesson, onChange }: { lesson: number; onChange: (index: number) => void }) {
+  return <QuantGlowCard className="kline-course-map" title={<SectionHeader title="从市场事实到可验证规则" description="10 课方法主线与 10 类公式手册分开学习，避免同一内容重复展示" />} badge={<StatusPill tone="profit">K 线主线</StatusPill>}>
+    <nav aria-label="K 线课程目录">{LESSONS.map((item, index) => <button type="button" key={item.title} className={lesson === index ? "active" : ""} aria-current={lesson === index ? "step" : undefined} onClick={() => onChange(index)}><b>{String(index + 1).padStart(2, "0")}</b><span><strong>{item.title}</strong><em>{item.short}</em></span><ArrowRightOutlined /></button>)}</nav>
+  </QuantGlowCard>;
+}
+
+function KlineQuiz({ lesson }: { lesson: number }) {
+  const [answer, setAnswer] = useState<number | null>(null);
+  const quiz = QUIZZES[lesson];
+  return <section className="kline-inline-quiz"><header><div><strong>本课理解检查</strong><span>确认价格事实、派生指标和未来判断没有混在一起</span></div><StatusPill tone="ai">1 题</StatusPill></header><strong className="kline-quiz-question">{quiz.question}</strong><div className="kline-quiz-options">{quiz.options.map((option, index) => <button type="button" key={option} className={answer === index ? (index === quiz.answer ? "correct" : "wrong") : ""} onClick={() => setAnswer(index)}><i>{String.fromCharCode(65 + index)}</i><span>{option}</span>{answer === index ? (index === quiz.answer ? <CheckCircleFilled /> : <CloseCircleFilled />) : null}</button>)}</div>{answer !== null ? <div className={`kline-quiz-feedback ${answer === quiz.answer ? "correct" : "wrong"}`}><strong>{answer === quiz.answer ? "判断正确" : "再检查一次数据边界"}</strong><span>{quiz.reason}</span></div> : null}</section>;
+}
+
 export default function KlineLearningPage() {
   const navigate = useNavigate();
+  const [viewMode, setViewMode] = useState<"course" | "handbook">("course");
   const [lesson, setLesson] = useState(0);
   const [timeframe, setTimeframe] = useState("1day");
   const [payload, setPayload] = useState<KlineAnalysisPayload | null>(null);
@@ -295,6 +359,15 @@ export default function KlineLearningPage() {
     setLesson(GROUP_TO_LESSON[entry.groupTitle] ?? 0);
   }
 
+  function move(index: number) {
+    const next = Math.max(0, Math.min(LESSONS.length - 1, index));
+    setViewMode("course");
+    setLesson(next);
+    setActiveGroup(LESSON_VISUALS[next].group);
+    setActiveFormula(LESSON_VISUALS[next].formula);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   return (
     <TradingPageShell
       eyebrow="LEARN · OBSERVE · VERIFY"
@@ -308,34 +381,28 @@ export default function KlineLearningPage() {
       }
       aside={
         <QuantGlowCard className="kline-progress-card">
-          <span>学习进度</span>
-          <strong>{lesson + 1} / {LESSONS.length}</strong>
-          <div><i style={{ width: `${((lesson + 1) / LESSONS.length) * 100}%` }} /></div>
-          <small>当前：{LESSONS[lesson].title}</small>
+          <span>{viewMode === "course" ? "K 线方法进度" : "公式参考手册"}</span>
+          <strong>{viewMode === "course" ? `${lesson + 1} / ${LESSONS.length}` : "10 类 · 40 式"}</strong>
+          {viewMode === "course" ? <div><i style={{ width: `${((lesson + 1) / LESSONS.length) * 100}%` }} /></div> : null}
+          <small>{viewMode === "course" ? `当前：${LESSONS[lesson].title}` : "导学 · 公式 · 复算 · 来源"}</small>
         </QuantGlowCard>
       }
     >
       <LearningCourseNav />
       <section className="learning-full-width">
         <div className="kline-learning-main">
-          <FormulaHandbook
-            domain="kline"
-            activeGroupTitle={activeGroup}
-            visualFormulaName={activeFormula}
-            onFormulaChange={(selection) => {
-              setActiveFormula(selection.formula.name);
-              setActiveGroup(selection.groupTitle);
-              setLesson(GROUP_TO_LESSON[selection.groupTitle] ?? 0);
-            }}
-          />
-          <QuantGlowCard
-            title={<SectionHeader title={LESSONS[lesson].title} description={LESSONS[lesson].description} />}
-            badge={<StatusPill tone="ai">第 {lesson + 1} 课</StatusPill>}
-          >
-            <LessonText lesson={lesson} />
-          </QuantGlowCard>
+          <section className="kline-view-switch" aria-label="K 线学堂内容视图"><div><strong>{viewMode === "course" ? "方法课程" : "公式手册"}</strong><span>{viewMode === "course" ? "用真实离线行情完成读图、规则化和验证" : "按 10 类主题查阅 40 个公式与证据来源"}</span></div><Segmented value={viewMode} onChange={(value) => setViewMode(value as "course" | "handbook")} options={[{ label: "方法课程", value: "course" }, { label: "公式手册", value: "handbook" }]} /></section>
+          {viewMode === "course" ? <>
+            <KlineCourseMap lesson={lesson} onChange={move} />
+            <QuantGlowCard
+              title={<SectionHeader title={LESSONS[lesson].title} description={LESSONS[lesson].description} />}
+              badge={<StatusPill tone="ai">第 {lesson + 1} 课</StatusPill>}
+            >
+              <LessonText lesson={lesson} />
+              <KlineQuiz key={lesson} lesson={lesson} />
+            </QuantGlowCard>
 
-          <div className="kline-lab-grid">
+            <div className="kline-lab-grid">
             <QuantGlowCard
               className="kline-anatomy-card"
               title={<SectionHeader title="单根 K 线解剖" description="拖动样本序号，观察真实 OHLCV" />}
@@ -397,26 +464,26 @@ export default function KlineLearningPage() {
                 {study.markers.length ? <span><i className="marker" />条件命中 / 当前样本</span> : null}
               </div>
             </QuantGlowCard>
-          </div>
+            </div>
 
-          <div className="kline-lesson-actions">
-            <Button disabled={lesson === 0} onClick={() => {
-              const next = Math.max(0, lesson - 1);
-              setLesson(next);
-              setActiveGroup(LESSON_VISUALS[next].group);
-              setActiveFormula(LESSON_VISUALS[next].formula);
-            }}>上一课</Button>
+            <div className="kline-lesson-actions">
+            <Button disabled={lesson === 0} onClick={() => move(lesson - 1)}>上一课</Button>
             {lesson < LESSONS.length - 1 ? (
-              <Button type="primary" onClick={() => {
-                const next = Math.min(LESSONS.length - 1, lesson + 1);
-                setLesson(next);
-                setActiveGroup(LESSON_VISUALS[next].group);
-                setActiveFormula(LESSON_VISUALS[next].formula);
-              }}>下一课 <ArrowRightOutlined /></Button>
+              <Button type="primary" onClick={() => move(lesson + 1)}>下一课 <ArrowRightOutlined /></Button>
             ) : (
               <Button type="primary" onClick={() => navigate("/backtest-learning")}>继续学习回测方法 <ArrowRightOutlined /></Button>
             )}
-          </div>
+            </div>
+          </> : <FormulaHandbook
+            domain="kline"
+            activeGroupTitle={activeGroup}
+            visualFormulaName={activeFormula}
+            onFormulaChange={(selection) => {
+              setActiveFormula(selection.formula.name);
+              setActiveGroup(selection.groupTitle);
+              setLesson(GROUP_TO_LESSON[selection.groupTitle] ?? 0);
+            }}
+          />}
         </div>
       </section>
     </TradingPageShell>
